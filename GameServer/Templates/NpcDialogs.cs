@@ -57,6 +57,8 @@ namespace GameServer.Templates
 				foreach (var obj in Serializer.Deserialize<NpcDialogs>(text))
 					DataSheet.Add(obj.Id, obj.Content);
 			}
+
+			// DataById.Add();
 		}
 	}
 }

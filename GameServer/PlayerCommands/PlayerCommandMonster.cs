@@ -11,16 +11,16 @@ namespace GameServer.PlayerCommands
     public class PlayerCommandMonster : PlayerCommand
     {
         [Field(Position = 0)]
-        public string MonsterName;
+        public string 怪物名字;
 
         [Field(Position = 1, IsOptional = true)]
         public int? Qty;
 
         public override void Execute()
         {
-            if (!Monsters.DataSheet.TryGetValue(MonsterName, out Monsters monster))
+            if (!游戏怪物.DataSheet.TryGetValue(怪物名字, out 游戏怪物 monster))
             {
-                Player.SendMessage($"Mob {MonsterName} does not exist");
+                Player.SendMessage($"Mob {怪物名字} does not exist");
                 return;
             }
 

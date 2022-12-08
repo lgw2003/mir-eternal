@@ -4,7 +4,7 @@ namespace GameServer.Templates
 {
 	public struct BasicStats
 	{
-		public GameObjectStats Stat;
-		public int Value;
+		public GameObjectStats 属性;
+		public int 数值;
 	}
 }

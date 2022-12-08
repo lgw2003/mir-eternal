@@ -162,7 +162,7 @@ namespace GameServer.Maps
 
       var loadedOk = false;
 
-      if (MapInstances.TryGetValue(2433, out 沙城地图) && GameBuffs.DataSheet.TryGetValue(22300, out var 游戏Buff) && Templates.Monsters.DataSheet.TryGetValue("沙巴克城门", out var 对应模板) && Templates.Monsters.DataSheet.TryGetValue("沙巴克宫门", out var 对应模板2))
+      if (MapInstances.TryGetValue(2433, out 沙城地图) && GameBuffs.DataSheet.TryGetValue(22300, out var 游戏Buff) && Templates.游戏怪物.DataSheet.TryGetValue("沙巴克城门", out var 对应模板) && Templates.游戏怪物.DataSheet.TryGetValue("沙巴克宫门", out var 对应模板2))
       {
         if ((皇宫随机区域 = 沙城地图.地图区域.FirstOrDefault((MapAreas O) => O.RegionName == "Shabak-Random areas of the Palace")) != null)
         {

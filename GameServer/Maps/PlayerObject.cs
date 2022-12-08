@@ -1903,7 +1903,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return ObjectSize.Single1x1;
+        return ObjectSize.单体1x1;
       }
     }
 
@@ -4067,7 +4067,7 @@ namespace GameServer.Maps
       {
         foreach (PetData PetData in this.PetData.ToList<PetData>())
         {
-          if (!(MainProcess.CurrentTime >= PetData.MutinyTime.V) && Monsters.DataSheet.ContainsKey(PetData.PetName.V))
+          if (!(MainProcess.CurrentTime >= PetData.MutinyTime.V) && 游戏怪物.DataSheet.ContainsKey(PetData.PetName.V))
           {
             PetObject PetObject = new PetObject(this, PetData);
             this.Pets.Add(PetObject);
@@ -15041,7 +15041,7 @@ namespace GameServer.Maps
               ObjectId = monsterObj.ObjectId,
               ObjectClass = monsterObj.CurrentLevel,
               ObjectMass = (byte)monsterObj.Category,
-              ObjectTemplate = monsterObj.Template?.Id ?? 0,
+              ObjectTemplate = monsterObj.Template?.怪物编号 ?? 0,
               MaxHP = monsterObj[GameObjectStats.MaxHP]
             });
           }

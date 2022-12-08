@@ -15,6 +15,7 @@ namespace GameServer.Templates
         {
             var types = new Type[]
             {
+                /*
                 typeof(RandomStats),
                 typeof(Monsters),
                 typeof(Guards),
@@ -41,6 +42,8 @@ namespace GameServer.Templates
                 typeof(GameAchievements),
                 typeof(GameMasters),
                 typeof(EquipmentStats)
+                */
+                typeof(游戏怪物),
             };
 
             Parallel.ForEach(types, (type) =>
@@ -54,7 +57,7 @@ namespace GameServer.Templates
             var types = new Type[]
            {
                 typeof(RandomStats),
-                typeof(Monsters),
+                typeof(游戏怪物),
                 typeof(Guards),
                 typeof(NpcDialogs),
                 typeof(TeleportGates),

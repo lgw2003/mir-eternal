@@ -47,10 +47,10 @@ namespace GameServer
         }));
       }
       MainForm.怪物DataSheet = new DataTable("怪物数据表");
-      MainForm.怪物数据行 = new Dictionary<Monsters, DataRow>();
-      MainForm.数据行怪物 = new Dictionary<DataRow, Monsters>();
+      MainForm.怪物数据行 = new Dictionary<游戏怪物, DataRow>();
+      MainForm.数据行怪物 = new Dictionary<DataRow, 游戏怪物>();
       MainForm.怪物DataSheet.Columns.Add("MobId", typeof(string));
-      MainForm.怪物DataSheet.Columns.Add("MonsterName", typeof(string));
+      MainForm.怪物DataSheet.Columns.Add("怪物名字", typeof(string));
       MainForm.怪物DataSheet.Columns.Add("Level", typeof(string));
       MainForm.怪物DataSheet.Columns.Add("怪物经验", typeof(string));
       MainForm.怪物DataSheet.Columns.Add("Category", typeof(string));
@@ -67,7 +67,7 @@ namespace GameServer
         }));
       }
       MainForm.掉落DataSheet = new DataTable("DropDataSheet");
-      MainForm.怪物掉落表 = new Dictionary<Monsters, List<KeyValuePair<GameItems, long>>>();
+      MainForm.怪物掉落表 = new Dictionary<游戏怪物, List<KeyValuePair<GameItems, long>>>();
       MainForm.掉落DataSheet.Columns.Add("Name", typeof(string));
       MainForm.掉落DataSheet.Columns.Add("DropNumber", typeof(string));
       MainForm MainForm3 = MainForm.Singleton;
@@ -599,7 +599,7 @@ namespace GameServer
       if (MainForm.Singleton.怪物浏览表.Rows.Count > 0 && MainForm.Singleton.怪物浏览表.SelectedRows.Count > 0)
       {
         DataRow row2 = (MainForm.Singleton.怪物浏览表.Rows[MainForm.Singleton.怪物浏览表.SelectedRows[0].Index].DataBoundItem as DataRowView).Row;
-        Monsters key2;
+        游戏怪物 key2;
         List<KeyValuePair<GameItems, long>> list5;
         if (MainForm.数据行怪物.TryGetValue(row2, out key2) && MainForm.怪物掉落表.TryGetValue(key2, out list5))
         {
@@ -739,7 +739,7 @@ namespace GameServer
     }
 
 
-    public static void 添加怪物数据(Monsters 怪物)
+    public static void 添加怪物数据(游戏怪物 怪物)
     {
       MainForm MainForm = MainForm.Singleton;
       if (MainForm == null)
@@ -751,14 +751,14 @@ namespace GameServer
         if (!MainForm.怪物数据行.ContainsKey(怪物))
         {
           DataRow dataRow = MainForm.怪物DataSheet.NewRow();
-          dataRow["MobId"] = 怪物.Id;
-          dataRow["MonsterName"] = 怪物.MonsterName;
-          dataRow["Level"] = 怪物.Level;
-          dataRow["Category"] = 怪物.Category;
+          dataRow["MobId"] = 怪物.怪物编号;
+          dataRow["怪物名字"] = 怪物.怪物名字;
+          dataRow["Level"] = 怪物.怪物等级;
+          dataRow["Category"] = 怪物.怪物级别;
           dataRow["怪物经验"] = 怪物.ProvideExperience;
-          dataRow["MobInterval"] = 怪物.MoveInterval;
-          dataRow["RangeHate"] = 怪物.RangeHate;
-          dataRow["HateTime"] = 怪物.HateTime;
+          dataRow["MobInterval"] = 怪物.怪物移动间隔;
+          dataRow["RangeHate"] = 怪物.怪物仇恨范围;
+          dataRow["HateTime"] = 怪物.怪物仇恨时间;
           MainForm.怪物数据行[怪物] = dataRow;
           MainForm.数据行怪物[dataRow] = 怪物;
           MainForm.怪物DataSheet.Rows.Add(dataRow);
@@ -767,7 +767,7 @@ namespace GameServer
     }
 
 
-    public static void UpdateDropStats(Monsters 怪物, List<KeyValuePair<GameItems, long>> 物品)
+    public static void UpdateDropStats(游戏怪物 怪物, List<KeyValuePair<GameItems, long>> 物品)
     {
       MainForm MainForm = MainForm.Singleton;
       if (MainForm == null)
@@ -957,10 +957,10 @@ namespace GameServer
       MainForm.MapsDataTable.Columns.Add("MobGoldDrop", typeof(string));
       MainForm.Singleton.dgvMaps.DataSource = MainForm.MapsDataTable;
       MainForm.怪物DataSheet = new DataTable("怪物数据表");
-      MainForm.怪物数据行 = new Dictionary<Monsters, DataRow>();
-      MainForm.数据行怪物 = new Dictionary<DataRow, Monsters>();
+      MainForm.怪物数据行 = new Dictionary<游戏怪物, DataRow>();
+      MainForm.数据行怪物 = new Dictionary<DataRow, 游戏怪物>();
       MainForm.怪物DataSheet.Columns.Add("MobId", typeof(string));
-      MainForm.怪物DataSheet.Columns.Add("MonsterName", typeof(string));
+      MainForm.怪物DataSheet.Columns.Add("怪物名字", typeof(string));
       MainForm.怪物DataSheet.Columns.Add("Level", typeof(string));
       MainForm.怪物DataSheet.Columns.Add("怪物经验", typeof(string));
       MainForm.怪物DataSheet.Columns.Add("Category", typeof(string));
@@ -970,7 +970,7 @@ namespace GameServer
       MainForm.怪物DataSheet.Columns.Add("HateTime", typeof(string));
       MainForm.Singleton.怪物浏览表.DataSource = MainForm.怪物DataSheet;
       MainForm.掉落DataSheet = new DataTable("DropDataSheet");
-      MainForm.怪物掉落表 = new Dictionary<Monsters, List<KeyValuePair<GameItems, long>>>();
+      MainForm.怪物掉落表 = new Dictionary<游戏怪物, List<KeyValuePair<GameItems, long>>>();
       MainForm.掉落DataSheet.Columns.Add("Name", typeof(string));
       MainForm.掉落DataSheet.Columns.Add("DropNumber", typeof(string));
       MainForm.Singleton.掉落浏览表.DataSource = MainForm.掉落DataSheet;
@@ -1749,10 +1749,10 @@ namespace GameServer
     private static Dictionary<GameMap, DataRow> MapsDataRow;
 
 
-    private static Dictionary<Monsters, DataRow> 怪物数据行;
+    private static Dictionary<游戏怪物, DataRow> 怪物数据行;
 
 
-    private static Dictionary<DataRow, Monsters> 数据行怪物;
+    private static Dictionary<DataRow, 游戏怪物> 数据行怪物;
 
 
     private static Dictionary<string, DataRow> 封禁数据行;
@@ -1773,7 +1773,7 @@ namespace GameServer
     private static Dictionary<CharacterData, List<KeyValuePair<byte, ItemData>>> 角色仓库表;
 
 
-    private static Dictionary<Monsters, List<KeyValuePair<GameItems, long>>> 怪物掉落表;
+    private static Dictionary<游戏怪物, List<KeyValuePair<GameItems, long>>> 怪物掉落表;
 
     private void S_注意事项标签3_Click(object sender, EventArgs e)
     {

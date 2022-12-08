@@ -20,7 +20,7 @@ namespace GameServer.Templates
 		public static void LoadData()
 		{
 			DataSheet = new HashSet<MonsterSpawns>();
-			string text = Config.GameDataPath + "\\System\\GameMap\\Monsters\\";
+			string text = Config.GameDataPath + "\\System\\GameMap\\MonstersSpawns\\";
 			if (Directory.Exists(text))
 			{
 				foreach (var obj in Serializer.Deserialize<MonsterSpawns>(text))

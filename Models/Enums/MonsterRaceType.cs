@@ -4,12 +4,12 @@ namespace GameServer
 {
 	public enum MonsterRaceType  //怪物种族分类
 	{
-		Normal,   //普通怪物
-		Undead,  //不死生物
-		ZergCreature, //虫族生物
-		WomaMonster, //沃玛怪物
-		PigMonster,  //猪类怪物
-		ZumaMonster, //祖玛怪物
-		DragonMonster //魔龙怪物
+		普通怪物,   //普通怪物
+		不死生物,  //不死生物
+		虫族生物, //虫族生物
+		沃玛怪物, //沃玛怪物
+		猪类怪物,  //猪类怪物
+		祖玛怪物, //祖玛怪物
+		魔龙怪物 //魔龙怪物
 	}
 }

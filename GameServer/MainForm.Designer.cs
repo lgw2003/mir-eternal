@@ -928,7 +928,7 @@
       this.tabMonsters.Name = "tabMonsters";
       this.tabMonsters.Size = new System.Drawing.Size(1733, 817);
       this.tabMonsters.TabIndex = 2;
-      this.tabMonsters.Text = "Monsters";
+      this.tabMonsters.Text = "游戏怪物";
       // 
       // 掉落浏览表
       // 

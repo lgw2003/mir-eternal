@@ -4,38 +4,38 @@ using System.IO;
 
 namespace GameServer.Templates
 {
-    public sealed class Monsters
+    public sealed class 游戏怪物
     {
-        public static Dictionary<string, Monsters> DataSheet;
+        public static Dictionary<string, 游戏怪物> DataSheet;
 
-        public string MonsterName;
-        public ushort Id;
-        public byte Level;
-        public ObjectSize Size;
-        public MonsterRaceType Race;
-        public MonsterLevelType Category;
-        public bool ForbbidenMove;
-        public bool OutWarAutomaticPetrochemical;
-        public ushort PetrochemicalStatusId;
-        public bool VisibleStealthTargets;
-        public bool CanBeDrivenBySkills;
-        public bool CanBeControlledBySkills;
+        public string 怪物名字;
+        public ushort 怪物编号;
+        public byte 怪物等级;
+        public ObjectSize 怪物体型;
+        public MonsterRaceType 怪物分类;
+        public MonsterLevelType 怪物级别;
+        public bool 怪物禁止移动;
+        public bool 脱战自动石;
+        public ushort 石化状态编号;
+        public bool 可见隐身目标;
+        public bool 可被技能推动;
+        public bool 可被技能控制;
         public bool CanBeSeducedBySkills;
         public float BaseTemptationProbability;
-        public ushort MoveInterval;
-        public ushort RoamInterval;
-        public ushort CorpsePreservationDuration;
-        public bool ActiveAttackTarget;
-        public byte RangeHate;
-        public ushort HateTime;
-        public string NormalAttackSkills;
+        public ushort 怪物移动间隔;
+        public ushort 怪物漫游间隔;
+        public ushort 尸体保留时长;
+        public bool 主动攻击目标;
+        public byte 怪物仇恨范围;
+        public ushort 怪物仇恨时间;
+        public string 普通攻击技能;
         public string ProbabilityTriggerSkills;
         public string EnterCombatSkills;
         public string ExitCombatSkills;
         public string MoveReleaseSkill;
         public string BirthReleaseSkill;
         public string DeathReleaseSkill;
-        public BasicStats[] Stats;
+        public BasicStats[] 怪物基础;
         public GrowthStat[] Grows;
         public InheritStat[] InheritsStats;
         public ushort ProvideExperience;
@@ -47,13 +47,13 @@ namespace GameServer.Templates
 
         public static void LoadData()
         {
-            DataSheet = new Dictionary<string, Monsters>();
-            string text = Config.GameDataPath + "\\System\\Npc\\Monsters\\";
+            DataSheet = new Dictionary<string, 游戏怪物>();
+            string text = Config.GameDataPath + "\\System\\Npc数据\\怪物数据\\";
             if (Directory.Exists(text))
             {
-                var array = Serializer.Deserialize<Monsters>(text);
+                var array = Serializer.Deserialize<游戏怪物>(text);
                 for (int i = 0; i < array.Length; i++)
-                    DataSheet.Add(array[i].MonsterName, array[i]);
+                    DataSheet.Add(array[i].怪物名字, array[i]);
             }
         }
 
@@ -66,11 +66,11 @@ namespace GameServer.Templates
                     return _basicStats;
                 }
                 _basicStats = new Dictionary<GameObjectStats, int>();
-                if (Stats != null)
+                if (怪物基础 != null)
                 {
-                    foreach (BasicStats start in Stats)
+                    foreach (BasicStats start in 怪物基础)
                     {
-                        _basicStats[start.Stat] = start.Value;
+                        _basicStats[start.属性] = start.数值;
                     }
                 }
                 return _basicStats;

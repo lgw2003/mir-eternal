@@ -4,7 +4,7 @@ namespace GameServer.Templates
 {
 	public sealed class MonsterSpawnInfo
 	{
-		public string MonsterName;
+		public string 怪物名字;
 		public int SpawnCount;
 		public int RevivalInterval;
 	}

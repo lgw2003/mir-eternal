@@ -793,7 +793,7 @@ namespace GameServer.Templates
                     if (c_02.目标硬直时间 > 0)
                         foreach (var item in Hits)
                             if ((item.Value.Feedback & SkillHitFeedback.Miss) == SkillHitFeedback.正常 && (item.Value.Feedback & SkillHitFeedback.丢失) == SkillHitFeedback.正常)
-                                if (item.Value.Object is MonsterObject monsterObj && monsterObj.Category != MonsterLevelType.Boss)
+                                if (item.Value.Object is MonsterObject monsterObj && monsterObj.Category != MonsterLevelType.头目首领)
                                     item.Value.Object.HardTime = MainProcess.CurrentTime.AddMilliseconds(c_02.目标硬直时间);
 
                     if (c_02.清除目标状态 && c_02.清除状态列表.Count != 0)
@@ -994,7 +994,7 @@ namespace GameServer.Templates
                         if (c_06.PetName == null || c_06.PetName.Length == 0)
                             return;
 
-                        if (Monsters.DataSheet.TryGetValue(c_06.PetName, out var 对应模板))
+                        if (游戏怪物.DataSheet.TryGetValue(c_06.PetName, out var 对应模板))
                             _ = new MonsterObject(对应模板, ReleaseMap, int.MaxValue, new Point[] { ReleaseLocation }, true, true) { 存活时间 = MainProcess.CurrentTime.AddMinutes(1.0) };
                     }
                     else if (CasterObject is PlayerObject playerObj)
@@ -1006,7 +1006,7 @@ namespace GameServer.Templates
                             return;
 
                         int num21 = ((c_06.SpawnCount?.Length > SkillLevel) ? c_06.SpawnCount[SkillLevel] : 0);
-                        if (playerObj.Pets.Count < num21 && Monsters.DataSheet.TryGetValue(c_06.PetName, out var value5))
+                        if (playerObj.Pets.Count < num21 && 游戏怪物.DataSheet.TryGetValue(c_06.PetName, out var value5))
                         {
                             byte GradeCap = (byte)((c_06.LevelCap?.Length > SkillLevel) ? c_06.LevelCap[SkillLevel] : 0);
                             PetObject 宠物实例 = new PetObject(playerObj, value5, SkillLevel, GradeCap, c_06.PetBoundWeapons);

@@ -173,7 +173,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return ObjectSize.Single1x1;
+                return ObjectSize.单体1x1;
             }
         }
 

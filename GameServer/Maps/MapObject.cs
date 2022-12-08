@@ -407,14 +407,14 @@ namespace GameServer.Maps
                     || (targetType & SpecifyTargetType.AllMonsters) == SpecifyTargetType.AllMonsters
                     || (targetType & SpecifyTargetType.LowLevelMonster) == SpecifyTargetType.LowLevelMonster && CurrentLevel < obj.CurrentLevel
                     || ((targetType & SpecifyTargetType.LowBloodMonster) == SpecifyTargetType.LowBloodMonster && (float)this.CurrentHP / (float)this[GameObjectStats.MaxHP] < 0.4f)
-                    || ((targetType & SpecifyTargetType.Normal) == SpecifyTargetType.Normal && monsterObject.Category == MonsterLevelType.Normal)
-                    || ((targetType & SpecifyTargetType.Undead) == SpecifyTargetType.Undead && monsterObject.怪物种族 == MonsterRaceType.Undead)
-                    || ((targetType & SpecifyTargetType.ZergCreature) == SpecifyTargetType.ZergCreature && monsterObject.怪物种族 == MonsterRaceType.ZergCreature)
-                    || ((targetType & SpecifyTargetType.WomaMonster) == SpecifyTargetType.WomaMonster && monsterObject.怪物种族 == MonsterRaceType.WomaMonster)
-                    || ((targetType & SpecifyTargetType.PigMonster) == SpecifyTargetType.PigMonster && monsterObject.怪物种族 == MonsterRaceType.PigMonster)
-                    || ((targetType & SpecifyTargetType.ZumaMonster) == SpecifyTargetType.ZumaMonster && monsterObject.怪物种族 == MonsterRaceType.ZumaMonster)
-                    || ((targetType & SpecifyTargetType.DragonMonster) == SpecifyTargetType.DragonMonster && monsterObject.怪物种族 == MonsterRaceType.DragonMonster)
-                    || ((targetType & SpecifyTargetType.EliteMonsters) == SpecifyTargetType.EliteMonsters && (monsterObject.Category == MonsterLevelType.Elite || monsterObject.Category == MonsterLevelType.Boss))
+                    || ((targetType & SpecifyTargetType.Normal) == SpecifyTargetType.Normal && monsterObject.Category == MonsterLevelType.普通怪物)
+                    || ((targetType & SpecifyTargetType.Undead) == SpecifyTargetType.Undead && monsterObject.怪物种族 == MonsterRaceType.不死生物)
+                    || ((targetType & SpecifyTargetType.ZergCreature) == SpecifyTargetType.ZergCreature && monsterObject.怪物种族 == MonsterRaceType.虫族生物)
+                    || ((targetType & SpecifyTargetType.WomaMonster) == SpecifyTargetType.WomaMonster && monsterObject.怪物种族 == MonsterRaceType.沃玛怪物)
+                    || ((targetType & SpecifyTargetType.PigMonster) == SpecifyTargetType.PigMonster && monsterObject.怪物种族 == MonsterRaceType.猪类怪物)
+                    || ((targetType & SpecifyTargetType.ZumaMonster) == SpecifyTargetType.ZumaMonster && monsterObject.怪物种族 == MonsterRaceType.祖玛怪物)
+                    || ((targetType & SpecifyTargetType.DragonMonster) == SpecifyTargetType.DragonMonster && monsterObject.怪物种族 == MonsterRaceType.魔龙怪物)
+                    || ((targetType & SpecifyTargetType.EliteMonsters) == SpecifyTargetType.EliteMonsters && (monsterObject.Category == MonsterLevelType.精英干将 || monsterObject.Category == MonsterLevelType.头目首领))
                     || (((targetType & SpecifyTargetType.Backstab) == SpecifyTargetType.Backstab) && (
                             (CurrentDirection == GameDirection.上方 && (targetDirection == GameDirection.左上 || targetDirection == GameDirection.上方 || targetDirection == GameDirection.右上))
                             || (CurrentDirection == GameDirection.左上 && (targetDirection == GameDirection.左方 || targetDirection == GameDirection.左上 || targetDirection == GameDirection.上方))
@@ -446,8 +446,8 @@ namespace GameServer.Maps
             {
                 return targetType == SpecifyTargetType.None
                     || ((targetType & SpecifyTargetType.LowLevelTarget) == SpecifyTargetType.LowLevelTarget && this.CurrentLevel < obj.CurrentLevel)
-                    || ((targetType & SpecifyTargetType.Undead) == SpecifyTargetType.Undead && petObject.宠物种族 == MonsterRaceType.Undead)
-                    || ((targetType & SpecifyTargetType.ZergCreature) == SpecifyTargetType.ZergCreature && petObject.宠物种族 == MonsterRaceType.ZergCreature)
+                    || ((targetType & SpecifyTargetType.Undead) == SpecifyTargetType.Undead && petObject.宠物种族 == MonsterRaceType.不死生物)
+                    || ((targetType & SpecifyTargetType.ZergCreature) == SpecifyTargetType.ZergCreature && petObject.宠物种族 == MonsterRaceType.虫族生物)
                     || ((targetType & SpecifyTargetType.AllPets) == SpecifyTargetType.AllPets)
                     || (((targetType & SpecifyTargetType.Backstab) == SpecifyTargetType.Backstab) && (
                      (CurrentDirection == GameDirection.上方 && (targetDirection == GameDirection.左上 || targetDirection == GameDirection.上方 || targetDirection == GameDirection.右上))

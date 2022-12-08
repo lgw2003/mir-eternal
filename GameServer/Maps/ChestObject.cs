@@ -23,7 +23,7 @@ namespace GameServer.Maps
         private List<ChestPlayerOpener> _openers = new List<ChestPlayerOpener>();
 
         public override GameObjectType ObjectType => GameObjectType.Chest;
-        public override ObjectSize ObjectSize => ObjectSize.Single1x1;
+        public override ObjectSize ObjectSize => ObjectSize.单体1x1;
         public ChestTemplate Template { get; set; }
 
         public ChestObject(ChestTemplate template, MapInstance map, GameDirection direction, Point position)

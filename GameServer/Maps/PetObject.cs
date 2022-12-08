@@ -220,7 +220,7 @@ namespace GameServer.Maps
 		{
 			get
 			{
-				return this.Template.Level;
+				return this.Template.怪物等级;
 			}
 		}
 
@@ -229,7 +229,7 @@ namespace GameServer.Maps
 		{
 			get
 			{
-				return this.Template.MonsterName;
+				return this.Template.怪物名字;
 			}
 		}
 
@@ -247,7 +247,7 @@ namespace GameServer.Maps
 		{
 			get
 			{
-				return this.Template.Size;
+				return this.Template.怪物体型;
 			}
 		}
 
@@ -296,7 +296,7 @@ namespace GameServer.Maps
 		{
 			get
 			{
-				return this.Template.Id;
+				return this.Template.怪物编号;
 			}
 		}
 
@@ -321,7 +321,7 @@ namespace GameServer.Maps
 		{
 			get
 			{
-				return (int)this.Template.MoveInterval;
+				return (int)this.Template.怪物移动间隔;
 			}
 		}
 
@@ -330,7 +330,7 @@ namespace GameServer.Maps
 		{
 			get
 			{
-				return (int)this.Template.RoamInterval;
+				return (int)this.Template.怪物漫游间隔;
 			}
 		}
 
@@ -339,7 +339,7 @@ namespace GameServer.Maps
 		{
 			get
 			{
-				return (int)this.Template.CorpsePreservationDuration;
+				return (int)this.Template.尸体保留时长;
 			}
 		}
 
@@ -366,7 +366,7 @@ namespace GameServer.Maps
 		{
 			get
 			{
-				return this.Template.Race;
+				return this.Template.怪物分类;
 			}
 		}
 
@@ -375,7 +375,7 @@ namespace GameServer.Maps
 		{
 			get
 			{
-				return this.Template.Category;
+				return this.Template.怪物级别;
 			}
 		}
 
@@ -402,7 +402,7 @@ namespace GameServer.Maps
 			
 			this.PlayerOwner = 宠物主人;
 			this.PetData = 对象数据;
-			this.Template = Monsters.DataSheet[对象数据.PetName.V];
+			this.Template = 游戏怪物.DataSheet[对象数据.PetName.V];
 			this.CurrentPosition = 宠物主人.CurrentPosition;
 			this.CurrentMap = 宠物主人.CurrentMap;
 			this.CurrentDirection = ComputingClass.随机方向();
@@ -420,10 +420,10 @@ namespace GameServer.Maps
 			this.Attack时间 = MainProcess.CurrentTime.AddSeconds(1.0);
 			this.漫游时间 = MainProcess.CurrentTime.AddMilliseconds((double)(MainProcess.RandomNumber.Next(5000) + this.RoamingInterval));
 			this.HateObject = new HateObject();
-			string text = this.Template.NormalAttackSkills;
+			string text = this.Template.普通攻击技能;
 			if (text != null && text.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.NormalAttackSkills, out this.NormalAttackSkills);
+				GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.NormalAttackSkills);
 			}
 			string text2 = this.Template.ProbabilityTriggerSkills;
 			if (text2 != null && text2.Length > 0)
@@ -464,13 +464,13 @@ namespace GameServer.Maps
 		}
 
 		
-		public PetObject(PlayerObject 宠物主人, Monsters 召唤宠物, byte 初始等级, byte GradeCap, bool BoundWeapons)
+		public PetObject(PlayerObject 宠物主人, 游戏怪物 召唤宠物, byte 初始等级, byte GradeCap, bool BoundWeapons)
 		{
 			
 			
 			this.PlayerOwner = 宠物主人;
 			this.Template = 召唤宠物;
-			this.PetData = new PetData(召唤宠物.MonsterName, 初始等级, GradeCap, BoundWeapons, DateTime.MaxValue);
+			this.PetData = new PetData(召唤宠物.怪物名字, 初始等级, GradeCap, BoundWeapons, DateTime.MaxValue);
 			this.CurrentPosition = 宠物主人.CurrentPosition;
 			this.CurrentMap = 宠物主人.CurrentMap;
 			this.CurrentDirection = ComputingClass.随机方向();
@@ -490,10 +490,10 @@ namespace GameServer.Maps
 			this.Attack时间 = MainProcess.CurrentTime.AddSeconds(1.0);
 			this.漫游时间 = MainProcess.CurrentTime.AddMilliseconds((double)(MainProcess.RandomNumber.Next(5000) + this.RoamingInterval));
 			this.HateObject = new HateObject();
-			string text = this.Template.NormalAttackSkills;
+			string text = this.Template.普通攻击技能;
 			if (text != null && text.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.NormalAttackSkills, out this.NormalAttackSkills);
+				GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.NormalAttackSkills);
 			}
 			string text2 = this.Template.ProbabilityTriggerSkills;
 			if (text2 != null && text2.Length > 0)
@@ -551,10 +551,10 @@ namespace GameServer.Maps
 			this.BusyTime = MainProcess.CurrentTime.AddSeconds(1.0);
 			this.漫游时间 = MainProcess.CurrentTime.AddMilliseconds((double)this.RoamingInterval);
 			this.HateObject = new HateObject();
-			string text = this.Template.NormalAttackSkills;
+			string text = this.Template.普通攻击技能;
 			if (text != null && text.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.NormalAttackSkills, out this.NormalAttackSkills);
+				GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.NormalAttackSkills);
 			}
 			string text2 = this.Template.ProbabilityTriggerSkills;
 			if (text2 != null && text2.Length > 0)
@@ -615,10 +615,10 @@ namespace GameServer.Maps
 			this.BusyTime = MainProcess.CurrentTime.AddSeconds(1.0);
 			this.漫游时间 = MainProcess.CurrentTime.AddMilliseconds((double)this.RoamingInterval);
 			this.HateObject = new HateObject();
-			string text = this.Template.NormalAttackSkills;
+			string text = this.Template.普通攻击技能;
 			if (text != null && text.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.NormalAttackSkills, out this.NormalAttackSkills);
+				GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.NormalAttackSkills);
 			}
 			string text2 = this.Template.ProbabilityTriggerSkills;
 			if (text2 != null && text2.Length > 0)
@@ -1043,7 +1043,7 @@ namespace GameServer.Maps
 		public PlayerObject PlayerOwner;
 
 		
-		public Monsters Template;
+		public 游戏怪物 Template;
 
 		
 		public HateObject HateObject;

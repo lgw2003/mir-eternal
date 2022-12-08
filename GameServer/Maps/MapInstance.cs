@@ -167,8 +167,8 @@ namespace GameServer.Maps
                         {
                             this.地图公告(string.Format("The {0}th wave of monsters has appeared, please take care of your defences", num + 1));
                         }
-                        Monsters 对应模板;
-                        if (Monsters.DataSheet.TryGetValue(刷新信息.MonsterName, out 对应模板))
+                        游戏怪物 对应模板;
+                        if (游戏怪物.DataSheet.TryGetValue(刷新信息.怪物名字, out 对应模板))
                         {
                             new MonsterObject(对应模板, this, int.MaxValue, new Point[]
                             {
@@ -278,13 +278,13 @@ namespace GameServer.Maps
                     var rangeCoords = spawn.RangeCoords.ToArray();
                     foreach (var spawnInfo in spawn.Spawns)
                     {
-                        if (Monsters.DataSheet.TryGetValue(spawnInfo.MonsterName, out var 游戏怪物))
+                        if (游戏怪物.DataSheet.TryGetValue(spawnInfo.怪物名字, out var 怪物))
                         {
-                            MainForm.添加怪物数据(游戏怪物);
+                            MainForm.添加怪物数据(怪物);
                             int RevivalInterval = spawnInfo.RevivalInterval * 60 * 1000;
                             for (int l = 0; l < spawnInfo.SpawnCount; l++)
                             {
-                                new MonsterObject(游戏怪物, this, RevivalInterval, rangeCoords, false, true);
+                                new MonsterObject(怪物, this, RevivalInterval, rangeCoords, false, true);
                             }
                         }
                     }

@@ -15,7 +15,7 @@ namespace GameServer.GMCommands
 
         public override void Execute()
         {
-            if (!Monsters.DataSheet.TryGetValue(MobName, out Monsters monster))
+            if (!游戏怪物.DataSheet.TryGetValue(MobName, out 游戏怪物 monster))
             {
                 MainForm.AddCommandLog($"<= @Mob Command execution failed, mob {MobName} does not exist");
                 return;

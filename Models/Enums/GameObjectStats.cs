@@ -6,49 +6,49 @@ namespace GameServer
 	public enum GameObjectStats
 	{
 		
-		未知Stat,
+		未知属性,
 		
-		MinDef = 2,
+		最小防御 = 2,
 		
-		MaxDef,
+		最大防御,
 		
-		MinMCDef,
+		最小魔防,
 		
-		MaxMCDef,
+		最大魔防,
 		
-		MinDC,
+		最小攻击,
 		
-		MaxDC,
+		最大攻击,
 		
-		MinMC,
+		最小魔法,
 		
-		MaxMC,
+		最大魔法,
 		
-		MinSC,
+		最小道术,
 		
-		MaxSC,
+		最大道术,
 		
-		MinNC,
+		最小刺术,
 		
-		MaxNC,
+		最大刺术,
 		
-		MinBC,
+		最小弓术,
 		
-		MaxBC,
+		最大弓术,
 		
-		MaxHP,
+		最大体力,
 		
-		MaxMP,
+		最大魔力,
 		
-		WalkSpeed,
+		行走速度,
 		
-		RunSpeed,
+		奔跑速度,
 		
-		PhysicallyAccurate,
+		物理准确,
 		
-		PhysicalAgility,
+		物理敏捷,
 		
-		MagicDodge,
+		魔法闪避,
 		
 		暴击概率,
 		
@@ -58,9 +58,9 @@ namespace GameServer
 		
 		药品回魔,
 		
-		Luck,
+		幸运,
 		
-		AttackSpeed = 36,
+		攻击速度 = 36,
 		
 		体力恢复,
 		
@@ -74,13 +74,13 @@ namespace GameServer
 		
 		最大负重,
 		
-		SkillSign = 56,
+		技能标志 = 56,
 		
 		攻杀标志,
 		
-		MinHC = 67,
+		最小神圣 = 67,
 		
-		MaxHC,
+		最大神圣,
 		
 		怪物伤害 = 112,
 		
@@ -88,6 +88,16 @@ namespace GameServer
 		
 		怪物破防,
 		
-		怪物命中
+		怪物命中,
+
+		准确度,
+
+		敏捷度,
+
+		魔法躲避,
+
+		体力值,
+
+		魔法值
 	}
 }

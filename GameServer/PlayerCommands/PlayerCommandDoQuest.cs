@@ -19,13 +19,13 @@ namespace GameServer.PlayerCommands
                     if (mission.CompletedDate.V != DateTime.MinValue)
                         continue;
 
-                    if (mission.Info.V.Type == Models.Enums.QuestMissionType.AdquireItem || mission.Info.V.Type == Models.Enums.QuestMissionType.KillMob)
-                        mission.Count.V = (byte)mission.Info.V.Count;
+                    if (mission.Info.V.类型 == Models.Enums.QuestMissionType.获取物品 || mission.Info.V.类型 == Models.Enums.QuestMissionType.杀死怪物)
+                        mission.Count.V = (byte)mission.Info.V.数量;
 
                     mission.CompletedDate.V = MainProcess.CurrentTime;
                 }
 
-                Player.CompleteQuest(quest.Info.V.Id);
+                Player.CompleteQuest(quest.Info.V.编号);
             }
         }
     }

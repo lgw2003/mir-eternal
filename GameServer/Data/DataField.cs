@@ -136,7 +136,7 @@ namespace GameServer.Data
                 if (!GameQuests.DataSheet.TryGetValue(r.ReadInt32(), out var gameQuest))
                     return DataMonitor;
 
-                DataMonitor.QuietlySetValue(gameQuest.Missions[r.ReadInt32()]);
+                DataMonitor.QuietlySetValue(gameQuest.执行任务[r.ReadInt32()]);
 
                 return DataMonitor;
             };
@@ -821,7 +821,7 @@ namespace GameServer.Data
             dictionary2[typeFromHandle52] = delegate (BinaryWriter b, object o)
             {
                 RandomStats v = ((DataMonitor<RandomStats>)o).V;
-                b.Write((v != null) ? v.StatId : 0);
+                b.Write((v != null) ? v.属性编号 : 0);
             };
             typeFromHandle51 = typeof(DataMonitor<InscriptionSkill>);
             dictionary2[typeFromHandle51] = delegate (BinaryWriter b, object o)
@@ -833,11 +833,11 @@ namespace GameServer.Data
             dictionary2[typeFromHandle50] = delegate (BinaryWriter b, object o)
             {
                 GameItems v = ((DataMonitor<GameItems>)o).V;
-                b.Write((v != null) ? v.Id : 0);
+                b.Write((v != null) ? v.物品编号 : 0);
             };
             dictionary2[typeof(DataMonitor<GameQuests>)] = delegate (BinaryWriter b, object o)
             {
-                b.Write(((DataMonitor<GameQuests>)o).V?.Id ?? 0);
+                b.Write(((DataMonitor<GameQuests>)o).V?.编号 ?? 0);
             };
             dictionary2[typeof(DataMonitor<GameQuestMission>)] = delegate (BinaryWriter b, object o)
             {
@@ -1069,7 +1069,7 @@ namespace GameServer.Data
                 b.Write((ListMonitor != null) ? ListMonitor.Count : 0);
                 foreach (RandomStats 随机Stat in ListMonitor)
                 {
-                    b.Write(随机Stat.StatId);
+                    b.Write(随机Stat.属性编号);
                 }
             };
             typeFromHandle23 = typeof(ListMonitor<EquipHoleColor>);
@@ -1175,7 +1175,7 @@ namespace GameServer.Data
                 foreach (KeyValuePair<byte, GameItems> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
-                    b.Write(keyValuePair.Value.Id);
+                    b.Write(keyValuePair.Value.物品编号);
                 }
             };
             typeFromHandle13 = typeof(MonitorDictionary<byte, InscriptionSkill>);

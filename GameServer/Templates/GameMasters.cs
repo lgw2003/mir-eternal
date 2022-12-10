@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace GameServer.Templates
 {
+    /// <summary>
+    /// 游戏管理员
+    /// </summary>
     public class GameMasters
     {
         public static Dictionary<string, GameMasters> DataSheet;
@@ -31,6 +34,11 @@ namespace GameServer.Templates
             }
         }
 
+        /// <summary>
+        /// 根据角色名称获取GM等级
+        /// </summary>
+        /// <param name="characterName">角色名称</param>
+        /// <returns></returns>
         public static GameMasterLevel GetGMLevel(string characterName)
         {
             if (DataSheet.TryGetValue(characterName.ToLowerInvariant(), out var gm))

@@ -6,6 +6,9 @@ using System.Text.RegularExpressions;
 
 namespace GameServer.Templates
 {
+    /// <summary>
+    /// 角色成长
+    /// </summary>
 
     public sealed class CharacterProgression
     {
@@ -91,7 +94,7 @@ namespace GameServer.Templates
                 45
             };
             CharacterProgression.DataSheet = new Dictionary<int, Dictionary<GameObjectStats, int>>();
-            string path = Config.GameDataPath + "\\System\\GrowthAttribute.txt";
+            string path = Config.GameDataPath + "\\System\\成长属性.txt";
             string[] array = Regex.Split(File.ReadAllText(path).Trim(new char[]
             {
                 '\r',

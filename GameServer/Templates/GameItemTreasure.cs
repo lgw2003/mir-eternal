@@ -8,8 +8,8 @@ namespace GameServer.Templates
 {
     public class GameItemTreasure
     {
-        public string ItemName { get; set; }
-        public GameObjectRace? NeedRace { get; set; } = null;
-        public int? Rate { get; set; } = null;
+        public string 物品名字 { get; set; }
+        public GameObjectRace? 需要职业 { get; set; } = null;
+        public int? 概率 { get; set; } = null;
     }
 }

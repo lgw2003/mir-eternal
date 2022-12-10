@@ -20,8 +20,8 @@ namespace GameServer.Templates
         public bool 可见隐身目标;
         public bool 可被技能推动;
         public bool 可被技能控制;
-        public bool CanBeSeducedBySkills;
-        public float BaseTemptationProbability;
+        public bool 可被技能诱惑;
+        public float 基础诱惑概率;
         public ushort 怪物移动间隔;
         public ushort 怪物漫游间隔;
         public ushort 尸体保留时长;
@@ -29,21 +29,21 @@ namespace GameServer.Templates
         public byte 怪物仇恨范围;
         public ushort 怪物仇恨时间;
         public string 普通攻击技能;
-        public string ProbabilityTriggerSkills;
-        public string EnterCombatSkills;
-        public string ExitCombatSkills;
-        public string MoveReleaseSkill;
-        public string BirthReleaseSkill;
-        public string DeathReleaseSkill;
+        public string 概率触发技能;
+        public string 进入战斗技能;
+        public string 退出战斗技能;
+        public string 移动释放技能;
+        public string 出生释放技能;
+        public string 死亡释放技能;
         public BasicStats[] 怪物基础;
-        public GrowthStat[] Grows;
-        public InheritStat[] InheritsStats;
-        public ushort ProvideExperience;
-        public List<MonsterDrop> Drops;
-        public Dictionary<GameItems, long> DropStats = new Dictionary<GameItems, long>();
+        public GrowthStat[] 怪物成长;
+        public InheritStat[] 继承属性;
+        public ushort 怪物提供经验;
+        public List<MonsterDrop> 怪物掉落物品;
+        public Dictionary<GameItems, long> 掉落统计 = new Dictionary<GameItems, long>();
 
-        private Dictionary<GameObjectStats, int> _basicStats;
-        private Dictionary<GameObjectStats, int>[] _growStats;
+        private Dictionary<GameObjectStats, int> _怪物基础属性;
+        private Dictionary<GameObjectStats, int>[] _怪物成长属性;
 
         public static void LoadData()
         {
@@ -61,19 +61,19 @@ namespace GameServer.Templates
         {
             get
             {
-                if (_basicStats != null)
+                if (_怪物基础属性 != null)
                 {
-                    return _basicStats;
+                    return _怪物基础属性;
                 }
-                _basicStats = new Dictionary<GameObjectStats, int>();
+                _怪物基础属性 = new Dictionary<GameObjectStats, int>();
                 if (怪物基础 != null)
                 {
                     foreach (BasicStats start in 怪物基础)
                     {
-                        _basicStats[start.属性] = start.数值;
+                        _怪物基础属性[start.属性] = start.数值;
                     }
                 }
-                return _basicStats;
+                return _怪物基础属性;
             }
         }
 
@@ -81,11 +81,11 @@ namespace GameServer.Templates
         {
             get
             {
-                if (_growStats != null)
+                if (_怪物成长属性 != null)
                 {
-                    return _growStats;
+                    return _怪物成长属性;
                 }
-                _growStats = new Dictionary<GameObjectStats, int>[]
+                _怪物成长属性 = new Dictionary<GameObjectStats, int>[]
                 {
                     new Dictionary<GameObjectStats, int>(),
                     new Dictionary<GameObjectStats, int>(),
@@ -96,21 +96,21 @@ namespace GameServer.Templates
                     new Dictionary<GameObjectStats, int>(),
                     new Dictionary<GameObjectStats, int>()
                 };
-                if (Grows != null)
+                if (怪物成长 != null)
                 {
-                    foreach (GrowthStat stat in Grows)
+                    foreach (GrowthStat stat in 怪物成长)
                     {
-                        _growStats[0][stat.Stat] = stat.Level0;
-                        _growStats[1][stat.Stat] = stat.Level1;
-                        _growStats[2][stat.Stat] = stat.Level2;
-                        _growStats[3][stat.Stat] = stat.Level3;
-                        _growStats[4][stat.Stat] = stat.Level4;
-                        _growStats[5][stat.Stat] = stat.Level5;
-                        _growStats[6][stat.Stat] = stat.Level6;
-                        _growStats[7][stat.Stat] = stat.Level7;
+                        _怪物成长属性[0][stat.属性] = stat.零级;
+                        _怪物成长属性[1][stat.属性] = stat.一级;
+                        _怪物成长属性[2][stat.属性] = stat.二级;
+                        _怪物成长属性[3][stat.属性] = stat.三级;
+                        _怪物成长属性[4][stat.属性] = stat.四级;
+                        _怪物成长属性[5][stat.属性] = stat.五级;
+                        _怪物成长属性[6][stat.属性] = stat.六级;
+                        _怪物成长属性[7][stat.属性] = stat.七级;
                     }
                 }
-                return _growStats;
+                return _怪物成长属性;
             }
         }
     }

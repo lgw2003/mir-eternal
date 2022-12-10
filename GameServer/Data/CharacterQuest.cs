@@ -27,9 +27,9 @@ namespace GameServer.Data
             charQuest.Info.V = gameQuest;
             charQuest.StartDate.V = MainProcess.CurrentTime;
 
-            foreach (var mission in gameQuest.Missions)
+            foreach (var mission in gameQuest.执行任务)
             {
-                if (mission.Role != null && mission.Role.Value != character.CharRace.V) continue;
+                if (mission.职业 != null && mission.职业.Value != character.CharRace.V) continue;
 
                 charQuest.Missions.Add(CharacterQuestMission.Create(charQuest, mission));
             }
@@ -50,7 +50,7 @@ namespace GameServer.Data
         public CharacterQuestMission[] GetMissionsOfType(QuestMissionType type)
         {
             return Missions
-                .Where(x => x.Info.V.Type == type)
+                .Where(x => x.Info.V.类型 == type)
                 .ToArray();
         }
     }

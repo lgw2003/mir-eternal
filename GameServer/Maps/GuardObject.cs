@@ -74,7 +74,7 @@ namespace GameServer.Maps
             }
             set
             {
-                value = ComputingClass.ValueLimit(0, value, this[GameObjectStats.MaxHP]);
+                value = ComputingClass.ValueLimit(0, value, this[GameObjectStats.最大体力]);
                 if (base.CurrentHP != value)
                 {
                     base.CurrentHP = value;
@@ -82,7 +82,7 @@ namespace GameServer.Maps
                     {
                         ObjectId = this.ObjectId,
                         CurrentHP = this.CurrentHP,
-                        MaxHP = this[GameObjectStats.MaxHP]
+                        MaxHP = this[GameObjectStats.最大体力]
                     });
                 }
             }
@@ -137,7 +137,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.对象模板.Level;
+                return this.对象模板.守卫等级;
             }
         }
 
@@ -155,7 +155,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.对象模板.Name;
+                return this.对象模板.守卫名字;
             }
         }
 
@@ -164,7 +164,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return GameObjectType.NPC;
+                return GameObjectType.Npcc;
             }
         }
 
@@ -204,7 +204,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.对象模板.GuardNumber;
+                return this.对象模板.守卫编号;
             }
         }
 
@@ -213,7 +213,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.对象模板.RevivalInterval;
+                return this.对象模板.复活间隔;
             }
         }
 
@@ -222,7 +222,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.对象模板.StoreId;
+                return this.对象模板.商店编号;
             }
         }
 
@@ -231,7 +231,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.对象模板.InterfaceCode;
+                return this.对象模板.界面代码;
             }
         }
 
@@ -240,7 +240,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.对象模板.CanBeInjured;
+                return this.对象模板.能否受伤;
             }
         }
 
@@ -249,7 +249,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.对象模板.ActiveAttack;
+                return this.对象模板.主动攻击;
             }
         }
 
@@ -264,12 +264,12 @@ namespace GameServer.Maps
             this.ObjectId = ++MapGatewayProcess.ObjectId;
             Dictionary<object, Dictionary<GameObjectStats, int>> Stat加成 = this.StatsBonus;
             Dictionary<GameObjectStats, int> dictionary = new Dictionary<GameObjectStats, int>();
-            dictionary[GameObjectStats.MaxHP] = 9999;
+            dictionary[GameObjectStats.最大体力] = 9999;
             Stat加成[this] = dictionary;
-            string text = this.对象模板.BasicAttackSkills;
+            string text = this.对象模板.普攻技能;
             if (text != null && text.Length > 0)
             {
-                GameSkills.DataSheet.TryGetValue(this.对象模板.BasicAttackSkills, out this.BasicAttackSkills);
+                GameSkills.DataSheet.TryGetValue(this.对象模板.普攻技能, out this.BasicAttackSkills);
             }
             MapGatewayProcess.AddObject(this);
             this.守卫复活处理();
@@ -308,7 +308,7 @@ namespace GameServer.Maps
                 }
                 if (MainProcess.CurrentTime > base.RecoveryTime)
                 {
-                    if (!this.CheckStatus(GameObjectState.Poisoned))
+                    if (!this.CheckStatus(GameObjectState.中毒状态))
                     {
                         this.CurrentHP += 5;
                     }
@@ -373,7 +373,7 @@ namespace GameServer.Maps
                 this.ActiveObject = true;
                 MapGatewayProcess.ActivateObject(this);
                 int num = (int)Math.Max(0.0, (MainProcess.CurrentTime - base.RecoveryTime).TotalSeconds / 5.0);
-                base.CurrentHP = Math.Min(this[GameObjectStats.MaxHP], this.CurrentHP + num * this[GameObjectStats.体力恢复]);
+                base.CurrentHP = Math.Min(this[GameObjectStats.最大体力], this.CurrentHP + num * this[GameObjectStats.体力恢复]);
                 base.RecoveryTime = base.RecoveryTime.AddSeconds(5.0);
             }
         }
@@ -381,10 +381,10 @@ namespace GameServer.Maps
 
         public void 守卫智能Attack()
         {
-            if (CheckStatus(GameObjectState.Paralyzed | GameObjectState.Absence) || BasicAttackSkills == null)
+            if (CheckStatus(GameObjectState.麻痹状态 | GameObjectState.失神状态) || BasicAttackSkills == null)
                 return;
 
-            if (GetDistance(HateObject.当前目标) > BasicAttackSkills.MaxDistance)
+            if (GetDistance(HateObject.当前目标) > BasicAttackSkills.技能最远距离)
             {
                 HateObject.移除仇恨(HateObject.当前目标);
             }
@@ -401,11 +401,11 @@ namespace GameServer.Maps
             this.RefreshStats();
             this.SecondaryObject = false;
             this.Died = false;
-            this.Blocking = !this.对象模板.Nothingness;
+            this.Blocking = !this.对象模板.虚无状态;
             this.CurrentMap = this.出生地图;
             this.CurrentDirection = this.出生方向;
             this.CurrentPosition = this.出生坐标;
-            this.CurrentHP = this[GameObjectStats.MaxHP];
+            this.CurrentHP = this[GameObjectStats.最大体力];
             base.RecoveryTime = MainProcess.CurrentTime.AddMilliseconds((double)MainProcess.RandomNumber.Next(5000));
             this.HateObject = new HateObject();
             base.BindGrid();

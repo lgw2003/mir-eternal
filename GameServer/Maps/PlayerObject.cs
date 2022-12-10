@@ -111,14 +111,14 @@ namespace GameServer.Maps
           this.StatsBonus[EquipmentData] = EquipmentData.装备Stat;
         }
         SkillData SkillData;
-        if (EquipmentData.第一铭文 != null && this.MainSkills表.TryGetValue(EquipmentData.第一铭文.SkillId, out SkillData))
+        if (EquipmentData.第一铭文 != null && this.MainSkills表.TryGetValue(EquipmentData.第一铭文.技能编号, out SkillData))
         {
-          SkillData.Id = EquipmentData.第一铭文.Id;
+          SkillData.Id = EquipmentData.第一铭文.铭文编号;
         }
         SkillData SkillData2;
-        if (EquipmentData.第二铭文 != null && this.MainSkills表.TryGetValue(EquipmentData.第二铭文.SkillId, out SkillData2))
+        if (EquipmentData.第二铭文 != null && this.MainSkills表.TryGetValue(EquipmentData.第二铭文.技能编号, out SkillData2))
         {
-          SkillData2.Id = EquipmentData.第二铭文.Id;
+          SkillData2.Id = EquipmentData.第二铭文.铭文编号;
         }
       }
       foreach (SkillData SkillData3 in this.MainSkills表.Values)
@@ -132,16 +132,16 @@ namespace GameServer.Maps
       }
       foreach (BuffData BuffData in this.Buffs.Values)
       {
-        if ((BuffData.Effect & BuffEffectType.StatsIncOrDec) != BuffEffectType.SkillSign)
+        if ((BuffData.Effect & BuffEffectType.属性增减) != BuffEffectType.技能标志)
         {
           this.StatsBonus.Add(BuffData, BuffData.Stat加成);
         }
-        if ((BuffData.Effect & BuffEffectType.Riding) != BuffEffectType.SkillSign && GameMounts.DataSheet.TryGetValue(CharacterData.CurrentMount.V, out GameMounts mount))
+        if ((BuffData.Effect & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && GameMounts.DataSheet.TryGetValue(CharacterData.CurrentMount.V, out GameMounts mount))
         {
           this.Riding = true;
           this.StatsBonus.Add(BuffData, mount.Stats);
-          if (mount.SoulAuraID > 0)
-            this.OnAddBuff(mount.SoulAuraID, this);
+          if (mount.Buff编号 > 0)
+            this.OnAddBuff(mount.Buff编号, this);
         }
       }
       foreach (var title in AvailableTitles)
@@ -160,17 +160,17 @@ namespace GameServer.Maps
       }
       if (CurrentTitle > 0 && GameTitle.DataSheet.TryGetValue(CurrentTitle, out var gameTitle))
       {
-        CombatBonus[CurrentTitle] = gameTitle.Combat;
-        StatsBonus[CurrentTitle] = gameTitle.Attributes;
+        CombatBonus[CurrentTitle] = gameTitle.称号战力;
+        StatsBonus[CurrentTitle] = gameTitle.称号属性;
       }
       if (CurrentHP == 0)
       {
         CurrentMap = MapGatewayProcess.GetMapInstance(this.重生地图);
         CurrentPosition = (this.红名玩家 ? this.CurrentMap.红名区域.RandomCoords : this.CurrentMap.ResurrectionArea.RandomCoords);
-        CurrentHP = (int)((float)this[GameObjectStats.MaxHP] * 0.3f);
-        CurrentMP = (int)((float)this[GameObjectStats.MaxMP] * 0.3f);
+        CurrentHP = (int)((float)this[GameObjectStats.最大体力] * 0.3f);
+        CurrentMP = (int)((float)this[GameObjectStats.最大魔力] * 0.3f);
       }
-      else if (GameMap.DataSheet[(byte)CharacterData.CurrentMap.V].NoReconnect)
+      else if (GameMap.DataSheet[(byte)CharacterData.CurrentMap.V].下线传送)
       {
         if (CharacterData.CurrentMap.V == 152)
         {
@@ -184,14 +184,14 @@ namespace GameServer.Maps
             this.CurrentPosition = MapGatewayProcess.外城复活区域.RandomCoords;
           }
         }
-        else if (GameMap.DataSheet[(byte)CharacterData.CurrentMap.V].NoReconnectMapId == 0)
+        else if (GameMap.DataSheet[(byte)CharacterData.CurrentMap.V].传送地图 == 0)
         {
           this.CurrentMap = MapGatewayProcess.GetMapInstance(this.重生地图);
           this.CurrentPosition = this.CurrentMap.ResurrectionArea.RandomCoords;
         }
         else
         {
-          this.CurrentMap = MapGatewayProcess.GetMapInstance((int)GameMap.DataSheet[(byte)CharacterData.CurrentMap.V].NoReconnectMapId);
+          this.CurrentMap = MapGatewayProcess.GetMapInstance((int)GameMap.DataSheet[(byte)CharacterData.CurrentMap.V].传送地图);
           MapAreas 传送区域 = this.CurrentMap.传送区域;
           this.CurrentPosition = ((传送区域 != null) ? 传送区域.RandomCoords : this.CurrentMap.地图区域.First<MapAreas>().RandomCoords);
         }
@@ -627,46 +627,46 @@ namespace GameServer.Maps
       if (!GameQuests.DataSheet.TryGetValue(questId, out GameQuests questInfo))
         return;
 
-      if (!questInfo.CanTeleport && questInfo.TeleportCostId == 0)
+      if (!questInfo.可否传送 && questInfo.传送花费物品编号 == 0)
         return;
 
       var charQuest = CharacterData.Quests
-          .Where(x => x.Info.V.Id == questInfo.Id)
+          .Where(x => x.Info.V.编号 == questInfo.编号)
           .FirstOrDefault();
 
       if (charQuest == null || charQuest.CompleteDate.V != DateTime.MinValue)
         return;
 
-      var map = MapGatewayProcess.GetMapInstance(questInfo.StartNPCMap);
+      var map = MapGatewayProcess.GetMapInstance(questInfo.开始NPC地图编号);
 
       if (map == null)
         return;
 
       var npc = map.守卫区域
-          .Where(x => x.GuardNumber == questInfo.FinishNPCID)
+          .Where(x => x.守卫编号 == questInfo.完成NPC编号)
           .FirstOrDefault();
 
       if (npc == null)
       {
         npc = map.守卫区域
-           .Where(x => x.GuardNumber == questInfo.StartNPCID)
+           .Where(x => x.守卫编号 == questInfo.开始NPC编号)
            .FirstOrDefault();
       }
 
       if (npc == null)
         return;
 
-      if (questInfo.TeleportCostId > 0)
+      if (questInfo.传送花费物品编号 > 0)
       {
-        var item = GetBackpackItemById(questInfo.TeleportCostId);
+        var item = GetBackpackItemById(questInfo.传送花费物品编号);
 
         if (item == null)
           return;
 
-        ConsumeBackpackItem(questInfo.TeleportCostValue, item);
+        ConsumeBackpackItem(questInfo.传送花费物品数值, item);
       }
 
-      玩家切换地图(map, AreaType.未知区域, npc.FromCoords);
+      玩家切换地图(map, AreaType.未知区域, npc.所处坐标);
     }
 
     private ItemData GetBackpackItemById(int itemId)
@@ -769,13 +769,13 @@ namespace GameServer.Maps
 
     public void CompleteQuest(int questId)
     {
-      var questToComplete = CharacterData.Quests.FirstOrDefault(x => x.Info.V.Id == questId);
+      var questToComplete = CharacterData.Quests.FirstOrDefault(x => x.Info.V.编号 == questId);
       if (questToComplete == null || questToComplete.CompleteDate.V != DateTime.MinValue) return;
 
       var isCompleted = questToComplete.Missions.All(x => x.CompletedDate.V != DateTime.MinValue);
       if (!isCompleted) return;
 
-      var requireInventorySpaceCount = (byte)questToComplete.Info.V.Rewards.Sum(x => x.Type == QuestRewardType.Item ? 1 : 0);
+      var requireInventorySpaceCount = (byte)questToComplete.Info.V.固定奖励.Sum(x => x.类型 == QuestRewardType.物品 ? 1 : 0);
 
       byte[] locations = Array.Empty<byte>();
 
@@ -784,22 +784,22 @@ namespace GameServer.Maps
 
       byte itemSpacePos = 0;
 
-      foreach (var reward in questToComplete.Info.V.Rewards)
+      foreach (var reward in questToComplete.Info.V.固定奖励)
       {
-        switch (reward.Type)
+        switch (reward.类型)
         {
-          case QuestRewardType.Currency:
-            GainCurrency((GameCurrency)reward.Id, reward.Count);
+          case QuestRewardType.货币:
+            GainCurrency((GameCurrency)reward.编号, reward.数量);
             break;
-          case QuestRewardType.Exp:
-            GainExperience(null, reward.Count);
+          case QuestRewardType.经验:
+            GainExperience(null, reward.数量);
             break;
-          case QuestRewardType.Item:
-            if (GameItems.DataSheet.TryGetValue(reward.Id, out GameItems item))
-              GainItem(item, locations[itemSpacePos++], reward.Count > 0 ? reward.Count : 1);
+          case QuestRewardType.物品:
+            if (GameItems.DataSheet.TryGetValue(reward.编号, out GameItems item))
+              GainItem(item, locations[itemSpacePos++], reward.数量 > 0 ? reward.数量 : 1);
             break;
-          case QuestRewardType.Reputation:
-          case QuestRewardType.Activity:
+          case QuestRewardType.声望:
+          case QuestRewardType.活动:
             break;
         }
       }
@@ -818,17 +818,17 @@ namespace GameServer.Maps
       {
         CharacterData.Backpack[position] = new EquipmentData(equipItem, CharacterData, 1, position, true);
       }
-      else if (item.PersistType == PersistentItemType.容器)
+      else if (item.持久类型 == PersistentItemType.容器)
       {
         CharacterData.Backpack[position] = new ItemData(item, CharacterData, 1, position, 0);
       }
-      else if (item.PersistType == PersistentItemType.堆叠)
+      else if (item.持久类型 == PersistentItemType.堆叠)
       {
         CharacterData.Backpack[position] = new ItemData(item, CharacterData, 1, position, 1);
       }
       else
       {
-        CharacterData.Backpack[position] = new ItemData(item, CharacterData, 1, position, item.MaxDura);
+        CharacterData.Backpack[position] = new ItemData(item, CharacterData, 1, position, item.物品持久);
       }
 
       if (qty > 1) CharacterData.Backpack[position].当前持久.V = qty;
@@ -850,13 +850,13 @@ namespace GameServer.Maps
       {
         // Remove old aura
         if (Riding && GameMounts.DataSheet.TryGetValue(CharacterData.CurrentMount.V, out var previousMount))
-          if (previousMount.SoulAuraID > 0) 移除Buff时处理(previousMount.SoulAuraID);
+          if (previousMount.Buff编号 > 0) 移除Buff时处理(previousMount.Buff编号);
 
         CharacterData.CurrentMount.V = selectedMountId;
 
         // Add new Aura
-        if (Riding && mount.SoulAuraID > 0)
-          移除Buff时处理(mount.SoulAuraID);
+        if (Riding && mount.Buff编号 > 0)
+          移除Buff时处理(mount.Buff编号);
 
         ActiveConnection.SendPacket(new SyncSelectedMount { SelectedMountId = (byte)selectedMountId });
       }
@@ -877,46 +877,46 @@ namespace GameServer.Maps
     {
       foreach (var achievement in GameAchievements.DataSheet.Values)
       {
-        if (CharacterData.Achievements.ContainsKey(achievement.Id))
+        if (CharacterData.Achievements.ContainsKey(achievement.编号))
           continue;
 
         var completed = true;
 
-        foreach (var condition in achievement.Conditions)
+        foreach (var condition in achievement.条件)
         {
-          switch (condition.Type)
+          switch (condition.类型)
           {
             case "Level":
-              if (CurrentLevel < (long)condition.Props["Level"])
+              if (CurrentLevel < (long)condition.道具["Level"])
                 completed = false;
               break;
             case "Variable":
-              var varId = Enum.Parse<AchievementVariables>((string)condition.Props["Name"]);
-              if (!CharacterData.AchievementVariables.ContainsKey((byte)varId) || CharacterData.AchievementVariables[(byte)varId] < (long)condition.Props["Value"])
+              var varId = Enum.Parse<AchievementVariables>((string)condition.道具["Name"]);
+              if (!CharacterData.AchievementVariables.ContainsKey((byte)varId) || CharacterData.AchievementVariables[(byte)varId] < (long)condition.道具["Value"])
                 completed = false;
               break;
             case "SpellCount":
-              if (MainSkills表.Count < (long)condition.Props["Count"])
+              if (MainSkills表.Count < (long)condition.道具["Count"])
                 completed = false;
               break;
             case "SpellLevelSpecified":
-              if (!MainSkills表.TryGetValue((ushort)(long)condition.Props["SpellId"], out var skill) || skill.SkillLevel.V < (long)condition.Props["Level"])
+              if (!MainSkills表.TryGetValue((ushort)(long)condition.道具["SpellId"], out var skill) || skill.SkillLevel.V < (long)condition.道具["Level"])
                 completed = false;
               break;
             case "BagSlotCount":
-              if (BackpackSize < (long)condition.Props["Count"])
+              if (BackpackSize < (long)condition.道具["Count"])
                 completed = false;
               break;
             case "BankSlotCount":
-              if (WarehouseSize < (long)condition.Props["Count"])
+              if (WarehouseSize < (long)condition.道具["Count"])
                 completed = false;
               break;
             case "TotalMoneyType":
-              if (CharacterData.Currencies[(GameCurrency)(long)condition.Props["MoneyTypeId"]] < (long)condition.Props["Total"])
+              if (CharacterData.Currencies[(GameCurrency)(long)condition.道具["MoneyTypeId"]] < (long)condition.道具["Total"])
                 completed = false;
               break;
             case "CompleteStoryQuestCount":
-              if (CharacterData.Quests.Count(x => x.CompleteDate.V != DateTime.MinValue) < (long)condition.Props["Value"])
+              if (CharacterData.Quests.Count(x => x.CompleteDate.V != DateTime.MinValue) < (long)condition.道具["Value"])
                 completed = false;
               break;
             //case "ForceReputation":
@@ -933,11 +933,11 @@ namespace GameServer.Maps
         if (completed)
         {
           var data = new AchievementData();
-          data.AchievementId.V = achievement.Id;
+          data.AchievementId.V = achievement.编号;
           data.Character.V = CharacterData;
           data.CompletedAt.V = MainProcess.CurrentTime;
           data.ReceivedAt.V = DateTime.MinValue;
-          CharacterData.Achievements.Add(achievement.Id, data);
+          CharacterData.Achievements.Add(achievement.编号, data);
         }
       }
     }
@@ -947,38 +947,38 @@ namespace GameServer.Maps
       if (!GameQuests.DataSheet.TryGetValue(questId, out var questInfo))
         return false;
 
-      if (questInfo.StartNPCMap > 0 && CurrentMap.MapId != questInfo.StartNPCMap)
+      if (questInfo.开始NPC地图编号 > 0 && CurrentMap.MapId != questInfo.开始NPC地图编号)
         return false;
 
-      if (questInfo.StartNPCID > 0 && 对话守卫.MobId != questInfo.StartNPCID)
+      if (questInfo.开始NPC编号 > 0 && 对话守卫.MobId != questInfo.开始NPC编号)
         return false;
 
       var completedQuests = CharacterData.Quests
-          .Where(x => x.Info.V.Id == questId)
+          .Where(x => x.Info.V.编号 == questId)
           .ToArray();
 
-      if (questInfo.MaxCompleteCount > 0 && completedQuests.Length >= questInfo.MaxCompleteCount)
+      if (questInfo.最大完成数量 > 0 && completedQuests.Length >= questInfo.最大完成数量)
         return false;
 
-      return questInfo.Constraints.All(x =>
+      return questInfo.限制条件.All(x =>
       {
-        switch (x.Type)
+        switch (x.类型)
         {
-          case QuestAcceptConstraint.QuestCompleted:
-            var quest = CharacterData.Quests.FirstOrDefault(y => y.Info.V.Id == x.Value);
+          case QuestAcceptConstraint.任务完成:
+            var quest = CharacterData.Quests.FirstOrDefault(y => y.Info.V.编号 == x.数值);
             return quest != null && quest.CompleteDate.V != DateTime.MinValue;
-          case QuestAcceptConstraint.MinLevel:
-            return CurrentLevel >= x.Value;
-          case QuestAcceptConstraint.MaxLevel:
-            return CurrentLevel <= x.Value;
-          case QuestAcceptConstraint.Job:
-            return (int)CharRole == x.Value;
+          case QuestAcceptConstraint.最小等级:
+            return CurrentLevel >= x.数值;
+          case QuestAcceptConstraint.最大等级:
+            return CurrentLevel <= x.数值;
+          case QuestAcceptConstraint.职业:
+            return (int)CharRole == x.数值;
           case QuestAcceptConstraint.Gender:
-            return (int)CharGender == x.Value;
-          case QuestAcceptConstraint.AcceptStartTime:
-            return ComputingClass.TimeShift(MainProcess.CurrentTime) >= x.Value;
-          case QuestAcceptConstraint.AcceptEndTime:
-            return x.Value >= ComputingClass.TimeShift(MainProcess.CurrentTime);
+            return (int)CharGender == x.数值;
+          case QuestAcceptConstraint.接受开始时间:
+            return ComputingClass.TimeShift(MainProcess.CurrentTime) >= x.数值;
+          case QuestAcceptConstraint.接受结束时间:
+            return x.数值 >= ComputingClass.TimeShift(MainProcess.CurrentTime);
           default:
             throw new NotImplementedException();
         }
@@ -1020,15 +1020,15 @@ namespace GameServer.Maps
       {
         if (mission.CompletedDate.V != DateTime.MinValue) continue;
 
-        switch (mission.Info.V.Type)
+        switch (mission.Info.V.类型)
         {
-          case QuestMissionType.EquipItem:
+          case QuestMissionType.装备物品:
             if (Equipment[(byte)EquipmentWearingParts.武器] != null)
               mission.CompletedDate.V = MainProcess.CurrentTime;
             break;
-          case QuestMissionType.KillMob:
-          case QuestMissionType.AdquireItem:
-            if (mission.Count.V >= mission.Info.V.Count)
+          case QuestMissionType.杀死怪物:
+          case QuestMissionType.获取物品:
+            if (mission.Count.V >= mission.Info.V.数量)
               mission.CompletedDate.V = MainProcess.CurrentTime;
             break;
         }
@@ -1053,18 +1053,18 @@ namespace GameServer.Maps
       if (data.ReceivedAt.V != DateTime.MinValue)
         return;
 
-      if (data.Info.AchievementPoints > 0)
-        GainCurrency(GameCurrency.AchievementPoints, data.Info.AchievementPoints);
+      if (data.Info.成就点数 > 0)
+        GainCurrency(GameCurrency.AchievementPoints, data.Info.成就点数);
 
-      foreach (var reward in data.Info.Rewards)
+      foreach (var reward in data.Info.奖励)
       {
-        switch (reward.Type)
+        switch (reward.类型)
         {
-          case QuestRewardType.Exp:
-            GainExperience(null, reward.Id);
+          case QuestRewardType.经验:
+            GainExperience(null, reward.编号);
             break;
-          case QuestRewardType.Title:
-            ObtainTitle((byte)reward.Id);
+          case QuestRewardType.称号:
+            ObtainTitle((byte)reward.编号);
             break;
         }
       }
@@ -1153,7 +1153,7 @@ namespace GameServer.Maps
         bw.Write(8);
 
         // fecha completado reward
-        var maxId = GameAchievements.DataSheet.Values.Max(x => x.Id);
+        var maxId = GameAchievements.DataSheet.Values.Max(x => x.编号);
 
         for (ushort i = 0; i < maxId; i++)
           bw.Write(CharacterData.Achievements.TryGetValue(i, out var data) ? ComputingClass.DateShift(data.CompletedAt.V) : (ushort)0);
@@ -1181,7 +1181,7 @@ namespace GameServer.Maps
       {
         var characterQuests = CharacterData.Quests
             .Where(x => x.CompleteDate.V != DateTime.MinValue)
-            .ToDictionary(x => x.Info.V.Id);
+            .ToDictionary(x => x.Info.V.编号);
 
         var questActive = CharacterData.Quests
             .Where(x => x.CompleteDate.V == DateTime.MinValue)
@@ -1229,7 +1229,7 @@ namespace GameServer.Maps
 
         if (questActive != null)
         {
-          bw.Write(questActive.Info.V.Id); // active main quest id
+          bw.Write(questActive.Info.V.编号); // active main quest id
           bw.Write(ComputingClass.TimeShift(questActive.StartDate.V));
           bw.Write(0);
 
@@ -1366,8 +1366,8 @@ namespace GameServer.Maps
           队伍编号 = this.Team.队伍编号,
           对象编号 = this.ObjectId,
           对象等级 = (int)this.CurrentLevel,
-          MaxHP = this[GameObjectStats.MaxHP],
-          MaxMP = this[GameObjectStats.MaxMP],
+          MaxHP = this[GameObjectStats.最大体力],
+          MaxMP = this[GameObjectStats.最大魔力],
           CurrentHP = this.CurrentHP,
           CurrentMP = this.CurrentMP,
           CurrentMap = this.CurrentMap.MapId,
@@ -1403,7 +1403,7 @@ namespace GameServer.Maps
     {
       if (MainProcess.CurrentTime > base.RecoveryTime)
       {
-        if (!this.CheckStatus(GameObjectState.Poisoned))
+        if (!this.CheckStatus(GameObjectState.中毒状态))
         {
           this.CurrentHP += this[GameObjectStats.体力恢复];
           this.CurrentMP += this[GameObjectStats.魔力恢复];
@@ -1415,7 +1415,7 @@ namespace GameServer.Maps
       {
         if (EquipmentData.Id == 99999100 || EquipmentData.Id == 99999101 || EquipmentData.Id == 99999101)
         {
-          int num4 = Math.Min(10, Math.Min(EquipmentData.当前持久.V, this[GameObjectStats.MaxHP] - this.CurrentHP));
+          int num4 = Math.Min(10, Math.Min(EquipmentData.当前持久.V, this[GameObjectStats.最大体力] - this.CurrentHP));
           if (num4 > 0)
           {
             this.CurrentHP += num4;
@@ -1425,7 +1425,7 @@ namespace GameServer.Maps
         }
         else if (EquipmentData.Id == 99999102)
         {
-          int num3 = Math.Min(15, Math.Min(EquipmentData.当前持久.V, this[GameObjectStats.MaxMP] - this.CurrentMP));
+          int num3 = Math.Min(15, Math.Min(EquipmentData.当前持久.V, this[GameObjectStats.最大魔力] - this.CurrentMP));
           if (num3 > 0)
           {
             this.CurrentMP += num3;
@@ -1438,7 +1438,7 @@ namespace GameServer.Maps
         {
           if (EquipmentData.Id == 99999110 || EquipmentData.Id == 99999111)
           {
-            int num2 = Math.Min(10, Math.Min(EquipmentData.当前持久.V, this[GameObjectStats.MaxHP] - this.CurrentHP));
+            int num2 = Math.Min(10, Math.Min(EquipmentData.当前持久.V, this[GameObjectStats.最大体力] - this.CurrentHP));
             if (num2 > 0)
             {
               this.CurrentHP += num2;
@@ -1742,7 +1742,7 @@ namespace GameServer.Maps
       }
       set
       {
-        value = Math.Min(this[GameObjectStats.MaxHP], Math.Max(0, value));
+        value = Math.Min(this[GameObjectStats.最大体力], Math.Max(0, value));
         if (CurrentHP != value)
         {
           CharacterData.CurrentHP.V = value;
@@ -1750,7 +1750,7 @@ namespace GameServer.Maps
           {
             ObjectId = ObjectId,
             CurrentHP = CurrentHP,
-            MaxHP = this[GameObjectStats.MaxHP]
+            MaxHP = this[GameObjectStats.最大体力]
           });
         }
       }
@@ -1765,7 +1765,7 @@ namespace GameServer.Maps
       }
       set
       {
-        value = Math.Min(this[GameObjectStats.MaxMP], Math.Max(0, value));
+        value = Math.Min(this[GameObjectStats.最大魔力], Math.Max(0, value));
         if (this.CurrentMP != value)
         {
           this.CharacterData.CurrentMP.V = Math.Max(0, value);
@@ -1816,7 +1816,7 @@ namespace GameServer.Maps
           else
           {
             MapAreas 复活区域 = CurrentMap.ResurrectionArea;
-            flag = ((复活区域 != null) ? new bool?(复活区域.RangeCoords.Contains(this.CurrentPosition)) : null);
+            flag = ((复活区域 != null) ? new bool?(复活区域.范围坐标.Contains(this.CurrentPosition)) : null);
           }
           bool? flag2 = flag;
           if (flag2.GetValueOrDefault())
@@ -1850,9 +1850,9 @@ namespace GameServer.Maps
             CurrentMap2.添加对象(this);
           }
         }
-        if (this.CharacterData.CurrentMap.V != (int)value.地图模板.MapId)
+        if (this.CharacterData.CurrentMap.V != (int)value.地图模板.地图编号)
         {
-          this.CharacterData.CurrentMap.V = (int)value.地图模板.MapId;
+          this.CharacterData.CurrentMap.V = (int)value.地图模板.地图编号;
           GuildData Affiliation = this.Guild;
           if (Affiliation == null)
           {
@@ -1894,7 +1894,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return GameObjectType.Player;
+        return GameObjectType.玩家;
       }
     }
 
@@ -2977,8 +2977,8 @@ namespace GameServer.Maps
       RefreshStats();
       if (!this.Died)
       {
-        this.CurrentHP = this[GameObjectStats.MaxHP];
-        this.CurrentMP = this[GameObjectStats.MaxMP];
+        this.CurrentHP = this[GameObjectStats.最大体力];
+        this.CurrentMP = this[GameObjectStats.最大魔力];
       }
       TeacherData 所属师门 = this.所属师门;
       if (所属师门 != null)
@@ -3280,34 +3280,34 @@ namespace GameServer.Maps
       if (this.Equipment.TryGetValue(0, out EquipmentData))
       {
         InscriptionSkill 第一铭文 = EquipmentData.第一铭文;
-        ushort? num = (第一铭文 != null) ? new ushort?(第一铭文.SkillId) : null;
+        ushort? num = (第一铭文 != null) ? new ushort?(第一铭文.技能编号) : null;
         int? num2 = (num != null) ? new int?((int)num.GetValueOrDefault()) : null;
         if (num2.GetValueOrDefault() == (int)SkillId & num2 != null)
         {
-          this.MainSkills表[SkillId].Id = EquipmentData.第一铭文.Id;
+          this.MainSkills表[SkillId].Id = EquipmentData.第一铭文.铭文编号;
           SConnection 网络连接3 = this.ActiveConnection;
           if (网络连接3 != null)
           {
             网络连接3.SendPacket(new CharacterAssemblyInscriptionPacket
             {
               SkillId = SkillId,
-              Id = EquipmentData.第一铭文.Id
+              Id = EquipmentData.第一铭文.铭文编号
             });
           }
         }
         InscriptionSkill 第二铭文 = EquipmentData.第二铭文;
-        num = ((第二铭文 != null) ? new ushort?(第二铭文.SkillId) : null);
+        num = ((第二铭文 != null) ? new ushort?(第二铭文.技能编号) : null);
         num2 = ((num != null) ? new int?((int)num.GetValueOrDefault()) : null);
         if (num2.GetValueOrDefault() == (int)SkillId & num2 != null)
         {
-          this.MainSkills表[SkillId].Id = EquipmentData.第二铭文.Id;
+          this.MainSkills表[SkillId].Id = EquipmentData.第二铭文.铭文编号;
           SConnection 网络连接4 = this.ActiveConnection;
           if (网络连接4 != null)
           {
             网络连接4.SendPacket(new CharacterAssemblyInscriptionPacket
             {
               SkillId = SkillId,
-              Id = EquipmentData.第二铭文.Id
+              Id = EquipmentData.第二铭文.铭文编号
             });
           }
         }
@@ -3435,11 +3435,11 @@ namespace GameServer.Maps
         }
         if (原有装备.第一铭文 != null)
         {
-          this.玩家装卸铭文(原有装备.第一铭文.SkillId, 0);
+          this.玩家装卸铭文(原有装备.第一铭文.技能编号, 0);
         }
         if (原有装备.第二铭文 != null)
         {
-          this.玩家装卸铭文(原有装备.第二铭文.SkillId, 0);
+          this.玩家装卸铭文(原有装备.第二铭文.技能编号, 0);
         }
         this.CombatBonus.Remove(原有装备);
         this.StatsBonus.Remove(原有装备);
@@ -3448,11 +3448,11 @@ namespace GameServer.Maps
       {
         if (现有装备.第一铭文 != null)
         {
-          this.玩家装卸铭文(现有装备.第一铭文.SkillId, 现有装备.第一铭文.Id);
+          this.玩家装卸铭文(现有装备.第一铭文.技能编号, 现有装备.第一铭文.铭文编号);
         }
         if (现有装备.第二铭文 != null)
         {
-          this.玩家装卸铭文(现有装备.第二铭文.SkillId, 现有装备.第二铭文.Id);
+          this.玩家装卸铭文(现有装备.第二铭文.技能编号, 现有装备.第二铭文.铭文编号);
         }
         this.CombatBonus[现有装备] = 现有装备.装备战力;
         if (现有装备.当前持久.V > 0)
@@ -3469,7 +3469,7 @@ namespace GameServer.Maps
     }
 
 
-    public void 玩家诱惑目标(SkillInstance 技能, C_04_CalculateTargetTemptation 参数, MapObject 诱惑目标)
+    public void 玩家诱惑目标(SkillInstance 技能, C_04_计算目标诱惑 参数, MapObject 诱惑目标)
     {
       if (诱惑目标 == null || 诱惑目标.Died || this.CurrentLevel + 2 < 诱惑目标.CurrentLevel)
       {
@@ -3484,7 +3484,7 @@ namespace GameServer.Maps
         return;
       }
       SkillData SkillData;
-      if (参数.检查铭文技能 && (!this.MainSkills表.TryGetValue((ushort)(参数.检查Id / 10), out SkillData) || (int)SkillData.Id != 参数.检查Id % 10))
+      if (参数.检查铭文技能 && (!this.MainSkills表.TryGetValue((ushort)(参数.检查铭文编号 / 10), out SkillData) || (int)SkillData.Id != 参数.检查铭文编号 % 10))
       {
         return;
       }
@@ -3512,11 +3512,11 @@ namespace GameServer.Maps
       int num8 = 0;
       foreach (BuffData BuffData in this.Buffs.Values)
       {
-        if ((BuffData.Effect & BuffEffectType.TemptationBoost) != BuffEffectType.SkillSign)
+        if ((BuffData.Effect & BuffEffectType.诱惑提升) != BuffEffectType.技能标志)
         {
-          num6 += BuffData.Template.TemptationIncreaseRate;
-          num7 += BuffData.Template.TemptationIncreaseDuration;
-          num8 += (int)BuffData.Template.TemptationIncreaseLevel;
+          num6 += BuffData.Template.诱惑概率增加;
+          num7 += BuffData.Template.诱惑时长增加;
+          num8 += (int)BuffData.Template.诱惑等级增加;
         }
       }
       float num9 = (float)Math.Pow((this.CurrentLevel >= 诱惑目标.CurrentLevel) ? 1.2 : 0.8, (double)ComputingClass.ValueLimit(0, Math.Abs((int)(诱惑目标.CurrentLevel - this.CurrentLevel)), 2));
@@ -3562,7 +3562,7 @@ namespace GameServer.Maps
     }
 
 
-    public void 玩家瞬间移动(SkillInstance 技能, C_07_CalculateTargetTeleportation 参数)
+    public void 玩家瞬间移动(SkillInstance 技能, C_07_计算目标瞬移 参数)
     {
       if (ComputingClass.CheckProbability(参数.每级成功概率[(int)技能.SkillLevel]) && !(this.CurrentMap.随机传送(this.CurrentPosition) == default(Point)))
       {
@@ -3573,9 +3573,9 @@ namespace GameServer.Maps
         base.OnAddBuff(参数.瞬移失败提示, this);
         base.OnAddBuff(参数.失败添加Buff, this);
       }
-      if (参数.GainSkillExp)
+      if (参数.增加技能经验)
       {
-        this.SkillGainExp(参数.ExpSkillId);
+        this.SkillGainExp(参数.经验技能编号);
       }
     }
 
@@ -3802,7 +3802,7 @@ namespace GameServer.Maps
     {
       if (GameTitle.DataSheet.TryGetValue(Id, out var gameTitle))
       {
-        AvailableTitles[Id] = MainProcess.CurrentTime.AddMinutes(gameTitle.EffectiveTime);
+        AvailableTitles[Id] = MainProcess.CurrentTime.AddMinutes(gameTitle.有效时间);
         ActiveConnection?.SendPacket(new ObtainTitlePacket
         {
           Id = Id,
@@ -3816,7 +3816,7 @@ namespace GameServer.Maps
     {
       foreach (PetObject PetObject in this.Pets.ToList<PetObject>())
       {
-        if (PetObject.Neighbors.Contains(对象) && !对象.CheckStatus(GameObjectState.Invisibility | GameObjectState.StealthStatus))
+        if (PetObject.Neighbors.Contains(对象) && !对象.CheckStatus(GameObjectState.隐身状态 | GameObjectState.潜行状态))
         {
           PetObject.HateObject.添加仇恨(对象, default(DateTime), 0);
         }
@@ -4020,14 +4020,14 @@ namespace GameServer.Maps
         现身高度 = this.CurrentAltitude,
         现身方向 = (ushort)this.CurrentDirection,
         现身姿态 = ((byte)(this.Died ? 13 : 1)),
-        体力比例 = (byte)(this.CurrentHP * 100 / this[GameObjectStats.MaxHP])
+        体力比例 = (byte)(this.CurrentHP * 100 / this[GameObjectStats.最大体力])
       });
 
       ActiveConnection.SendPacket(new SyncObjectHP
       {
         ObjectId = this.ObjectId,
         CurrentHP = this.CurrentHP,
-        MaxHP = this[GameObjectStats.MaxHP]
+        MaxHP = this[GameObjectStats.最大体力]
       });
 
       ActiveConnection.SendPacket(new 同步对象魔力
@@ -4117,8 +4117,8 @@ namespace GameServer.Maps
             复活方式 = 3
           });
         }
-        this.CurrentHP = (int)((float)this[GameObjectStats.MaxHP] * 0.3f);
-        this.CurrentMP = (int)((float)this[GameObjectStats.MaxMP] * 0.3f);
+        this.CurrentHP = (int)((float)this[GameObjectStats.最大体力] * 0.3f);
+        this.CurrentMP = (int)((float)this[GameObjectStats.最大魔力] * 0.3f);
         this.Died = false;
         this.Blocking = true;
         if (this.CurrentMap == MapGatewayProcess.沙城地图 && MapGatewayProcess.SabakStage >= 2)
@@ -4165,7 +4165,7 @@ namespace GameServer.Maps
             });
             return;
           }
-          else if (base.GetDistance(传送法阵.FromCoords) >= 8)
+          else if (base.GetDistance(传送法阵.所处坐标) >= 8)
           {
             SConnection 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
@@ -4178,7 +4178,7 @@ namespace GameServer.Maps
             });
             return;
           }
-          else if (!GameMap.DataSheet.TryGetValue(传送法阵.ToMapId, out 游戏地图))
+          else if (!GameMap.DataSheet.TryGetValue(传送法阵.跳转地图, out 游戏地图))
           {
             SConnection 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
@@ -4191,7 +4191,7 @@ namespace GameServer.Maps
             });
             return;
           }
-          else if (this.CurrentLevel < 游戏地图.MinLevel)
+          else if (this.CurrentLevel < 游戏地图.限制等级)
           {
             SConnection 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
@@ -4206,7 +4206,7 @@ namespace GameServer.Maps
           }
           else
           {
-            this.玩家切换地图((this.CurrentMap.MapId == (int)游戏地图.MapId) ? this.CurrentMap : MapGatewayProcess.GetMapInstance((int)游戏地图.MapId), AreaType.未知区域, 传送法阵.ToCoords);
+            this.玩家切换地图((this.CurrentMap.MapId == (int)游戏地图.地图编号) ? this.CurrentMap : MapGatewayProcess.GetMapInstance((int)游戏地图.地图编号), AreaType.未知区域, 传送法阵.跳转坐标);
           }
         }
         else
@@ -4436,24 +4436,24 @@ namespace GameServer.Maps
       }
       else
       {
-        foreach (string key in SkillData.铭文模板.SwitchSkills.ToList<string>())
+        foreach (string key in SkillData.铭文模板.开关技能列表.ToList<string>())
         {
           GameSkills 游戏技能;
           if (GameSkills.DataSheet.TryGetValue(key, out 游戏技能))
           {
             SkillData SkillData2;
-            if (this.MainSkills表.TryGetValue(游戏技能.BindingLevelId, out SkillData2))
+            if (this.MainSkills表.TryGetValue(游戏技能.绑定等级编号, out SkillData2))
             {
-              int[] NeedConsumeMagic = 游戏技能.NeedConsumeMagic;
+              int[] NeedConsumeMagic = 游戏技能.需要消耗魔法;
               int? num = (NeedConsumeMagic != null) ? new int?(NeedConsumeMagic.Length) : null;
               int v = (int)SkillData2.SkillLevel.V;
               if (num.GetValueOrDefault() > v & num != null)
               {
-                if (this.CurrentMP < 游戏技能.NeedConsumeMagic[(int)SkillData2.SkillLevel.V])
+                if (this.CurrentMP < 游戏技能.需要消耗魔法[(int)SkillData2.SkillLevel.V])
                 {
                   continue;
                 }
-                this.CurrentMP -= 游戏技能.NeedConsumeMagic[(int)SkillData2.SkillLevel.V];
+                this.CurrentMP -= 游戏技能.需要消耗魔法[(int)SkillData2.SkillLevel.V];
               }
             }
             new SkillInstance(this, 游戏技能, SkillData, 0, this.CurrentMap, this.CurrentPosition, this, this.CurrentPosition, null, null, false);
@@ -4497,11 +4497,11 @@ namespace GameServer.Maps
 
       foreach (BuffData BuffData in this.Buffs.Values.ToList<BuffData>())
       {
-        if (CharRole == GameObjectRace.刺客 && (BuffData.Effect & BuffEffectType.StatusFlag) != BuffEffectType.SkillSign && (BuffData.Template.PlayerState & GameObjectState.StealthStatus) != GameObjectState.Normal)
+        if (CharRole == GameObjectRace.刺客 && (BuffData.Effect & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData.Template.角色所处状态 & GameObjectState.潜行状态) != GameObjectState.正常状态)
         {
           base.删除Buff时处理(BuffData.Id.V);
         }
-        else if (Riding && (BuffData.Effect & BuffEffectType.Riding) != BuffEffectType.SkillSign)
+        else if (Riding && (BuffData.Effect & BuffEffectType.坐骑状态) != BuffEffectType.技能标志)
         {
           删除Buff时处理(BuffData.Id.V);
           ActiveConnection?.SendPacket(new AddedSkillCooldownPacket
@@ -4519,30 +4519,30 @@ namespace GameServer.Maps
       }
 
       MapGatewayProcess.Objects.TryGetValue(targetId, out var targetObj);
-      foreach (string key in skill.铭文模板.MainSkills.ToList<string>())
+      foreach (string key in skill.铭文模板.主体技能列表.ToList<string>())
       {
         int num = 0;
         int num2 = 0;
         List<ItemData> list = null;
 
-        if (!GameSkills.DataSheet.TryGetValue(key, out var value2) || value2.OwnSkillId != skillId)
+        if (!GameSkills.DataSheet.TryGetValue(key, out var value2) || value2.自身技能编号 != skillId)
           continue;
 
-        if (value2.GroupId == 0 || !Coolings.TryGetValue(value2.GroupId | 0, out var v3) || !(MainProcess.CurrentTime < v3))
+        if (value2.技能分组编号 == 0 || !Coolings.TryGetValue(value2.技能分组编号 | 0, out var v3) || !(MainProcess.CurrentTime < v3))
         {
-          if (value2.CheckOccupationalWeapons && (!Equipment.TryGetValue(0, out var v4) || v4.NeedRace != CharRole))
+          if (value2.检查职业武器 && (!Equipment.TryGetValue(0, out var v4) || v4.NeedRace != CharRole))
             break;
 
-          if (value2.CheckSkillMarks && !Buffs.ContainsKey(value2.SkillTagId))
+          if (value2.检查技能标记 && !Buffs.ContainsKey(value2.技能标记编号))
             continue;
 
-          if ((value2.CheckPassiveTags && this[GameObjectStats.SkillSign] != 1) || (value2.CheckSkillCount && skill.RemainingTimeLeft.V <= 0))
+          if ((value2.检查被动标记 && this[GameObjectStats.技能标志] != 1) || (value2.检查技能计数 && skill.RemainingTimeLeft.V <= 0))
           {
             break;
           }
-          if (!value2.CheckBusyGreen || !(BusyTime > MainProcess.CurrentTime))
+          if (!value2.检查忙绿状态 || !(BusyTime > MainProcess.CurrentTime))
           {
-            if (value2.CheckStiff && HardTime > MainProcess.CurrentTime)
+            if (value2.检查硬直状态 && HardTime > MainProcess.CurrentTime)
             {
               ActiveConnection?.SendPacket(new AddedSkillCooldownPacket
               {
@@ -4556,11 +4556,11 @@ namespace GameServer.Maps
               });
               continue;
             }
-            if (value2.CalculateLuckyProbability || value2.CalculateTriggerProbability < 1f)
+            if (value2.计算幸运概率 || value2.计算触发概率 < 1f)
             {
-              if (value2.CalculateLuckyProbability)
+              if (value2.计算幸运概率)
               {
-                if (!ComputingClass.CheckProbability(ComputingClass.计算幸运(this[GameObjectStats.Luck])))
+                if (!ComputingClass.CheckProbability(ComputingClass.计算幸运(this[GameObjectStats.幸运])))
                 {
                   continue;
                 }
@@ -4568,11 +4568,11 @@ namespace GameServer.Maps
               else
               {
                 float num3 = 0f;
-                if (value2.StatBoostProbability != 0)
+                if (value2.属性提升概率 != 0)
                 {
-                  num3 = Math.Max(0f, (float)this[value2.StatBoostProbability] * value2.StatBoostFactor);
+                  num3 = Math.Max(0f, (float)this[value2.属性提升概率] * value2.属性提升系数);
                 }
-                if (!ComputingClass.CheckProbability(value2.CalculateTriggerProbability + num3))
+                if (!ComputingClass.CheckProbability(value2.计算触发概率 + num3))
                 {
                   continue;
                 }
@@ -4580,47 +4580,47 @@ namespace GameServer.Maps
             }
             if (
                 (
-                value2.ValidateLearnedSkills != 0 && (
-                    !MainSkills表.TryGetValue(value2.ValidateLearnedSkills, out var v5)
-                    || (value2.VerficationSkillInscription != 0 && value2.VerficationSkillInscription != v5.Id)
+                value2.验证已学技能 != 0 && (
+                    !MainSkills表.TryGetValue(value2.验证已学技能, out var v5)
+                    || (value2.验证技能铭文 != 0 && value2.验证技能铭文 != v5.Id)
                 )
                 ) || (
-                    value2.VerifyPlayerBuff != 0 && (
-                        !Buffs.TryGetValue(value2.VerifyPlayerBuff, out var v6)
-                        || v6.当前层数.V < value2.PlayerBuffLayer)
+                    value2.验证角色Buff != 0 && (
+                        !Buffs.TryGetValue(value2.验证角色Buff, out var v6)
+                        || v6.当前层数.V < value2.角色Buff层数)
                 ) || (
-                    value2.VerifyTargetBuff != 0 && (
+                    value2.验证目标Buff != 0 && (
                         targetObj == null
-                        || !targetObj.Buffs.TryGetValue(value2.VerifyTargetBuff, out var v7)
-                        || v7.当前层数.V < value2.TargetBuffLayers)
+                        || !targetObj.Buffs.TryGetValue(value2.验证目标Buff, out var v7)
+                        || v7.当前层数.V < value2.目标Buff层数)
                 ) || (
-                    value2.VerifyTargetType != 0 && (
+                    value2.验证目标类型 != 0 && (
                         targetObj == null
-                        || !targetObj.IsSpecificType(this, value2.VerifyTargetType)))
+                        || !targetObj.IsSpecificType(this, value2.验证目标类型)))
                         || (
-                            MainSkills表.TryGetValue(value2.BindingLevelId, out var v8)
-                            && value2.NeedConsumeMagic?.Length > v8.SkillLevel.V && CurrentMP < (num = value2.NeedConsumeMagic[v8.SkillLevel.V])
+                            MainSkills表.TryGetValue(value2.绑定等级编号, out var v8)
+                            && value2.需要消耗魔法?.Length > v8.SkillLevel.V && CurrentMP < (num = value2.需要消耗魔法[v8.SkillLevel.V])
                         )
                     )
             {
               continue;
             }
-            HashSet<int> 需要消耗物品 = value2.NeedConsumeItems;
+            HashSet<int> 需要消耗物品 = value2.需要消耗物品;
 
             if (需要消耗物品 != null && 需要消耗物品.Count != 0)
             {
-              if (!Equipment.TryGetValue(15, out var v9) || v9.当前持久.V < value2.GearDeductionPoints)
+              if (!Equipment.TryGetValue(15, out var v9) || v9.当前持久.V < value2.战具扣除点数)
               {
-                if (!查找背包物品(value2.NeedConsumeItemsQuantity, value2.NeedConsumeItems, out list))
+                if (!查找背包物品(value2.消耗物品数量, value2.需要消耗物品, out list))
                 {
                   continue;
                 }
-                num2 = value2.NeedConsumeItemsQuantity;
+                num2 = value2.消耗物品数量;
               }
               else
               {
                 list = new List<ItemData> { v9 };
-                num2 = value2.GearDeductionPoints;
+                num2 = value2.战具扣除点数;
               }
             }
             if (num >= 0)
@@ -4635,9 +4635,9 @@ namespace GameServer.Maps
             {
               消耗背包物品(num2, list);
             }
-            if (value2.CheckPassiveTags && this[GameObjectStats.SkillSign] == 1)
+            if (value2.检查被动标记 && this[GameObjectStats.技能标志] == 1)
             {
-              this[GameObjectStats.SkillSign] = 0;
+              this[GameObjectStats.技能标志] = 0;
             }
             new SkillInstance(this, value2, skill, actionId, CurrentMap, CurrentPosition, targetObj, targetLocation, null);
             break;
@@ -4762,8 +4762,8 @@ namespace GameServer.Maps
           对象编号 = MapObject.ObjectId,
           CurrentHP = MapObject.CurrentHP,
           CurrentMP = MapObject.CurrentMP,
-          MaxHP = MapObject[GameObjectStats.MaxHP],
-          MaxMP = MapObject[GameObjectStats.MaxMP],
+          MaxHP = MapObject[GameObjectStats.最大体力],
+          MaxMP = MapObject[GameObjectStats.最大魔力],
           Buff描述 = MapObject.对象Buff详述()
         });
       }
@@ -5140,7 +5140,7 @@ namespace GameServer.Maps
                       网络连接14.SendPacket(new 同步交互结果
                       {
                         对象编号 = this.对话守卫.ObjectId,
-                        交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, GameItems.DataSheet[重铸所需灵气].Name, num8 / 10000))
+                        交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, GameItems.DataSheet[重铸所需灵气].物品名字, num8 / 10000))
                       });
                       return;
                     }
@@ -5155,7 +5155,7 @@ namespace GameServer.Maps
                       网络连接15.SendPacket(new 同步交互结果
                       {
                         对象编号 = this.对话守卫.ObjectId,
-                        交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, GameItems.DataSheet[重铸所需灵气].Name, num8 / 10000))
+                        交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, GameItems.DataSheet[重铸所需灵气].物品名字, num8 / 10000))
                       });
                       return;
                     }
@@ -7299,7 +7299,7 @@ namespace GameServer.Maps
                   MapInstance2.传送区域 = MapInstance.传送区域;
                   MapInstance2.节点计时 = MainProcess.CurrentTime.AddSeconds(20.0);
                   MapInstance2.怪物波数 = (from O in MapInstance.怪物区域
-                                       orderby O.FromCoords.X
+                                       orderby O.所处坐标.X
                                        select O).ToList<MonsterSpawns>();
                   MapInstance2.MapObject = new HashSet<MapObject>[MapInstance.MapSize.X, MapInstance.MapSize.Y];
                   MapInstance MapInstance3 = MapInstance2;
@@ -9140,11 +9140,11 @@ namespace GameServer.Maps
 
     public void RequestStoreDataPacket(int storeVersion)
     {
-      if (storeVersion != 0 && storeVersion == GameStore.StoreVersion)
+      if (storeVersion != 0 && storeVersion == GameStore.商店文件效验)
       {
         ActiveConnection?.SendPacket(new SyncStoreDataPacket
         {
-          StoreVersion = GameStore.StoreVersion,
+          StoreVersion = GameStore.商店文件效验,
           ItemsCount = 0,
           Data = new byte[0]
         });
@@ -9153,9 +9153,9 @@ namespace GameServer.Maps
       {
         ActiveConnection?.SendPacket(new SyncStoreDataPacket
         {
-          StoreVersion = GameStore.StoreVersion,
-          ItemsCount = GameStore.StoreItemsCounts,
-          Data = GameStore.StoreBuffer
+          StoreVersion = GameStore.商店文件效验,
+          ItemsCount = GameStore.商店物品数量,
+          Data = GameStore.商店文件数据
         });
       }
     }
@@ -9165,7 +9165,7 @@ namespace GameServer.Maps
     {
       if (数据版本 != 0)
       {
-        if (数据版本 == Treasures.Checksum)
+        if (数据版本 == Treasures.珍宝商店效验)
         {
           SConnection 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
@@ -9174,7 +9174,7 @@ namespace GameServer.Maps
           }
           网络连接.SendPacket(new 同步珍宝数据
           {
-            版本编号 = Treasures.Checksum,
+            版本编号 = Treasures.珍宝商店效验,
             商品数量 = 0,
             商店数据 = new byte[0]
           });
@@ -9188,9 +9188,9 @@ namespace GameServer.Maps
       }
       网络连接2.SendPacket(new 同步珍宝数据
       {
-        版本编号 = Treasures.Checksum,
-        商品数量 = Treasures.Count,
-        商店数据 = Treasures.Buffer
+        版本编号 = Treasures.珍宝商店效验,
+        商品数量 = Treasures.珍宝商品数量,
+        商店数据 = Treasures.珍宝商店数据
       });
     }
 
@@ -9213,18 +9213,18 @@ namespace GameServer.Maps
 
         if (购入数量 > 1)
         {
-          if (GameItems.PersistType == PersistentItemType.堆叠)
-            num = Math.Min(购入数量, GameItems.MaxDura);
+          if (GameItems.持久类型 == PersistentItemType.堆叠)
+            num = Math.Min(购入数量, GameItems.物品持久);
         }
 
         int num2 = num;
-        int num3 = 珍宝商品.CurrentPrice * num2;
+        int num3 = 珍宝商品.商品现价 * num2;
         byte b = 0;
 
         while (b < this.BackpackSize)
         {
           ItemData ItemData;
-          if (this.Backpack.TryGetValue(b, out ItemData) && (GameItems.PersistType != PersistentItemType.堆叠 || GameItems.Id != ItemData.Id || ItemData.当前持久.V + 购入数量 > GameItems.MaxDura))
+          if (this.Backpack.TryGetValue(b, out ItemData) && (GameItems.持久类型 != PersistentItemType.堆叠 || GameItems.物品编号 != ItemData.Id || ItemData.当前持久.V + 购入数量 > GameItems.物品持久))
           {
             b += 1;
           }
@@ -9277,11 +9277,11 @@ namespace GameServer.Maps
                   else
                   {
                     int 持久 = 0;
-                    switch (GameItems.PersistType)
+                    switch (GameItems.持久类型)
                     {
                       case PersistentItemType.消耗:
                       case PersistentItemType.纯度:
-                        持久 = GameItems.MaxDura;
+                        持久 = GameItems.物品持久;
                         break;
                       case PersistentItemType.堆叠:
                         持久 = num2;
@@ -9305,7 +9305,7 @@ namespace GameServer.Maps
                 {
                                     this.ObjectName,
                                     this.CurrentLevel,
-                                    GameItems.Name,
+                                    GameItems.物品名字,
                                     num2,
                                     num3
                 }));
@@ -10573,9 +10573,9 @@ namespace GameServer.Maps
             this.StatsBonus.Remove(this.CurrentTitle);
           }
           this.CurrentTitle = Id;
-          this.CombatBonus[Id] = 游戏称号.Combat;
+          this.CombatBonus[Id] = 游戏称号.称号战力;
           this.更新玩家战力();
-          this.StatsBonus[Id] = 游戏称号.Attributes;
+          this.StatsBonus[Id] = 游戏称号.称号属性;
           this.RefreshStats();
           SConnection 网络连接3 = this.ActiveConnection;
           if (网络连接3 != null)
@@ -11090,19 +11090,19 @@ namespace GameServer.Maps
         if (equipmentItem.NeedRace != GameObjectRace.通用 && equipmentItem.NeedRace != CharRole)
           return;
 
-        if (equipmentItem.NeedAttack > this[GameObjectStats.MaxDC])
+        if (equipmentItem.NeedAttack > this[GameObjectStats.最大攻击])
           return;
 
-        if (equipmentItem.NeedMagic > this[GameObjectStats.MaxMC])
+        if (equipmentItem.NeedMagic > this[GameObjectStats.最大魔法])
           return;
 
-        if (equipmentItem.NeedTaoism > this[GameObjectStats.MaxSC])
+        if (equipmentItem.NeedTaoism > this[GameObjectStats.最大道术])
           return;
 
-        if (equipmentItem.NeedAcupuncture > this[GameObjectStats.MaxNC])
+        if (equipmentItem.NeedAcupuncture > this[GameObjectStats.最大刺术])
           return;
 
-        if (equipmentItem.NeedArchery > this[GameObjectStats.MaxBC])
+        if (equipmentItem.NeedArchery > this[GameObjectStats.最大弓术])
           return;
 
         if (toStoragePosition == 0 && equipmentItem.Weight > 最大腕力)
@@ -11178,19 +11178,19 @@ namespace GameServer.Maps
         if (equipmentItem.NeedRace != GameObjectRace.通用 && equipmentItem.NeedRace != this.CharRole)
           return;
 
-        if (equipmentItem.NeedAttack > this[GameObjectStats.MaxDC])
+        if (equipmentItem.NeedAttack > this[GameObjectStats.最大攻击])
           return;
 
-        if (equipmentItem.NeedMagic > this[GameObjectStats.MaxMC])
+        if (equipmentItem.NeedMagic > this[GameObjectStats.最大魔法])
           return;
 
-        if (equipmentItem.NeedTaoism > this[GameObjectStats.MaxSC])
+        if (equipmentItem.NeedTaoism > this[GameObjectStats.最大道术])
           return;
 
-        if (equipmentItem.NeedAcupuncture > this[GameObjectStats.MaxNC])
+        if (equipmentItem.NeedAcupuncture > this[GameObjectStats.最大刺术])
           return;
 
-        if (equipmentItem.NeedArchery > this[GameObjectStats.MaxBC])
+        if (equipmentItem.NeedArchery > this[GameObjectStats.最大弓术])
           return;
 
         if (fromStoragePosition == 0 && equipmentItem.Weight > this.最大腕力)
@@ -11396,25 +11396,25 @@ namespace GameServer.Maps
 
     private bool ProcessConsumableRecoveryHP(ItemData item)
     {
-      药品回血 = MainProcess.CurrentTime.AddSeconds(item.GetProp(ItemProperty.RecoveryTime, 1));
-      回血基数 = item.GetProp(ItemProperty.RecoveryBase, 15);
-      回血次数 = item.GetProp(ItemProperty.RecoverySteps, 6);
+      药品回血 = MainProcess.CurrentTime.AddSeconds(item.GetProp(ItemProperty.恢复时间, 1));
+      回血基数 = item.GetProp(ItemProperty.恢复基数, 15);
+      回血次数 = item.GetProp(ItemProperty.恢复步骤, 6);
       return true;
     }
 
     private bool ProcessConsumableRecoveryMP(ItemData item)
     {
-      药品回血 = MainProcess.CurrentTime.AddSeconds(item.GetProp(ItemProperty.RecoveryTime, 1));
-      回魔基数 = item.GetProp(ItemProperty.RecoveryBase, 15);
-      回魔次数 = item.GetProp(ItemProperty.RecoverySteps, 6);
+      药品回血 = MainProcess.CurrentTime.AddSeconds(item.GetProp(ItemProperty.恢复时间, 1));
+      回魔基数 = item.GetProp(ItemProperty.恢复基数, 15);
+      回魔次数 = item.GetProp(ItemProperty.恢复步骤, 6);
       return true;
     }
 
     private bool ProcessConsumableMedicine(ItemData item)
     {
-      药品回血 = MainProcess.CurrentTime.AddSeconds(item.GetProp(ItemProperty.RecoveryTime, 1));
-      CurrentHP += (int)Math.Max(item.GetProp(ItemProperty.IncreaseHP, 30) * (1f + (float)this[GameObjectStats.药品回血] / 10000f), 0f);
-      CurrentMP += (int)Math.Max(item.GetProp(ItemProperty.IncreaseMP, 40) * (1f + (float)this[GameObjectStats.药品回魔] / 10000f), 0f);
+      药品回血 = MainProcess.CurrentTime.AddSeconds(item.GetProp(ItemProperty.恢复时间, 1));
+      CurrentHP += (int)Math.Max(item.GetProp(ItemProperty.增加HP, 30) * (1f + (float)this[GameObjectStats.药品回血] / 10000f), 0f);
+      CurrentMP += (int)Math.Max(item.GetProp(ItemProperty.增加MP, 40) * (1f + (float)this[GameObjectStats.药品回魔] / 10000f), 0f);
       return true;
     }
 
@@ -11483,22 +11483,22 @@ namespace GameServer.Maps
 
       var rates = new Dictionary<ItemProperty, int>();
 
-      var goldAmount = item.GetProp(ItemProperty.GoldAmount, 0);
-      var doubleExpAmount = item.GetProp(ItemProperty.DoubleExpAmount, 0);
-      var treasureItems = FilterItemTreasures(item.对应模板.V.TreasureItems);
-      var ExpAmount = item.GetProp(ItemProperty.ExpAmount, 0);
+      var goldAmount = item.GetProp(ItemProperty.金币数量, 0);
+      var doubleExpAmount = item.GetProp(ItemProperty.双倍经验, 0);
+      var treasureItems = FilterItemTreasures(item.对应模板.V.宝盒物品);
+      var ExpAmount = item.GetProp(ItemProperty.经验数量, 0);
 
-      if (item.HasProp(ItemProperty.TreasureItemRate) || treasureItems.Length > 0)
-        rates.Add(ItemProperty.TreasureItemRate, item.GetProp(ItemProperty.TreasureItemRate, 100));
+      if (item.HasProp(ItemProperty.宝盒物品概率) || treasureItems.Length > 0)
+        rates.Add(ItemProperty.宝盒物品概率, item.GetProp(ItemProperty.宝盒物品概率, 100));
 
-      if (item.HasProp(ItemProperty.ExpAmount) || ExpAmount > 0)
-        rates.Add(ItemProperty.ExpRate, item.GetProp(ItemProperty.ExpRate, 0));
+      if (item.HasProp(ItemProperty.经验数量) || ExpAmount > 0)
+        rates.Add(ItemProperty.经验概率, item.GetProp(ItemProperty.经验概率, 0));
 
-      if (item.HasProp(ItemProperty.DoubleExpRate) || doubleExpAmount > 0)
-        rates.Add(ItemProperty.DoubleExpRate, item.GetProp(ItemProperty.DoubleExpRate, 100));
+      if (item.HasProp(ItemProperty.双倍经验概率) || doubleExpAmount > 0)
+        rates.Add(ItemProperty.双倍经验概率, item.GetProp(ItemProperty.双倍经验概率, 100));
 
-      if (item.HasProp(ItemProperty.GoldRate) || goldAmount > 0)
-        rates.Add(ItemProperty.GoldRate, item.GetProp(ItemProperty.GoldRate, 100));
+      if (item.HasProp(ItemProperty.金币概率) || goldAmount > 0)
+        rates.Add(ItemProperty.金币概率, item.GetProp(ItemProperty.金币概率, 100));
 
       if (rates.Count == 0)
         return false;
@@ -11515,9 +11515,9 @@ namespace GameServer.Maps
         {
           switch (rate.Key)
           {
-            case ItemProperty.TreasureItemRate:
+            case ItemProperty.宝盒物品概率:
               var randomPos = MainProcess.RandomNumber.Next(treasureItems.Length);
-              if (GameItems.DataSheetByName.TryGetValue(treasureItems[randomPos].ItemName, out var randomItem))
+              if (GameItems.DataSheetByName.TryGetValue(treasureItems[randomPos].物品名字, out var randomItem))
               {
                 ItemData newItem = randomItem is EquipmentItem equipmentItem
                     ? new EquipmentData(equipmentItem, CharacterData, 1, inventoryLocation)
@@ -11531,13 +11531,13 @@ namespace GameServer.Maps
                 });
               }
               break;
-            case ItemProperty.DoubleExpRate:
+            case ItemProperty.双倍经验概率:
               DoubleExp += doubleExpAmount;
               break;
-            case ItemProperty.ExpRate:
+            case ItemProperty.经验概率:
               GainExperience(null, ExpAmount);
               break;
-            case ItemProperty.GoldRate:
+            case ItemProperty.金币概率:
               NumberGoldCoins += goldAmount;
               break;
           }
@@ -11554,15 +11554,15 @@ namespace GameServer.Maps
       var num = MainProcess.RandomNumber.Next(0, 100);
 
       return items
-          .Where(x => x.NeedRace == null || x.NeedRace == CharRole)
-          .OrderBy(x => x.Rate ?? 100)
-          .Where(x => x.Rate == null || x.Rate < num)
+          .Where(x => x.需要职业 == null || x.需要职业 == CharRole)
+          .OrderBy(x => x.概率 ?? 100)
+          .Where(x => x.概率 == null || x.概率 < num)
           .ToArray();
     }
 
     private bool ProcessConsumableTownTeleport(ItemData item)
     {
-      var mapId = item.GetProp(ItemProperty.MapId, 147);
+      var mapId = item.GetProp(ItemProperty.地图编号, 147);
       var map = (CurrentMap.MapId == mapId) ? CurrentMap : MapGatewayProcess.GetMapInstance(mapId);
       if (map == null) return false;
       玩家切换地图(map, AreaType.复活区域);
@@ -11742,20 +11742,20 @@ namespace GameServer.Maps
 
       if (v4.第一铭文 != null)
       {
-        玩家装卸铭文(v4.第一铭文.SkillId, 0);
+        玩家装卸铭文(v4.第一铭文.技能编号, 0);
       }
       if (v4.第二铭文 != null)
       {
-        玩家装卸铭文(v4.第二铭文.SkillId, 0);
+        玩家装卸铭文(v4.第二铭文.技能编号, 0);
       }
       v4.当前铭栏.V = (byte)((v4.当前铭栏.V == 0) ? 1u : 0u);
       if (v4.第一铭文 != null)
       {
-        玩家装卸铭文(v4.第一铭文.SkillId, v4.第一铭文.Id);
+        玩家装卸铭文(v4.第一铭文.技能编号, v4.第一铭文.铭文编号);
       }
       if (v4.第二铭文 != null)
       {
-        玩家装卸铭文(v4.第二铭文.SkillId, v4.第二铭文.Id);
+        玩家装卸铭文(v4.第二铭文.技能编号, v4.第二铭文.铭文编号);
       }
 
       ActiveConnection?.SendPacket(new 玩家物品变动
@@ -11790,7 +11790,7 @@ namespace GameServer.Maps
 
     public bool ProcessConsumableAdquireMount(ItemData item)
     {
-      var mountId = (ushort)item.GetProp(ItemProperty.MountId, 2);
+      var mountId = (ushort)item.GetProp(ItemProperty.坐骑编号, 2);
       AdquireMount(mountId);
       return true;
     }
@@ -11802,13 +11802,13 @@ namespace GameServer.Maps
         if (LearnSkill(item.SkillId))
         {
           ConsumeBackpackItem(1, item);
-          if (item.HasProp(ItemProperty.MountId))
-            AdquireMount((ushort)item.GetProp(ItemProperty.MountId));
+          if (item.HasProp(ItemProperty.坐骑编号))
+            AdquireMount((ushort)item.GetProp(ItemProperty.坐骑编号));
         }
         return;
       }
 
-      var usageType = (UsageType)item.GetProp(ItemProperty.UsageType);
+      var usageType = (UsageType)item.GetProp(ItemProperty.使用类型);
 
       if (usageType == UsageType.Unknown)
         return;
@@ -11836,7 +11836,7 @@ namespace GameServer.Maps
           processed = ProcessConsumableTreasure(item);
           break;
         case UsageType.GainIngots:
-          Ingots += item.GetProp(ItemProperty.IngotsAmount, 100);
+          Ingots += item.GetProp(ItemProperty.元宝数量, 100);
           processed = true;
           break;
         case UsageType.TownTeleport:
@@ -12094,7 +12094,7 @@ namespace GameServer.Maps
           {
             return;
           }
-          if (游戏商店.RecyclingType != ItemData.出售类型)
+          if (游戏商店.回收类型 != ItemData.出售类型)
           {
             return;
           }
@@ -12123,27 +12123,27 @@ namespace GameServer.Maps
       {
         GameStore 游戏商店;
         GameItems GameItems;
-        if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && 购入数量 > 0 && this.打开商店 == StoreId && GameStore.DataSheet.TryGetValue(this.打开商店, out 游戏商店) && 游戏商店.Products.Count > 物品位置 && GameItems.DataSheet.TryGetValue(游戏商店.Products[物品位置].Id, out GameItems))
+        if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && 购入数量 > 0 && this.打开商店 == StoreId && GameStore.DataSheet.TryGetValue(this.打开商店, out 游戏商店) && 游戏商店.商品列表.Count > 物品位置 && GameItems.DataSheet.TryGetValue(游戏商店.商品列表[物品位置].商品编号, out GameItems))
         {
           int num;
           if (购入数量 != 1)
           {
-            if (GameItems.PersistType == PersistentItemType.堆叠)
+            if (GameItems.持久类型 == PersistentItemType.堆叠)
             {
-              num = Math.Min((int)购入数量, GameItems.MaxDura);
+              num = Math.Min((int)购入数量, GameItems.物品持久);
               goto IL_DD;
             }
           }
           num = 1;
         IL_DD:
           int num2 = num;
-          GameStoreItem 游戏商品 = 游戏商店.Products[物品位置];
+          GameStoreItem 游戏商品 = 游戏商店.商品列表[物品位置];
           int num3 = -1;
           byte b = 0;
           while (b < this.BackpackSize)
           {
             ItemData ItemData;
-            if (this.Backpack.TryGetValue(b, out ItemData) && (GameItems.PersistType != PersistentItemType.堆叠 || GameItems.Id != ItemData.Id || ItemData.当前持久.V + (int)购入数量 > GameItems.MaxDura))
+            if (this.Backpack.TryGetValue(b, out ItemData) && (GameItems.持久类型 != PersistentItemType.堆叠 || GameItems.物品编号 != ItemData.Id || ItemData.当前持久.V + (int)购入数量 > GameItems.物品持久))
             {
               b += 1;
             }
@@ -12166,11 +12166,11 @@ namespace GameServer.Maps
               }
               else
               {
-                int num4 = 游戏商品.Price * num2;
-                if (游戏商品.CurrencyType <= 19)
+                int num4 = 游戏商品.商品价格 * num2;
+                if (游戏商品.货币类型 <= 19)
                 {
                   GameCurrency GameCurrency;
-                  if (!Enum.TryParse<GameCurrency>(游戏商品.CurrencyType.ToString(), out GameCurrency) || !Enum.IsDefined(typeof(GameCurrency), GameCurrency))
+                  if (!Enum.TryParse<GameCurrency>(游戏商品.货币类型.ToString(), out GameCurrency) || !Enum.IsDefined(typeof(GameCurrency), GameCurrency))
                   {
                     return;
                   }
@@ -12256,7 +12256,7 @@ namespace GameServer.Maps
                   {
                     网络连接6.SendPacket(new 货币数量变动
                     {
-                      CurrencyType = (byte)游戏商品.CurrencyType,
+                      CurrencyType = (byte)游戏商品.货币类型,
                       货币数量 = this.CharacterData.Currencies[GameCurrency]
                     });
                   }
@@ -12264,7 +12264,7 @@ namespace GameServer.Maps
                 else
                 {
                   List<ItemData> 物品列表;
-                  if (!this.查找背包物品(num4, 游戏商品.CurrencyType, out 物品列表))
+                  if (!this.查找背包物品(num4, 游戏商品.货币类型, out 物品列表))
                   {
                     return;
                   }
@@ -12295,11 +12295,11 @@ namespace GameServer.Maps
                   else
                   {
                     int 持久 = 0;
-                    switch (GameItems.PersistType)
+                    switch (GameItems.持久类型)
                     {
                       case PersistentItemType.消耗:
                       case PersistentItemType.纯度:
-                        持久 = GameItems.MaxDura;
+                        持久 = GameItems.物品持久;
                         break;
                       case PersistentItemType.堆叠:
                         持久 = num2;
@@ -12444,7 +12444,7 @@ namespace GameServer.Maps
         GameStore 游戏商店;
         if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && GameStore.DataSheet.TryGetValue(this.打开商店, out 游戏商店))
         {
-          this.回购清单 = 游戏商店.AvailableItems.ToList<ItemData>();
+          this.回购清单 = 游戏商店.回购列表.ToList<ItemData>();
           using (MemoryStream memoryStream = new MemoryStream())
           {
             using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
@@ -12573,7 +12573,7 @@ namespace GameServer.Maps
               this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: The player has set a spirit stone.  Error: No stones are inlaid"));
               return;
             }
-            if (GameItems.Name.IndexOf("1级") > 0)
+            if (GameItems.物品名字.IndexOf("1级") > 0)
             {
               int NumberGoldCoins = this.NumberGoldCoins;
               int num2 = 100000;
@@ -12583,7 +12583,7 @@ namespace GameServer.Maps
                 goto IL_199;
               }
             }
-            if (GameItems.Name.IndexOf("2级") > 0)
+            if (GameItems.物品名字.IndexOf("2级") > 0)
             {
               int NumberGoldCoins2 = this.NumberGoldCoins;
               int num3 = 500000;
@@ -12593,7 +12593,7 @@ namespace GameServer.Maps
                 goto IL_199;
               }
             }
-            if (GameItems.Name.IndexOf("3级") > 0)
+            if (GameItems.物品名字.IndexOf("3级") > 0)
             {
               int NumberGoldCoins3 = this.NumberGoldCoins;
               int num4 = 2500000;
@@ -12603,7 +12603,7 @@ namespace GameServer.Maps
                 goto IL_199;
               }
             }
-            if (GameItems.Name.IndexOf("4级") > 0)
+            if (GameItems.物品名字.IndexOf("4级") > 0)
             {
               int NumberGoldCoins4 = this.NumberGoldCoins;
               int num5 = 10000000;
@@ -12613,7 +12613,7 @@ namespace GameServer.Maps
                 goto IL_199;
               }
             }
-            if (GameItems.Name.IndexOf("5级") > 0)
+            if (GameItems.物品名字.IndexOf("5级") > 0)
             {
               int NumberGoldCoins5 = this.NumberGoldCoins;
               int num6 = 25000000;
@@ -12804,15 +12804,15 @@ namespace GameServer.Maps
           if (EquipmentData.第一铭文 == null)
           {
             EquipmentData.第一铭文 = InscriptionSkill.RandomWashing(洗练职业);
-            this.玩家装卸铭文(EquipmentData.第一铭文.SkillId, EquipmentData.第一铭文.Id);
-            if (EquipmentData.第一铭文.BroadcastNotification)
+            this.玩家装卸铭文(EquipmentData.第一铭文.技能编号, EquipmentData.第一铭文.铭文编号);
+            if (EquipmentData.第一铭文.广播通知)
             {
               NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
               {
                                 "恭喜 [",
                                 this.ObjectName,
                                 "] 在铭文精炼中获得稀有铭文 [",
-                                EquipmentData.第一铭文.SkillName.Split(new char[]
+                                EquipmentData.第一铭文.技能名字.Split(new char[]
                                 {
                                     '-'
                                 }).Last<string>(),
@@ -12826,21 +12826,21 @@ namespace GameServer.Maps
             int? num2;
             do
             {
-              SkillId = (int)(EquipmentData.第二铭文 = InscriptionSkill.RandomWashing(洗练职业)).SkillId;
+              SkillId = (int)(EquipmentData.第二铭文 = InscriptionSkill.RandomWashing(洗练职业)).技能编号;
               InscriptionSkill 第一铭文 = EquipmentData.第一铭文;
-              ushort? num = (第一铭文 == null) ? null : new ushort?(第一铭文.SkillId);
+              ushort? num = (第一铭文 == null) ? null : new ushort?(第一铭文.技能编号);
               num2 = ((num != null) ? new int?((int)num.GetValueOrDefault()) : null);
             }
             while (SkillId == num2.GetValueOrDefault() & num2 != null);
-            this.玩家装卸铭文(EquipmentData.第二铭文.SkillId, EquipmentData.第二铭文.Id);
-            if (EquipmentData.第二铭文.BroadcastNotification)
+            this.玩家装卸铭文(EquipmentData.第二铭文.技能编号, EquipmentData.第二铭文.铭文编号);
+            if (EquipmentData.第二铭文.广播通知)
             {
               NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
               {
                                 "恭喜 [",
                                 this.ObjectName,
                                 "] 在铭文精炼中获得稀有铭文 [",
-                                EquipmentData.第二铭文.SkillName.Split(new char[]
+                                EquipmentData.第二铭文.技能名字.Split(new char[]
                                 {
                                     '-'
                                 }).Last<string>(),
@@ -12852,30 +12852,30 @@ namespace GameServer.Maps
           {
             if (装备类型 == 0)
             {
-              this.玩家装卸铭文(EquipmentData.第一铭文.SkillId, 0);
+              this.玩家装卸铭文(EquipmentData.第一铭文.技能编号, 0);
             }
             int? num2;
             int SkillId2;
             do
             {
-              SkillId2 = (int)(EquipmentData.第一铭文 = InscriptionSkill.RandomWashing(洗练职业)).SkillId;
+              SkillId2 = (int)(EquipmentData.第一铭文 = InscriptionSkill.RandomWashing(洗练职业)).技能编号;
               InscriptionSkill 第二铭文 = EquipmentData.第二铭文;
-              ushort? num = (第二铭文 == null) ? null : new ushort?(第二铭文.SkillId);
+              ushort? num = (第二铭文 == null) ? null : new ushort?(第二铭文.技能编号);
               num2 = ((num != null) ? new int?((int)num.GetValueOrDefault()) : null);
             }
             while (SkillId2 == num2.GetValueOrDefault() & num2 != null);
             if (装备类型 == 0)
             {
-              this.玩家装卸铭文(EquipmentData.第一铭文.SkillId, EquipmentData.第一铭文.Id);
+              this.玩家装卸铭文(EquipmentData.第一铭文.技能编号, EquipmentData.第一铭文.铭文编号);
             }
-            if (EquipmentData.第一铭文.BroadcastNotification)
+            if (EquipmentData.第一铭文.广播通知)
             {
               NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
               {
                                 "恭喜 [",
                                 this.ObjectName,
                                 "]在铭文精炼中获得稀有铭文[",
-                                EquipmentData.第一铭文.SkillName.Split(new char[]
+                                EquipmentData.第一铭文.技能名字.Split(new char[]
                                 {
                                     '-'
                                 }).Last<string>(),
@@ -13022,7 +13022,7 @@ namespace GameServer.Maps
               洗练职业 = 5;
               break;
           }
-          while ((this.InscriptionSkill = InscriptionSkill.RandomWashing(洗练职业)).SkillId == EquipmentData.最优铭文.SkillId)
+          while ((this.InscriptionSkill = InscriptionSkill.RandomWashing(洗练职业)).技能编号 == EquipmentData.最优铭文.技能编号)
           {
           }
           if (EquipmentData.最优铭文 == EquipmentData.第一铭文)
@@ -13051,14 +13051,14 @@ namespace GameServer.Maps
               });
             }
           }
-          if (this.InscriptionSkill.BroadcastNotification)
+          if (this.InscriptionSkill.广播通知)
           {
             NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
             {
                             "恭喜 [",
                             this.ObjectName,
                             "] 在铭文精炼中获得稀有铭文[",
-                            this.InscriptionSkill.SkillName.Split(new char[]
+                            this.InscriptionSkill.技能名字.Split(new char[]
                             {
                                 '-'
                             }).Last<string>(),
@@ -13186,7 +13186,7 @@ namespace GameServer.Maps
               洗练职业 = 5;
               break;
           }
-          while ((this.InscriptionSkill = InscriptionSkill.RandomWashing(洗练职业)).SkillId == EquipmentData.最差铭文.SkillId)
+          while ((this.InscriptionSkill = InscriptionSkill.RandomWashing(洗练职业)).技能编号 == EquipmentData.最差铭文.技能编号)
           {
           }
           SConnection 网络连接4 = this.ActiveConnection;
@@ -13199,14 +13199,14 @@ namespace GameServer.Maps
               铭文位二 = this.InscriptionSkill.Index
             });
           }
-          if (this.InscriptionSkill.BroadcastNotification)
+          if (this.InscriptionSkill.广播通知)
           {
             NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
             {
                             "恭喜 [",
                             this.ObjectName,
                             "] 在铭文精炼中获得稀有铭文[",
-                            this.InscriptionSkill.SkillName.Split(new char[]
+                            this.InscriptionSkill.技能名字.Split(new char[]
                             {
                                 '-'
                             }).Last<string>(),
@@ -13273,12 +13273,12 @@ namespace GameServer.Maps
         }
         if (装备类型 == 0)
         {
-          this.玩家装卸铭文(EquipmentData.最差铭文.SkillId, 0);
+          this.玩家装卸铭文(EquipmentData.最差铭文.技能编号, 0);
         }
         EquipmentData.最差铭文 = this.InscriptionSkill;
         if (装备类型 == 0)
         {
-          this.玩家装卸铭文(this.InscriptionSkill.SkillId, this.InscriptionSkill.Id);
+          this.玩家装卸铭文(this.InscriptionSkill.技能编号, this.InscriptionSkill.铭文编号);
         }
         SConnection 网络连接2 = this.ActiveConnection;
         if (网络连接2 != null)
@@ -13356,12 +13356,12 @@ namespace GameServer.Maps
         }
         if (装备类型 == 0)
         {
-          this.玩家装卸铭文(EquipmentData.最优铭文.SkillId, 0);
+          this.玩家装卸铭文(EquipmentData.最优铭文.技能编号, 0);
         }
         EquipmentData.最优铭文 = this.InscriptionSkill;
         if (装备类型 == 0)
         {
-          this.玩家装卸铭文(this.InscriptionSkill.SkillId, this.InscriptionSkill.Id);
+          this.玩家装卸铭文(this.InscriptionSkill.技能编号, this.InscriptionSkill.铭文编号);
         }
         SConnection 网络连接2 = this.ActiveConnection;
         if (网络连接2 != null)
@@ -13962,23 +13962,23 @@ namespace GameServer.Maps
           {
             Dictionary<GameObjectStats, int> 装备Stat = EquipmentData3.装备Stat;
             int value;
-            if ((value = (装备Stat.ContainsKey(GameObjectStats.MinDC) ? 装备Stat[GameObjectStats.MinDC] : 0) + (装备Stat.ContainsKey(GameObjectStats.MaxDC) ? 装备Stat[GameObjectStats.MaxDC] : 0)) > 0)
+            if ((value = (装备Stat.ContainsKey(GameObjectStats.最小攻击) ? 装备Stat[GameObjectStats.最小攻击] : 0) + (装备Stat.ContainsKey(GameObjectStats.最大攻击) ? 装备Stat[GameObjectStats.最大攻击] : 0)) > 0)
             {
               dictionary4[0][EquipmentData3] = value;
             }
-            if ((value = (装备Stat.ContainsKey(GameObjectStats.MinMC) ? 装备Stat[GameObjectStats.MinMC] : 0) + (装备Stat.ContainsKey(GameObjectStats.MaxMC) ? 装备Stat[GameObjectStats.MaxMC] : 0)) > 0)
+            if ((value = (装备Stat.ContainsKey(GameObjectStats.最小魔法) ? 装备Stat[GameObjectStats.最小魔法] : 0) + (装备Stat.ContainsKey(GameObjectStats.最大魔法) ? 装备Stat[GameObjectStats.最大魔法] : 0)) > 0)
             {
               dictionary4[1][EquipmentData3] = value;
             }
-            if ((value = (装备Stat.ContainsKey(GameObjectStats.MinSC) ? 装备Stat[GameObjectStats.MinSC] : 0) + (装备Stat.ContainsKey(GameObjectStats.MaxSC) ? 装备Stat[GameObjectStats.MaxSC] : 0)) > 0)
+            if ((value = (装备Stat.ContainsKey(GameObjectStats.最小道术) ? 装备Stat[GameObjectStats.最小道术] : 0) + (装备Stat.ContainsKey(GameObjectStats.最大道术) ? 装备Stat[GameObjectStats.最大道术] : 0)) > 0)
             {
               dictionary4[2][EquipmentData3] = value;
             }
-            if ((value = (装备Stat.ContainsKey(GameObjectStats.MinNC) ? 装备Stat[GameObjectStats.MinNC] : 0) + (装备Stat.ContainsKey(GameObjectStats.MaxNC) ? 装备Stat[GameObjectStats.MaxNC] : 0)) > 0)
+            if ((value = (装备Stat.ContainsKey(GameObjectStats.最小刺术) ? 装备Stat[GameObjectStats.最小刺术] : 0) + (装备Stat.ContainsKey(GameObjectStats.最大刺术) ? 装备Stat[GameObjectStats.最大刺术] : 0)) > 0)
             {
               dictionary4[3][EquipmentData3] = value;
             }
-            if ((value = (装备Stat.ContainsKey(GameObjectStats.MinBC) ? 装备Stat[GameObjectStats.MinBC] : 0) + (装备Stat.ContainsKey(GameObjectStats.MaxBC) ? 装备Stat[GameObjectStats.MaxBC] : 0)) > 0)
+            if ((value = (装备Stat.ContainsKey(GameObjectStats.最小弓术) ? 装备Stat[GameObjectStats.最小弓术] : 0) + (装备Stat.ContainsKey(GameObjectStats.最大弓术) ? 装备Stat[GameObjectStats.最大弓术] : 0)) > 0)
             {
               dictionary4[4][EquipmentData3] = value;
             }
@@ -14998,11 +14998,11 @@ namespace GameServer.Maps
             StallStatus = playerObj.ParalysisState,
             BoothName = playerObj.摊位名字,
             WeaponType = playerObj.Equipment.TryGetValue(0, out var EquipmentData) ? EquipmentData.升级次数?.V ?? 0 : (byte)0,
-            WeaponBody = EquipmentData?.对应模板?.V.Id ?? 0,
-            Clothes = playerObj.Equipment.TryGetValue(1, out var EquipmentData2) ? EquipmentData2.对应模板?.V?.Id ?? 0 : 0,
-            Cloak = playerObj.Equipment.TryGetValue(2, out var EquipmentData3) ? EquipmentData3.对应模板?.V?.Id ?? 0 : 0,
-            CurrentHP = playerObj[GameObjectStats.MaxHP],
-            CurrentMP = playerObj[GameObjectStats.MaxMP],
+            WeaponBody = EquipmentData?.对应模板?.V.物品编号 ?? 0,
+            Clothes = playerObj.Equipment.TryGetValue(1, out var EquipmentData2) ? EquipmentData2.对应模板?.V?.物品编号 ?? 0 : 0,
+            Cloak = playerObj.Equipment.TryGetValue(2, out var EquipmentData3) ? EquipmentData3.对应模板?.V?.物品编号 ?? 0 : 0,
+            CurrentHP = playerObj[GameObjectStats.最大体力],
+            CurrentMP = playerObj[GameObjectStats.最大魔力],
             Name = playerObj.ObjectName,
             GuildId = playerObj.Guild?.Index.V ?? 0,
 
@@ -15031,7 +15031,7 @@ namespace GameServer.Maps
               MobId = monsterObj.MonsterId,
               CurrentRank = monsterObj.宠物等级,
               对象质量 = (byte)monsterObj.Category,
-              MaxHP = monsterObj[GameObjectStats.MaxHP]
+              MaxHP = monsterObj[GameObjectStats.最大体力]
             });
           }
           else
@@ -15042,7 +15042,7 @@ namespace GameServer.Maps
               ObjectClass = monsterObj.CurrentLevel,
               ObjectMass = (byte)monsterObj.Category,
               ObjectTemplate = monsterObj.Template?.怪物编号 ?? 0,
-              MaxHP = monsterObj[GameObjectStats.MaxHP]
+              MaxHP = monsterObj[GameObjectStats.最大体力]
             });
           }
         }
@@ -15056,7 +15056,7 @@ namespace GameServer.Maps
             CurrentRank = PetObject.宠物等级,
             对象等级 = PetObject.CurrentLevel,
             对象质量 = (byte)PetObject.宠物级别,
-            MaxHP = PetObject[GameObjectStats.MaxHP],
+            MaxHP = PetObject[GameObjectStats.最大体力],
             主人编号 = PetObject.PlayerOwner?.ObjectId ?? 0,
             主人名字 = PetObject.PlayerOwner?.ObjectName ?? string.Empty
           });
@@ -15068,8 +15068,8 @@ namespace GameServer.Maps
             ObjectMass = 3,
             ObjectId = GuardInstance.ObjectId,
             ObjectClass = GuardInstance.CurrentLevel,
-            ObjectTemplate = GuardInstance.对象模板?.GuardNumber ?? 0,
-            MaxHP = GuardInstance[GameObjectStats.MaxHP]
+            ObjectTemplate = GuardInstance.对象模板?.守卫编号 ?? 0,
+            MaxHP = GuardInstance[GameObjectStats.最大体力]
           });
         }
       }

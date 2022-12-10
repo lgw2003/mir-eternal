@@ -11,9 +11,9 @@ namespace Models
         [JsonIgnore]
         public int MissionIndex { get; set; }
 
-        public QuestMissionType Type { get; set; }
-        public GameObjectRace? Role { get; set; } = null;
-        public int Id { get; set; }
-        public int Count { get; set; }
+        public QuestMissionType 类型 { get; set; }
+        public GameObjectRace? 职业 { get; set; } = null;
+        public int 编号 { get; set; }
+        public int 数量 { get; set; }
     }
 }

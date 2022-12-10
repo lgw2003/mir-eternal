@@ -1,4 +1,0 @@
-﻿{
-"Id": 700100000,
-"Content": "<#D>Have you seen the inscription on the equipment? Come on, come on, Master Carver will engrave it on for you. <#D/><#UI:OpenEquipSkill>Inscript weapon<#UI/><#INS:S57>Description of inscription<#INS/>"
-}

@@ -4,14 +4,14 @@ namespace GameServer.Templates
 {
 	public struct GrowthStat
 	{
-		public GameObjectStats Stat;
-		public int Level0;
-		public int Level1;
-		public int Level2;
-		public int Level3;
-		public int Level4;
-		public int Level5;
-		public int Level6;
-		public int Level7;
+		public GameObjectStats 属性;
+		public int 零级;
+		public int 一级;
+		public int 二级;
+		public int 三级;
+		public int 四级;
+		public int 五级;
+		public int 六级;
+		public int 七级;
 	}
 }

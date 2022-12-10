@@ -4,35 +4,38 @@ using System.IO;
 
 namespace GameServer.Templates
 {
+    /// <summary>
+    /// 游戏地图
+    /// </summary>
     public sealed class GameMap
     {
         public static Dictionary<byte, GameMap> DataSheet;
 
-        public byte MapId;
-        public string MapName;
-        public string MapFile;
-        public string TerrainFile;
-        public int LimitPlayers;
-        public byte MinLevel;
-        public byte LimitInstances;
-        public bool NoReconnect;
-        public byte NoReconnectMapId;
-        public bool CopyMap;
+        public byte 地图编号;
+        public string 地图名字;
+        public string 地图别名;
+        public string 地形文件;
+        public int 限制人数;
+        public byte 限制等级;
+        public byte 分线数量;
+        public bool 下线传送;
+        public byte 传送地图;
+        public bool 副本地图;
 
         public static void LoadData()
         {
             DataSheet = new Dictionary<byte, GameMap>();
-            string text = Config.GameDataPath + "\\System\\GameMap\\Maps";
+            string text = Config.GameDataPath + "\\System\\游戏地图\\地图数据\\";
             if (Directory.Exists(text))
             {
                 foreach (var obj in Serializer.Deserialize<GameMap>(text))
-                    DataSheet.Add(obj.MapId, obj);
+                    DataSheet.Add(obj.地图编号, obj);
             }
         }
 
         public override string ToString()
         {
-            return MapName;
+            return 地图名字;
         }
     }
 }

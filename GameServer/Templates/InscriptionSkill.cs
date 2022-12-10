@@ -4,39 +4,42 @@ using System.IO;
 
 namespace GameServer.Templates
 {
+	/// <summary>
+	/// 铭文技能
+	/// </summary>
 	public sealed class InscriptionSkill
 	{
 		public static Dictionary<ushort, InscriptionSkill> DataSheet;
-		private static Dictionary<byte, List<InscriptionSkill>> _probabilityTable;
+		private static Dictionary<byte, List<InscriptionSkill>> _概率表;
 
-		public string SkillName;
-		public GameObjectRace Race;
-		public ushort SkillId;
-		public byte Id;
-		public byte SkillCount;
-		public ushort PeriodCount;
-		public bool PassiveSkill;
-		public byte Quality;
-		public int Probability;
-		public bool BroadcastNotification;
+		public string 技能名字;
+		public GameObjectRace 技能职业;
+		public ushort 技能编号;
+		public byte 铭文编号;
+		public byte 技能计数;
+		public ushort 计数周期;
+		public bool 被动技能;
+		public byte 铭文品质;
+		public int 洗练概率;
+		public bool 广播通知;
 		public bool RemoveOnDie;
-		public string Description;
-		public byte[] MinPlayerLevel;
-		public int[] MinSkillExp;
-		public int[] SkillCombatBonus;
-		public InscriptionStat[] StatsBonus;
-		public List<ushort> ComesWithBuff;
-		public List<ushort> PassiveSkills;
-		public List<string> MainSkills;
-		public List<string> SwitchSkills;
+		public string 铭文描述;
+		public byte[] 需要角色等级;
+		public int[] 需要技能经验;
+		public int[] 技能战力加成;
+		public InscriptionStat[] 铭文属性加成;
+		public List<ushort> 铭文附带Buff;
+		public List<ushort> 被动技能列表;
+		public List<string> 主体技能列表;
+		public List<string> 开关技能列表;
 
-		private Dictionary<GameObjectStats, int>[] _statsBonus;
+		private Dictionary<GameObjectStats, int>[] _属性加成;
 
 		public ushort Index
 		{
 			get
 			{
-				return (ushort)(SkillId * 10 + (ushort)Id);
+				return (ushort)(技能编号 * 10 + (ushort)铭文编号);
 			}
 		}
 
@@ -44,35 +47,35 @@ namespace GameServer.Templates
 		{
 			get
 			{
-				if (_statsBonus != null)
+				if (_属性加成 != null)
 				{
-					return _statsBonus;
+					return _属性加成;
 				}
-				_statsBonus = new Dictionary<GameObjectStats, int>[]
+				_属性加成 = new Dictionary<GameObjectStats, int>[]
 				{
 					new Dictionary<GameObjectStats, int>(),
 					new Dictionary<GameObjectStats, int>(),
 					new Dictionary<GameObjectStats, int>(),
 					new Dictionary<GameObjectStats, int>()
 				};
-				if (StatsBonus != null)
+				if (铭文属性加成 != null)
 				{
-					foreach (InscriptionStat 铭文Stat in StatsBonus)
+					foreach (InscriptionStat 铭文Stat in 铭文属性加成)
 					{
-						_statsBonus[0][铭文Stat.Stat] = 铭文Stat.Level0;
-						_statsBonus[1][铭文Stat.Stat] = 铭文Stat.Level1;
-						_statsBonus[2][铭文Stat.Stat] = 铭文Stat.Level2;
-						_statsBonus[3][铭文Stat.Stat] = 铭文Stat.Level3;
+						_属性加成[0][铭文Stat.属性] = 铭文Stat.零级;
+						_属性加成[1][铭文Stat.属性] = 铭文Stat.一级;
+						_属性加成[2][铭文Stat.属性] = 铭文Stat.二级;
+						_属性加成[3][铭文Stat.属性] = 铭文Stat.三级;
 					}
 				}
-				return _statsBonus;
+				return _属性加成;
 			}
 		}
 
 		public static InscriptionSkill RandomWashing(byte cleanUpRace)
 		{
 			List<InscriptionSkill> list;
-			if (_probabilityTable.TryGetValue(cleanUpRace, out list) && list.Count > 0)
+			if (_概率表.TryGetValue(cleanUpRace, out list) && list.Count > 0)
 				return list[MainProcess.RandomNumber.Next(list.Count)];
 			return null;
 		}
@@ -80,7 +83,7 @@ namespace GameServer.Templates
 		public static void LoadData()
 		{
 			DataSheet = new Dictionary<ushort, InscriptionSkill>();
-			string text = Config.GameDataPath + "\\System\\Skills\\Inscriptions\\";
+			string text = Config.GameDataPath + "\\System\\技能数据\\铭文数据\\";
 			
 			if (Directory.Exists(text))
 			{
@@ -98,18 +101,18 @@ namespace GameServer.Templates
                 [5] = new List<InscriptionSkill>()
             };
 
-            _probabilityTable = dictionary;
+            _概率表 = dictionary;
 			foreach (InscriptionSkill skill in DataSheet.Values)
 			{
-				if (skill.Id != 0)
+				if (skill.铭文编号 != 0)
 				{
-					for (int j = 0; j < skill.Probability; j++)
+					for (int j = 0; j < skill.洗练概率; j++)
 					{
-						_probabilityTable[(byte)skill.Race].Add(skill);
+						_概率表[(byte)skill.技能职业].Add(skill);
 					}
 				}
 			}
-			foreach (var list in _probabilityTable.Values)
+			foreach (var list in _概率表.Values)
 			{
 				for (int k = 0; k < list.Count; k++)
 				{

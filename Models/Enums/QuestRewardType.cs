@@ -2,11 +2,11 @@
 {
     public enum QuestRewardType
     {
-        Currency = 0,
-        Item = 1,
-        Exp = 2,
-        Reputation = 3,
-        Activity = 4,
-        Title = 5
+        货币 = 0,
+        物品 = 1,
+        经验 = 2,
+        声望 = 3,
+        活动 = 4,
+        称号 = 5
     }
 }

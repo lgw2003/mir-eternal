@@ -7,21 +7,24 @@ using System.Threading.Tasks;
 
 namespace GameServer.Templates
 {
+    /// <summary>
+    /// 宝箱数据
+    /// </summary>
     public class ChestTemplate
     {
         public static Dictionary<int, ChestTemplate> DataSheet;
 
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public GameItemTreasure[] Items { get; set; }
+        public int 宝箱编号 { get; set; }
+        public string 宝箱名字 { get; set; }
+        public GameItemTreasure[] 物品 { get; set; }
 
 
         public static void LoadData()
         {
-            string text = Config.GameDataPath + "\\System\\Npc\\Chests\\";
+            string text = Config.GameDataPath + "\\System\\Npc数据\\宝箱数据\\";
 
             if (Directory.Exists(text))
-                DataSheet = Serializer.Deserialize<ChestTemplate>(text).ToDictionary(x => x.Id);
+                DataSheet = Serializer.Deserialize<ChestTemplate>(text).ToDictionary(x => x.宝箱编号);
             else
                 DataSheet = new Dictionary<int, ChestTemplate>();
         }

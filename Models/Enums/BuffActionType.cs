@@ -5,7 +5,7 @@ namespace GameServer.Templates
 	
 	public enum BuffActionType
 	{
-		Gain,
-		Debuff
+		增益类型,
+		减益类型
 	}
 }

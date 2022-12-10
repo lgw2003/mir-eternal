@@ -11,39 +11,41 @@ namespace GameServer.Templates
 {
     public class GameAchievementCondition
     {
-        public string Desc { get; set; }
-        public string Type { get; set; }
-        public Dictionary<string, object> Props { get; set; }
+        public string 描述 { get; set; }
+        public string 类型 { get; set; }
+        public Dictionary<string, object> 道具 { get; set; }
     }
 
     public class GameAchievementReward
     {
-        public QuestRewardType Type { get; set; }
-        public int Id { get; set; }
+        public QuestRewardType 类型 { get; set; }
+        public int 编号 { get; set; }
     }
-
+    /// <summary>
+    /// 游戏成就
+    /// </summary>
     public class GameAchievements
     {
         public static Dictionary<ushort, GameAchievements> DataSheet;
 
-        public ushort Id { get; set; }
-        public string Name { get; set; }
-        public string Desc { get; set; }
-        public int BaseClass { get; set; }
-        public int SubClass { get; set; }
-        public QuestResetType ResetType { get; set; }
-        public int AchievementPoints { get; set; }
+        public ushort 编号 { get; set; }
+        public string 名字 { get; set; }
+        public string 描述 { get; set; }
+        public int 基本类型 { get; set; }
+        public int 子类型 { get; set; }
+        public QuestResetType 重置类型 { get; set; }
+        public int 成就点数 { get; set; }
         public List<int> PreAchivements { get; set; } = new List<int>();
-        public List<GameAchievementCondition> Conditions { get; set; } = new List<GameAchievementCondition>();
-        public List<GameAchievementReward> Rewards { get; set; } = new List<GameAchievementReward>();
+        public List<GameAchievementCondition> 条件 { get; set; } = new List<GameAchievementCondition>();
+        public List<GameAchievementReward> 奖励 { get; set; } = new List<GameAchievementReward>();
 
 
         public static void LoadData()
         {
-            string text = Config.GameDataPath + "\\System\\Achievements\\";
+            string text = Config.GameDataPath + "\\System\\成就数据\\";
 
             if (Directory.Exists(text))
-                DataSheet = Serializer.Deserialize<GameAchievements>(text).ToDictionary(x => x.Id);
+                DataSheet = Serializer.Deserialize<GameAchievements>(text).ToDictionary(x => x.编号);
             else
                 DataSheet = new Dictionary<ushort, GameAchievements>();
         }

@@ -303,8 +303,8 @@ namespace GameServer.Data
             this.HairColor.V = hairColor;
             this.FaceType.V = faceType;
             this.CreatedDate.V = MainProcess.CurrentTime;
-            this.CurrentHP.V = CharacterProgression.GetData(race, 1)[GameObjectStats.MaxHP];
-            this.CurrentMP.V = CharacterProgression.GetData(race, 1)[GameObjectStats.MaxMP];
+            this.CurrentHP.V = CharacterProgression.GetData(race, 1)[GameObjectStats.最大体力];
+            this.CurrentMP.V = CharacterProgression.GetData(race, 1)[GameObjectStats.最大魔力];
             this.CurrentDir.V = ComputingClass.随机方向();
             this.CurrentMap.V = 142;
             this.RebirthMap.V = 142;
@@ -381,7 +381,7 @@ namespace GameServer.Data
             {
                 if (InscriptionSkill.DataSheet.TryGetValue(skill, out InscriptionSkill inscriptionSkill))
                 {
-                    SkillData SkillData = new SkillData(inscriptionSkill.SkillId);
+                    SkillData SkillData = new SkillData(inscriptionSkill.技能编号);
                     this.SkillData.Add(SkillData.SkillId.V, SkillData);
                     this.ShorcutField[0] = SkillData;
                     SkillData.ShorcutField.V = 0;
@@ -391,24 +391,24 @@ namespace GameServer.Data
 
         private void AddStarterItems()
         {
-            foreach (var inscriptionItem in InscriptionItems.AllInscriptionItems)
+            foreach (var inscriptionItem in InscriptionItems.所有出生物品)
             {
-                if (inscriptionItem.NeedGender != null && inscriptionItem.NeedGender != CharGender.V)
+                if (inscriptionItem.需要性别 != null && inscriptionItem.需要性别 != CharGender.V)
                     continue;
 
-                if (inscriptionItem.NeedRace?.Length > 0 && !inscriptionItem.NeedRace.Contains(CharRace.V))
+                if (inscriptionItem.需要职业?.Length > 0 && !inscriptionItem.需要职业.Contains(CharRace.V))
                     continue;
 
-                if (!GameItems.DataSheet.TryGetValue(inscriptionItem.ItemId, out GameItems item))
+                if (!GameItems.DataSheet.TryGetValue(inscriptionItem.物品编号, out GameItems item))
                     continue;
 
-                if (inscriptionItem.Backpack == ItemBackPack.人物穿戴 && item is not EquipmentItem)
+                if (inscriptionItem.角色背包 == ItemBackPack.人物穿戴 && item is not EquipmentItem)
                     continue;
 
-                switch (inscriptionItem.Backpack)
+                switch (inscriptionItem.角色背包)
                 {
                     case ItemBackPack.人物背包:
-                        for (var i = 0; i < (inscriptionItem.Quantity ?? 1); i++)
+                        for (var i = 0; i < (inscriptionItem.数量 ?? 1); i++)
                             if (TryGetFreeSpaceAtInventory(out byte inventoryPosition))
                                 Backpack[inventoryPosition] = item is EquipmentItem
                                     ? new EquipmentData((EquipmentItem)item, this, 1, inventoryPosition, false)
@@ -662,9 +662,9 @@ namespace GameServer.Data
             binaryWriter.Write(CharLevel);
             binaryWriter.Write(CurrentMap.V);
             binaryWriter.Write(Equipment[0]?.升级次数.V ?? 0);
-            binaryWriter.Write((Equipment[0]?.对应模板.V?.Id).GetValueOrDefault());
-            binaryWriter.Write((Equipment[1]?.对应模板.V?.Id).GetValueOrDefault());
-            binaryWriter.Write((Equipment[2]?.对应模板.V?.Id).GetValueOrDefault());
+            binaryWriter.Write((Equipment[0]?.对应模板.V?.物品编号).GetValueOrDefault());
+            binaryWriter.Write((Equipment[1]?.对应模板.V?.物品编号).GetValueOrDefault());
+            binaryWriter.Write((Equipment[2]?.对应模板.V?.物品编号).GetValueOrDefault());
             binaryWriter.Write(ComputingClass.TimeShift(OfflineDate.V));
             binaryWriter.Write((!FreezeDate.V.Equals(default(DateTime))) ? ComputingClass.TimeShift(FreezeDate.V) : 0);
 

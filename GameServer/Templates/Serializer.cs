@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;

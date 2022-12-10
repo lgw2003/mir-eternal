@@ -15,9 +15,8 @@ namespace GameServer.Templates
         {
             var types = new Type[]
             {
-                /*
                 typeof(RandomStats),
-                typeof(Monsters),
+                typeof(游戏怪物),
                 typeof(Guards),
                 typeof(NpcDialogs),
                 typeof(GameMap),
@@ -42,8 +41,7 @@ namespace GameServer.Templates
                 typeof(GameAchievements),
                 typeof(GameMasters),
                 typeof(EquipmentStats)
-                */
-                typeof(游戏怪物),
+                
             };
 
             Parallel.ForEach(types, (type) =>
@@ -125,7 +123,7 @@ namespace GameServer.Templates
             }
 
             int num = (int)property.GetValue(obj);
-            MainForm.AddSystemLog(string.Format("{0} Loaded, Total: {1}, Elapsed: {2}ms", type.Name, num, watcher.ElapsedMilliseconds));
+            MainForm.AddSystemLog(string.Format("{0} 数据加载完成, 总计: {1}条, 用时: {2}毫秒", type.Name, num, watcher.ElapsedMilliseconds));
         }
     }
 }

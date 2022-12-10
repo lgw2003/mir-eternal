@@ -73,7 +73,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return GameObjectType.Item;
+                return GameObjectType.物品;
             }
         }
 
@@ -91,7 +91,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.物品模板.PersistType;
+                return this.物品模板.持久类型;
             }
         }
 
@@ -100,7 +100,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.物品模板.MaxDura;
+                return this.物品模板.物品持久;
             }
         }
 
@@ -114,7 +114,7 @@ namespace GameServer.Maps
                 {
                     return 0;
                 }
-                return 游戏物品.Id;
+                return 游戏物品.物品编号;
             }
         }
 
@@ -123,11 +123,11 @@ namespace GameServer.Maps
         {
             get
             {
-                if (this.物品模板.PersistType != PersistentItemType.堆叠)
+                if (this.物品模板.持久类型 != PersistentItemType.堆叠)
                 {
-                    return this.物品模板.Weight;
+                    return this.物品模板.物品重量;
                 }
-                return this.物品模板.Weight * this.堆叠数量;
+                return this.物品模板.物品重量 * this.堆叠数量;
             }
         }
 
@@ -136,7 +136,7 @@ namespace GameServer.Maps
         {
             get
             {
-                return this.物品模板.PersistType == PersistentItemType.堆叠;
+                return this.物品模板.持久类型 == PersistentItemType.堆叠;
             }
         }
 
@@ -157,7 +157,7 @@ namespace GameServer.Maps
             this.CurrentMap = 掉落地图;
             this.ItemData = ItemData;
             this.堆叠数量 = 堆叠数量;
-            this.物品绑定 = (物品模板.IsBound || 物品绑定);
+            this.物品绑定 = (物品模板.是否绑定 || 物品绑定);
 
             int num = int.MaxValue;
             for (int i = 0; i <= 120; i++)
@@ -173,18 +173,18 @@ namespace GameServer.Maps
                             GameObjectType 对象类型 = MapObject.ObjectType;
                             switch (对象类型)
                             {
-                                case GameObjectType.Player:
+                                case GameObjectType.玩家:
                                     num2 += 10000;
                                     continue;
-                                case GameObjectType.Pet:
-                                case GameObjectType.Monster:
+                                case GameObjectType.宠物:
+                                case GameObjectType.怪物:
                                     break;
                                 case (GameObjectType)3:
                                     continue;
                                 default:
-                                    if (对象类型 != GameObjectType.NPC)
+                                    if (对象类型 != GameObjectType.Npcc)
                                     {
-                                        if (对象类型 != GameObjectType.Item)
+                                        if (对象类型 != GameObjectType.物品)
                                         {
                                             continue;
                                         }

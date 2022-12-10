@@ -1,9 +1,0 @@
-{
-  "Name": "经验",
-  "Id": 10,
-  "NeedLevel": 1,
-  "SalePrice": 1,
-  "Type": "普通杂物",
-  "NeedRace": "通用",
-  "PersistType": "堆叠"
-}

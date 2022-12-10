@@ -1,7 +1,0 @@
-{
-  "Id": 21006,
-  "Units": 1,
-  "Type": 2,
-  "OriginalPrice": 300,
-  "CurrentPrice": 300
-}

@@ -22,7 +22,7 @@ namespace GameServer.Maps
     {
         private List<ChestPlayerOpener> _openers = new List<ChestPlayerOpener>();
 
-        public override GameObjectType ObjectType => GameObjectType.Chest;
+        public override GameObjectType ObjectType => GameObjectType.宝盒;
         public override ObjectSize ObjectSize => ObjectSize.单体1x1;
         public ChestTemplate Template { get; set; }
 
@@ -69,11 +69,11 @@ namespace GameServer.Maps
                         ObjectId = ObjectId
                     });
 
-                    var items = opener.Player.FilterItemTreasures(Template.Items);
+                    var items = opener.Player.FilterItemTreasures(Template.物品);
 
                     foreach (var item in items)
                     {
-                        if (!GameItems.DataSheetByName.TryGetValue(item.ItemName, out var itemTemplate))
+                        if (!GameItems.DataSheetByName.TryGetValue(item.物品名字, out var itemTemplate))
                             continue;
 
                         new ItemObject(itemTemplate, null, CurrentMap, CurrentPosition, new HashSet<CharacterData> { opener.Player.CharacterData }, 堆叠数量: 1, dropperObject: this);

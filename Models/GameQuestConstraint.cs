@@ -4,7 +4,7 @@ namespace Models
 {
     public class GameQuestConstraint
     {
-        public QuestAcceptConstraint Type { get; set; }
-        public int Value { get; set; }
+        public QuestAcceptConstraint 类型 { get; set; }
+        public int 数值 { get; set; }
     }
 }

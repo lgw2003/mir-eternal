@@ -7,89 +7,92 @@ using GameServer.Data;
 
 namespace GameServer.Templates
 {
+    /// <summary>
+    /// 物品商店
+    /// </summary>
     public sealed class GameStore
     {
-        public static byte[] StoreBuffer;
-        public static int StoreVersion;
-        public static int StoreItemsCounts;
-        public static int ItemsSort;
+        public static byte[] 商店文件数据;
+        public static int 商店文件效验;
+        public static int 商店物品数量;
+        public static int 商店回购排序;
         public static Dictionary<int, GameStore> DataSheet;
 
-        public int StoreId;
-        public string Name;
-        public ItemsForSale RecyclingType;
-        public List<GameStoreItem> Products;
-        public SortedSet<ItemData> AvailableItems = new SortedSet<ItemData>(new 回购排序());
+        public int 商店编号;
+        public string 商店名字;
+        public ItemsForSale 回收类型;
+        public List<GameStoreItem> 商品列表;
+        public SortedSet<ItemData> 回购列表 = new SortedSet<ItemData>(new 回购排序());
 
         public static void LoadData()
         {
             DataSheet = new Dictionary<int, GameStore>();
-            string text = Config.GameDataPath + "\\System\\Items\\GameStore\\";
+            string text = Config.GameDataPath + "\\System\\物品数据\\游戏商店\\";
             if (Directory.Exists(text))
             {
                 foreach (var obj in Serializer.Deserialize<GameStore>(text))
-                    DataSheet.Add(obj.StoreId, obj);
+                    DataSheet.Add(obj.商店编号, obj);
             }
 
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
             {
                 var items = (from X in DataSheet.Values.ToList()
-                             orderby X.StoreId
+                             orderby X.商店编号
                              select X).ToList();
 
                 foreach (GameStore store in items)
                 {
-                    foreach (GameStoreItem product in store.Products)
+                    foreach (GameStoreItem product in store.商品列表)
                     {
-                        var name = Encoding.UTF8.GetBytes(store.Name);
+                        var name = Encoding.UTF8.GetBytes(store.商店名字);
 
-                        binaryWriter.Write(store.StoreId);
+                        binaryWriter.Write(store.商店编号);
                         binaryWriter.Write(name);
                         binaryWriter.Write(new byte[64 - name.Length]);
-                        binaryWriter.Write(product.Id);
-                        binaryWriter.Write(product.Units);
-                        binaryWriter.Write(product.CurrencyType);
-                        binaryWriter.Write(product.Price);
+                        binaryWriter.Write(product.商品编号);
+                        binaryWriter.Write(product.单位数量);
+                        binaryWriter.Write(product.货币类型);
+                        binaryWriter.Write(product.商品价格);
                         binaryWriter.Write(-1);
                         binaryWriter.Write(0);
                         binaryWriter.Write(-1);
                         binaryWriter.Write(0);
                         binaryWriter.Write(0);
                         binaryWriter.Write(0);
-                        binaryWriter.Write((int)store.RecyclingType);
+                        binaryWriter.Write((int)store.回收类型);
                         binaryWriter.Write(0);
                         binaryWriter.Write(0);
                         binaryWriter.Write((ushort)0);
                         binaryWriter.Write(-1);
                         binaryWriter.Write(-1);
-                        StoreItemsCounts++;
+                        商店物品数量++;
                     }
                 }
 
                 var buffer = memoryStream.ToArray();
 
-                StoreBuffer = Serializer.Compress(buffer);
+                商店文件数据 = Serializer.Compress(buffer);
 
-                StoreVersion = 0;
+                商店文件效验 = 0;
 
-                foreach (byte b in GameStore.StoreBuffer)
-                    StoreVersion += (int)b;
+                foreach (byte b in GameStore.商店文件数据)
+                    商店文件效验 += (int)b;
             }
         }
 
         public bool BuyItem(ItemData item)
         {
-            return this.AvailableItems.Remove(item);
+            return this.回购列表.Remove(item);
         }
 
         public void SellItem(ItemData item)
         {
-            item.PurchaseId = ++ItemsSort;
-            if (this.AvailableItems.Add(item) && this.AvailableItems.Count > 50)
+            item.PurchaseId = ++商店回购排序;
+            if (this.回购列表.Add(item) && this.回购列表.Count > 50)
             {
-                ItemData ItemData = this.AvailableItems.Last<ItemData>();
-                this.AvailableItems.Remove(ItemData);
+                ItemData ItemData = this.回购列表.Last<ItemData>();
+                this.回购列表.Remove(ItemData);
                 ItemData.Delete();
             }
         }

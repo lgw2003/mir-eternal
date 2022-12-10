@@ -5,19 +5,19 @@ namespace GameServer.Templates
 	[Flags]
 	public enum GameObjectState
 	{
-		Normal = 0,
-		Stiff = 1,
-		BusyGreen = 2,
-		Poisoned = 4,
-		Disabled = 8,
-		Inmobilized = 16,
-		Paralyzed = 32,
-		Hegemony = 64,
-		Invencible = 128,
-		Invisibility = 256,
-		StealthStatus = 512,
-		Absence = 1024,
-		Exposed = 2048,
-		Riding = 4096
+		正常状态 = 0,
+		硬直状态 = 1,
+		忙绿状态 = 2,
+		中毒状态 = 4,
+		残废状态 = 8,
+		定身状态 = 16,
+		麻痹状态 = 32,
+		霸体状态 = 64,
+		无敌状态 = 128,
+		隐身状态 = 256,
+		潜行状态 = 512,
+		失神状态 = 1024,
+		暴露状态 = 2048,
+		坐骑状态 = 4096
 	}
 }

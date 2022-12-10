@@ -4,6 +4,6 @@ namespace GameServer.Templates
 {
 	public abstract class SkillTask
 	{
-		public string Statement;
+		public string 任务说明;
 	}
 }

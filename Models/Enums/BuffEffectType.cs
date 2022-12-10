@@ -5,14 +5,14 @@ namespace GameServer.Templates
 	[Flags]
 	public enum BuffEffectType
 	{
-		SkillSign = 0,
-		StatusFlag = 1,
-		CausesSomeDamages = 2,
-		StatsIncOrDec = 4,
-		DamageIncOrDec = 8,
-		CreateTrap = 16,
-		LifeRecovery = 32,
-		TemptationBoost = 64,
-		Riding = 128
+		技能标志 = 0,
+		状态标志 = 1,
+		造成伤害 = 2,
+		属性增减 = 4,
+		伤害增减 = 8,
+		创建陷阱 = 16,
+		生命回复 = 32,
+		诱惑提升 = 64,
+		坐骑状态 = 128
 	}
 }

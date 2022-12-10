@@ -9,9 +9,9 @@ namespace Models
 {
     public class GameQuestReward
     {
-        public QuestRewardType Type { get; set; }
-        public int Id { get; set; }
-        public int Count { get; set; }
+        public QuestRewardType 类型 { get; set; }
+        public int 编号 { get; set; }
+        public int 数量 { get; set; }
         public bool Bind { get; set; }
     }
 }

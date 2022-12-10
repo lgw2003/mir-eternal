@@ -47,7 +47,7 @@ namespace GameServer.Templates
 		{
 			get
 			{
-				switch (Type)
+				switch (物品分类)
 				{
 					case ItemType.武器:
 						return 0;

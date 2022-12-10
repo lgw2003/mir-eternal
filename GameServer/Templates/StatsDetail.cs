@@ -4,8 +4,10 @@
 	{
         public class StatsDetail
 		{
-			public int StatId;
-			public int Probability;  // 概率
-		}
+			public int 属性编号;
+			public int 属性概率;  // 概率
+			public string 属性描述;
+
+        }
 	}
 }

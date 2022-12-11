@@ -7,9 +7,9 @@ namespace GameServer.Templates
 	/// <summary>
 	/// 游戏技能
 	/// </summary>
-	public sealed class GameSkills
+	public sealed class 游戏技能
 	{
-		public static Dictionary<string, GameSkills> DataSheet;
+		public static Dictionary<string, 游戏技能> DataSheet;
 
 		public string 技能名字;
 		public GameObjectRace 技能职业;
@@ -44,7 +44,7 @@ namespace GameServer.Templates
 		public int 目标Buff层数;
 		public SortedDictionary<int, SkillTask> 节点列表;
 
-		public GameSkills()
+		public 游戏技能()
 		{
 			角色Buff层数 = 1;
 			目标Buff层数 = 1;
@@ -53,11 +53,11 @@ namespace GameServer.Templates
 
 		public static void LoadData()
 		{
-			DataSheet = new Dictionary<string, GameSkills>();
+			DataSheet = new Dictionary<string, 游戏技能>();
 			string text = Config.GameDataPath + "\\System\\技能数据\\技能数据\\";
 			if (Directory.Exists(text))
 			{
-				foreach (var obj in Serializer.Deserialize<GameSkills>(text))
+				foreach (var obj in Serializer.Deserialize<游戏技能>(text))
 					DataSheet.Add(obj.技能名字, obj);
 			}
 		}

@@ -10,7 +10,7 @@ namespace GameServer.Templates
 {
     public class SkillInstance
     {
-        public GameSkills SkillInfo;
+        public 游戏技能 SkillInfo;
         public SkillData SkillData;
         public MapObject CasterObject;
         public byte ActionId;
@@ -53,7 +53,7 @@ namespace GameServer.Templates
 
         public bool IsSwitchedSkill { get; }
 
-        public SkillInstance(MapObject casterObject, GameSkills skillInfo, SkillData skillData, byte actionId, MapInstance releaseMap, Point releaseLocation, MapObject skillTarget, Point skillPointer, SkillInstance parentSkill, Dictionary<int, HitDetail> hits = null, bool targetBorrow = false)
+        public SkillInstance(MapObject casterObject, 游戏技能 skillInfo, SkillData skillData, byte actionId, MapInstance releaseMap, Point releaseLocation, MapObject skillTarget, Point skillPointer, SkillInstance parentSkill, Dictionary<int, HitDetail> hits = null, bool targetBorrow = false)
         {
             CasterObject = casterObject;
             SkillInfo = skillInfo;
@@ -69,7 +69,7 @@ namespace GameServer.Templates
             Hits = (hits ?? new Dictionary<int, HitDetail>());
             Nodes = new SortedDictionary<int, SkillTask>(skillInfo.节点列表);
 
-            if (skillData != null && skillData.铭文模板.开关技能列表.Count > 0 && GameSkills.DataSheet.TryGetValue(skillData.铭文模板.开关技能列表[0], out GameSkills switchSkill) && skillInfo != switchSkill)
+            if (skillData != null && skillData.铭文模板.开关技能列表.Count > 0 && 游戏技能.DataSheet.TryGetValue(skillData.铭文模板.开关技能列表[0], out 游戏技能 switchSkill) && skillInfo != switchSkill)
             {
                 var switchReleaseSkill = switchSkill.节点列表
                     .Select(x => x.Value)
@@ -115,7 +115,7 @@ namespace GameServer.Templates
             {
                 if (task is A_00_触发子类技能 a_00)
                 {
-                    if (GameSkills.DataSheet.TryGetValue(a_00.触发技能名字, out GameSkills skill))
+                    if (游戏技能.DataSheet.TryGetValue(a_00.触发技能名字, out 游戏技能 skill))
                     {
 
                         bool flag = true;
@@ -185,7 +185,7 @@ namespace GameServer.Templates
                                         _ = new SkillInstance(CasterObject, skill, SkillData, ActionId, ReleaseMap, ReleaseLocation, item.Value.Object, item.Value.Object.CurrentPosition, this);
                                     break;
                                 case SkillTriggerMethod.正手反手随机触发:
-                                    if (ComputingClass.CheckProbability(0.5f) && GameSkills.DataSheet.TryGetValue(a_00.反手技能名字, out var value3))
+                                    if (ComputingClass.CheckProbability(0.5f) && 游戏技能.DataSheet.TryGetValue(a_00.反手技能名字, out var value3))
                                         _ = new SkillInstance(CasterObject, value3, SkillData, ActionId, ReleaseMap, ReleaseLocation, null, SkillLocation, this);
                                     else
                                         _ = new SkillInstance(CasterObject, skill, SkillData, ActionId, ReleaseMap, ReleaseLocation, null, SkillLocation, this);
@@ -314,7 +314,7 @@ namespace GameServer.Templates
                 }
                 else if (task is A_02_触发陷阱技能 a_02)
                 {
-                    if (SkillTraps.DataSheet.TryGetValue(a_02.触发陷阱技能, out SkillTraps 陷阱模板))
+                    if (技能陷阱.DataSheet.TryGetValue(a_02.触发陷阱技能, out 技能陷阱 陷阱模板))
                     {
                         int num7 = 0;
                         var array = ComputingClass.GetLocationRange(SkillLocation, ComputingClass.GetDirection(ReleaseLocation, SkillLocation), a_02.触发陷阱数量);
@@ -338,7 +338,7 @@ namespace GameServer.Templates
                         if (b_00.允许移除标记)
                             CasterObject.移除Buff时处理(b_00.技能标记编号);
                     }
-                    else if (GameBuffs.DataSheet.ContainsKey(b_00.技能标记编号))
+                    else if (游戏Buff.DataSheet.ContainsKey(b_00.技能标记编号))
                     {
                         CasterObject.OnAddBuff(b_00.技能标记编号, CasterObject);
                     }

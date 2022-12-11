@@ -8,9 +8,9 @@ namespace GameServer.Templates
 	/// <summary>
 	/// 怪物刷新
 	/// </summary>
-	public class MonsterSpawns
+	public class 怪物刷新
 	{
-		public static HashSet<MonsterSpawns> DataSheet;
+		public static HashSet<怪物刷新> DataSheet;
 
 		public byte 所处地图;
 		public string 所处地名;
@@ -22,11 +22,11 @@ namespace GameServer.Templates
 
 		public static void LoadData()
 		{
-			DataSheet = new HashSet<MonsterSpawns>();
+			DataSheet = new HashSet<怪物刷新>();
 			string text = Config.GameDataPath + "\\System\\游戏地图\\怪物刷新\\";
 			if (Directory.Exists(text))
 			{
-				foreach (var obj in Serializer.Deserialize<MonsterSpawns>(text))
+				foreach (var obj in Serializer.Deserialize<怪物刷新>(text))
 					DataSheet.Add(obj);
 			}
 		}

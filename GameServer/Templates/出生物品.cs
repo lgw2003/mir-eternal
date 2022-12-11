@@ -10,10 +10,10 @@ namespace GameServer.Templates
     /// <summary>
     /// 出生物品
     /// </summary>
-    public class InscriptionItems
+    public class 出生物品
     {
-        public static Dictionary<byte, InscriptionItems> DataSheet;
-        public static InscriptionItems[] 所有出生物品;
+        public static Dictionary<byte, 出生物品> DataSheet;
+        public static 出生物品[] 所有出生物品;
 
         public byte Id;
         public ItemBackPack 角色背包;
@@ -24,9 +24,9 @@ namespace GameServer.Templates
 
         public static void LoadData()
         {
-            DataSheet = new Dictionary<byte, InscriptionItems>();
+            DataSheet = new Dictionary<byte, 出生物品>();
             string path = Config.GameDataPath + "\\System\\物品数据\\出生物品\\";
-            所有出生物品 = Serializer.Deserialize<InscriptionItems>(path);
+            所有出生物品 = Serializer.Deserialize<出生物品>(path);
             foreach (var inscriptionItem in 所有出生物品)
                 DataSheet.Add(inscriptionItem.Id, inscriptionItem);
         }

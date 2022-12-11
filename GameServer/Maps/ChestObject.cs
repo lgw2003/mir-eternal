@@ -24,9 +24,9 @@ namespace GameServer.Maps
 
         public override GameObjectType ObjectType => GameObjectType.宝盒;
         public override ObjectSize ObjectSize => ObjectSize.单体1x1;
-        public ChestTemplate Template { get; set; }
+        public 宝箱数据 Template { get; set; }
 
-        public ChestObject(ChestTemplate template, MapInstance map, GameDirection direction, Point position)
+        public ChestObject(宝箱数据 template, MapInstance map, GameDirection direction, Point position)
         {
             Template = template;
             this.CurrentMap = map;
@@ -73,7 +73,7 @@ namespace GameServer.Maps
 
                     foreach (var item in items)
                     {
-                        if (!GameItems.DataSheetByName.TryGetValue(item.物品名字, out var itemTemplate))
+                        if (!游戏物品.DataSheetByName.TryGetValue(item.物品名字, out var itemTemplate))
                             continue;
 
                         new ItemObject(itemTemplate, null, CurrentMap, CurrentPosition, new HashSet<CharacterData> { opener.Player.CharacterData }, 堆叠数量: 1, dropperObject: this);

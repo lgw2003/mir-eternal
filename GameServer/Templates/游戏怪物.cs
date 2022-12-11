@@ -40,7 +40,7 @@ namespace GameServer.Templates
         public InheritStat[] 继承属性;
         public ushort 怪物提供经验;
         public List<MonsterDrop> 怪物掉落物品;
-        public Dictionary<GameItems, long> 掉落统计 = new Dictionary<GameItems, long>();
+        public Dictionary<游戏物品, long> 掉落统计 = new Dictionary<游戏物品, long>();
 
         private Dictionary<GameObjectStats, int> _怪物基础属性;
         private Dictionary<GameObjectStats, int>[] _怪物成长属性;

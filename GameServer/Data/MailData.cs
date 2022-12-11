@@ -26,7 +26,7 @@ namespace GameServer.Data
 			this.未读邮件.V = true;
 			this.系统邮件.V = (作者 == null);
 			this.CreatedDate.V = MainProcess.CurrentTime;
-			GameDataGateway.MailData表.AddData(this, true);
+			GameDataGateway.邮件数据表.AddData(this, true);
 		}
 
 		

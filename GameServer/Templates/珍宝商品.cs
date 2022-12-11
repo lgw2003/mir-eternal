@@ -8,12 +8,12 @@ namespace GameServer.Templates
     /// <summary>
     /// 珍宝商品
     /// </summary>
-    public sealed class Treasures
+    public sealed class 珍宝商品
     {
         public static byte[] 珍宝商店数据;
         public static int 珍宝商店效验;
         public static int 珍宝商品数量;
-        public static Dictionary<int, Treasures> DataSheet;
+        public static Dictionary<int, 珍宝商品> DataSheet;
 
         public int 物品编号;
         public int 单位数量;
@@ -26,11 +26,11 @@ namespace GameServer.Templates
 
         public static void LoadData()
         {
-            DataSheet = new Dictionary<int, Treasures>();
+            DataSheet = new Dictionary<int, 珍宝商品>();
             string text = Config.GameDataPath + "\\System\\物品数据\\珍宝商品\\";
             if (Directory.Exists(text))
             {
-                foreach (var obj in Serializer.Deserialize<Treasures>(text))
+                foreach (var obj in Serializer.Deserialize<珍宝商品>(text))
                     DataSheet.Add(obj.物品编号, obj);
             }
 
@@ -41,7 +41,7 @@ namespace GameServer.Templates
                                    orderby X.物品编号
                                    select X).ToList();
 
-            foreach (Treasures treasure in sortedTreasures)
+            foreach (珍宝商品 treasure in sortedTreasures)
             {
                 binaryWriter.Write(treasure.物品编号);
                 binaryWriter.Write(treasure.单位数量);

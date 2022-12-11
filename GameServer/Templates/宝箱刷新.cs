@@ -12,9 +12,9 @@ namespace GameServer.Templates
     /// <summary>
     /// 宝箱刷新
     /// </summary>
-    public class MapChest
+    public class 宝箱刷新
     {
-        public static HashSet<MapChest> DataSheet;
+        public static HashSet<宝箱刷新> DataSheet;
 
         public int 宝箱编号 { get; set; }
         public int 所处地图 { get; set; }
@@ -26,9 +26,9 @@ namespace GameServer.Templates
             string text = Config.GameDataPath + "\\System\\游戏地图\\宝箱刷新\\";
 
             if (Directory.Exists(text))
-                DataSheet = new HashSet<MapChest>(Serializer.Deserialize<MapChest>(text));
+                DataSheet = new HashSet<宝箱刷新>(Serializer.Deserialize<宝箱刷新>(text));
             else
-                DataSheet = new HashSet<MapChest>();
+                DataSheet = new HashSet<宝箱刷新>();
         }
 
     }

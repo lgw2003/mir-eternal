@@ -27,7 +27,7 @@ namespace GameServer.GMCommands
 
         public override void Execute()
         {
-            if (!GameDataGateway.CharacterDataTable.Keyword.TryGetValue(this.CharName, out GameData gameData))
+            if (!GameDataGateway.角色数据表.Keyword.TryGetValue(this.CharName, out GameData gameData))
                 return;
 
             var characterData = gameData as CharacterData;

@@ -8,9 +8,9 @@ namespace GameServer.Templates
 	/// <summary>
 	/// 传送法阵
 	/// </summary>
-	public class TeleportGates
+	public class 传送法阵
 	{
-		public static List<TeleportGates> DataSheet;
+		public static List<传送法阵> DataSheet;
 
 		public byte 法阵编号;
 		public byte 所处地图;
@@ -25,11 +25,11 @@ namespace GameServer.Templates
 
 		public static void LoadData()
 		{
-			DataSheet = new List<TeleportGates>();
+			DataSheet = new List<传送法阵>();
 			string text = Config.GameDataPath + "\\System\\游戏地图\\法阵数据\\";
 			if (Directory.Exists(text))
 			{
-				foreach (var obj in Serializer.Deserialize<TeleportGates>(text))
+				foreach (var obj in Serializer.Deserialize<传送法阵>(text))
 					DataSheet.Add(obj);
 			}
 		}

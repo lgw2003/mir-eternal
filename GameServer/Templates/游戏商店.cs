@@ -8,15 +8,15 @@ using GameServer.Data;
 namespace GameServer.Templates
 {
     /// <summary>
-    /// 物品商店
+    /// 游戏商店
     /// </summary>
-    public sealed class GameStore
+    public sealed class 游戏商店
     {
         public static byte[] 商店文件数据;
         public static int 商店文件效验;
         public static int 商店物品数量;
         public static int 商店回购排序;
-        public static Dictionary<int, GameStore> DataSheet;
+        public static Dictionary<int, 游戏商店> DataSheet;
 
         public int 商店编号;
         public string 商店名字;
@@ -26,11 +26,11 @@ namespace GameServer.Templates
 
         public static void LoadData()
         {
-            DataSheet = new Dictionary<int, GameStore>();
+            DataSheet = new Dictionary<int, 游戏商店>();
             string text = Config.GameDataPath + "\\System\\物品数据\\游戏商店\\";
             if (Directory.Exists(text))
             {
-                foreach (var obj in Serializer.Deserialize<GameStore>(text))
+                foreach (var obj in Serializer.Deserialize<游戏商店>(text))
                     DataSheet.Add(obj.商店编号, obj);
             }
 
@@ -41,7 +41,7 @@ namespace GameServer.Templates
                              orderby X.商店编号
                              select X).ToList();
 
-                foreach (GameStore store in items)
+                foreach (游戏商店 store in items)
                 {
                     foreach (GameStoreItem product in store.商品列表)
                     {
@@ -76,7 +76,7 @@ namespace GameServer.Templates
 
                 商店文件效验 = 0;
 
-                foreach (byte b in GameStore.商店文件数据)
+                foreach (byte b in 游戏商店.商店文件数据)
                     商店文件效验 += (int)b;
             }
         }

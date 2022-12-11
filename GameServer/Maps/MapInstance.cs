@@ -112,18 +112,18 @@ namespace GameServer.Maps
         }
 
 
-        public MapInstance(GameMap 地图模板, int 路线编号 = 1)
+        public MapInstance(游戏地图 地图模板, int 路线编号 = 1)
         {
 
-            this.地图区域 = new HashSet<MapAreas>();
-            this.怪物区域 = new HashSet<MonsterSpawns>();
-            this.守卫区域 = new HashSet<MapGuards>();
-            this.Chests = new HashSet<MapChest>();
+            this.地图区域 = new HashSet<地图区域>();
+            this.怪物区域 = new HashSet<怪物刷新>();
+            this.守卫区域 = new HashSet<守卫刷新>();
+            this.Chests = new HashSet<宝箱刷新>();
             this.NrPlayers = new HashSet<PlayerObject>();
             this.宠物列表 = new HashSet<PetObject>();
             this.物品列表 = new HashSet<ItemObject>();
             this.对象列表 = new HashSet<MapObject>();
-            this.法阵列表 = new Dictionary<byte, TeleportGates>();
+            this.法阵列表 = new Dictionary<byte, 传送法阵>();
 
             this.地图模板 = 地图模板;
             this.路线编号 = 路线编号;
@@ -159,7 +159,7 @@ namespace GameServer.Maps
                     if (MainProcess.CurrentTime > this.节点计时)
                     {
                         int num = (int)(this.副本节点 - 6);
-                        MonsterSpawns 怪物刷新 = this.怪物波数[num];
+                        怪物刷新 怪物刷新 = this.怪物波数[num];
                         int num2 = this.刷怪记录 >> 16;
                         int num3 = this.刷怪记录 & 65535;
                         MonsterSpawnInfo 刷新信息 = 怪物刷新.刷新列表[num2];
@@ -292,7 +292,7 @@ namespace GameServer.Maps
             }
 
 
-            TotalMobs = (uint)怪物区域.Sum((MonsterSpawns O) => O.刷新列表.Sum((MonsterSpawnInfo X) => X.刷新数量));
+            TotalMobs = (uint)怪物区域.Sum((怪物刷新 O) => O.刷新列表.Sum((MonsterSpawnInfo X) => X.刷新数量));
             MainForm.添加地图数据(this);
         }
 
@@ -416,7 +416,7 @@ namespace GameServer.Maps
             {
                 return default(Point);
             }
-            MapAreas 地图区域 = this.地图区域.FirstOrDefault((MapAreas O) => O.区域类型 == AreaType.随机区域);
+            地图区域 地图区域 = this.地图区域.FirstOrDefault((地图区域 O) => O.区域类型 == AreaType.随机区域);
             if (地图区域 == null)
             {
                 return default(Point);
@@ -427,7 +427,7 @@ namespace GameServer.Maps
 
         public Point 随机传送(Point 坐标)
         {
-            foreach (MapAreas 地图区域 in this.地图区域)
+            foreach (地图区域 地图区域 in this.地图区域)
             {
                 if (地图区域.范围坐标.Contains(坐标) && 地图区域.区域类型 == AreaType.随机区域)
                 {
@@ -543,7 +543,7 @@ namespace GameServer.Maps
         public readonly int 路线编号;
 
 
-        public readonly GameMap 地图模板;
+        public readonly 游戏地图 地图模板;
 
 
         public uint TotalMobs;
@@ -576,33 +576,33 @@ namespace GameServer.Maps
         public int 刷怪记录;
 
 
-        public List<MonsterSpawns> 怪物波数;
+        public List<怪物刷新> 怪物波数;
 
 
         public HashSet<MapObject>[,] MapObject;
 
 
-        public Terrains 地形数据;
+        public 地形数据 地形数据;
 
 
-        public MapAreas ResurrectionArea;
+        public 地图区域 ResurrectionArea;
 
 
-        public MapAreas 红名区域;
+        public 地图区域 红名区域;
 
 
-        public MapAreas 传送区域;
+        public 地图区域 传送区域;
 
 
-        public HashSet<MapAreas> 地图区域;
+        public HashSet<地图区域> 地图区域;
 
 
-        public HashSet<MonsterSpawns> 怪物区域;
+        public HashSet<怪物刷新> 怪物区域;
 
 
-        public HashSet<MapGuards> 守卫区域;
+        public HashSet<守卫刷新> 守卫区域;
 
-        public HashSet<MapChest> Chests;
+        public HashSet<宝箱刷新> Chests;
 
 
         public HashSet<PlayerObject> NrPlayers;
@@ -617,6 +617,6 @@ namespace GameServer.Maps
         public HashSet<MapObject> 对象列表;
 
 
-        public Dictionary<byte, TeleportGates> 法阵列表;
+        public Dictionary<byte, 传送法阵> 法阵列表;
     }
 }

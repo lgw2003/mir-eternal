@@ -584,8 +584,8 @@ namespace GameServer.Maps
             if (obj is TrapObject trapObject)
                 obj = trapObject.TrapSource;
 
-
-            if (!GameBuffs.DataSheet.TryGetValue(buffId, out var 游戏Buff))
+            游戏Buff 游戏Buff;
+            if (!游戏Buff.DataSheet.TryGetValue(buffId, out 游戏Buff))
                 return;
 
             if ((游戏Buff.Buff效果 & BuffEffectType.状态标志) != BuffEffectType.技能标志)
@@ -636,7 +636,7 @@ namespace GameServer.Maps
                         }
 
                         BuffData4.当前层数.V = (byte)Math.Min(BuffData4.当前层数.V + 1, BuffData4.最大层数);
-                        if (游戏Buff.Buff允许合成 && BuffData4.当前层数.V >= 游戏Buff.Buff合成层数 && GameBuffs.DataSheet.TryGetValue(游戏Buff.Buff合成编号, out var 游戏Buff2))
+                        if (游戏Buff.Buff允许合成 && BuffData4.当前层数.V >= 游戏Buff.Buff合成层数 && 游戏Buff.DataSheet.TryGetValue(游戏Buff.Buff合成编号, out var 游戏Buff2))
                         {
                             移除Buff时处理(BuffData4.Id.V);
                             OnAddBuff(游戏Buff.Buff合成编号, obj);
@@ -709,7 +709,7 @@ namespace GameServer.Maps
 
             if ((游戏Buff.Buff效果 & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && this is PlayerObject playerObject)
             {
-                if (GameMounts.DataSheet.TryGetValue(playerObject.CharacterData.CurrentMount.V, out GameMounts mount))
+                if (游戏坐骑.DataSheet.TryGetValue(playerObject.CharacterData.CurrentMount.V, out 游戏坐骑 mount))
                 {
                     playerObject.Riding = true;
                     StatsBonus.Add(BuffData2, mount.Stats);
@@ -805,7 +805,7 @@ namespace GameServer.Maps
                     playerObject.Riding = false;
                     this.StatsBonus.Remove(BuffData);
                     this.RefreshStats();
-                    if (GameMounts.DataSheet.TryGetValue(playerObject.CharacterData.CurrentMount.V, out GameMounts mount))
+                    if (游戏坐骑.DataSheet.TryGetValue(playerObject.CharacterData.CurrentMount.V, out 游戏坐骑 mount))
                         if (mount.Buff编号 > 0) playerObject.移除Buff时处理(mount.Buff编号);
                 }
 
@@ -862,7 +862,7 @@ namespace GameServer.Maps
                     playerObject.Riding = false;
                     this.StatsBonus.Remove(BuffData);
                     this.RefreshStats();
-                    if (GameMounts.DataSheet.TryGetValue(playerObject.CharacterData.CurrentMount.V, out GameMounts mount))
+                    if (游戏坐骑.DataSheet.TryGetValue(playerObject.CharacterData.CurrentMount.V, out 游戏坐骑 mount))
                         if (mount.Buff编号 > 0) playerObject.移除Buff时处理(mount.Buff编号);
                 }
                 if ((BuffData.Effect & BuffEffectType.状态标志) != BuffEffectType.技能标志)
@@ -1654,8 +1654,8 @@ namespace GameServer.Maps
                     while (enumerator.MoveNext())
                     {
                         BuffData BuffData = enumerator.Current;
-                        SkillTraps 陷阱模板;
-                        if ((BuffData.Effect & BuffEffectType.创建陷阱) != BuffEffectType.技能标志 && SkillTraps.DataSheet.TryGetValue(BuffData.Template.触发陷阱技能, out 陷阱模板))
+                        技能陷阱 陷阱模板;
+                        if ((BuffData.Effect & BuffEffectType.创建陷阱) != BuffEffectType.技能标志 && 技能陷阱.DataSheet.TryGetValue(BuffData.Template.触发陷阱技能, out 陷阱模板))
                         {
                             int num = 0;
 
@@ -1701,8 +1701,8 @@ namespace GameServer.Maps
             {
                 foreach (BuffData BuffData2 in this.Buffs.Values.ToList<BuffData>())
                 {
-                    SkillTraps 陷阱模板;
-                    if ((BuffData2.Effect & BuffEffectType.创建陷阱) != BuffEffectType.技能标志 && SkillTraps.DataSheet.TryGetValue(BuffData2.Template.触发陷阱技能, out 陷阱模板))
+                    技能陷阱 陷阱模板;
+                    if ((BuffData2.Effect & BuffEffectType.创建陷阱) != BuffEffectType.技能标志 && 技能陷阱.DataSheet.TryGetValue(BuffData2.Template.触发陷阱技能, out 陷阱模板))
                     {
                         int num2 = 0;
 

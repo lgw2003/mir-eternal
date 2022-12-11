@@ -52,7 +52,7 @@ namespace GameServer.Data
 			this.邀请列表 = new Dictionary<int, DateTime>();
 			
 			this.师门师父.V = 师父数据;
-			GameDataGateway.TeacherData表.AddData(this, true);
+			GameDataGateway.师门数据表.AddData(this, true);
 		}
 
 		

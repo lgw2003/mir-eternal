@@ -10,9 +10,9 @@ namespace GameServer.Templates
     /// <summary>
     /// 游戏地形
     /// </summary>
-    public sealed class Terrains
+    public sealed class 地形数据
     {
-        public static Dictionary<byte, Terrains> DataSheet;
+        public static Dictionary<byte, 地形数据> DataSheet;
 
         public byte 地图编号;
         public string 地图名字;
@@ -27,12 +27,12 @@ namespace GameServer.Templates
         /// </summary>
         /// <param name="fileInfo">地图文件信息</param>
         /// <returns></returns>
-        private static Terrains LoadTerrainFromFile(FileSystemInfo fileInfo)
+        private static 地形数据 LoadTerrainFromFile(FileSystemInfo fileInfo)
         {
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileInfo.Name);
             var parts = fileNameWithoutExtension.Split('-');
 
-            var terrain = new Terrains
+            var terrain = new 地形数据
             {
                 地图名字 = parts[1],
                 地图编号 = Convert.ToByte(parts[0])
@@ -65,11 +65,11 @@ namespace GameServer.Templates
         /// </summary>
         public static void LoadData()
         {
-            DataSheet = new Dictionary<byte, Terrains>();
+            DataSheet = new Dictionary<byte, 地形数据>();
             string path = Config.GameDataPath + "\\System\\游戏地图\\地形数据\\";
             if (Directory.Exists(path))
             {
-                var terrains = new ConcurrentBag<Terrains>();
+                var terrains = new ConcurrentBag<地形数据>();
                 var terrainFiles = new DirectoryInfo(path).GetFiles("*.terrain");
 
                 Parallel.ForEach(terrainFiles, delegate (FileInfo x)

@@ -104,7 +104,7 @@ namespace GameServer.Data
 			this.分配方式.V = 分配方式;
 			this.队伍队长.V = 创建角色;
 			this.Members.Add(创建角色);
-			GameDataGateway.TeamData表.AddData(this, true);
+			GameDataGateway.队伍数据表.AddData(this, true);
 		}
 
 		

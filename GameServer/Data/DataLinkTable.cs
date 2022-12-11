@@ -79,7 +79,7 @@ namespace GameServer.Data
                 DataLinkTable.数据关联参数 数据关联参数;
                 if (DataLinkTable.数据任务表.TryDequeue(out 数据关联参数) && 数据关联参数.数据索引 != 0)
                 {
-                    GameData GameData = GameDataGateway.Data型表[数据关联参数.Data型][数据关联参数.数据索引];
+                    GameData GameData = GameDataGateway.数据类型表[数据关联参数.Data型][数据关联参数.数据索引];
                     if (GameData == null)
                     {
                         if (!dictionary.ContainsKey(数据关联参数.数据.Data型))
@@ -107,7 +107,7 @@ namespace GameServer.Data
                 DataLinkTable.列表关联参数 列表关联参数;
                 if (DataLinkTable.列表任务表.TryDequeue(out 列表关联参数) && 列表关联参数.数据索引 != 0)
                 {
-                    GameData GameData2 = GameDataGateway.Data型表[列表关联参数.Data型][列表关联参数.数据索引];
+                    GameData GameData2 = GameDataGateway.数据类型表[列表关联参数.Data型][列表关联参数.数据索引];
                     if (GameData2 == null)
                     {
                         if (!dictionary.ContainsKey(列表关联参数.数据.Data型))
@@ -135,8 +135,8 @@ namespace GameServer.Data
                 DataLinkTable.字典关联参数 字典关联参数;
                 if (DataLinkTable.字典任务表.TryDequeue(out 字典关联参数) && (字典关联参数.字典键 != null || 字典关联参数.键索引 != 0) && (字典关联参数.字典值 != null || 字典关联参数.值索引 != 0))
                 {
-                    object obj = 字典关联参数.字典键 ?? GameDataGateway.Data型表[字典关联参数.键类型][字典关联参数.键索引];
-                    object obj2 = 字典关联参数.字典值 ?? GameDataGateway.Data型表[字典关联参数.值类型][字典关联参数.值索引];
+                    object obj = 字典关联参数.字典键 ?? GameDataGateway.数据类型表[字典关联参数.键类型][字典关联参数.键索引];
+                    object obj2 = 字典关联参数.字典值 ?? GameDataGateway.数据类型表[字典关联参数.值类型][字典关联参数.值索引];
                     if (obj != null && obj2 != null)
                     {
                         字典关联参数.内部字典[obj] = obj2;
@@ -163,7 +163,7 @@ namespace GameServer.Data
             {
                 if (LinkCharacterQuests.TryDequeue(out var characterQuestRelation) && characterQuestRelation.数据索引 != 0)
                 {
-                    var characterQuest = GameDataGateway.Data型表[typeof(CharacterQuest)][characterQuestRelation.数据索引] as CharacterQuest;
+                    var characterQuest = GameDataGateway.数据类型表[typeof(CharacterQuest)][characterQuestRelation.数据索引] as CharacterQuest;
                     if (characterQuest == null)
                     {
                         if (!dictionary.ContainsKey(characterQuestRelation.数据.Data型))
@@ -184,7 +184,7 @@ namespace GameServer.Data
             {
                 if (LinkCharacterQuestMissions.TryDequeue(out var characterQuestConstraintRelation) && characterQuestConstraintRelation.数据索引 != 0)
                 {
-                    var characterQuestConstraint = GameDataGateway.Data型表[typeof(CharacterQuestMission)][characterQuestConstraintRelation.数据索引] as CharacterQuestMission;
+                    var characterQuestConstraint = GameDataGateway.数据类型表[typeof(CharacterQuestMission)][characterQuestConstraintRelation.数据索引] as CharacterQuestMission;
                     if (characterQuestConstraint == null)
                     {
                         if (!dictionary.ContainsKey(characterQuestConstraintRelation.数据.Data型))
@@ -206,7 +206,7 @@ namespace GameServer.Data
                 DataLinkTable.哈希关联参数<PetData> 哈希关联参数;
                 if (DataLinkTable.哈希宠物表.TryDequeue(out 哈希关联参数) && 哈希关联参数.数据索引 != 0)
                 {
-                    PetData PetData = GameDataGateway.Data型表[typeof(PetData)][哈希关联参数.数据索引] as PetData;
+                    PetData PetData = GameDataGateway.数据类型表[typeof(PetData)][哈希关联参数.数据索引] as PetData;
                     if (PetData == null)
                     {
                         if (!dictionary.ContainsKey(哈希关联参数.数据.Data型))
@@ -234,7 +234,7 @@ namespace GameServer.Data
                 DataLinkTable.哈希关联参数<CharacterData> 哈希关联参数2;
                 if (DataLinkTable.哈希角色表.TryDequeue(out 哈希关联参数2) && 哈希关联参数2.数据索引 != 0)
                 {
-                    CharacterData CharacterData = GameDataGateway.Data型表[typeof(CharacterData)][哈希关联参数2.数据索引] as CharacterData;
+                    CharacterData CharacterData = GameDataGateway.数据类型表[typeof(CharacterData)][哈希关联参数2.数据索引] as CharacterData;
                     if (CharacterData == null)
                     {
                         if (!dictionary.ContainsKey(哈希关联参数2.数据.Data型))
@@ -262,7 +262,7 @@ namespace GameServer.Data
                 DataLinkTable.哈希关联参数<MailData> 哈希关联参数3;
                 if (DataLinkTable.哈希邮件表.TryDequeue(out 哈希关联参数3) && 哈希关联参数3.数据索引 != 0)
                 {
-                    MailData MailData = GameDataGateway.Data型表[typeof(MailData)][哈希关联参数3.数据索引] as MailData;
+                    MailData MailData = GameDataGateway.数据类型表[typeof(MailData)][哈希关联参数3.数据索引] as MailData;
                     if (MailData == null)
                     {
                         if (!dictionary.ContainsKey(哈希关联参数3.数据.Data型))
@@ -290,7 +290,7 @@ namespace GameServer.Data
                 哈希关联参数<AchievementData> achievements;
                 if (LinkAchievements.TryDequeue(out achievements) && achievements.数据索引 != 0)
                 {
-                    AchievementData achievement = GameDataGateway.Data型表[typeof(AchievementData)][achievements.数据索引] as AchievementData;
+                    AchievementData achievement = GameDataGateway.数据类型表[typeof(AchievementData)][achievements.数据索引] as AchievementData;
                     if (achievement == null)
                     {
                         if (!dictionary.ContainsKey(achievements.数据.Data型))

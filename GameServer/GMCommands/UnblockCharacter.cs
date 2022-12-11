@@ -19,7 +19,7 @@ namespace GameServer
 		public override void Execute()
 		{
 			GameData GameData;
-			if (GameDataGateway.CharacterDataTable.Keyword.TryGetValue(this.CharName, out GameData))
+			if (GameDataGateway.角色数据表.Keyword.TryGetValue(this.CharName, out GameData))
 			{
 				CharacterData CharacterData = GameData as CharacterData;
 				if (CharacterData != null)

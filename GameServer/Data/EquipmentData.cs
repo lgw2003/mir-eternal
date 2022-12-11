@@ -27,7 +27,7 @@ namespace GameServer.Data
         {
           int num = (int)(装备模板.BasicPowerCombat * (Luck.V + 20) * 1717986919L >> 32 >> 3);
           int num2 = Sacred伤害.V * 3 + 升级Attack.V * 5 + 升级Magic.V * 5 + 升级Taoism.V * 5 + 升级Needle.V * 5 + 升级Archery.V * 5;
-          int num3 = 随机Stat.Sum((RandomStats x) => x.战力加成);
+          int num3 = 随机Stat.Sum((随机属性 x) => x.战力加成);
           return num + num2 + num3;
         }
         int num4 = 0;
@@ -107,7 +107,7 @@ namespace GameServer.Data
             break;
         }
         int num5 = 孔洞颜色.Count * 10;
-        using (IEnumerator<GameItems> enumerator = 镶嵌灵石.Values.GetEnumerator())
+        using (IEnumerator<游戏物品> enumerator = 镶嵌灵石.Values.GetEnumerator())
         {
           while (enumerator.MoveNext())
           {
@@ -296,7 +296,7 @@ namespace GameServer.Data
             }
           }
         }
-        int num6 = 随机Stat.Sum((RandomStats x) => x.战力加成);
+        int num6 = 随机Stat.Sum((随机属性 x) => x.战力加成);
         return 装备模板.BasicPowerCombat + num4 + num6 + num5;
       }
     }
@@ -512,7 +512,7 @@ namespace GameServer.Data
       {
         string text = "";
         Dictionary<GameObjectStats, int> dictionary = new Dictionary<GameObjectStats, int>();
-        foreach (RandomStats 随机Stat in 随机Stat)
+        foreach (随机属性 随机Stat in 随机Stat)
         {
           dictionary[随机Stat.对应属性] = 随机Stat.属性数值;
         }
@@ -598,7 +598,7 @@ namespace GameServer.Data
     }
 
 
-    public InscriptionSkill 第一铭文
+    public 铭文技能 第一铭文
     {
       get
       {
@@ -620,7 +620,7 @@ namespace GameServer.Data
     }
 
 
-    public InscriptionSkill 第二铭文
+    public 铭文技能 第二铭文
     {
       get
       {
@@ -642,7 +642,7 @@ namespace GameServer.Data
     }
 
 
-    public InscriptionSkill 最优铭文
+    public 铭文技能 最优铭文
     {
       get
       {
@@ -689,7 +689,7 @@ namespace GameServer.Data
     }
 
 
-    public InscriptionSkill 最差铭文
+    public 铭文技能 最差铭文
     {
       get
       {
@@ -867,11 +867,11 @@ namespace GameServer.Data
         {
           dictionary[GameObjectStats.最大弓术] = (dictionary.ContainsKey(GameObjectStats.最大弓术) ? (dictionary[GameObjectStats.最大弓术] + (int)升级Archery.V) : ((int)升级Archery.V));
         }
-        foreach (RandomStats 随机Stat in 随机Stat.ToList<RandomStats>())
+        foreach (随机属性 随机Stat in 随机Stat.ToList<随机属性>())
         {
           dictionary[随机Stat.对应属性] = (dictionary.ContainsKey(随机Stat.对应属性) ? (dictionary[随机Stat.对应属性] + 随机Stat.属性数值) : 随机Stat.属性数值);
         }
-        foreach (GameItems GameItems in 镶嵌灵石.Values)
+        foreach (游戏物品 GameItems in 镶嵌灵石.Values)
         {
           int Id = GameItems.物品编号;
           if (Id <= 10324)
@@ -1061,7 +1061,7 @@ namespace GameServer.Data
         当前持久.V = 最大持久.V;
 
       if (randomGenerated && item.持久类型 == PersistentItemType.装备)
-        随机Stat.SetValue(EquipmentStats.GenerateStats(base.物品类型, false));
+        随机Stat.SetValue(装备属性.GenerateStats(base.物品类型, false));
 
       var activeQuests = character.GetInProgressQuests();
       foreach (var quest in activeQuests)
@@ -1078,7 +1078,7 @@ namespace GameServer.Data
         if (updated) character.ActiveConnection?.Player.UpdateQuestProgress(quest);
       }
 
-      GameDataGateway.EquipmentData表.AddData(this, true);
+      GameDataGateway.装备数据表.AddData(this, true);
     }
 
     public int 重铸所需灵气
@@ -1349,15 +1349,15 @@ namespace GameServer.Data
     public readonly DataMonitor<byte> 物品状态;
 
 
-    public readonly ListMonitor<RandomStats> 随机Stat;
+    public readonly ListMonitor<随机属性> 随机Stat;
 
 
     public readonly ListMonitor<EquipHoleColor> 孔洞颜色;
 
 
-    public readonly MonitorDictionary<byte, InscriptionSkill> 铭文技能;
+    public readonly MonitorDictionary<byte, 铭文技能> 铭文技能;
 
 
-    public readonly MonitorDictionary<byte, GameItems> 镶嵌灵石;
+    public readonly MonitorDictionary<byte, 游戏物品> 镶嵌灵石;
   }
 }

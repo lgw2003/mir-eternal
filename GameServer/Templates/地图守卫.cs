@@ -7,9 +7,9 @@ namespace GameServer.Templates
 	/// <summary>
 	/// 守卫
 	/// </summary>
-	public sealed class Guards
+	public sealed class 地图守卫
 	{
-		public static Dictionary<ushort, Guards> DataSheet;
+		public static Dictionary<ushort, 地图守卫> DataSheet;
 
 		public string 守卫名字;
 		public ushort 守卫编号;
@@ -26,12 +26,12 @@ namespace GameServer.Templates
 
 		public static void LoadData()
 		{
-			DataSheet = new Dictionary<ushort, Guards>();
+			DataSheet = new Dictionary<ushort, 地图守卫>();
 			string text = Config.GameDataPath + "\\System\\Npc数据\\守卫数据\\";
 
 			if (Directory.Exists(text))
 			{
-				foreach (var obj in Serializer.Deserialize<Guards>(text))
+				foreach (var obj in Serializer.Deserialize<地图守卫>(text))
 					DataSheet.Add(obj.守卫编号, obj);
 			}
 		}

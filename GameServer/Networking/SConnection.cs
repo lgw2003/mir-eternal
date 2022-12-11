@@ -54,7 +54,7 @@ namespace GameServer.Networking
                 {
                     if (MainProcess.CurrentTime > DisconnectTime)
                     {
-                        CallExceptionEventHandler(new Exception("No response for a long time, disconnect."));
+                        CallExceptionEventHandler(new Exception("长时间无响应,断开连接."));
                     }
                     else
                     {

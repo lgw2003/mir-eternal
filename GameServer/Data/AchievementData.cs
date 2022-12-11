@@ -16,6 +16,6 @@ namespace GameServer.Data
         public readonly DataMonitor<DateTime> ReceivedAt;
 
         public readonly DataMonitor<CharacterData> Character;
-        public GameAchievements Info => GameAchievements.DataSheet.TryGetValue(AchievementId.V, out var achievementInfo) ? achievementInfo : null;
+        public 游戏成就 Info => 游戏成就.DataSheet.TryGetValue(AchievementId.V, out var achievementInfo) ? achievementInfo : null;
     }
 }

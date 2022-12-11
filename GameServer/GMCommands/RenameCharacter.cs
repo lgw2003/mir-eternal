@@ -20,7 +20,7 @@ namespace GameServer
 		public override void Execute()
 		{
 			GameData GameData;
-			if (GameDataGateway.CharacterDataTable.Keyword.TryGetValue(this.CurrentCharacterName, out GameData))
+			if (GameDataGateway.角色数据表.Keyword.TryGetValue(this.CurrentCharacterName, out GameData))
 			{
 				CharacterData CharacterData = GameData as CharacterData;
 				if (CharacterData != null)
@@ -35,14 +35,14 @@ namespace GameServer
 						MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, character name too long");
 						return;
 					}
-					if (GameDataGateway.CharacterDataTable.Keyword.ContainsKey(this.NewCharacterName))
+					if (GameDataGateway.角色数据表.Keyword.ContainsKey(this.NewCharacterName))
 					{
 						MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, name already registered");
 						return;
 					}
-					GameDataGateway.CharacterDataTable.Keyword.Remove(CharacterData.CharName.V);
+					GameDataGateway.角色数据表.Keyword.Remove(CharacterData.CharName.V);
 					CharacterData.CharName.V = this.NewCharacterName;
-					GameDataGateway.CharacterDataTable.Keyword.Add(CharacterData.CharName.V, CharacterData);
+					GameDataGateway.角色数据表.Keyword.Add(CharacterData.CharName.V, CharacterData);
 					MainForm.AddCommandLog(string.Format("<= @{0} command has been executed, with the current name of the character: {1}", base.GetType().Name, CharacterData));
 					return;
 				}

@@ -7,9 +7,9 @@ namespace GameServer.Templates
     /// <summary>
     /// 游戏地图
     /// </summary>
-    public sealed class GameMap
+    public sealed class 游戏地图
     {
-        public static Dictionary<byte, GameMap> DataSheet;
+        public static Dictionary<byte, 游戏地图> DataSheet;
 
         public byte 地图编号;
         public string 地图名字;
@@ -24,11 +24,11 @@ namespace GameServer.Templates
 
         public static void LoadData()
         {
-            DataSheet = new Dictionary<byte, GameMap>();
+            DataSheet = new Dictionary<byte, 游戏地图>();
             string text = Config.GameDataPath + "\\System\\游戏地图\\地图数据\\";
             if (Directory.Exists(text))
             {
-                foreach (var obj in Serializer.Deserialize<GameMap>(text))
+                foreach (var obj in Serializer.Deserialize<游戏地图>(text))
                     DataSheet.Add(obj.地图编号, obj);
             }
         }

@@ -17,7 +17,7 @@ namespace GameServer.Data
             charConstraint.Info.V = mission;
             charConstraint.Count.V = 0;
 
-            GameDataGateway.CharacterQuestConstraintDataTable.AddData(charConstraint, true);
+            GameDataGateway.角色执行任务数据表.AddData(charConstraint, true);
 
             return charConstraint;
         }

@@ -9,7 +9,7 @@ namespace GameServer.Templates
 	/// <summary>
 	/// NPC对话
 	/// </summary>
-	public sealed class NpcDialogs
+	public sealed class 对话数据
 	{
 
 		public static Dictionary<int, string> DataSheet;
@@ -68,7 +68,7 @@ namespace GameServer.Templates
 
 			if (Directory.Exists(text))
 			{
-				foreach (var obj in Serializer.Deserialize<NpcDialogs>(text))
+				foreach (var obj in Serializer.Deserialize<对话数据>(text))
 					DataSheet.Add(obj.对话编号, obj.对话内容);
 			}
 		}

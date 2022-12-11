@@ -19,7 +19,7 @@ namespace GameServer.PlayerCommands
 
         public override void Execute()
         {
-            if (!GameItems.DataSheetByName.TryGetValue(ItemName, out var itemTemplate))
+            if (!游戏物品.DataSheetByName.TryGetValue(ItemName, out var itemTemplate))
             {
                 Player.SendMessage("Item does not exist");
                 return;

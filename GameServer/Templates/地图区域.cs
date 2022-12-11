@@ -9,9 +9,9 @@ namespace GameServer.Templates
     /// <summary>
     /// 地图区域
     /// </summary>
-    public class MapAreas
+    public class 地图区域
     {
-        public static List<MapAreas> DataSheet;
+        public static List<地图区域> DataSheet;
 
         public byte 所处地图;
         public string 所处地名;
@@ -25,13 +25,13 @@ namespace GameServer.Templates
 
         public static void LoadData()
         {
-            DataSheet = new List<MapAreas>();
+            DataSheet = new List<地图区域>();
             string text = Config.GameDataPath + "\\System\\游戏地图\\地图区域\\";
             if (Directory.Exists(text))
             {
-                foreach (object obj in Serializer.Deserialize<MapAreas>(text))
+                foreach (object obj in Serializer.Deserialize<地图区域>(text))
                 {
-                    DataSheet.Add((MapAreas)obj);
+                    DataSheet.Add((地图区域)obj);
                 }
             }
         }

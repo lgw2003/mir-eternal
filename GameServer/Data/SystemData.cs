@@ -20,7 +20,7 @@ namespace GameServer.Data
 			
 			
 			this.Index.V = 索引;
-			GameDataGateway.Data型表[typeof(SystemData)].AddData(this, false);
+			GameDataGateway.数据类型表[typeof(SystemData)].AddData(this, false);
 		}
 
 		
@@ -28,7 +28,7 @@ namespace GameServer.Data
 		{
 			get
 			{
-				return GameDataGateway.Data型表[typeof(SystemData)].DataSheet[1] as SystemData;
+				return GameDataGateway.数据类型表[typeof(SystemData)].DataSheet[1] as SystemData;
 			}
 		}
 

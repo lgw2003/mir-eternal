@@ -7,10 +7,10 @@ namespace GameServer.Templates
 	/// <summary>
 	/// 铭文技能
 	/// </summary>
-	public sealed class InscriptionSkill
+	public sealed class 铭文技能
 	{
-		public static Dictionary<ushort, InscriptionSkill> DataSheet;
-		private static Dictionary<byte, List<InscriptionSkill>> _概率表;
+		public static Dictionary<ushort, 铭文技能> DataSheet;
+		private static Dictionary<byte, List<铭文技能>> _概率表;
 
 		public string 技能名字;
 		public GameObjectRace 技能职业;
@@ -72,9 +72,9 @@ namespace GameServer.Templates
 			}
 		}
 
-		public static InscriptionSkill RandomWashing(byte cleanUpRace)
+		public static 铭文技能 RandomWashing(byte cleanUpRace)
 		{
-			List<InscriptionSkill> list;
+			List<铭文技能> list;
 			if (_概率表.TryGetValue(cleanUpRace, out list) && list.Count > 0)
 				return list[MainProcess.RandomNumber.Next(list.Count)];
 			return null;
@@ -82,27 +82,27 @@ namespace GameServer.Templates
 		
 		public static void LoadData()
 		{
-			DataSheet = new Dictionary<ushort, InscriptionSkill>();
+			DataSheet = new Dictionary<ushort, 铭文技能>();
 			string text = Config.GameDataPath + "\\System\\技能数据\\铭文数据\\";
 			
 			if (Directory.Exists(text))
 			{
-				foreach (var obj in Serializer.Deserialize<InscriptionSkill>(text))
+				foreach (var obj in Serializer.Deserialize<铭文技能>(text))
 					DataSheet.Add(obj.Index, obj);
 			}
 
-            var dictionary = new Dictionary<byte, List<InscriptionSkill>>
+            var dictionary = new Dictionary<byte, List<铭文技能>>
             {
-                [0] = new List<InscriptionSkill>(),
-                [1] = new List<InscriptionSkill>(),
-                [2] = new List<InscriptionSkill>(),
-                [3] = new List<InscriptionSkill>(),
-                [4] = new List<InscriptionSkill>(),
-                [5] = new List<InscriptionSkill>()
+                [0] = new List<铭文技能>(),
+                [1] = new List<铭文技能>(),
+                [2] = new List<铭文技能>(),
+                [3] = new List<铭文技能>(),
+                [4] = new List<铭文技能>(),
+                [5] = new List<铭文技能>()
             };
 
             _概率表 = dictionary;
-			foreach (InscriptionSkill skill in DataSheet.Values)
+			foreach (铭文技能 skill in DataSheet.Values)
 			{
 				if (skill.铭文编号 != 0)
 				{
@@ -116,7 +116,7 @@ namespace GameServer.Templates
 			{
 				for (int k = 0; k < list.Count; k++)
 				{
-					InscriptionSkill value = list[k];
+					铭文技能 value = list[k];
 					int index = MainProcess.RandomNumber.Next(list.Count);
 					list[k] = list[index];
 					list[index] = value;

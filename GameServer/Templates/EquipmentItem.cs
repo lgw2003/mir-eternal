@@ -2,7 +2,7 @@
 
 namespace GameServer.Templates
 {
-	public class EquipmentItem : GameItems
+	public class EquipmentItem : 游戏物品
 	{
 		public bool DestroyOnDeath;
 		public bool DisableDismount;

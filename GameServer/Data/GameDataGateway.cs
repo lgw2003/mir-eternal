@@ -80,12 +80,12 @@ namespace GameServer.Data
 
         public static void 加载数据()
         {
-            GameDataGateway.Data型表 = new Dictionary<Type, DataTableBase>();
+            GameDataGateway.数据类型表 = new Dictionary<Type, DataTableBase>();
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
                 if (type.IsSubclassOf(typeof(GameData)))
                 {
-                    GameDataGateway.Data型表[type] = (DataTableBase)Activator.CreateInstance(typeof(DataTableCrud<>).MakeGenericType(new Type[]
+                    GameDataGateway.数据类型表[type] = (DataTableBase)Activator.CreateInstance(typeof(DataTableCrud<>).MakeGenericType(new Type[]
                     {
                         type
                     }));
@@ -95,8 +95,8 @@ namespace GameServer.Data
             {
                 using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
                 {
-                    binaryWriter.Write(GameDataGateway.Data型表.Count);
-                    foreach (KeyValuePair<Type, DataTableBase> keyValuePair in GameDataGateway.Data型表)
+                    binaryWriter.Write(GameDataGateway.数据类型表.Count);
+                    foreach (KeyValuePair<Type, DataTableBase> keyValuePair in GameDataGateway.数据类型表)
                     {
                         keyValuePair.Value.CurrentMappingVersion.保存映射描述(binaryWriter);
                     }
@@ -121,7 +121,7 @@ namespace GameServer.Data
                             DataMapping 当前历史映射 = enumerator2.Current;
                             byte[] 历史映射数据 = binaryReader.ReadBytes(binaryReader.ReadInt32());
                             DataTableBase 存表实例;
-                            if (!(当前历史映射.DataType == null) && GameDataGateway.Data型表.TryGetValue(当前历史映射.DataType, out 存表实例))
+                            if (!(当前历史映射.DataType == null) && GameDataGateway.数据类型表.TryGetValue(当前历史映射.DataType, out 存表实例))
                             {
                                 list2.Add(Task.Run(delegate ()
                                 {
@@ -136,26 +136,26 @@ namespace GameServer.Data
                     }
                 }
             }
-            if (GameDataGateway.Data型表[typeof(SystemData)].DataSheet.Count == 0)
+            if (GameDataGateway.数据类型表[typeof(SystemData)].DataSheet.Count == 0)
             {
                 new SystemData(1);
             }
-            GameDataGateway.AccountData表 = (GameDataGateway.Data型表[typeof(AccountData)] as DataTableCrud<AccountData>);
-            GameDataGateway.CharacterDataTable = (GameDataGateway.Data型表[typeof(CharacterData)] as DataTableCrud<CharacterData>);
-            GameDataGateway.CharacterQuestDataTable = (GameDataGateway.Data型表[typeof(CharacterQuest)] as DataTableCrud<CharacterQuest>);
-            GameDataGateway.CharacterQuestConstraintDataTable = (GameDataGateway.Data型表[typeof(CharacterQuestMission)] as DataTableCrud<CharacterQuestMission>);
-            GameDataGateway.PetDataTable = (GameDataGateway.Data型表[typeof(PetData)] as DataTableCrud<PetData>);
-            GameDataGateway.ItemData表 = (GameDataGateway.Data型表[typeof(ItemData)] as DataTableCrud<ItemData>);
-            GameDataGateway.EquipmentData表 = (GameDataGateway.Data型表[typeof(EquipmentData)] as DataTableCrud<EquipmentData>);
-            GameDataGateway.SkillData表 = (GameDataGateway.Data型表[typeof(SkillData)] as DataTableCrud<SkillData>);
-            GameDataGateway.BuffData表 = (GameDataGateway.Data型表[typeof(BuffData)] as DataTableCrud<BuffData>);
-            GameDataGateway.TeamData表 = (GameDataGateway.Data型表[typeof(TeamData)] as DataTableCrud<TeamData>);
-            GameDataGateway.GuildData表 = (GameDataGateway.Data型表[typeof(GuildData)] as DataTableCrud<GuildData>);
-            GameDataGateway.TeacherData表 = (GameDataGateway.Data型表[typeof(TeacherData)] as DataTableCrud<TeacherData>);
-            GameDataGateway.MailData表 = (GameDataGateway.Data型表[typeof(MailData)] as DataTableCrud<MailData>);
+            GameDataGateway.AccountData表 = (GameDataGateway.数据类型表[typeof(AccountData)] as DataTableCrud<AccountData>);
+            GameDataGateway.角色数据表 = (GameDataGateway.数据类型表[typeof(CharacterData)] as DataTableCrud<CharacterData>);
+            GameDataGateway.角色任务数据表 = (GameDataGateway.数据类型表[typeof(CharacterQuest)] as DataTableCrud<CharacterQuest>);
+            GameDataGateway.角色执行任务数据表 = (GameDataGateway.数据类型表[typeof(CharacterQuestMission)] as DataTableCrud<CharacterQuestMission>);
+            GameDataGateway.宠物数据表 = (GameDataGateway.数据类型表[typeof(PetData)] as DataTableCrud<PetData>);
+            GameDataGateway.物品数据表 = (GameDataGateway.数据类型表[typeof(ItemData)] as DataTableCrud<ItemData>);
+            GameDataGateway.装备数据表 = (GameDataGateway.数据类型表[typeof(EquipmentData)] as DataTableCrud<EquipmentData>);
+            GameDataGateway.技能数据表 = (GameDataGateway.数据类型表[typeof(SkillData)] as DataTableCrud<SkillData>);
+            GameDataGateway.Buff数据表 = (GameDataGateway.数据类型表[typeof(BuffData)] as DataTableCrud<BuffData>);
+            GameDataGateway.队伍数据表 = (GameDataGateway.数据类型表[typeof(TeamData)] as DataTableCrud<TeamData>);
+            GameDataGateway.行会数据表 = (GameDataGateway.数据类型表[typeof(GuildData)] as DataTableCrud<GuildData>);
+            GameDataGateway.师门数据表 = (GameDataGateway.数据类型表[typeof(TeacherData)] as DataTableCrud<TeacherData>);
+            GameDataGateway.邮件数据表 = (GameDataGateway.数据类型表[typeof(MailData)] as DataTableCrud<MailData>);
             
             DataLinkTable.处理任务();
-            foreach (KeyValuePair<int, GameData> keyValuePair2 in GameDataGateway.CharacterDataTable.DataSheet)
+            foreach (KeyValuePair<int, GameData> keyValuePair2 in GameDataGateway.角色数据表.DataSheet)
             {
                 keyValuePair2.Value.OnLoadCompleted();
             }
@@ -165,13 +165,13 @@ namespace GameServer.Data
 
         public static void SaveData()
         {
-            Parallel.ForEach(Data型表.Values, (DataTableBase x) => x.保存数据());
+            Parallel.ForEach(数据类型表.Values, (DataTableBase x) => x.保存数据());
         }
 
 
         public static void 强制保存()
         {
-            Parallel.ForEach<DataTableBase>(GameDataGateway.Data型表.Values, delegate (DataTableBase x)
+            Parallel.ForEach<DataTableBase>(GameDataGateway.数据类型表.Values, delegate (DataTableBase x)
             {
                 x.强制保存();
             });
@@ -185,7 +185,7 @@ namespace GameServer.Data
             using var binaryWriter = new BinaryWriter(File.Create(UserPath));
 
             binaryWriter.Write(表头描述);
-            foreach (KeyValuePair<Type, DataTableBase> keyValuePair in Data型表)
+            foreach (KeyValuePair<Type, DataTableBase> keyValuePair in 数据类型表)
             {
                 byte[] array = keyValuePair.Value.SaveData();
                 binaryWriter.Write(array.Length);
@@ -201,7 +201,7 @@ namespace GameServer.Data
             using (BinaryWriter binaryWriter = new BinaryWriter(File.Create(UserTempPath)))
             {
                 binaryWriter.Write(表头描述);
-                foreach (KeyValuePair<Type, DataTableBase> keyValuePair in Data型表)
+                foreach (KeyValuePair<Type, DataTableBase> keyValuePair in 数据类型表)
                 {
                     byte[] array = keyValuePair.Value.SaveData();
                     binaryWriter.Write(array.Length);
@@ -230,7 +230,7 @@ namespace GameServer.Data
         public static void SortDataCommand(bool 保存数据)
         {
             int num = 0;
-            foreach (KeyValuePair<Type, DataTableBase> keyValuePair in GameDataGateway.Data型表)
+            foreach (KeyValuePair<Type, DataTableBase> keyValuePair in GameDataGateway.数据类型表)
             {
                 int num2 = 0;
                 if (keyValuePair.Value.DataType == typeof(GuildData))
@@ -253,7 +253,7 @@ namespace GameServer.Data
                     {
                         if (GameData is CharacterData)
                         {
-                            using (Dictionary<int, GameData>.Enumerator enumerator2 = GameDataGateway.GuildData表.DataSheet.GetEnumerator())
+                            using (Dictionary<int, GameData>.Enumerator enumerator2 = GameDataGateway.行会数据表.DataSheet.GetEnumerator())
                             {
                                 while (enumerator2.MoveNext())
                                 {
@@ -290,7 +290,7 @@ namespace GameServer.Data
                         }
                         if (GameData is GuildData)
                         {
-                            using (Dictionary<int, GameData>.Enumerator enumerator2 = GameDataGateway.GuildData表.DataSheet.GetEnumerator())
+                            using (Dictionary<int, GameData>.Enumerator enumerator2 = GameDataGateway.行会数据表.DataSheet.GetEnumerator())
                             {
                                 while (enumerator2.MoveNext())
                                 {
@@ -344,7 +344,7 @@ namespace GameServer.Data
             MainForm.AddCommandLog("Start Clean Characters data...");
             DateTime t = DateTime.Now.AddDays((double)(-(double)限制天数));
             int num = 0;
-            foreach (GameData GameData in GameDataGateway.CharacterDataTable.DataSheet.Values.ToList<GameData>())
+            foreach (GameData GameData in GameDataGateway.角色数据表.DataSheet.Values.ToList<GameData>())
             {
                 CharacterData CharacterData = GameData as CharacterData;
                 if (CharacterData != null && (int)CharacterData.Level.V < MinLevel && !(CharacterData.OfflineDate.V > t))
@@ -402,14 +402,14 @@ namespace GameServer.Data
                 MainForm.Singleton.MainTabs.SelectedIndex = 2;
                 MainForm.AddCommandLog("Start collating current customer data...");
                 GameDataGateway.SortDataCommand(false);
-                Dictionary<Type, DataTableBase> dictionary = GameDataGateway.Data型表;
+                Dictionary<Type, DataTableBase> dictionary = GameDataGateway.数据类型表;
                 MainForm.AddCommandLog("Start loading the specified customer data...");
-                GameDataGateway.Data型表 = new Dictionary<Type, DataTableBase>();
+                GameDataGateway.数据类型表 = new Dictionary<Type, DataTableBase>();
                 foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
                 {
                     if (type.IsSubclassOf(typeof(GameData)))
                     {
-                        GameDataGateway.Data型表[type] = (DataTableBase)Activator.CreateInstance(typeof(DataTableCrud<>).MakeGenericType(new Type[]
+                        GameDataGateway.数据类型表[type] = (DataTableBase)Activator.CreateInstance(typeof(DataTableCrud<>).MakeGenericType(new Type[]
                         {
                             type
                         }));
@@ -419,8 +419,8 @@ namespace GameServer.Data
                 {
                     using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
                     {
-                        binaryWriter.Write(GameDataGateway.Data型表.Count);
-                        foreach (KeyValuePair<Type, DataTableBase> keyValuePair in GameDataGateway.Data型表)
+                        binaryWriter.Write(GameDataGateway.数据类型表.Count);
+                        foreach (KeyValuePair<Type, DataTableBase> keyValuePair in GameDataGateway.数据类型表)
                         {
                             keyValuePair.Value.CurrentMappingVersion.保存映射描述(binaryWriter);
                         }
@@ -445,7 +445,7 @@ namespace GameServer.Data
                                 DataMapping 当前历史映射 = enumerator2.Current;
                                 byte[] 历史映射数据 = binaryReader.ReadBytes(binaryReader.ReadInt32());
                                 DataTableBase 存表实例;
-                                if (!(当前历史映射.DataType == null) && GameDataGateway.Data型表.TryGetValue(当前历史映射.DataType, out 存表实例))
+                                if (!(当前历史映射.DataType == null) && GameDataGateway.数据类型表.TryGetValue(当前历史映射.DataType, out 存表实例))
                                 {
                                     list2.Add(Task.Run(delegate ()
                                     {
@@ -463,7 +463,7 @@ namespace GameServer.Data
                 MainForm.AddCommandLog("Start collating specified customer data...");
                 DataLinkTable.处理任务();
                 GameDataGateway.SortDataCommand(false);
-                Dictionary<Type, DataTableBase> dictionary2 = GameDataGateway.Data型表;
+                Dictionary<Type, DataTableBase> dictionary2 = GameDataGateway.数据类型表;
                 foreach (KeyValuePair<Type, DataTableBase> keyValuePair2 in dictionary)
                 {
                     if (dictionary2.ContainsKey(keyValuePair2.Key))
@@ -590,7 +590,7 @@ namespace GameServer.Data
                     ((CharacterData)keyValuePair8.Value).历史排名.Clear();
                     ((CharacterData)keyValuePair8.Value).当前排名.Clear();
                 }
-                GameDataGateway.Data型表 = dictionary;
+                GameDataGateway.数据类型表 = dictionary;
                 GameDataGateway.强制保存();
                 GameDataGateway.CleanUp();
                 MainForm.AddCommandLog("The consolidation of customer data is complete");
@@ -609,40 +609,40 @@ namespace GameServer.Data
         public static DataTableCrud<AccountData> AccountData表;
 
 
-        public static DataTableCrud<CharacterData> CharacterDataTable;
+        public static DataTableCrud<CharacterData> 角色数据表;
 
-        public static DataTableCrud<CharacterQuest> CharacterQuestDataTable;
+        public static DataTableCrud<CharacterQuest> 角色任务数据表;
 
-        public static DataTableCrud<CharacterQuestMission> CharacterQuestConstraintDataTable;
-
-
-        public static DataTableCrud<PetData> PetDataTable;
+        public static DataTableCrud<CharacterQuestMission> 角色执行任务数据表;
 
 
-        public static DataTableCrud<ItemData> ItemData表;
+        public static DataTableCrud<PetData> 宠物数据表;
 
 
-        public static DataTableCrud<EquipmentData> EquipmentData表;
+        public static DataTableCrud<ItemData> 物品数据表;
 
 
-        public static DataTableCrud<SkillData> SkillData表;
+        public static DataTableCrud<EquipmentData> 装备数据表;
 
 
-        public static DataTableCrud<BuffData> BuffData表;
+        public static DataTableCrud<SkillData> 技能数据表;
 
 
-        public static DataTableCrud<TeamData> TeamData表;
+        public static DataTableCrud<BuffData> Buff数据表;
 
 
-        public static DataTableCrud<GuildData> GuildData表;
+        public static DataTableCrud<TeamData> 队伍数据表;
 
 
-        public static DataTableCrud<TeacherData> TeacherData表;
+        public static DataTableCrud<GuildData> 行会数据表;
 
 
-        public static DataTableCrud<MailData> MailData表;
+        public static DataTableCrud<TeacherData> 师门数据表;
 
 
-        public static Dictionary<Type, DataTableBase> Data型表;
+        public static DataTableCrud<MailData> 邮件数据表;
+
+
+        public static Dictionary<Type, DataTableBase> 数据类型表;
     }
 }

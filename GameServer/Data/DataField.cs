@@ -99,41 +99,41 @@ namespace GameServer.Data
                 DataMonitor.QuietlySetValue(DateTime.FromBinary(r.ReadInt64()));
                 return DataMonitor;
             };
-            Type typeFromHandle12 = typeof(DataMonitor<RandomStats>);
+            Type typeFromHandle12 = typeof(DataMonitor<随机属性>);
             dictionary[typeFromHandle12] = delegate (BinaryReader r, GameData o, DataField f)
             {
-                DataMonitor<RandomStats> DataMonitor = new DataMonitor<RandomStats>(o);
-                RandomStats 随机Stat;
-                DataMonitor.QuietlySetValue(RandomStats.DataSheet.TryGetValue(r.ReadInt32(), out 随机Stat) ? 随机Stat : null);
+                DataMonitor<随机属性> DataMonitor = new DataMonitor<随机属性>(o);
+                随机属性 随机Stat;
+                DataMonitor.QuietlySetValue(随机属性.DataSheet.TryGetValue(r.ReadInt32(), out 随机Stat) ? 随机Stat : null);
                 return DataMonitor;
             };
-            Type typeFromHandle13 = typeof(DataMonitor<InscriptionSkill>);
+            Type typeFromHandle13 = typeof(DataMonitor<铭文技能>);
             dictionary[typeFromHandle13] = delegate (BinaryReader r, GameData o, DataField f)
             {
-                DataMonitor<InscriptionSkill> DataMonitor = new DataMonitor<InscriptionSkill>(o);
-                InscriptionSkill 铭文技能;
-                DataMonitor.QuietlySetValue(InscriptionSkill.DataSheet.TryGetValue(r.ReadUInt16(), out 铭文技能) ? 铭文技能 : null);
+                DataMonitor<铭文技能> DataMonitor = new DataMonitor<铭文技能>(o);
+                铭文技能 铭文技能;
+                DataMonitor.QuietlySetValue(铭文技能.DataSheet.TryGetValue(r.ReadUInt16(), out 铭文技能) ? 铭文技能 : null);
                 return DataMonitor;
             };
-            Type typeFromHandle14 = typeof(DataMonitor<GameItems>);
+            Type typeFromHandle14 = typeof(DataMonitor<游戏物品>);
             dictionary[typeFromHandle14] = delegate (BinaryReader r, GameData o, DataField f)
             {
-                DataMonitor<GameItems> DataMonitor = new DataMonitor<GameItems>(o);
-                GameItems 游戏物品;
-                DataMonitor.QuietlySetValue(GameItems.DataSheet.TryGetValue(r.ReadInt32(), out 游戏物品) ? 游戏物品 : null);
+                DataMonitor<游戏物品> DataMonitor = new DataMonitor<游戏物品>(o);
+                游戏物品 游戏物品;
+                DataMonitor.QuietlySetValue(游戏物品.DataSheet.TryGetValue(r.ReadInt32(), out 游戏物品) ? 游戏物品 : null);
                 return DataMonitor;
             };
-            dictionary[typeof(DataMonitor<GameQuests>)] = delegate (BinaryReader r, GameData o, DataField f)
+            dictionary[typeof(DataMonitor<游戏任务>)] = delegate (BinaryReader r, GameData o, DataField f)
             {
-                DataMonitor<GameQuests> DataMonitor = new DataMonitor<GameQuests>(o);
-                DataMonitor.QuietlySetValue(GameQuests.DataSheet.TryGetValue(r.ReadInt32(), out var gameQuest) ? gameQuest : null);
+                DataMonitor<游戏任务> DataMonitor = new DataMonitor<游戏任务>(o);
+                DataMonitor.QuietlySetValue(游戏任务.DataSheet.TryGetValue(r.ReadInt32(), out var gameQuest) ? gameQuest : null);
                 return DataMonitor;
             };
             dictionary[typeof(DataMonitor<GameQuestMission>)] = delegate (BinaryReader r, GameData o, DataField f)
             {
                 DataMonitor<GameQuestMission> DataMonitor = new DataMonitor<GameQuestMission>(o);
 
-                if (!GameQuests.DataSheet.TryGetValue(r.ReadInt32(), out var gameQuest))
+                if (!游戏任务.DataSheet.TryGetValue(r.ReadInt32(), out var gameQuest))
                     return DataMonitor;
 
                 DataMonitor.QuietlySetValue(gameQuest.执行任务[r.ReadInt32()]);
@@ -415,15 +415,15 @@ namespace GameServer.Data
                 }
                 return ListMonitor;
             };
-            Type typeFromHandle40 = typeof(ListMonitor<RandomStats>);
+            Type typeFromHandle40 = typeof(ListMonitor<随机属性>);
             dictionary[typeFromHandle40] = delegate (BinaryReader r, GameData o, DataField f)
             {
-                ListMonitor<RandomStats> ListMonitor = new ListMonitor<RandomStats>(o);
+                ListMonitor<随机属性> ListMonitor = new ListMonitor<随机属性>(o);
                 int num = r.ReadInt32();
                 for (int i = 0; i < num; i++)
                 {
-                    RandomStats tv;
-                    if (RandomStats.DataSheet.TryGetValue(r.ReadInt32(), out tv))
+                    随机属性 tv;
+                    if (随机属性.DataSheet.TryGetValue(r.ReadInt32(), out tv))
                     {
                         ListMonitor.QuietlyAdd(tv);
                     }
@@ -539,34 +539,34 @@ namespace GameServer.Data
                 }
                 return MonitorDictionary;
             };
-            Type typeFromHandle50 = typeof(MonitorDictionary<byte, GameItems>);
+            Type typeFromHandle50 = typeof(MonitorDictionary<byte, 游戏物品>);
             dictionary[typeFromHandle50] = delegate (BinaryReader r, GameData o, DataField f)
             {
-                MonitorDictionary<byte, GameItems> MonitorDictionary = new MonitorDictionary<byte, GameItems>(o);
+                MonitorDictionary<byte, 游戏物品> MonitorDictionary = new MonitorDictionary<byte, 游戏物品>(o);
                 int num = r.ReadInt32();
                 for (int i = 0; i < num; i++)
                 {
                     byte key = r.ReadByte();
                     int key2 = r.ReadInt32();
-                    GameItems value;
-                    if (GameItems.DataSheet.TryGetValue(key2, out value))
+                    游戏物品 value;
+                    if (游戏物品.DataSheet.TryGetValue(key2, out value))
                     {
                         MonitorDictionary.QuietlyAdd(key, value);
                     }
                 }
                 return MonitorDictionary;
             };
-            Type typeFromHandle51 = typeof(MonitorDictionary<byte, InscriptionSkill>);
+            Type typeFromHandle51 = typeof(MonitorDictionary<byte, 铭文技能>);
             dictionary[typeFromHandle51] = delegate (BinaryReader r, GameData o, DataField f)
             {
-                MonitorDictionary<byte, InscriptionSkill> MonitorDictionary = new MonitorDictionary<byte, InscriptionSkill>(o);
+                MonitorDictionary<byte, 铭文技能> MonitorDictionary = new MonitorDictionary<byte, 铭文技能>(o);
                 int num = r.ReadInt32();
                 for (int i = 0; i < num; i++)
                 {
                     byte key = r.ReadByte();
                     ushort key2 = r.ReadUInt16();
-                    InscriptionSkill value;
-                    if (InscriptionSkill.DataSheet.TryGetValue(key2, out value))
+                    铭文技能 value;
+                    if (铭文技能.DataSheet.TryGetValue(key2, out value))
                     {
                         MonitorDictionary.QuietlyAdd(key, value);
                     }
@@ -817,27 +817,27 @@ namespace GameServer.Data
             {
                 b.Write(((DataMonitor<DateTime>)o).V.ToBinary());
             };
-            typeFromHandle52 = typeof(DataMonitor<RandomStats>);
+            typeFromHandle52 = typeof(DataMonitor<随机属性>);
             dictionary2[typeFromHandle52] = delegate (BinaryWriter b, object o)
             {
-                RandomStats v = ((DataMonitor<RandomStats>)o).V;
+                随机属性 v = ((DataMonitor<随机属性>)o).V;
                 b.Write((v != null) ? v.属性编号 : 0);
             };
-            typeFromHandle51 = typeof(DataMonitor<InscriptionSkill>);
+            typeFromHandle51 = typeof(DataMonitor<铭文技能>);
             dictionary2[typeFromHandle51] = delegate (BinaryWriter b, object o)
             {
-                InscriptionSkill v = ((DataMonitor<InscriptionSkill>)o).V;
+                铭文技能 v = ((DataMonitor<铭文技能>)o).V;
                 b.Write((v != null) ? v.Index : 0);
             };
-            typeFromHandle50 = typeof(DataMonitor<GameItems>);
+            typeFromHandle50 = typeof(DataMonitor<游戏物品>);
             dictionary2[typeFromHandle50] = delegate (BinaryWriter b, object o)
             {
-                GameItems v = ((DataMonitor<GameItems>)o).V;
+                游戏物品 v = ((DataMonitor<游戏物品>)o).V;
                 b.Write((v != null) ? v.物品编号 : 0);
             };
-            dictionary2[typeof(DataMonitor<GameQuests>)] = delegate (BinaryWriter b, object o)
+            dictionary2[typeof(DataMonitor<游戏任务>)] = delegate (BinaryWriter b, object o)
             {
-                b.Write(((DataMonitor<GameQuests>)o).V?.编号 ?? 0);
+                b.Write(((DataMonitor<游戏任务>)o).V?.编号 ?? 0);
             };
             dictionary2[typeof(DataMonitor<GameQuestMission>)] = delegate (BinaryWriter b, object o)
             {
@@ -1062,12 +1062,12 @@ namespace GameServer.Data
                     b.Write(GuildEvents.事记时间);
                 }
             };
-            typeFromHandle24 = typeof(ListMonitor<RandomStats>);
+            typeFromHandle24 = typeof(ListMonitor<随机属性>);
             dictionary2[typeFromHandle24] = delegate (BinaryWriter b, object o)
             {
-                ListMonitor<RandomStats> ListMonitor = (ListMonitor<RandomStats>)o;
+                ListMonitor<随机属性> ListMonitor = (ListMonitor<随机属性>)o;
                 b.Write((ListMonitor != null) ? ListMonitor.Count : 0);
-                foreach (RandomStats 随机Stat in ListMonitor)
+                foreach (随机属性 随机Stat in ListMonitor)
                 {
                     b.Write(随机Stat.属性编号);
                 }
@@ -1167,23 +1167,23 @@ namespace GameServer.Data
                     b.Write(keyValuePair.Value.ToBinary());
                 }
             };
-            typeFromHandle14 = typeof(MonitorDictionary<byte, GameItems>);
+            typeFromHandle14 = typeof(MonitorDictionary<byte, 游戏物品>);
             dictionary2[typeFromHandle14] = delegate (BinaryWriter b, object o)
             {
-                MonitorDictionary<byte, GameItems> MonitorDictionary = (MonitorDictionary<byte, GameItems>)o;
+                MonitorDictionary<byte, 游戏物品> MonitorDictionary = (MonitorDictionary<byte, 游戏物品>)o;
                 b.Write((MonitorDictionary != null) ? MonitorDictionary.Count : 0);
-                foreach (KeyValuePair<byte, GameItems> keyValuePair in MonitorDictionary)
+                foreach (KeyValuePair<byte, 游戏物品> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
                     b.Write(keyValuePair.Value.物品编号);
                 }
             };
-            typeFromHandle13 = typeof(MonitorDictionary<byte, InscriptionSkill>);
+            typeFromHandle13 = typeof(MonitorDictionary<byte, 铭文技能>);
             dictionary2[typeFromHandle13] = delegate (BinaryWriter b, object o)
             {
-                MonitorDictionary<byte, InscriptionSkill> MonitorDictionary = (MonitorDictionary<byte, InscriptionSkill>)o;
+                MonitorDictionary<byte, 铭文技能> MonitorDictionary = (MonitorDictionary<byte, 铭文技能>)o;
                 b.Write((MonitorDictionary != null) ? MonitorDictionary.Count : 0);
-                foreach (KeyValuePair<byte, InscriptionSkill> keyValuePair in MonitorDictionary)
+                foreach (KeyValuePair<byte, 铭文技能> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
                     b.Write(keyValuePair.Value.Index);

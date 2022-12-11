@@ -22,7 +22,7 @@ namespace GameServer.Data
 			this.GradeCap.V = GradeCap;
 			this.BoundWeapons.V = BoundWeapons;
 			this.MutinyTime.V = MutinyTime;
-			GameDataGateway.PetDataTable.AddData(this, true);
+			GameDataGateway.宠物数据表.AddData(this, true);
 		}
 
 		

@@ -20,7 +20,7 @@ namespace GameServer
 		public override void Execute()
 		{
 			MainForm.AddCommandLog("<= @" + base.GetType().Name + " The command has been executed and the database details are as follows:");
-			foreach (KeyValuePair<Type, DataTableBase> keyValuePair in GameDataGateway.Data型表)
+			foreach (KeyValuePair<Type, DataTableBase> keyValuePair in GameDataGateway.数据类型表)
 			{
 				MainForm.AddCommandLog(string.Format("{0}  Quantity: {1}", keyValuePair.Value.DataType.Name, keyValuePair.Value.DataSheet.Count));
 			}

@@ -7,9 +7,9 @@ namespace GameServer.Templates
 	/// <summary>
 	/// 技能陷阱
 	/// </summary>
-	public sealed class SkillTraps
+	public sealed class 技能陷阱
 	{
-		public static Dictionary<string, SkillTraps> DataSheet;
+		public static Dictionary<string, 技能陷阱> DataSheet;
 
 		public string 陷阱名字;
 		public ushort 陷阱编号;
@@ -25,7 +25,7 @@ namespace GameServer.Templates
 		public GameObjectStats 绑定角色属性;
 		public float 属性延时系数;
 		public bool 特定铭文延时;
-		public InscriptionSkill 绑定铭文技能;
+		public 铭文技能 绑定铭文技能;
 		public int 特定铭文技能;
 		public int 铭文延长时间;
 		public bool 陷阱能否移动;
@@ -45,11 +45,11 @@ namespace GameServer.Templates
 
 		public static void LoadData()
 		{
-			DataSheet = new Dictionary<string, SkillTraps>();
+			DataSheet = new Dictionary<string, 技能陷阱>();
 			string text = Config.GameDataPath + "\\System\\技能数据\\陷阱数据\\";
 			if (Directory.Exists(text))
 			{
-				foreach (var obj in Serializer.Deserialize<SkillTraps>(text))
+				foreach (var obj in Serializer.Deserialize<技能陷阱>(text))
 					DataSheet.Add(obj.陷阱名字, obj);
 			}
 		}

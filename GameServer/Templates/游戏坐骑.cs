@@ -11,9 +11,9 @@ namespace GameServer.Templates
     /// <summary>
     /// 游戏坐骑
     /// </summary>
-    public class GameMounts
+    public class 游戏坐骑
     {
-        public static IDictionary<ushort, GameMounts> DataSheet;
+        public static IDictionary<ushort, 游戏坐骑> DataSheet;
 
         public ushort 坐骑编号;
         public string 坐骑名字;
@@ -32,12 +32,12 @@ namespace GameServer.Templates
 
         public static void LoadData()
         {
-            DataSheet = new Dictionary<ushort, GameMounts>();
+            DataSheet = new Dictionary<ushort, 游戏坐骑>();
 
             string text = Config.GameDataPath + "\\System\\坐骑数据\\";
             if (Directory.Exists(text))
             {
-                foreach (var obj in Serializer.Deserialize<GameMounts>(text))
+                foreach (var obj in Serializer.Deserialize<游戏坐骑>(text))
                 {
                     obj.Stats = new Dictionary<GameObjectStats, int> {
                         { GameObjectStats.行走速度, obj.速度修改率 / 500 },

@@ -31,13 +31,13 @@ namespace GameServer.Data
 			this.ShorcutField.V = 100;
 			this.SkillId.V = 编号;
 			this.RemainingTimeLeft.V = this.SkillCount;
-			GameDataGateway.SkillData表.AddData(this, true);
+			GameDataGateway.技能数据表.AddData(this, true);
 		}
 
 		
 		public override string ToString()
 		{
-			InscriptionSkill 铭文模板 = this.铭文模板;
+			铭文技能 铭文模板 = this.铭文模板;
 			if (铭文模板 == null)
 			{
 				return null;
@@ -46,11 +46,11 @@ namespace GameServer.Data
 		}
 
 		
-		public InscriptionSkill 铭文模板
+		public 铭文技能 铭文模板
 		{
 			get
 			{
-				return InscriptionSkill.DataSheet[this.SkillIndex];
+				return 铭文技能.DataSheet[this.SkillIndex];
 			}
 		}
 

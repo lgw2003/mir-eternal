@@ -21,7 +21,7 @@ namespace GameServer.GMCommands
                 return;
             }
 
-            if (!GameMap.DataSheet.TryGetValue(MapId, out GameMap map))
+            if (!游戏地图.DataSheet.TryGetValue(MapId, out 游戏地图 map))
             {
                 MainForm.AddCommandLog($"<= @Move Command execution failed, map {MapId} does not exist");
                 return;

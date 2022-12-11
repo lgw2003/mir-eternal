@@ -8,9 +8,9 @@ namespace GameServer.Templates
 	/// <summary>
 	/// 守卫刷新
 	/// </summary>
-	public sealed class MapGuards
+	public sealed class 守卫刷新
 	{
-		public static HashSet<MapGuards> DataSheet;
+		public static HashSet<守卫刷新> DataSheet;
 
 		public ushort 守卫编号;
 		public byte 所处地图;
@@ -21,11 +21,11 @@ namespace GameServer.Templates
 
 		public static void LoadData()
 		{
-			DataSheet = new HashSet<MapGuards>();
+			DataSheet = new HashSet<守卫刷新>();
 			string text = Config.GameDataPath + "\\System\\游戏地图\\守卫刷新\\";
 			if (Directory.Exists(text))
 			{
-				foreach (var obj in Serializer.Deserialize<MapGuards>(text))
+				foreach (var obj in Serializer.Deserialize<守卫刷新>(text))
 					DataSheet.Add(obj);
 			}
 		}

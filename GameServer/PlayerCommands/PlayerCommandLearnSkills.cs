@@ -11,7 +11,7 @@ namespace GameServer.PlayerCommands
     {
         public override void Execute()
         {
-            foreach (var item in GameItems.DataSheet)
+            foreach (var item in 游戏物品.DataSheet)
             {
                 if (item.Value.物品分类 != ItemType.技能书籍) continue;
                 if (item.Value.需要职业 != Player.CharRole) continue;

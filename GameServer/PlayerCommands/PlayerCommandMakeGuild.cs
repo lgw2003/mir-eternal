@@ -17,7 +17,7 @@ namespace GameServer.PlayerCommands
         public string MakeGuildName;
         public override void Execute()
         {
-            if (!GameDataGateway.GuildData表.Keyword.ContainsKey(MakeGuildName) && Player.Guild == null )
+            if (!GameDataGateway.行会数据表.Keyword.ContainsKey(MakeGuildName) && Player.Guild == null )
             {
                 Player.Guild = new GuildData(Player, MakeGuildName, "");
                 Player.SendPacket(new 创建行会应答

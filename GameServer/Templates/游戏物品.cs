@@ -8,10 +8,10 @@ namespace GameServer.Templates
     /// <summary>
     /// 游戏物品
     /// </summary>
-    public class GameItems
+    public class 游戏物品
     {
-        public static Dictionary<int, GameItems> DataSheet;
-        public static Dictionary<string, GameItems> DataSheetByName;
+        public static Dictionary<int, 游戏物品> DataSheet;
+        public static Dictionary<string, 游戏物品> DataSheetByName;
 
         public string 物品名字;
         public int 物品编号;
@@ -41,9 +41,9 @@ namespace GameServer.Templates
 
         public IDictionary<ItemProperty, int> 物品属性 = new Dictionary<ItemProperty, int>();
 
-        public static GameItems GetItem(int id)
+        public static 游戏物品 GetItem(int id)
         {
-            if (!DataSheet.TryGetValue(id, out GameItems result))
+            if (!DataSheet.TryGetValue(id, out 游戏物品 result))
             {
                 return null;
             }
@@ -51,9 +51,9 @@ namespace GameServer.Templates
         }
 
 
-        public static GameItems GetItem(string name)
+        public static 游戏物品 GetItem(string name)
         {
-            if (!DataSheetByName.TryGetValue(name, out GameItems result))
+            if (!DataSheetByName.TryGetValue(name, out 游戏物品 result))
                 return null;
             return result;
         }
@@ -61,16 +61,16 @@ namespace GameServer.Templates
 
         public static void LoadData()
         {
-            DataSheet = new Dictionary<int, GameItems>();
-            DataSheetByName = new Dictionary<string, GameItems>();
+            DataSheet = new Dictionary<int, 游戏物品>();
+            DataSheetByName = new Dictionary<string, 游戏物品>();
 
             string text = Config.GameDataPath + "\\System\\物品数据\\普通物品\\";
             if (Directory.Exists(text))
             {
-                var array = Serializer.Deserialize<GameItems>(text);
+                var array = Serializer.Deserialize<游戏物品>(text);
                 for (int i = 0; i < array.Length; i++)
                 {
-                    GameItems gameItem = array[i] as GameItems;
+                    游戏物品 gameItem = array[i] as 游戏物品;
                     DataSheet.Add(gameItem.物品编号, gameItem);
                     DataSheetByName.Add(gameItem.物品名字, gameItem);
                 }

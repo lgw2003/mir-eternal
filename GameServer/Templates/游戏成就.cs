@@ -24,9 +24,9 @@ namespace GameServer.Templates
     /// <summary>
     /// 游戏成就
     /// </summary>
-    public class GameAchievements
+    public class 游戏成就
     {
-        public static Dictionary<ushort, GameAchievements> DataSheet;
+        public static Dictionary<ushort, 游戏成就> DataSheet;
 
         public ushort 编号 { get; set; }
         public string 名字 { get; set; }
@@ -45,9 +45,9 @@ namespace GameServer.Templates
             string text = Config.GameDataPath + "\\System\\成就数据\\";
 
             if (Directory.Exists(text))
-                DataSheet = Serializer.Deserialize<GameAchievements>(text).ToDictionary(x => x.编号);
+                DataSheet = Serializer.Deserialize<游戏成就>(text).ToDictionary(x => x.编号);
             else
-                DataSheet = new Dictionary<ushort, GameAchievements>();
+                DataSheet = new Dictionary<ushort, 游戏成就>();
         }
     }
 }

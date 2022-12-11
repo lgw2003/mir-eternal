@@ -12,14 +12,14 @@ namespace GameServer.Data
     public class CharacterQuest : GameData
     {
         public DataMonitor<CharacterData> Character;
-        public readonly DataMonitor<GameQuests> Info;
+        public readonly DataMonitor<游戏任务> Info;
         public readonly DataMonitor<DateTime> StartDate;
         public readonly DataMonitor<DateTime> CompleteDate;
         public readonly HashMonitor<CharacterQuestMission> Missions;
 
         public bool IsCompleted => Missions.All(x => x.CompletedDate.V != DateTime.MinValue);
 
-        public static CharacterQuest Create(CharacterData character, GameQuests gameQuest)
+        public static CharacterQuest Create(CharacterData character, 游戏任务 gameQuest)
         {
             var charQuest = new CharacterQuest();
 
@@ -34,7 +34,7 @@ namespace GameServer.Data
                 charQuest.Missions.Add(CharacterQuestMission.Create(charQuest, mission));
             }
 
-            GameDataGateway.CharacterQuestDataTable.AddData(charQuest, true);
+            GameDataGateway.角色任务数据表.AddData(charQuest, true);
 
             return charQuest;
         }

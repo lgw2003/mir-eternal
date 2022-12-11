@@ -423,37 +423,37 @@ namespace GameServer.Maps
 			string text = this.Template.普通攻击技能;
 			if (text != null && text.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.普通攻击技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.普通攻击技能);
 			}
 			string text2 = this.Template.概率触发技能;
 			if (text2 != null && text2.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.概率触发技能, out this.概率触发技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.概率触发技能, out this.概率触发技能);
 			}
 			string text3 = this.Template.进入战斗技能;
 			if (text3 != null && text3.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.进入战斗技);
+				游戏技能.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.进入战斗技);
 			}
 			string text4 = this.Template.退出战斗技能;
 			if (text4 != null && text4.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.退出战斗技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.退出战斗技能);
 			}
 			string text5 = this.Template.死亡释放技能;
 			if (text5 != null && text5.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.死亡释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.死亡释放技能);
 			}
 			string text6 = this.Template.移动释放技能;
 			if (text6 != null && text6.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.移动释放技能, out this.移动释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.移动释放技能, out this.移动释放技能);
 			}
 			string text7 = this.Template.出生释放技能;
 			if (text7 != null && text7.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.出生释放技能, out this.出生释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.出生释放技能, out this.出生释放技能);
 			}
 			this.ObjectId = ++MapGatewayProcess.ObjectId;
 			MapGatewayProcess.AddObject(this);
@@ -493,37 +493,37 @@ namespace GameServer.Maps
 			string text = this.Template.普通攻击技能;
 			if (text != null && text.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.普通攻击技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.普通攻击技能);
 			}
 			string text2 = this.Template.概率触发技能;
 			if (text2 != null && text2.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.概率触发技能, out this.概率触发技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.概率触发技能, out this.概率触发技能);
 			}
 			string text3 = this.Template.进入战斗技能;
 			if (text3 != null && text3.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.进入战斗技);
+				游戏技能.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.进入战斗技);
 			}
 			string text4 = this.Template.退出战斗技能;
 			if (text4 != null && text4.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.退出战斗技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.退出战斗技能);
 			}
 			string text5 = this.Template.死亡释放技能;
 			if (text5 != null && text5.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.死亡释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.死亡释放技能);
 			}
 			string text6 = this.Template.移动释放技能;
 			if (text6 != null && text6.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.移动释放技能, out this.移动释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.移动释放技能, out this.移动释放技能);
 			}
 			string text7 = this.Template.出生释放技能;
 			if (text7 != null && text7.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.出生释放技能, out this.出生释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.出生释放技能, out this.出生释放技能);
 			}
 			MapGatewayProcess.AddObject(this);
 			this.ActiveObject = true;
@@ -554,37 +554,37 @@ namespace GameServer.Maps
 			string text = this.Template.普通攻击技能;
 			if (text != null && text.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.普通攻击技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.普通攻击技能);
 			}
 			string text2 = this.Template.概率触发技能;
 			if (text2 != null && text2.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.概率触发技能, out this.概率触发技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.概率触发技能, out this.概率触发技能);
 			}
 			string text3 = this.Template.进入战斗技能;
 			if (text3 != null && text3.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.进入战斗技);
+				游戏技能.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.进入战斗技);
 			}
 			string text4 = this.Template.退出战斗技能;
 			if (text4 != null && text4.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.退出战斗技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.退出战斗技能);
 			}
 			string text5 = this.Template.死亡释放技能;
 			if (text5 != null && text5.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.死亡释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.死亡释放技能);
 			}
 			string text6 = this.Template.移动释放技能;
 			if (text6 != null && text6.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.移动释放技能, out this.移动释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.移动释放技能, out this.移动释放技能);
 			}
 			string text7 = this.Template.出生释放技能;
 			if (text7 != null && text7.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.出生释放技能, out this.出生释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.出生释放技能, out this.出生释放技能);
 			}
 			诱惑怪物.怪物诱惑处理();
 			this.ObjectId = ++MapGatewayProcess.ObjectId;
@@ -618,37 +618,37 @@ namespace GameServer.Maps
 			string text = this.Template.普通攻击技能;
 			if (text != null && text.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.普通攻击技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.普通攻击技能);
 			}
 			string text2 = this.Template.概率触发技能;
 			if (text2 != null && text2.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.概率触发技能, out this.概率触发技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.概率触发技能, out this.概率触发技能);
 			}
 			string text3 = this.Template.进入战斗技能;
 			if (text3 != null && text3.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.进入战斗技);
+				游戏技能.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.进入战斗技);
 			}
 			string text4 = this.Template.退出战斗技能;
 			if (text4 != null && text4.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.退出战斗技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.退出战斗技能);
 			}
 			string text5 = this.Template.死亡释放技能;
 			if (text5 != null && text5.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.死亡释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.死亡释放技能);
 			}
 			string text6 = this.Template.移动释放技能;
 			if (text6 != null && text6.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.移动释放技能, out this.移动释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.移动释放技能, out this.移动释放技能);
 			}
 			string text7 = this.Template.出生释放技能;
 			if (text7 != null && text7.Length > 0)
 			{
-				GameSkills.DataSheet.TryGetValue(this.Template.出生释放技能, out this.出生释放技能);
+				游戏技能.DataSheet.TryGetValue(this.Template.出生释放技能, out this.出生释放技能);
 			}
 			诱惑宠物.Dies(null, false);
 			this.Blocking = true;
@@ -851,7 +851,7 @@ namespace GameServer.Maps
 			{
 				return;
 			}
-			GameSkills 游戏技能;
+			游戏技能 游戏技能;
 			if (this.概率触发技能 != null && (!this.Coolings.ContainsKey((int)this.普通攻击技能.自身技能编号 | 16777216) || MainProcess.CurrentTime > this.Coolings[(int)this.普通攻击技能.自身技能编号 | 16777216]) && ComputingClass.CheckProbability(this.概率触发技能.计算幸运概率 ? ComputingClass.计算幸运(this[GameObjectStats.幸运]) : this.概率触发技能.计算触发概率))
 			{
 				游戏技能 = this.概率触发技能;
@@ -1049,25 +1049,25 @@ namespace GameServer.Maps
 		public HateObject HateObject;
 
 		
-		public GameSkills 普通攻击技能;
+		public 游戏技能 普通攻击技能;
 
 		
-		public GameSkills 概率触发技能;
+		public 游戏技能 概率触发技能;
 
 		
-		public GameSkills 进入战斗技;
+		public 游戏技能 进入战斗技;
 
 		
-		public GameSkills 退出战斗技能;
+		public 游戏技能 退出战斗技能;
 
 		
-		public GameSkills 死亡释放技能;
+		public 游戏技能 死亡释放技能;
 
 		
-		public GameSkills 移动释放技能;
+		public 游戏技能 移动释放技能;
 
 		
-		public GameSkills 出生释放技能;
+		public 游戏技能 出生释放技能;
 
 		
 		public PetData PetData;

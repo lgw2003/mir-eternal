@@ -315,7 +315,7 @@ namespace GameServer.Data
             AddStarterItems();
             AddStarterSkills();
 
-            GameDataGateway.CharacterDataTable.AddData(this, true);
+            GameDataGateway.角色数据表.AddData(this, true);
             data.Characters.Add(this);
             this.OnLoadCompleted();
         }
@@ -379,7 +379,7 @@ namespace GameServer.Data
 
             foreach (var skill in basicInscriptionSkills)
             {
-                if (InscriptionSkill.DataSheet.TryGetValue(skill, out InscriptionSkill inscriptionSkill))
+                if (铭文技能.DataSheet.TryGetValue(skill, out 铭文技能 inscriptionSkill))
                 {
                     SkillData SkillData = new SkillData(inscriptionSkill.技能编号);
                     this.SkillData.Add(SkillData.SkillId.V, SkillData);
@@ -391,7 +391,7 @@ namespace GameServer.Data
 
         private void AddStarterItems()
         {
-            foreach (var inscriptionItem in InscriptionItems.所有出生物品)
+            foreach (var inscriptionItem in 出生物品.所有出生物品)
             {
                 if (inscriptionItem.需要性别 != null && inscriptionItem.需要性别 != CharGender.V)
                     continue;
@@ -399,7 +399,7 @@ namespace GameServer.Data
                 if (inscriptionItem.需要职业?.Length > 0 && !inscriptionItem.需要职业.Contains(CharRace.V))
                     continue;
 
-                if (!GameItems.DataSheet.TryGetValue(inscriptionItem.物品编号, out GameItems item))
+                if (!游戏物品.DataSheet.TryGetValue(inscriptionItem.物品编号, out 游戏物品 item))
                     continue;
 
                 if (inscriptionItem.角色背包 == ItemBackPack.人物穿戴 && item is not EquipmentItem)
@@ -531,8 +531,8 @@ namespace GameServer.Data
             };
             this.CurrentMap.更改事件 += delegate (int O)
             {
-                GameMap 游戏地图;
-                MainForm.UpdatedCharacterData(this, "CurrentMap", GameMap.DataSheet.TryGetValue((byte)O, out 游戏地图) ? 游戏地图 : O);
+                游戏地图 游戏地图;
+                MainForm.UpdatedCharacterData(this, "CurrentMap", 游戏地图.DataSheet.TryGetValue((byte)O, out 游戏地图) ? 游戏地图 : O);
             };
             this.CurrentCoords.更改事件 += delegate (Point O)
             {

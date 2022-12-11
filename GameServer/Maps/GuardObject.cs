@@ -254,7 +254,7 @@ namespace GameServer.Maps
         }
 
 
-        public GuardObject(Guards 对应模板, MapInstance 出生地图, GameDirection 出生方向, Point 出生坐标)
+        public GuardObject(地图守卫 对应模板, MapInstance 出生地图, GameDirection 出生方向, Point 出生坐标)
         {
             this.对象模板 = 对应模板;
             this.出生地图 = 出生地图;
@@ -269,7 +269,7 @@ namespace GameServer.Maps
             string text = this.对象模板.普攻技能;
             if (text != null && text.Length > 0)
             {
-                GameSkills.DataSheet.TryGetValue(this.对象模板.普攻技能, out this.BasicAttackSkills);
+                游戏技能.DataSheet.TryGetValue(this.对象模板.普攻技能, out this.BasicAttackSkills);
             }
             MapGatewayProcess.AddObject(this);
             this.守卫复活处理();
@@ -390,7 +390,7 @@ namespace GameServer.Maps
             }
             else
             {
-                GameSkills 技能模板 = BasicAttackSkills;
+                游戏技能 技能模板 = BasicAttackSkills;
                 new SkillInstance(this, 技能模板, null, ActionId++, this.CurrentMap, this.CurrentPosition, this.HateObject.当前目标, this.HateObject.当前目标.CurrentPosition, null, null, false);
             }
         }
@@ -450,7 +450,7 @@ namespace GameServer.Maps
         }
 
 
-        public Guards 对象模板;
+        public 地图守卫 对象模板;
 
 
         public HateObject HateObject;
@@ -465,6 +465,6 @@ namespace GameServer.Maps
         public MapInstance 出生地图;
 
 
-        public GameSkills BasicAttackSkills;
+        public 游戏技能 BasicAttackSkills;
     }
 }

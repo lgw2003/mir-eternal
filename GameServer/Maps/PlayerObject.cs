@@ -136,7 +136,7 @@ namespace GameServer.Maps
         {
           this.StatsBonus.Add(BuffData, BuffData.Stat加成);
         }
-        if ((BuffData.Effect & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && GameMounts.DataSheet.TryGetValue(CharacterData.CurrentMount.V, out GameMounts mount))
+        if ((BuffData.Effect & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && 游戏坐骑.DataSheet.TryGetValue(CharacterData.CurrentMount.V, out 游戏坐骑 mount))
         {
           this.Riding = true;
           this.StatsBonus.Add(BuffData, mount.Stats);
@@ -158,7 +158,7 @@ namespace GameServer.Maps
           TitleTime = title.Value;
         }
       }
-      if (CurrentTitle > 0 && GameTitle.DataSheet.TryGetValue(CurrentTitle, out var gameTitle))
+      if (CurrentTitle > 0 && 游戏称号.DataSheet.TryGetValue(CurrentTitle, out var gameTitle))
       {
         CombatBonus[CurrentTitle] = gameTitle.称号战力;
         StatsBonus[CurrentTitle] = gameTitle.称号属性;
@@ -170,7 +170,7 @@ namespace GameServer.Maps
         CurrentHP = (int)((float)this[GameObjectStats.最大体力] * 0.3f);
         CurrentMP = (int)((float)this[GameObjectStats.最大魔力] * 0.3f);
       }
-      else if (GameMap.DataSheet[(byte)CharacterData.CurrentMap.V].下线传送)
+      else if (游戏地图.DataSheet[(byte)CharacterData.CurrentMap.V].下线传送)
       {
         if (CharacterData.CurrentMap.V == 152)
         {
@@ -184,16 +184,16 @@ namespace GameServer.Maps
             this.CurrentPosition = MapGatewayProcess.外城复活区域.RandomCoords;
           }
         }
-        else if (GameMap.DataSheet[(byte)CharacterData.CurrentMap.V].传送地图 == 0)
+        else if (游戏地图.DataSheet[(byte)CharacterData.CurrentMap.V].传送地图 == 0)
         {
           this.CurrentMap = MapGatewayProcess.GetMapInstance(this.重生地图);
           this.CurrentPosition = this.CurrentMap.ResurrectionArea.RandomCoords;
         }
         else
         {
-          this.CurrentMap = MapGatewayProcess.GetMapInstance((int)GameMap.DataSheet[(byte)CharacterData.CurrentMap.V].传送地图);
-          MapAreas 传送区域 = this.CurrentMap.传送区域;
-          this.CurrentPosition = ((传送区域 != null) ? 传送区域.RandomCoords : this.CurrentMap.地图区域.First<MapAreas>().RandomCoords);
+          this.CurrentMap = MapGatewayProcess.GetMapInstance((int)游戏地图.DataSheet[(byte)CharacterData.CurrentMap.V].传送地图);
+          地图区域 传送区域 = this.CurrentMap.传送区域;
+          this.CurrentPosition = ((传送区域 != null) ? 传送区域.RandomCoords : this.CurrentMap.地图区域.First<地图区域>().RandomCoords);
         }
       }
       else
@@ -624,7 +624,7 @@ namespace GameServer.Maps
 
     public void TeleportToQuest(int questId)
     {
-      if (!GameQuests.DataSheet.TryGetValue(questId, out GameQuests questInfo))
+      if (!游戏任务.DataSheet.TryGetValue(questId, out 游戏任务 questInfo))
         return;
 
       if (!questInfo.可否传送 && questInfo.传送花费物品编号 == 0)
@@ -795,7 +795,7 @@ namespace GameServer.Maps
             GainExperience(null, reward.数量);
             break;
           case QuestRewardType.物品:
-            if (GameItems.DataSheet.TryGetValue(reward.编号, out GameItems item))
+            if (游戏物品.DataSheet.TryGetValue(reward.编号, out 游戏物品 item))
               GainItem(item, locations[itemSpacePos++], reward.数量 > 0 ? reward.数量 : 1);
             break;
           case QuestRewardType.声望:
@@ -812,7 +812,7 @@ namespace GameServer.Maps
       });
     }
 
-    public void GainItem(GameItems item, byte position, int qty = 1)
+    public void GainItem(游戏物品 item, byte position, int qty = 1)
     {
       if (item is EquipmentItem equipItem)
       {
@@ -846,10 +846,10 @@ namespace GameServer.Maps
 
     public void SyncSelectedMount(ushort selectedMountId)
     {
-      if (CharacterData.Mounts.Contains(selectedMountId) && GameMounts.DataSheet.TryGetValue(selectedMountId, out var mount))
+      if (CharacterData.Mounts.Contains(selectedMountId) && 游戏坐骑.DataSheet.TryGetValue(selectedMountId, out var mount))
       {
         // Remove old aura
-        if (Riding && GameMounts.DataSheet.TryGetValue(CharacterData.CurrentMount.V, out var previousMount))
+        if (Riding && 游戏坐骑.DataSheet.TryGetValue(CharacterData.CurrentMount.V, out var previousMount))
           if (previousMount.Buff编号 > 0) 移除Buff时处理(previousMount.Buff编号);
 
         CharacterData.CurrentMount.V = selectedMountId;
@@ -875,7 +875,7 @@ namespace GameServer.Maps
 
     public void UpdateAchievementProgress()
     {
-      foreach (var achievement in GameAchievements.DataSheet.Values)
+      foreach (var achievement in 游戏成就.DataSheet.Values)
       {
         if (CharacterData.Achievements.ContainsKey(achievement.编号))
           continue;
@@ -944,7 +944,7 @@ namespace GameServer.Maps
 
     private bool CanAcceptQuest(int questId)
     {
-      if (!GameQuests.DataSheet.TryGetValue(questId, out var questInfo))
+      if (!游戏任务.DataSheet.TryGetValue(questId, out var questInfo))
         return false;
 
       if (questInfo.开始NPC地图编号 > 0 && CurrentMap.MapId != questInfo.开始NPC地图编号)
@@ -987,7 +987,7 @@ namespace GameServer.Maps
 
     private void StartQuest(int questId)
     {
-      if (!GameQuests.DataSheet.TryGetValue(questId, out var questInfo))
+      if (!游戏任务.DataSheet.TryGetValue(questId, out var questInfo))
         return;
 
       if (!CanAcceptQuest(questId))
@@ -1153,7 +1153,7 @@ namespace GameServer.Maps
         bw.Write(8);
 
         // fecha completado reward
-        var maxId = GameAchievements.DataSheet.Values.Max(x => x.编号);
+        var maxId = 游戏成就.DataSheet.Values.Max(x => x.编号);
 
         for (ushort i = 0; i < maxId; i++)
           bw.Write(CharacterData.Achievements.TryGetValue(i, out var data) ? ComputingClass.DateShift(data.CompletedAt.V) : (ushort)0);
@@ -1815,7 +1815,7 @@ namespace GameServer.Maps
           }
           else
           {
-            MapAreas 复活区域 = CurrentMap.ResurrectionArea;
+            地图区域 复活区域 = CurrentMap.ResurrectionArea;
             flag = ((复活区域 != null) ? new bool?(复活区域.范围坐标.Contains(this.CurrentPosition)) : null);
           }
           bool? flag2 = flag;
@@ -3279,7 +3279,7 @@ namespace GameServer.Maps
       EquipmentData EquipmentData;
       if (this.Equipment.TryGetValue(0, out EquipmentData))
       {
-        InscriptionSkill 第一铭文 = EquipmentData.第一铭文;
+        铭文技能 第一铭文 = EquipmentData.第一铭文;
         ushort? num = (第一铭文 != null) ? new ushort?(第一铭文.技能编号) : null;
         int? num2 = (num != null) ? new int?((int)num.GetValueOrDefault()) : null;
         if (num2.GetValueOrDefault() == (int)SkillId & num2 != null)
@@ -3295,7 +3295,7 @@ namespace GameServer.Maps
             });
           }
         }
-        InscriptionSkill 第二铭文 = EquipmentData.第二铭文;
+        铭文技能 第二铭文 = EquipmentData.第二铭文;
         num = ((第二铭文 != null) ? new ushort?(第二铭文.技能编号) : null);
         num2 = ((num != null) ? new int?((int)num.GetValueOrDefault()) : null);
         if (num2.GetValueOrDefault() == (int)SkillId & num2 != null)
@@ -3800,7 +3800,7 @@ namespace GameServer.Maps
 
     public void ObtainTitle(byte Id)
     {
-      if (GameTitle.DataSheet.TryGetValue(Id, out var gameTitle))
+      if (游戏称号.DataSheet.TryGetValue(Id, out var gameTitle))
       {
         AvailableTitles[Id] = MainProcess.CurrentTime.AddMinutes(gameTitle.有效时间);
         ActiveConnection?.SendPacket(new ObtainTitlePacket
@@ -4058,7 +4058,7 @@ namespace GameServer.Maps
       BindGrid();
       更新邻居时处理();
 
-      if (GameSkills.DataSheet.TryGetValue("通用-玩家取出武器", out var 技能模板))
+      if (游戏技能.DataSheet.TryGetValue("通用-玩家取出武器", out var 技能模板))
       {
         new SkillInstance(this, 技能模板, null, base.ActionId, this.CurrentMap, this.CurrentPosition, null, this.CurrentPosition, null, null, false);
       }
@@ -4150,8 +4150,8 @@ namespace GameServer.Maps
       {
         if (!this.Died && this.ParalysisState <= 0 && this.交易状态 < 3)
         {
-          TeleportGates 传送法阵;
-          GameMap 游戏地图;
+          传送法阵 传送法阵;
+          游戏地图 游戏地图;
           if (!this.CurrentMap.法阵列表.TryGetValue((byte)TeleportGateNumber, out 传送法阵))
           {
             SConnection 网络连接 = this.ActiveConnection;
@@ -4178,7 +4178,7 @@ namespace GameServer.Maps
             });
             return;
           }
-          else if (!GameMap.DataSheet.TryGetValue(传送法阵.跳转地图, out 游戏地图))
+          else if (!游戏地图.DataSheet.TryGetValue(传送法阵.跳转地图, out 游戏地图))
           {
             SConnection 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
@@ -4438,8 +4438,8 @@ namespace GameServer.Maps
       {
         foreach (string key in SkillData.铭文模板.开关技能列表.ToList<string>())
         {
-          GameSkills 游戏技能;
-          if (GameSkills.DataSheet.TryGetValue(key, out 游戏技能))
+          游戏技能 游戏技能;
+          if (游戏技能.DataSheet.TryGetValue(key, out 游戏技能))
           {
             SkillData SkillData2;
             if (this.MainSkills表.TryGetValue(游戏技能.绑定等级编号, out SkillData2))
@@ -4525,7 +4525,7 @@ namespace GameServer.Maps
         int num2 = 0;
         List<ItemData> list = null;
 
-        if (!GameSkills.DataSheet.TryGetValue(key, out var value2) || value2.自身技能编号 != skillId)
+        if (!游戏技能.DataSheet.TryGetValue(key, out var value2) || value2.自身技能编号 != skillId)
           continue;
 
         if (value2.技能分组编号 == 0 || !Coolings.TryGetValue(value2.技能分组编号 | 0, out var v3) || !(MainProcess.CurrentTime < v3))
@@ -4792,7 +4792,7 @@ namespace GameServer.Maps
         return;
       }
 
-      if (NpcDialogs.DataSheet.ContainsKey((int)this.对话守卫.MobId * 100000))
+      if (对话数据.DataSheet.ContainsKey((int)this.对话守卫.MobId * 100000))
       {
         this.打开商店 = this.对话守卫.StoreId;
         this.打开界面 = this.对话守卫.InterfaceCode;
@@ -4802,7 +4802,7 @@ namespace GameServer.Maps
         ActiveConnection?.SendPacket(new 同步交互结果
         {
           对象编号 = this.对话守卫.ObjectId,
-          交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+          交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
         });
       }
     }
@@ -4866,7 +4866,7 @@ namespace GameServer.Maps
                     网络连接.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", Config.武斗场时间一, Config.武斗场时间二))
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", Config.武斗场时间一, Config.武斗场时间二))
                     });
                     return;
                   }
@@ -4881,7 +4881,7 @@ namespace GameServer.Maps
                     网络连接2.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                      交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                     });
                     return;
                   }
@@ -4895,7 +4895,7 @@ namespace GameServer.Maps
                       {
                         网络连接3.SendPacket(new 同步交互结果
                         {
-                          交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", 25)),
+                          交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", 25)),
                           对象编号 = this.对话守卫.ObjectId
                         });
                       }
@@ -4916,7 +4916,7 @@ namespace GameServer.Maps
                     网络连接4.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", 50000))
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", 50000))
                     });
                     return;
                   }
@@ -4943,7 +4943,7 @@ namespace GameServer.Maps
                     }
                     网络连接5.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num2)),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num2)),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -4964,7 +4964,7 @@ namespace GameServer.Maps
                     }
                     网络连接6.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num3)),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num3)),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -4988,7 +4988,7 @@ namespace GameServer.Maps
                     }
                     网络连接7.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num5)),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num5)),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -5009,7 +5009,7 @@ namespace GameServer.Maps
                     }
                     网络连接8.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num6)),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num6)),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -5039,7 +5039,7 @@ namespace GameServer.Maps
                     网络连接9.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                      交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                     });
                     return;
                   }
@@ -5055,7 +5055,7 @@ namespace GameServer.Maps
                     网络连接10.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                     });
                     return;
                   }
@@ -5071,7 +5071,7 @@ namespace GameServer.Maps
                   网络连接11.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5086,7 +5086,7 @@ namespace GameServer.Maps
                   网络连接12.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5119,7 +5119,7 @@ namespace GameServer.Maps
                     网络连接13.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                      交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                     });
                     return;
                   }
@@ -5140,7 +5140,7 @@ namespace GameServer.Maps
                       网络连接14.SendPacket(new 同步交互结果
                       {
                         对象编号 = this.对话守卫.ObjectId,
-                        交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, GameItems.DataSheet[重铸所需灵气].物品名字, num8 / 10000))
+                        交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, 游戏物品.DataSheet[重铸所需灵气].物品名字, num8 / 10000))
                       });
                       return;
                     }
@@ -5155,7 +5155,7 @@ namespace GameServer.Maps
                       网络连接15.SendPacket(new 同步交互结果
                       {
                         对象编号 = this.对话守卫.ObjectId,
-                        交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, GameItems.DataSheet[重铸所需灵气].物品名字, num8 / 10000))
+                        交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, 游戏物品.DataSheet[重铸所需灵气].物品名字, num8 / 10000))
                       });
                       return;
                     }
@@ -5163,7 +5163,7 @@ namespace GameServer.Maps
                     {
                       this.NumberGoldCoins -= num8;
                       this.消耗背包物品(num9, 物品列表);
-                      EquipmentData2.随机Stat.SetValue(EquipmentStats.GenerateStats(EquipmentData2.物品类型, true));
+                      EquipmentData2.随机Stat.SetValue(装备属性.GenerateStats(EquipmentData2.物品类型, true));
                       SConnection 网络连接16 = this.ActiveConnection;
                       if (网络连接16 != null)
                       {
@@ -5183,7 +5183,7 @@ namespace GameServer.Maps
                       网络连接17.SendPacket(new 同步交互结果
                       {
                         对象编号 = this.对话守卫.ObjectId,
-                        交互文本 = NpcDialogs.CombineDialog(this.对话页面, "<#P1:" + EquipmentData2.StatDescription + ">")
+                        交互文本 = 对话数据.CombineDialog(this.对话页面, "<#P1:" + EquipmentData2.StatDescription + ">")
                       });
                       return;
                     }
@@ -5204,7 +5204,7 @@ namespace GameServer.Maps
                   网络连接18.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5220,7 +5220,7 @@ namespace GameServer.Maps
                   网络连接19.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                   });
                   return;
                 }
@@ -5239,7 +5239,7 @@ namespace GameServer.Maps
                   网络连接20.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5255,7 +5255,7 @@ namespace GameServer.Maps
                   网络连接21.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                   });
                   return;
                 }
@@ -5274,7 +5274,7 @@ namespace GameServer.Maps
                   网络连接22.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5290,7 +5290,7 @@ namespace GameServer.Maps
                   网络连接23.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                   });
                   return;
                 }
@@ -5309,7 +5309,7 @@ namespace GameServer.Maps
                   网络连接24.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5325,7 +5325,7 @@ namespace GameServer.Maps
                   网络连接25.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                   });
                   return;
                 }
@@ -5344,7 +5344,7 @@ namespace GameServer.Maps
                   网络连接26.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5360,7 +5360,7 @@ namespace GameServer.Maps
                   网络连接27.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                   });
                   return;
                 }
@@ -5379,7 +5379,7 @@ namespace GameServer.Maps
                   网络连接28.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5395,7 +5395,7 @@ namespace GameServer.Maps
                   网络连接29.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                   });
                   return;
                 }
@@ -5414,7 +5414,7 @@ namespace GameServer.Maps
                   网络连接30.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5430,7 +5430,7 @@ namespace GameServer.Maps
                   网络连接31.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                   });
                   return;
                 }
@@ -5450,7 +5450,7 @@ namespace GameServer.Maps
                 网络连接32.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -5466,7 +5466,7 @@ namespace GameServer.Maps
                 网络连接33.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                 });
                 return;
               }
@@ -5485,7 +5485,7 @@ namespace GameServer.Maps
                 网络连接34.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -5501,7 +5501,7 @@ namespace GameServer.Maps
                 网络连接35.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                 });
                 return;
               }
@@ -5520,7 +5520,7 @@ namespace GameServer.Maps
                 网络连接36.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -5536,7 +5536,7 @@ namespace GameServer.Maps
                 网络连接37.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                 });
                 return;
               }
@@ -5555,7 +5555,7 @@ namespace GameServer.Maps
                 网络连接38.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -5571,7 +5571,7 @@ namespace GameServer.Maps
                 网络连接39.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                 });
                 return;
               }
@@ -5590,7 +5590,7 @@ namespace GameServer.Maps
                 网络连接40.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -5606,7 +5606,7 @@ namespace GameServer.Maps
                 网络连接41.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                 });
                 return;
               }
@@ -5625,7 +5625,7 @@ namespace GameServer.Maps
                 网络连接42.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -5641,7 +5641,7 @@ namespace GameServer.Maps
                 网络连接43.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                 });
                 return;
               }
@@ -5660,7 +5660,7 @@ namespace GameServer.Maps
                 网络连接44.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -5676,7 +5676,7 @@ namespace GameServer.Maps
                 网络连接45.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                 });
                 return;
               }
@@ -5712,7 +5712,7 @@ namespace GameServer.Maps
                 网络连接46.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -5727,7 +5727,7 @@ namespace GameServer.Maps
                 网络连接47.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
                 });
                 return;
               }
@@ -5790,7 +5790,7 @@ namespace GameServer.Maps
                     网络连接48.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                      交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                     });
                     return;
                   }
@@ -5805,7 +5805,7 @@ namespace GameServer.Maps
                     网络连接49.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                      交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                     });
                     return;
                   }
@@ -5820,7 +5820,7 @@ namespace GameServer.Maps
                     网络连接50.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                      交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                     });
                     return;
                   }
@@ -5839,7 +5839,7 @@ namespace GameServer.Maps
                       }
                       网络连接51.SendPacket(new 同步交互结果
                       {
-                        交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0><#P1:{1}>", num10, num11 / 10000)),
+                        交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0><#P1:{1}>", num10, num11 / 10000)),
                         对象编号 = this.对话守卫.ObjectId
                       });
                       return;
@@ -5854,7 +5854,7 @@ namespace GameServer.Maps
                       }
                       网络连接52.SendPacket(new 同步交互结果
                       {
-                        交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0><#P1:{1}>", num10, num11 / 10000)),
+                        交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0><#P1:{1}>", num10, num11 / 10000)),
                         对象编号 = this.对话守卫.ObjectId
                       });
                       return;
@@ -5882,7 +5882,7 @@ namespace GameServer.Maps
                         }
                         网络连接54.SendPacket(new 同步交互结果
                         {
-                          交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", EquipmentData17.孔洞颜色[0])),
+                          交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", EquipmentData17.孔洞颜色[0])),
                           对象编号 = this.对话守卫.ObjectId
                         });
                         return;
@@ -5897,7 +5897,7 @@ namespace GameServer.Maps
                         }
                         网络连接55.SendPacket(new 同步交互结果
                         {
-                          交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", EquipmentData17.孔洞颜色[0], EquipmentData17.孔洞颜色[1])),
+                          交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", EquipmentData17.孔洞颜色[0], EquipmentData17.孔洞颜色[1])),
                           对象编号 = this.对话守卫.ObjectId
                         });
                         return;
@@ -5956,7 +5956,7 @@ namespace GameServer.Maps
                   网络连接56.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5971,7 +5971,7 @@ namespace GameServer.Maps
                   网络连接57.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -5986,7 +5986,7 @@ namespace GameServer.Maps
                   网络连接58.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -6003,7 +6003,7 @@ namespace GameServer.Maps
                     }
                     网络连接59.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", EquipmentData18.孔洞颜色[0])),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", EquipmentData18.孔洞颜色[0])),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -6018,7 +6018,7 @@ namespace GameServer.Maps
                     }
                     网络连接60.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", EquipmentData18.孔洞颜色[0], EquipmentData18.孔洞颜色[1])),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", EquipmentData18.孔洞颜色[0], EquipmentData18.孔洞颜色[1])),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -6076,7 +6076,7 @@ namespace GameServer.Maps
                 网络连接61.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6091,7 +6091,7 @@ namespace GameServer.Maps
                 网络连接62.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6109,7 +6109,7 @@ namespace GameServer.Maps
                   }
                   网络连接63.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num12)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num12)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6151,7 +6151,7 @@ namespace GameServer.Maps
                 网络连接65.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6166,7 +6166,7 @@ namespace GameServer.Maps
                 网络连接66.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6181,7 +6181,7 @@ namespace GameServer.Maps
                 网络连接67.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6196,7 +6196,7 @@ namespace GameServer.Maps
                 网络连接68.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6211,7 +6211,7 @@ namespace GameServer.Maps
                 网络连接69.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6226,7 +6226,7 @@ namespace GameServer.Maps
                 网络连接70.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6241,7 +6241,7 @@ namespace GameServer.Maps
                 网络连接71.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6256,7 +6256,7 @@ namespace GameServer.Maps
                 网络连接72.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6311,7 +6311,7 @@ namespace GameServer.Maps
                 网络连接73.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6326,7 +6326,7 @@ namespace GameServer.Maps
                 网络连接74.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6341,7 +6341,7 @@ namespace GameServer.Maps
                 网络连接75.SendPacket(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                 });
                 return;
               }
@@ -6360,7 +6360,7 @@ namespace GameServer.Maps
                   }
                   网络连接76.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", num13, num14 / 10000)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", num13, num14 / 10000)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6375,7 +6375,7 @@ namespace GameServer.Maps
                   }
                   网络连接77.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", num13, num14 / 10000)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", num13, num14 / 10000)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6403,7 +6403,7 @@ namespace GameServer.Maps
                     }
                     网络连接79.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", EquipmentData20.孔洞颜色[0])),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", EquipmentData20.孔洞颜色[0])),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -6418,7 +6418,7 @@ namespace GameServer.Maps
                     }
                     网络连接80.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", EquipmentData20.孔洞颜色[0], EquipmentData20.孔洞颜色[1])),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", EquipmentData20.孔洞颜色[0], EquipmentData20.孔洞颜色[1])),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -6459,7 +6459,7 @@ namespace GameServer.Maps
                 }
                 网络连接81.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -6479,7 +6479,7 @@ namespace GameServer.Maps
                     else
                     {
                       this.消耗背包物品(num15, 物品列表5);
-                      this.Backpack[b] = new ItemData(GameItems.DataSheet[num16 + 1], this.CharacterData, 1, b, 1);
+                      this.Backpack[b] = new ItemData(游戏物品.DataSheet[num16 + 1], this.CharacterData, 1, b, 1);
                       SConnection 网络连接82 = this.ActiveConnection;
                       if (网络连接82 != null)
                       {
@@ -6509,7 +6509,7 @@ namespace GameServer.Maps
                 }
                 网络连接84.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num15)),
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num15)),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -6541,7 +6541,7 @@ namespace GameServer.Maps
                 }
                 网络连接85.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -6561,7 +6561,7 @@ namespace GameServer.Maps
                     else
                     {
                       this.消耗背包物品(num17, 物品列表6);
-                      this.Backpack[b2] = new ItemData(GameItems.DataSheet[num18 + 1], this.CharacterData, 1, b2, 1);
+                      this.Backpack[b2] = new ItemData(游戏物品.DataSheet[num18 + 1], this.CharacterData, 1, b2, 1);
                       SConnection 网络连接86 = this.ActiveConnection;
                       if (网络连接86 != null)
                       {
@@ -6591,7 +6591,7 @@ namespace GameServer.Maps
                 }
                 网络连接88.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num17)),
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num17)),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -6624,7 +6624,7 @@ namespace GameServer.Maps
               }
               网络连接89.SendPacket(new 同步交互结果
               {
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                 对象编号 = this.对话守卫.ObjectId
               });
               return;
@@ -6644,7 +6644,7 @@ namespace GameServer.Maps
                   else
                   {
                     this.消耗背包物品(num19, 物品列表7);
-                    this.Backpack[b3] = new ItemData(GameItems.DataSheet[num20 + 1], this.CharacterData, 1, b3, 1);
+                    this.Backpack[b3] = new ItemData(游戏物品.DataSheet[num20 + 1], this.CharacterData, 1, b3, 1);
                     SConnection 网络连接90 = this.ActiveConnection;
                     if (网络连接90 != null)
                     {
@@ -6674,7 +6674,7 @@ namespace GameServer.Maps
               }
               网络连接92.SendPacket(new 同步交互结果
               {
-                交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num19)),
+                交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num19)),
                 对象编号 = this.对话守卫.ObjectId
               });
               return;
@@ -6717,7 +6717,7 @@ namespace GameServer.Maps
                   }
                   网络连接93.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6737,7 +6737,7 @@ namespace GameServer.Maps
                       else
                       {
                         this.消耗背包物品(num21, 物品列表8);
-                        this.Backpack[b4] = new ItemData(GameItems.DataSheet[num22 + 1], this.CharacterData, 1, b4, 1);
+                        this.Backpack[b4] = new ItemData(游戏物品.DataSheet[num22 + 1], this.CharacterData, 1, b4, 1);
                         SConnection 网络连接94 = this.ActiveConnection;
                         if (网络连接94 != null)
                         {
@@ -6767,7 +6767,7 @@ namespace GameServer.Maps
                   }
                   网络连接96.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num21)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num21)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6799,7 +6799,7 @@ namespace GameServer.Maps
                   }
                   网络连接97.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6819,7 +6819,7 @@ namespace GameServer.Maps
                       else
                       {
                         this.消耗背包物品(num23, 物品列表9);
-                        this.Backpack[b5] = new ItemData(GameItems.DataSheet[num24 + 1], this.CharacterData, 1, b5, 1);
+                        this.Backpack[b5] = new ItemData(游戏物品.DataSheet[num24 + 1], this.CharacterData, 1, b5, 1);
                         SConnection 网络连接98 = this.ActiveConnection;
                         if (网络连接98 != null)
                         {
@@ -6849,7 +6849,7 @@ namespace GameServer.Maps
                   }
                   网络连接100.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num23)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num23)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6888,7 +6888,7 @@ namespace GameServer.Maps
                   }
                   网络连接101.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6908,7 +6908,7 @@ namespace GameServer.Maps
                       else
                       {
                         this.消耗背包物品(num25, 物品列表10);
-                        this.Backpack[b6] = new ItemData(GameItems.DataSheet[num26 + 1], this.CharacterData, 1, b6, 1);
+                        this.Backpack[b6] = new ItemData(游戏物品.DataSheet[num26 + 1], this.CharacterData, 1, b6, 1);
                         SConnection 网络连接102 = this.ActiveConnection;
                         if (网络连接102 != null)
                         {
@@ -6938,7 +6938,7 @@ namespace GameServer.Maps
                   }
                   网络连接104.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num25)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num25)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6970,7 +6970,7 @@ namespace GameServer.Maps
                   }
                   网络连接105.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -6990,7 +6990,7 @@ namespace GameServer.Maps
                       else
                       {
                         this.消耗背包物品(num27, 物品列表11);
-                        this.Backpack[b7] = new ItemData(GameItems.DataSheet[num28 + 1], this.CharacterData, 1, b7, 1);
+                        this.Backpack[b7] = new ItemData(游戏物品.DataSheet[num28 + 1], this.CharacterData, 1, b7, 1);
                         SConnection 网络连接106 = this.ActiveConnection;
                         if (网络连接106 != null)
                         {
@@ -7020,7 +7020,7 @@ namespace GameServer.Maps
                   }
                   网络连接108.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num27)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num27)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7053,7 +7053,7 @@ namespace GameServer.Maps
                 }
                 网络连接109.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -7073,7 +7073,7 @@ namespace GameServer.Maps
                     else
                     {
                       this.消耗背包物品(num29, 物品列表12);
-                      this.Backpack[b8] = new ItemData(GameItems.DataSheet[num30 + 1], this.CharacterData, 1, b8, 1);
+                      this.Backpack[b8] = new ItemData(游戏物品.DataSheet[num30 + 1], this.CharacterData, 1, b8, 1);
                       SConnection 网络连接110 = this.ActiveConnection;
                       if (网络连接110 != null)
                       {
@@ -7103,7 +7103,7 @@ namespace GameServer.Maps
                 }
                 网络连接112.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num29)),
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num29)),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -7147,7 +7147,7 @@ namespace GameServer.Maps
                 }
                 网络连接113.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -7170,7 +7170,7 @@ namespace GameServer.Maps
                   }
                   网络连接114.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7185,7 +7185,7 @@ namespace GameServer.Maps
                   }
                   网络连接115.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7200,7 +7200,7 @@ namespace GameServer.Maps
                   }
                   网络连接116.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7219,7 +7219,7 @@ namespace GameServer.Maps
                   }
                   网络连接117.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7234,7 +7234,7 @@ namespace GameServer.Maps
                   }
                   网络连接118.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", DeductCoinsCommand / 10000)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", DeductCoinsCommand / 10000)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7249,7 +7249,7 @@ namespace GameServer.Maps
                   }
                   网络连接119.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7264,7 +7264,7 @@ namespace GameServer.Maps
                   }
                   网络连接120.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", NeedLevel)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", NeedLevel)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7279,7 +7279,7 @@ namespace GameServer.Maps
                   }
                   网络连接121.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7291,7 +7291,7 @@ namespace GameServer.Maps
                   {
                     return;
                   }
-                  MapInstance MapInstance2 = new MapInstance(GameMap.DataSheet[80], 1);
+                  MapInstance MapInstance2 = new MapInstance(游戏地图.DataSheet[80], 1);
                   MapInstance2.地形数据 = MapInstance.地形数据;
                   MapInstance2.地图区域 = MapInstance.地图区域;
                   MapInstance2.怪物区域 = MapInstance.怪物区域;
@@ -7300,11 +7300,11 @@ namespace GameServer.Maps
                   MapInstance2.节点计时 = MainProcess.CurrentTime.AddSeconds(20.0);
                   MapInstance2.怪物波数 = (from O in MapInstance.怪物区域
                                        orderby O.所处坐标.X
-                                       select O).ToList<MonsterSpawns>();
+                                       select O).ToList<怪物刷新>();
                   MapInstance2.MapObject = new HashSet<MapObject>[MapInstance.MapSize.X, MapInstance.MapSize.Y];
                   MapInstance MapInstance3 = MapInstance2;
                   MapGatewayProcess.ReplicateInstances.Add(MapInstance3);
-                  MapInstance3.副本守卫 = new GuardObject(Guards.DataSheet[6724], MapInstance3, GameDirection.左下, new Point(1005, 273));
+                  MapInstance3.副本守卫 = new GuardObject(地图守卫.DataSheet[6724], MapInstance3, GameDirection.左下, new Point(1005, 273));
                   using (IEnumerator<CharacterData> enumerator = this.Team.Members.GetEnumerator())
                   {
                     while (enumerator.MoveNext())
@@ -7355,7 +7355,7 @@ namespace GameServer.Maps
                     }
                     网络连接122.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num31)),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num31)),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -7376,7 +7376,7 @@ namespace GameServer.Maps
                     }
                     网络连接123.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num32)),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num32)),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -7398,7 +7398,7 @@ namespace GameServer.Maps
                   }
                   网络连接124.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7417,7 +7417,7 @@ namespace GameServer.Maps
                       else
                       {
                         byte b10 = b9;
-                        GameItems 模板;
+                        游戏物品 模板;
                         if (b10 == 255)
                         {
                           SConnection 网络连接125 = this.ActiveConnection;
@@ -7431,7 +7431,7 @@ namespace GameServer.Maps
                           });
                           return;
                         }
-                        else if (!GameItems.DataSheetByName.TryGetValue("沙城每日宝箱", out 模板))
+                        else if (!游戏物品.DataSheetByName.TryGetValue("沙城每日宝箱", out 模板))
                         {
                           SConnection 网络连接126 = this.ActiveConnection;
                           if (网络连接126 == null)
@@ -7470,7 +7470,7 @@ namespace GameServer.Maps
                   }
                   网络连接128.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -7486,7 +7486,7 @@ namespace GameServer.Maps
                 }
                 网络连接129.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -7534,7 +7534,7 @@ namespace GameServer.Maps
                 }
                 网络连接130.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面),
+                  交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -7573,7 +7573,7 @@ namespace GameServer.Maps
                   网络连接132.SendPacket(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
-                    交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                    交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                   });
                   return;
                 }
@@ -7591,7 +7591,7 @@ namespace GameServer.Maps
                     网络连接133.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                      交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                     });
                     return;
                   }
@@ -7622,7 +7622,7 @@ namespace GameServer.Maps
                             网络连接134.SendPacket(new 同步交互结果
                             {
                               对象编号 = this.对话守卫.ObjectId,
-                              交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                              交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                             });
                             return;
                           }
@@ -7673,7 +7673,7 @@ namespace GameServer.Maps
                     网络连接138.SendPacket(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
-                      交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                      交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
                     });
                     return;
                   }
@@ -7699,7 +7699,7 @@ namespace GameServer.Maps
               网络连接139.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
               });
               return;
             }
@@ -7715,7 +7715,7 @@ namespace GameServer.Maps
               网络连接140.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
               });
               return;
             }
@@ -7733,7 +7733,7 @@ namespace GameServer.Maps
               网络连接141.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
               });
               return;
             }
@@ -7748,7 +7748,7 @@ namespace GameServer.Maps
               网络连接142.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", (int)(this.CharacterData.取回时间.V - MainProcess.CurrentTime).TotalMinutes + 1))
+                交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", (int)(this.CharacterData.取回时间.V - MainProcess.CurrentTime).TotalMinutes + 1))
               });
               return;
             }
@@ -7763,7 +7763,7 @@ namespace GameServer.Maps
               网络连接143.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
               });
               return;
             }
@@ -7778,7 +7778,7 @@ namespace GameServer.Maps
               网络连接144.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
               });
               return;
             }
@@ -7793,7 +7793,7 @@ namespace GameServer.Maps
               网络连接145.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", (int)(this.CharacterData.升级装备.V.升级次数.V * 10 + 10), (int)(this.CharacterData.升级装备.V.升级次数.V * 100 + 100)))
+                交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", (int)(this.CharacterData.升级装备.V.升级次数.V * 10 + 10), (int)(this.CharacterData.升级装备.V.升级次数.V * 100 + 100)))
               });
               return;
             }
@@ -7811,7 +7811,7 @@ namespace GameServer.Maps
               网络连接146.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
               });
               return;
             }
@@ -7826,7 +7826,7 @@ namespace GameServer.Maps
               网络连接147.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
               });
               return;
             }
@@ -7841,7 +7841,7 @@ namespace GameServer.Maps
               网络连接148.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
               });
               return;
             }
@@ -7856,7 +7856,7 @@ namespace GameServer.Maps
               网络连接149.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+                交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
               });
               return;
             }
@@ -7872,7 +7872,7 @@ namespace GameServer.Maps
               网络连接150.SendPacket(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
-                交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", (int)(this.CharacterData.升级装备.V.升级次数.V * 10 + 10), (int)(this.CharacterData.升级装备.V.升级次数.V * 100 + 100)))
+                交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", (int)(this.CharacterData.升级装备.V.升级次数.V * 10 + 10), (int)(this.CharacterData.升级装备.V.升级次数.V * 100 + 100)))
               });
               return;
             }
@@ -7918,7 +7918,7 @@ namespace GameServer.Maps
             网络连接151.SendPacket(new 同步交互结果
             {
               对象编号 = this.对话守卫.ObjectId,
-              交互文本 = NpcDialogs.GetBufferFromDialogId(this.对话页面)
+              交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
             });
             return;
           }
@@ -8080,7 +8080,7 @@ namespace GameServer.Maps
                     }
                     网络连接167.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num48)),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num48)),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -8101,7 +8101,7 @@ namespace GameServer.Maps
                     }
                     网络连接168.SendPacket(new 同步交互结果
                     {
-                      交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num49)),
+                      交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num49)),
                       对象编号 = this.对话守卫.ObjectId
                     });
                     return;
@@ -8181,7 +8181,7 @@ namespace GameServer.Maps
                   }
                   网络连接165.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num45)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num45)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -8202,7 +8202,7 @@ namespace GameServer.Maps
                   }
                   网络连接166.SendPacket(new 同步交互结果
                   {
-                    交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num46)),
+                    交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num46)),
                     对象编号 = this.对话守卫.ObjectId
                   });
                   return;
@@ -8288,7 +8288,7 @@ namespace GameServer.Maps
                 }
                 网络连接158.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num36)),
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num36)),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -8309,7 +8309,7 @@ namespace GameServer.Maps
                 }
                 网络连接159.SendPacket(new 同步交互结果
                 {
-                  交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num37)),
+                  交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num37)),
                   对象编号 = this.对话守卫.ObjectId
                 });
                 return;
@@ -8365,7 +8365,7 @@ namespace GameServer.Maps
               }
               网络连接160.SendPacket(new 同步交互结果
               {
-                交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num39)),
+                交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num39)),
                 对象编号 = this.对话守卫.ObjectId
               });
               return;
@@ -8386,7 +8386,7 @@ namespace GameServer.Maps
               }
               网络连接161.SendPacket(new 同步交互结果
               {
-                交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num40)),
+                交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num40)),
                 对象编号 = this.对话守卫.ObjectId
               });
               return;
@@ -8454,7 +8454,7 @@ namespace GameServer.Maps
             }
             网络连接162.SendPacket(new 同步交互结果
             {
-              交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num42)),
+              交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num42)),
               对象编号 = this.对话守卫.ObjectId
             });
             return;
@@ -8469,7 +8469,7 @@ namespace GameServer.Maps
             }
             网络连接163.SendPacket(new 同步交互结果
             {
-              交互文本 = NpcDialogs.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num43)),
+              交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num43)),
               对象编号 = this.对话守卫.ObjectId
             });
             return;
@@ -9140,11 +9140,11 @@ namespace GameServer.Maps
 
     public void RequestStoreDataPacket(int storeVersion)
     {
-      if (storeVersion != 0 && storeVersion == GameStore.商店文件效验)
+      if (storeVersion != 0 && storeVersion == 游戏商店.商店文件效验)
       {
         ActiveConnection?.SendPacket(new SyncStoreDataPacket
         {
-          StoreVersion = GameStore.商店文件效验,
+          StoreVersion = 游戏商店.商店文件效验,
           ItemsCount = 0,
           Data = new byte[0]
         });
@@ -9153,9 +9153,9 @@ namespace GameServer.Maps
       {
         ActiveConnection?.SendPacket(new SyncStoreDataPacket
         {
-          StoreVersion = GameStore.商店文件效验,
-          ItemsCount = GameStore.商店物品数量,
-          Data = GameStore.商店文件数据
+          StoreVersion = 游戏商店.商店文件效验,
+          ItemsCount = 游戏商店.商店物品数量,
+          Data = 游戏商店.商店文件数据
         });
       }
     }
@@ -9165,7 +9165,7 @@ namespace GameServer.Maps
     {
       if (数据版本 != 0)
       {
-        if (数据版本 == Treasures.珍宝商店效验)
+        if (数据版本 == 珍宝商品.珍宝商店效验)
         {
           SConnection 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
@@ -9174,7 +9174,7 @@ namespace GameServer.Maps
           }
           网络连接.SendPacket(new 同步珍宝数据
           {
-            版本编号 = Treasures.珍宝商店效验,
+            版本编号 = 珍宝商品.珍宝商店效验,
             商品数量 = 0,
             商店数据 = new byte[0]
           });
@@ -9188,9 +9188,9 @@ namespace GameServer.Maps
       }
       网络连接2.SendPacket(new 同步珍宝数据
       {
-        版本编号 = Treasures.珍宝商店效验,
-        商品数量 = Treasures.珍宝商品数量,
-        商店数据 = Treasures.珍宝商店数据
+        版本编号 = 珍宝商品.珍宝商店效验,
+        商品数量 = 珍宝商品.珍宝商品数量,
+        商店数据 = 珍宝商品.珍宝商店数据
       });
     }
 
@@ -9202,9 +9202,9 @@ namespace GameServer.Maps
 
     public void 购买珍宝商品(int Id, int 购入数量)
     {
-      Treasures 珍宝商品;
-      GameItems GameItems;
-      if (Treasures.DataSheet.TryGetValue(Id, out 珍宝商品) && GameItems.DataSheet.TryGetValue(Id, out GameItems))
+      珍宝商品 珍宝商品;
+      游戏物品 GameItems;
+      if (珍宝商品.DataSheet.TryGetValue(Id, out 珍宝商品) && 游戏物品.DataSheet.TryGetValue(Id, out GameItems))
       {
         if (购入数量 <= 0)
           return;
@@ -9333,7 +9333,7 @@ namespace GameServer.Maps
     {
       if (礼包编号 == 1)
       {
-        GameItems 模板;
+        游戏物品 模板;
         if (this.Ingots < 600)
         {
           SConnection 网络连接 = this.ActiveConnection;
@@ -9373,7 +9373,7 @@ namespace GameServer.Maps
           });
           return;
         }
-        else if (GameItems.DataSheetByName.TryGetValue("战具礼盒", out 模板))
+        else if (游戏物品.DataSheetByName.TryGetValue("战具礼盒", out 模板))
         {
           for (byte b = 0; b < this.BackpackSize; b += 1)
           {
@@ -9413,8 +9413,8 @@ namespace GameServer.Maps
       }
       else if (礼包编号 == 2)
       {
-        GameItems 模板2;
-        GameItems 模板3;
+        游戏物品 模板2;
+        游戏物品 模板3;
         if (this.Ingots < 3000)
         {
           SConnection 网络连接6 = this.ActiveConnection;
@@ -9441,7 +9441,7 @@ namespace GameServer.Maps
           });
           return;
         }
-        else if (GameItems.DataSheetByName.TryGetValue("强化战具礼盒", out 模板2) && GameItems.DataSheetByName.TryGetValue("命运之证", out 模板3))
+        else if (游戏物品.DataSheetByName.TryGetValue("强化战具礼盒", out 模板2) && 游戏物品.DataSheetByName.TryGetValue("命运之证", out 模板3))
         {
           if (!(this.CharacterData.战备日期.V == default(DateTime)))
           {
@@ -9791,8 +9791,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板;
-                  if (!GameItems.DataSheetByName.TryGetValue((this.CurrentPrivileges == 3) ? "名俊铭文石礼包" : "豪杰铭文石礼包", out 模板))
+                  游戏物品 模板;
+                  if (!游戏物品.DataSheetByName.TryGetValue((this.CurrentPrivileges == 3) ? "名俊铭文石礼包" : "豪杰铭文石礼包", out 模板))
                   {
                     return;
                   }
@@ -9850,8 +9850,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板2;
-                  if (!GameItems.DataSheetByName.TryGetValue("随机传送石", out 模板2))
+                  游戏物品 模板2;
+                  if (!游戏物品.DataSheetByName.TryGetValue("随机传送石", out 模板2))
                   {
                     return;
                   }
@@ -9909,8 +9909,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板3;
-                  if (!GameItems.DataSheetByName.TryGetValue((this.CurrentPrivileges == 3) ? "名俊灵石宝盒" : "豪杰灵石宝盒", out 模板3))
+                  游戏物品 模板3;
+                  if (!游戏物品.DataSheetByName.TryGetValue((this.CurrentPrivileges == 3) ? "名俊灵石宝盒" : "豪杰灵石宝盒", out 模板3))
                   {
                     return;
                   }
@@ -9968,8 +9968,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板4;
-                  if (!GameItems.DataSheetByName.TryGetValue("雕色石", out 模板4))
+                  游戏物品 模板4;
+                  if (!游戏物品.DataSheetByName.TryGetValue("雕色石", out 模板4))
                   {
                     return;
                   }
@@ -10027,8 +10027,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板5;
-                  if (!GameItems.DataSheetByName.TryGetValue("修复油", out 模板5))
+                  游戏物品 模板5;
+                  if (!游戏物品.DataSheetByName.TryGetValue("修复油", out 模板5))
                   {
                     return;
                   }
@@ -10086,8 +10086,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板6;
-                  if (!GameItems.DataSheetByName.TryGetValue("祝福油", out 模板6))
+                  游戏物品 模板6;
+                  if (!游戏物品.DataSheetByName.TryGetValue("祝福油", out 模板6))
                   {
                     return;
                   }
@@ -10192,8 +10192,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板7;
-                  if (!GameItems.DataSheetByName.TryGetValue((this.PreviousPrivilege == 3) ? "名俊铭文石礼包" : "豪杰铭文石礼包", out 模板7))
+                  游戏物品 模板7;
+                  if (!游戏物品.DataSheetByName.TryGetValue((this.PreviousPrivilege == 3) ? "名俊铭文石礼包" : "豪杰铭文石礼包", out 模板7))
                   {
                     return;
                   }
@@ -10251,8 +10251,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板8;
-                  if (!GameItems.DataSheetByName.TryGetValue("随机传送石", out 模板8))
+                  游戏物品 模板8;
+                  if (!游戏物品.DataSheetByName.TryGetValue("随机传送石", out 模板8))
                   {
                     return;
                   }
@@ -10310,8 +10310,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板9;
-                  if (!GameItems.DataSheetByName.TryGetValue((this.PreviousPrivilege == 3) ? "名俊灵石宝盒" : "豪杰灵石宝盒", out 模板9))
+                  游戏物品 模板9;
+                  if (!游戏物品.DataSheetByName.TryGetValue((this.PreviousPrivilege == 3) ? "名俊灵石宝盒" : "豪杰灵石宝盒", out 模板9))
                   {
                     return;
                   }
@@ -10369,8 +10369,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板10;
-                  if (!GameItems.DataSheetByName.TryGetValue("雕色石", out 模板10))
+                  游戏物品 模板10;
+                  if (!游戏物品.DataSheetByName.TryGetValue("雕色石", out 模板10))
                   {
                     return;
                   }
@@ -10428,8 +10428,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板11;
-                  if (!GameItems.DataSheetByName.TryGetValue("修复油", out 模板11))
+                  游戏物品 模板11;
+                  if (!游戏物品.DataSheetByName.TryGetValue("修复油", out 模板11))
                   {
                     return;
                   }
@@ -10487,8 +10487,8 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  GameItems 模板12;
-                  if (!GameItems.DataSheetByName.TryGetValue("祝福油", out 模板12))
+                  游戏物品 模板12;
+                  if (!游戏物品.DataSheetByName.TryGetValue("祝福油", out 模板12))
                   {
                     return;
                   }
@@ -10536,7 +10536,7 @@ namespace GameServer.Maps
 
     public void 玩家使用称号(byte Id)
     {
-      GameTitle 游戏称号;
+      游戏称号 游戏称号;
       if (!this.AvailableTitles.ContainsKey(Id))
       {
         SConnection 网络连接 = this.ActiveConnection;
@@ -10550,7 +10550,7 @@ namespace GameServer.Maps
         });
         return;
       }
-      else if (!GameTitle.DataSheet.TryGetValue(Id, out 游戏称号))
+      else if (!游戏称号.DataSheet.TryGetValue(Id, out 游戏称号))
       {
         SConnection 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
@@ -11429,7 +11429,7 @@ namespace GameServer.Maps
         return false;
       }
 
-      if (item.UnpackItemId == null || !GameItems.DataSheet.TryGetValue(item.UnpackItemId.Value, out var drugItem))
+      if (item.UnpackItemId == null || !游戏物品.DataSheet.TryGetValue(item.UnpackItemId.Value, out var drugItem))
         return false;
 
 
@@ -11517,7 +11517,7 @@ namespace GameServer.Maps
           {
             case ItemProperty.宝盒物品概率:
               var randomPos = MainProcess.RandomNumber.Next(treasureItems.Length);
-              if (GameItems.DataSheetByName.TryGetValue(treasureItems[randomPos].物品名字, out var randomItem))
+              if (游戏物品.DataSheetByName.TryGetValue(treasureItems[randomPos].物品名字, out var randomItem))
               {
                 ItemData newItem = randomItem is EquipmentItem equipmentItem
                     ? new EquipmentData(equipmentItem, CharacterData, 1, inventoryLocation)
@@ -11778,7 +11778,7 @@ namespace GameServer.Maps
       if (CharacterData.Mounts.Contains(mountId))
         return;
 
-      if (!GameMounts.DataSheet.ContainsKey(mountId))
+      if (!游戏坐骑.DataSheet.ContainsKey(mountId))
         return;
 
       CharacterData.Mounts.Add(mountId);
@@ -12082,8 +12082,8 @@ namespace GameServer.Maps
     {
       if (!this.Died && this.ParalysisState <= 0 && this.交易状态 < 3)
       {
-        GameStore 游戏商店;
-        if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && 出售数量 > 0 && GameStore.DataSheet.TryGetValue(this.打开商店, out 游戏商店))
+        游戏商店 游戏商店;
+        if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && 出售数量 > 0 && 游戏商店.DataSheet.TryGetValue(this.打开商店, out 游戏商店))
         {
           ItemData ItemData = null;
           if (背包类型 == 1)
@@ -12121,9 +12121,9 @@ namespace GameServer.Maps
     {
       if (!this.Died && this.ParalysisState <= 0 && this.交易状态 < 3)
       {
-        GameStore 游戏商店;
-        GameItems GameItems;
-        if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && 购入数量 > 0 && this.打开商店 == StoreId && GameStore.DataSheet.TryGetValue(this.打开商店, out 游戏商店) && 游戏商店.商品列表.Count > 物品位置 && GameItems.DataSheet.TryGetValue(游戏商店.商品列表[物品位置].商品编号, out GameItems))
+        游戏商店 游戏商店;
+        游戏物品 GameItems;
+        if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && 购入数量 > 0 && this.打开商店 == StoreId && 游戏商店.DataSheet.TryGetValue(this.打开商店, out 游戏商店) && 游戏商店.商品列表.Count > 物品位置 && 游戏物品.DataSheet.TryGetValue(游戏商店.商品列表[物品位置].商品编号, out GameItems))
         {
           int num;
           if (购入数量 != 1)
@@ -12337,8 +12337,8 @@ namespace GameServer.Maps
       {
         return;
       }
-      GameStore 游戏商店;
-      if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && GameStore.DataSheet.TryGetValue(this.打开商店, out 游戏商店) && this.回购清单.Count > (int)物品位置)
+      游戏商店 游戏商店;
+      if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && 游戏商店.DataSheet.TryGetValue(this.打开商店, out 游戏商店) && this.回购清单.Count > (int)物品位置)
       {
         ItemData ItemData = this.回购清单[(int)物品位置];
         int num = -1;
@@ -12441,8 +12441,8 @@ namespace GameServer.Maps
     {
       if (!this.Died && this.ParalysisState <= 0 && this.交易状态 < 3)
       {
-        GameStore 游戏商店;
-        if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && GameStore.DataSheet.TryGetValue(this.打开商店, out 游戏商店))
+        游戏商店 游戏商店;
+        if (this.对话守卫 != null && this.CurrentMap == this.对话守卫.CurrentMap && base.GetDistance(this.对话守卫) <= 12 && this.打开商店 != 0 && 游戏商店.DataSheet.TryGetValue(this.打开商店, out 游戏商店))
         {
           this.回购清单 = 游戏商店.回购列表.ToList<ItemData>();
           using (MemoryStream memoryStream = new MemoryStream())
@@ -12567,7 +12567,7 @@ namespace GameServer.Maps
           EquipmentData EquipmentData = ItemData as EquipmentData;
           if (EquipmentData != null)
           {
-            GameItems GameItems;
+            游戏物品 GameItems;
             if (!EquipmentData.镶嵌灵石.TryGetValue(装备孔位, out GameItems))
             {
               this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: The player has set a spirit stone.  Error: No stones are inlaid"));
@@ -12803,7 +12803,7 @@ namespace GameServer.Maps
           }
           if (EquipmentData.第一铭文 == null)
           {
-            EquipmentData.第一铭文 = InscriptionSkill.RandomWashing(洗练职业);
+            EquipmentData.第一铭文 = 铭文技能.RandomWashing(洗练职业);
             this.玩家装卸铭文(EquipmentData.第一铭文.技能编号, EquipmentData.第一铭文.铭文编号);
             if (EquipmentData.第一铭文.广播通知)
             {
@@ -12826,8 +12826,8 @@ namespace GameServer.Maps
             int? num2;
             do
             {
-              SkillId = (int)(EquipmentData.第二铭文 = InscriptionSkill.RandomWashing(洗练职业)).技能编号;
-              InscriptionSkill 第一铭文 = EquipmentData.第一铭文;
+              SkillId = (int)(EquipmentData.第二铭文 = 铭文技能.RandomWashing(洗练职业)).技能编号;
+              铭文技能 第一铭文 = EquipmentData.第一铭文;
               ushort? num = (第一铭文 == null) ? null : new ushort?(第一铭文.技能编号);
               num2 = ((num != null) ? new int?((int)num.GetValueOrDefault()) : null);
             }
@@ -12858,8 +12858,8 @@ namespace GameServer.Maps
             int SkillId2;
             do
             {
-              SkillId2 = (int)(EquipmentData.第一铭文 = InscriptionSkill.RandomWashing(洗练职业)).技能编号;
-              InscriptionSkill 第二铭文 = EquipmentData.第二铭文;
+              SkillId2 = (int)(EquipmentData.第一铭文 = 铭文技能.RandomWashing(洗练职业)).技能编号;
+              铭文技能 第二铭文 = EquipmentData.第二铭文;
               ushort? num = (第二铭文 == null) ? null : new ushort?(第二铭文.技能编号);
               num2 = ((num != null) ? new int?((int)num.GetValueOrDefault()) : null);
             }
@@ -12897,9 +12897,9 @@ namespace GameServer.Maps
             return;
           }
           玩家普通洗练 玩家普通洗练 = new 玩家普通洗练();
-          InscriptionSkill 第一铭文2 = EquipmentData.第一铭文;
+          铭文技能 第一铭文2 = EquipmentData.第一铭文;
           玩家普通洗练.铭文位一 = ((ushort)((第一铭文2 != null) ? 第一铭文2.Index : 0));
-          InscriptionSkill 第二铭文2 = EquipmentData.第二铭文;
+          铭文技能 第二铭文2 = EquipmentData.第二铭文;
           玩家普通洗练.铭文位二 = ((ushort)((第二铭文2 != null) ? 第二铭文2.Index : 0));
           网络连接5.SendPacket(玩家普通洗练);
           return;
@@ -13022,7 +13022,7 @@ namespace GameServer.Maps
               洗练职业 = 5;
               break;
           }
-          while ((this.InscriptionSkill = InscriptionSkill.RandomWashing(洗练职业)).技能编号 == EquipmentData.最优铭文.技能编号)
+          while ((this.InscriptionSkill = 铭文技能.RandomWashing(洗练职业)).技能编号 == EquipmentData.最优铭文.技能编号)
           {
           }
           if (EquipmentData.最优铭文 == EquipmentData.第一铭文)
@@ -13186,7 +13186,7 @@ namespace GameServer.Maps
               洗练职业 = 5;
               break;
           }
-          while ((this.InscriptionSkill = InscriptionSkill.RandomWashing(洗练职业)).技能编号 == EquipmentData.最差铭文.技能编号)
+          while ((this.InscriptionSkill = 铭文技能.RandomWashing(洗练职业)).技能编号 == EquipmentData.最差铭文.技能编号)
           {
           }
           SConnection 网络连接4 = this.ActiveConnection;
@@ -13472,9 +13472,9 @@ namespace GameServer.Maps
                 }
                 DoubleInscriptionPositionSwitchPacket DoubleInscriptionPositionSwitchPacket = new DoubleInscriptionPositionSwitchPacket();
                 DoubleInscriptionPositionSwitchPacket.当前栏位 = (ushort)EquipmentData.当前铭栏.V;
-                InscriptionSkill 第一铭文 = EquipmentData.第一铭文;
+                铭文技能 第一铭文 = EquipmentData.第一铭文;
                 DoubleInscriptionPositionSwitchPacket.第一铭文 = ((ushort)((第一铭文 != null) ? 第一铭文.Index : 0));
-                InscriptionSkill 第二铭文 = EquipmentData.第二铭文;
+                铭文技能 第二铭文 = EquipmentData.第二铭文;
                 DoubleInscriptionPositionSwitchPacket.第二铭文 = ((ushort)((第二铭文 != null) ? 第二铭文.Index : 0));
                 网络连接4.SendPacket(DoubleInscriptionPositionSwitchPacket);
               }
@@ -13557,9 +13557,9 @@ namespace GameServer.Maps
               }
               DoubleInscriptionPositionSwitchPacket DoubleInscriptionPositionSwitchPacket = new DoubleInscriptionPositionSwitchPacket();
               DoubleInscriptionPositionSwitchPacket.当前栏位 = (ushort)EquipmentData.当前铭栏.V;
-              InscriptionSkill 第一铭文 = EquipmentData.第一铭文;
+              铭文技能 第一铭文 = EquipmentData.第一铭文;
               DoubleInscriptionPositionSwitchPacket.第一铭文 = ((ushort)((第一铭文 != null) ? 第一铭文.Index : 0));
-              InscriptionSkill 第二铭文 = EquipmentData.第二铭文;
+              铭文技能 第二铭文 = EquipmentData.第二铭文;
               DoubleInscriptionPositionSwitchPacket.第二铭文 = ((ushort)((第二铭文 != null) ? 第二铭文.Index : 0));
               网络连接3.SendPacket(DoubleInscriptionPositionSwitchPacket);
               return;
@@ -14373,7 +14373,7 @@ namespace GameServer.Maps
         return;
       }
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(num, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(num, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -14453,7 +14453,7 @@ namespace GameServer.Maps
       int key = BitConverter.ToInt32(数据, 0);
       byte[] array = 数据.Skip(4).ToArray<byte>();
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(key, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(key, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null && this.好友列表.Contains(CharacterData))
@@ -14522,7 +14522,7 @@ namespace GameServer.Maps
         if (对象编号 != 0)
         {
           GameData GameData;
-          if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+          if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
           {
             CharacterData CharacterData = GameData as CharacterData;
             if (CharacterData != null)
@@ -14600,7 +14600,7 @@ namespace GameServer.Maps
           return;
         }
         GameData GameData2;
-        if (GameDataGateway.CharacterDataTable.Keyword.TryGetValue(对象名字, out GameData2))
+        if (GameDataGateway.角色数据表.Keyword.TryGetValue(对象名字, out GameData2))
         {
           CharacterData CharacterData2 = GameData2 as CharacterData;
           if (CharacterData2 != null)
@@ -14683,7 +14683,7 @@ namespace GameServer.Maps
     public void 玩家取消关注(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.Keyword.TryGetValue(this.ObjectName, out GameData))
+      if (GameDataGateway.角色数据表.Keyword.TryGetValue(this.ObjectName, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -14742,7 +14742,7 @@ namespace GameServer.Maps
     public void 玩家添加仇人(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -14812,7 +14812,7 @@ namespace GameServer.Maps
     public void 玩家删除仇人(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.Keyword.TryGetValue(this.ObjectName, out GameData))
+      if (GameDataGateway.角色数据表.Keyword.TryGetValue(this.ObjectName, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -14857,7 +14857,7 @@ namespace GameServer.Maps
     public void 玩家屏蔽目标(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.Keyword.TryGetValue(this.ObjectName, out GameData))
+      if (GameDataGateway.角色数据表.Keyword.TryGetValue(this.ObjectName, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -14932,7 +14932,7 @@ namespace GameServer.Maps
     public void 玩家解除屏蔽(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -15079,7 +15079,7 @@ namespace GameServer.Maps
     public void 请求角色资料(int 角色编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(角色编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(角色编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -15331,7 +15331,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -15408,7 +15408,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -15503,7 +15503,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -15666,7 +15666,7 @@ namespace GameServer.Maps
       if (this.ObjectId != 对象编号)
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -15958,7 +15958,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -16095,7 +16095,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -16217,7 +16217,7 @@ namespace GameServer.Maps
         string 标题 = Encoding.UTF8.GetString(array2).Split(new char[1], StringSplitOptions.RemoveEmptyEntries)[0];
         string 正文 = Encoding.UTF8.GetString(array3).Split(new char[1], StringSplitOptions.RemoveEmptyEntries)[0];
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.Keyword.TryGetValue(key, out GameData))
+        if (GameDataGateway.角色数据表.Keyword.TryGetValue(key, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -16266,7 +16266,7 @@ namespace GameServer.Maps
     public void 查看邮件内容(int 邮件编号)
     {
       GameData GameData;
-      if (GameDataGateway.MailData表.DataSheet.TryGetValue(邮件编号, out GameData))
+      if (GameDataGateway.邮件数据表.DataSheet.TryGetValue(邮件编号, out GameData))
       {
         MailData MailData = GameData as MailData;
         if (MailData != null)
@@ -16316,7 +16316,7 @@ namespace GameServer.Maps
     public void 删除指定邮件(int 邮件编号)
     {
       GameData GameData;
-      if (GameDataGateway.MailData表.DataSheet.TryGetValue(邮件编号, out GameData))
+      if (GameDataGateway.邮件数据表.DataSheet.TryGetValue(邮件编号, out GameData))
       {
         MailData MailData = GameData as MailData;
         if (MailData != null)
@@ -16368,7 +16368,7 @@ namespace GameServer.Maps
     public void 提取邮件附件(int 邮件编号)
     {
       GameData GameData;
-      if (GameDataGateway.MailData表.DataSheet.TryGetValue(邮件编号, out GameData))
+      if (GameDataGateway.邮件数据表.DataSheet.TryGetValue(邮件编号, out GameData))
       {
         MailData MailData = GameData as MailData;
         if (MailData != null)
@@ -16473,7 +16473,7 @@ namespace GameServer.Maps
     public void 查询行会信息(int 行会编号)
     {
       GameData GameData;
-      if (GameDataGateway.GuildData表.DataSheet.TryGetValue(行会编号, out GameData))
+      if (GameDataGateway.行会数据表.DataSheet.TryGetValue(行会编号, out GameData))
       {
         GuildData GuildData = GameData as GuildData;
         if (GuildData != null)
@@ -16520,7 +16520,7 @@ namespace GameServer.Maps
     public void 查看行会列表(int 行会编号, byte 查看方式)
     {
       GameData value;
-      int num = Math.Max(0, (GameDataGateway.GuildData表.DataSheet.TryGetValue(行会编号, out value) && value is GuildData 行会数据) ? (行会数据.行会排名.V - 1) : 0);
+      int num = Math.Max(0, (GameDataGateway.行会数据表.DataSheet.TryGetValue(行会编号, out value) && value is GuildData 行会数据) ? (行会数据.行会排名.V - 1) : 0);
       int num2 = ((查看方式 == 2) ? Math.Max(0, num) : Math.Max(0, num - 11));
       int num3 = Math.Min(12, SystemData.Data.行会人数排名.Count - num2);
       if (num3 > 0)
@@ -16553,7 +16553,7 @@ namespace GameServer.Maps
     public void FindCorrespondingGuildPacket(int 行会编号, string GuildName)
     {
       GameData GameData;
-      if (GameDataGateway.GuildData表.DataSheet.TryGetValue(行会编号, out GameData) || GameDataGateway.GuildData表.Keyword.TryGetValue(GuildName, out GameData))
+      if (GameDataGateway.行会数据表.DataSheet.TryGetValue(行会编号, out GameData) || GameDataGateway.行会数据表.Keyword.TryGetValue(GuildName, out GameData))
       {
         GuildData GuildData = GameData as GuildData;
         if (GuildData != null)
@@ -16744,7 +16744,7 @@ namespace GameServer.Maps
           this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Request to create a guild. Error: Wrong character length."));
           return;
         }
-        if (!GameDataGateway.GuildData表.Keyword.ContainsKey(array[0]))
+        if (!GameDataGateway.行会数据表.Keyword.ContainsKey(array[0]))
         {
           this.NumberGoldCoins -= 200000;
           this.ConsumeBackpackItem(1, 当前物品);
@@ -16882,7 +16882,7 @@ namespace GameServer.Maps
     public void 处理入会邀请(int 对象编号, byte 处理类型)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -17005,7 +17005,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -17085,7 +17085,7 @@ namespace GameServer.Maps
     public void 申请加入行会(int 行会编号, string GuildName)
     {
       GameData GameData;
-      if (GameDataGateway.GuildData表.DataSheet.TryGetValue(行会编号, out GameData) || GameDataGateway.GuildData表.Keyword.TryGetValue(GuildName, out GameData))
+      if (GameDataGateway.行会数据表.DataSheet.TryGetValue(行会编号, out GameData) || GameDataGateway.行会数据表.Keyword.TryGetValue(GuildName, out GameData))
       {
         GuildData GuildData = GameData as GuildData;
         if (GuildData != null)
@@ -17225,7 +17225,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.Keyword.TryGetValue(对象名字, out GameData))
+        if (GameDataGateway.角色数据表.Keyword.TryGetValue(对象名字, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -17409,7 +17409,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -17500,7 +17500,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -17562,7 +17562,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -17632,7 +17632,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+        if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
         {
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
@@ -17824,7 +17824,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.GuildData表.Keyword.TryGetValue(GuildName, out GameData))
+        if (GameDataGateway.行会数据表.Keyword.TryGetValue(GuildName, out GameData))
         {
           GuildData GuildData = GameData as GuildData;
           if (GuildData != null)
@@ -17968,7 +17968,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.GuildData表.Keyword.TryGetValue(GuildName, out GameData))
+        if (GameDataGateway.行会数据表.Keyword.TryGetValue(GuildName, out GameData))
         {
           GuildData GuildData = GameData as GuildData;
           if (GuildData != null)
@@ -18101,7 +18101,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.GuildData表.DataSheet.TryGetValue(行会编号, out GameData))
+        if (GameDataGateway.行会数据表.DataSheet.TryGetValue(行会编号, out GameData))
         {
           GuildData GuildData = GameData as GuildData;
           if (GuildData != null)
@@ -18231,7 +18231,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.GuildData表.DataSheet.TryGetValue(行会编号, out GameData))
+        if (GameDataGateway.行会数据表.DataSheet.TryGetValue(行会编号, out GameData))
         {
           GuildData GuildData = GameData as GuildData;
           if (GuildData != null)
@@ -18312,7 +18312,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.GuildData表.DataSheet.TryGetValue(行会编号, out GameData))
+        if (GameDataGateway.行会数据表.DataSheet.TryGetValue(行会编号, out GameData))
         {
           GuildData GuildData = GameData as GuildData;
           if (GuildData != null)
@@ -18408,7 +18408,7 @@ namespace GameServer.Maps
       else
       {
         GameData GameData;
-        if (GameDataGateway.GuildData表.DataSheet.TryGetValue(行会编号, out GameData))
+        if (GameDataGateway.行会数据表.DataSheet.TryGetValue(行会编号, out GameData))
         {
           GuildData GuildData = GameData as GuildData;
           if (GuildData != null)
@@ -18532,7 +18532,7 @@ namespace GameServer.Maps
     public void 玩家申请拜师(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -18654,7 +18654,7 @@ namespace GameServer.Maps
     public void 同意拜师申请(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -18797,7 +18797,7 @@ namespace GameServer.Maps
     public void RefusedApplyApprenticeshipPacket(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -18867,7 +18867,7 @@ namespace GameServer.Maps
     public void 玩家申请收徒(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -18978,7 +18978,7 @@ namespace GameServer.Maps
     public void 同意收徒申请(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -19126,7 +19126,7 @@ namespace GameServer.Maps
     public void RejectionApprenticeshipAppPacket(int 对象编号)
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
@@ -19206,7 +19206,7 @@ namespace GameServer.Maps
         return;
       }
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(对象编号, out GameData))
+      if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null && this.所属师门.师门成员.Contains(CharacterData))
@@ -21209,7 +21209,7 @@ namespace GameServer.Maps
     public CharacterData CharacterData;
 
 
-    public InscriptionSkill InscriptionSkill;
+    public 铭文技能 InscriptionSkill;
 
 
     public PlayerDeals 当前交易;

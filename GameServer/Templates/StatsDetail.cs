@@ -1,6 +1,6 @@
 ﻿namespace GameServer.Templates
 {
-    public sealed partial class EquipmentStats
+    public sealed partial class 装备属性
 	{
         public class StatsDetail
 		{

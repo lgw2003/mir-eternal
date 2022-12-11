@@ -145,7 +145,7 @@ namespace GameServer.Data
 
         public void 创建角色(SConnection 当前网络, 客户创建角色 P)
         {
-            if (GameDataGateway.CharacterDataTable.DataSheet.Count >= 1000000)
+            if (GameDataGateway.角色数据表.DataSheet.Count >= 1000000)
             {
                 当前网络.SendPacket(new LoginErrorMessagePacket
                 {
@@ -169,7 +169,7 @@ namespace GameServer.Data
                 });
                 return;
             }
-            if (GameDataGateway.CharacterDataTable[P.名字] != null)
+            if (GameDataGateway.角色数据表[P.名字] != null)
             {
                 当前网络.SendPacket(new LoginErrorMessagePacket
                 {
@@ -232,7 +232,7 @@ namespace GameServer.Data
         public void 删除角色(SConnection 当前网络, 客户删除角色 P)
         {
             GameData GameData;
-            if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(P.角色编号, out GameData))
+            if (GameDataGateway.角色数据表.DataSheet.TryGetValue(P.角色编号, out GameData))
             {
                 CharacterData CharacterData = GameData as CharacterData;
                 if (CharacterData != null && this.Characters.Contains(CharacterData))
@@ -278,7 +278,7 @@ namespace GameServer.Data
         public void 永久删除(SConnection 当前网络, 彻底删除角色 P)
         {
             GameData GameData;
-            if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(P.角色编号, out GameData))
+            if (GameDataGateway.角色数据表.DataSheet.TryGetValue(P.角色编号, out GameData))
             {
                 CharacterData CharacterData = GameData as CharacterData;
                 if (CharacterData != null && this.冻结列表.Contains(CharacterData))
@@ -319,7 +319,7 @@ namespace GameServer.Data
         public void GetBackCharacter(SConnection 当前网络, 客户GetBackCharacterPacket P)
         {
             GameData GameData;
-            if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(P.角色编号, out GameData))
+            if (GameDataGateway.角色数据表.DataSheet.TryGetValue(P.角色编号, out GameData))
             {
                 CharacterData CharacterData = GameData as CharacterData;
                 if (CharacterData != null && this.冻结列表.Contains(CharacterData))
@@ -349,7 +349,7 @@ namespace GameServer.Data
         public void 进入游戏(SConnection conn, 客户进入游戏 P)
         {
             GameData GameData;
-            if (GameDataGateway.CharacterDataTable.DataSheet.TryGetValue(P.角色编号, out GameData))
+            if (GameDataGateway.角色数据表.DataSheet.TryGetValue(P.角色编号, out GameData))
             {
                 CharacterData CharacterData = GameData as CharacterData;
                 if (CharacterData != null && this.Characters.Contains(CharacterData))

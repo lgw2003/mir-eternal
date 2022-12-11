@@ -150,7 +150,7 @@ namespace GameServer.Maps
 		}
 
 		
-		public TrapObject(MapObject 来源, SkillTraps 模板, MapInstance 地图, Point 坐标)
+		public TrapObject(MapObject 来源, 技能陷阱 模板, MapInstance 地图, Point 坐标)
 		{
 			
 			
@@ -187,8 +187,8 @@ namespace GameServer.Maps
 					this.消失时间 += TimeSpan.FromMilliseconds((double)this.陷阱模板.铭文延长时间);
 				}
 			}
-			this.ActivelyTriggerSkills = ((this.陷阱模板.主动触发技能 == null || !GameSkills.DataSheet.ContainsKey(this.陷阱模板.主动触发技能)) ? null : GameSkills.DataSheet[this.陷阱模板.主动触发技能]);
-			this.PassiveTriggerSkill = ((this.陷阱模板.被动触发技能 == null || !GameSkills.DataSheet.ContainsKey(this.陷阱模板.被动触发技能)) ? null : GameSkills.DataSheet[this.陷阱模板.被动触发技能]);
+			this.ActivelyTriggerSkills = ((this.陷阱模板.主动触发技能 == null || !游戏技能.DataSheet.ContainsKey(this.陷阱模板.主动触发技能)) ? null : 游戏技能.DataSheet[this.陷阱模板.主动触发技能]);
+			this.PassiveTriggerSkill = ((this.陷阱模板.被动触发技能 == null || !游戏技能.DataSheet.ContainsKey(this.陷阱模板.被动触发技能)) ? null : 游戏技能.DataSheet[this.陷阱模板.被动触发技能]);
 			this.ObjectId = ++MapGatewayProcess.MapInstanceId;
 			base.BindGrid();
 			base.更新邻居时处理();
@@ -297,7 +297,7 @@ namespace GameServer.Maps
 		public MapObject TrapSource;
 
 		
-		public SkillTraps 陷阱模板;
+		public 技能陷阱 陷阱模板;
 
 		
 		public HashSet<MapObject> 被动触发列表;
@@ -306,9 +306,9 @@ namespace GameServer.Maps
 		public byte 陷阱移动次数;
 
 		
-		public GameSkills PassiveTriggerSkill;
+		public 游戏技能 PassiveTriggerSkill;
 
 		
-		public GameSkills ActivelyTriggerSkills;
+		public 游戏技能 ActivelyTriggerSkills;
 	}
 }

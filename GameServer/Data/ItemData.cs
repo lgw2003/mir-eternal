@@ -10,7 +10,7 @@ namespace GameServer.Data
     public class ItemData : GameData
     {
 
-        public GameItems 物品模板
+        public 游戏物品 物品模板
         {
             get
             {
@@ -131,7 +131,7 @@ namespace GameServer.Data
                             int num4 = Math.Max((sbyte)0, EquipmentData2.Luck.V);
                             int num5 = EquipmentData2.升级Attack.V * 100 + EquipmentData2.升级Magic.V * 100 + EquipmentData2.升级Taoism.V * 100 + EquipmentData2.升级Needle.V * 100 + EquipmentData2.升级Archery.V * 100;
                             int num6 = 0;
-                            foreach (InscriptionSkill value in EquipmentData2.铭文技能.Values)
+                            foreach (铭文技能 value in EquipmentData2.铭文技能.Values)
                             {
                                 if (value != null)
                                 {
@@ -139,12 +139,12 @@ namespace GameServer.Data
                                 }
                             }
                             int num7 = 0;
-                            foreach (RandomStats item in EquipmentData2.随机Stat)
+                            foreach (随机属性 item in EquipmentData2.随机Stat)
                             {
                                 num7 += item.战力加成 * 100;
                             }
                             int num8 = 0;
-                            using (IEnumerator<GameItems> enumerator3 = EquipmentData2.镶嵌灵石.Values.GetEnumerator())
+                            using (IEnumerator<游戏物品> enumerator3 = EquipmentData2.镶嵌灵石.Values.GetEnumerator())
                             {
                                 while (enumerator3.MoveNext())
                                 {
@@ -468,7 +468,7 @@ namespace GameServer.Data
 
         public ItemData() { }
 
-        public ItemData(GameItems item, CharacterData character, byte 容器, byte position, int durability)
+        public ItemData(游戏物品 item, CharacterData character, byte 容器, byte position, int durability)
         {
             对应模板.V = item;
             生成来源.V = character;
@@ -493,7 +493,7 @@ namespace GameServer.Data
                 if (updated) character.ActiveConnection?.Player.UpdateQuestProgress(quest);
             }
 
-            GameDataGateway.ItemData表.AddData(this, true);
+            GameDataGateway.物品数据表.AddData(this, true);
         }
 
 
@@ -567,7 +567,7 @@ namespace GameServer.Data
         public static byte 数据版本;
 
 
-        public readonly DataMonitor<GameItems> 对应模板;
+        public readonly DataMonitor<游戏物品> 对应模板;
 
 
         public readonly DataMonitor<DateTime> 生成时间;

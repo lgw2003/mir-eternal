@@ -10,9 +10,9 @@ namespace GameServer.Templates
     /// <summary>
     /// 宝箱数据
     /// </summary>
-    public class ChestTemplate
+    public class 宝箱数据
     {
-        public static Dictionary<int, ChestTemplate> DataSheet;
+        public static Dictionary<int, 宝箱数据> DataSheet;
 
         public int 宝箱编号 { get; set; }
         public string 宝箱名字 { get; set; }
@@ -24,9 +24,9 @@ namespace GameServer.Templates
             string text = Config.GameDataPath + "\\System\\Npc数据\\宝箱数据\\";
 
             if (Directory.Exists(text))
-                DataSheet = Serializer.Deserialize<ChestTemplate>(text).ToDictionary(x => x.宝箱编号);
+                DataSheet = Serializer.Deserialize<宝箱数据>(text).ToDictionary(x => x.宝箱编号);
             else
-                DataSheet = new Dictionary<int, ChestTemplate>();
+                DataSheet = new Dictionary<int, 宝箱数据>();
         }
     }
 }

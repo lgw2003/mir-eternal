@@ -378,37 +378,37 @@ namespace GameServer.Maps
       string text = this.Template.普通攻击技能;
       if (text != null && text.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.NormalAttackSkills);
+        游戏技能.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.NormalAttackSkills);
       }
       string text2 = this.Template.概率触发技能;
       if (text2 != null && text2.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.概率触发技能, out this.ProbabilityTriggerSkills);
+        游戏技能.DataSheet.TryGetValue(this.Template.概率触发技能, out this.ProbabilityTriggerSkills);
       }
       string text3 = this.Template.进入战斗技能;
       if (text3 != null && text3.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.EnterCombatSkills);
+        游戏技能.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.EnterCombatSkills);
       }
       string text4 = this.Template.退出战斗技能;
       if (text4 != null && text4.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.ExitCombatSkills);
+        游戏技能.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.ExitCombatSkills);
       }
       string text5 = this.Template.死亡释放技能;
       if (text5 != null && text5.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.DeathReleaseSkill);
+        游戏技能.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.DeathReleaseSkill);
       }
       string text6 = this.Template.移动释放技能;
       if (text6 != null && text6.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.移动释放技能, out this.MoveReleaseSkill);
+        游戏技能.DataSheet.TryGetValue(this.Template.移动释放技能, out this.MoveReleaseSkill);
       }
       string text7 = this.Template.出生释放技能;
       if (text7 != null && text7.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.出生释放技能, out this.BirthReleaseSkill);
+        游戏技能.DataSheet.TryGetValue(this.Template.出生释放技能, out this.BirthReleaseSkill);
       }
       对应宠物.Dies(null, false);
       对应宠物.Delete();
@@ -434,37 +434,37 @@ namespace GameServer.Maps
       string text = this.Template.普通攻击技能;
       if (text != null && text.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.NormalAttackSkills);
+        游戏技能.DataSheet.TryGetValue(this.Template.普通攻击技能, out this.NormalAttackSkills);
       }
       string text2 = this.Template.概率触发技能;
       if (text2 != null && text2.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.概率触发技能, out this.ProbabilityTriggerSkills);
+        游戏技能.DataSheet.TryGetValue(this.Template.概率触发技能, out this.ProbabilityTriggerSkills);
       }
       string text3 = this.Template.进入战斗技能;
       if (text3 != null && text3.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.EnterCombatSkills);
+        游戏技能.DataSheet.TryGetValue(this.Template.进入战斗技能, out this.EnterCombatSkills);
       }
       string text4 = this.Template.退出战斗技能;
       if (text4 != null && text4.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.ExitCombatSkills);
+        游戏技能.DataSheet.TryGetValue(this.Template.退出战斗技能, out this.ExitCombatSkills);
       }
       string text5 = this.Template.死亡释放技能;
       if (text5 != null && text5.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.DeathReleaseSkill);
+        游戏技能.DataSheet.TryGetValue(this.Template.死亡释放技能, out this.DeathReleaseSkill);
       }
       string text6 = this.Template.移动释放技能;
       if (text6 != null && text6.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.移动释放技能, out this.MoveReleaseSkill);
+        游戏技能.DataSheet.TryGetValue(this.Template.移动释放技能, out this.MoveReleaseSkill);
       }
       string text7 = this.Template.出生释放技能;
       if (text7 != null && text7.Length > 0)
       {
-        GameSkills.DataSheet.TryGetValue(this.Template.出生释放技能, out this.BirthReleaseSkill);
+        游戏技能.DataSheet.TryGetValue(this.Template.出生释放技能, out this.BirthReleaseSkill);
       }
       MapGatewayProcess.AddObject(this);
       if (!禁止复活)
@@ -609,8 +609,8 @@ namespace GameServer.Maps
         if (CurrentMap.MapId == 80)
         {
           int num = 0;
-          GameItems 物品模板;
-          if (GameItems.DataSheetByName.TryGetValue("强效金创药", out 物品模板))
+          游戏物品 物品模板;
+          if (游戏物品.DataSheetByName.TryGetValue("强效金创药", out 物品模板))
           {
             int num2 = (this.Category == MonsterLevelType.普通怪物) ? 15 : 1;
             int num3 = Math.Max(1, num2 - (int)Math.Round(num2 * Config.ExtraDropRate));
@@ -620,8 +620,8 @@ namespace GameServer.Maps
               new ItemObject(物品模板, null, this.CurrentMap, this.CurrentPosition, new HashSet<CharacterData>(), 1, false, this);
             }
           }
-          GameItems 物品模板2;
-          if (GameItems.DataSheetByName.TryGetValue("强效Magic药", out 物品模板2))
+          游戏物品 物品模板2;
+          if (游戏物品.DataSheetByName.TryGetValue("强效Magic药", out 物品模板2))
           {
             int num4 = (this.Category == MonsterLevelType.普通怪物) ? 20 : 1;
             int num5 = Math.Max(1, num4 - (int)Math.Round(num4 * Config.ExtraDropRate));
@@ -631,8 +631,8 @@ namespace GameServer.Maps
               new ItemObject(物品模板2, null, this.CurrentMap, this.CurrentPosition, new HashSet<CharacterData>(), 1, false, this);
             }
           }
-          GameItems 物品模板3;
-          if (GameItems.DataSheetByName.TryGetValue("疗伤药", out 物品模板3))
+          游戏物品 物品模板3;
+          if (游戏物品.DataSheetByName.TryGetValue("疗伤药", out 物品模板3))
           {
             int num6 = (this.Category == MonsterLevelType.普通怪物) ? 100 : 1;
             int num7 = Math.Max(1, num6 - (int)Math.Round(num6 * Config.ExtraDropRate));
@@ -642,8 +642,8 @@ namespace GameServer.Maps
               new ItemObject(物品模板3, null, this.CurrentMap, this.CurrentPosition, new HashSet<CharacterData>(), 1, false, this);
             }
           }
-          GameItems 物品模板4;
-          if (GameItems.DataSheetByName.TryGetValue("祝福油", out 物品模板4))
+          游戏物品 物品模板4;
+          if (游戏物品.DataSheetByName.TryGetValue("祝福油", out 物品模板4))
           {
             int num8 = (this.Category == MonsterLevelType.普通怪物) ? 1000 : ((this.Category == MonsterLevelType.精英干将) ? 50 : 10);
             int num9 = Math.Max(1, num8 - (int)Math.Round(num8 * Config.ExtraDropRate));
@@ -730,7 +730,7 @@ namespace GameServer.Maps
             foreach (MonsterDrop drop in Drops)
             {
               if (
-                  GameItems.DataSheetByName.TryGetValue(drop.物品名字, out var item)
+                  游戏物品.DataSheetByName.TryGetValue(drop.物品名字, out var item)
                   && !ComputingClass.CheckProbability(num10)
                   && (
                       playerObject.CurrentPrivileges != 0
@@ -865,7 +865,7 @@ namespace GameServer.Maps
     public void 怪物智能Attack()
     {
       base.TimeoutTime = MainProcess.CurrentTime.AddSeconds(10.0);
-      GameSkills 游戏技能;
+      游戏技能 游戏技能;
       if (this.ProbabilityTriggerSkills != null && (!this.Coolings.ContainsKey((int)this.ProbabilityTriggerSkills.自身技能编号 | 16777216) || MainProcess.CurrentTime > this.Coolings[(int)this.ProbabilityTriggerSkills.自身技能编号 | 16777216]) && ComputingClass.CheckProbability(this.ProbabilityTriggerSkills.计算触发概率))
       {
         游戏技能 = this.ProbabilityTriggerSkills;
@@ -1198,24 +1198,24 @@ namespace GameServer.Maps
     public MapInstance 出生地图;
 
 
-    public GameSkills NormalAttackSkills;
+    public 游戏技能 NormalAttackSkills;
 
 
-    public GameSkills ProbabilityTriggerSkills;
+    public 游戏技能 ProbabilityTriggerSkills;
 
 
-    public GameSkills EnterCombatSkills;
+    public 游戏技能 EnterCombatSkills;
 
 
-    public GameSkills ExitCombatSkills;
+    public 游戏技能 ExitCombatSkills;
 
 
-    public GameSkills DeathReleaseSkill;
+    public 游戏技能 DeathReleaseSkill;
 
 
-    public GameSkills MoveReleaseSkill;
+    public 游戏技能 MoveReleaseSkill;
 
 
-    public GameSkills BirthReleaseSkill;
+    public 游戏技能 BirthReleaseSkill;
   }
 }

@@ -114,7 +114,7 @@ namespace GameServer.Data
       this.石材数量.V = 1000000;
       this.铁矿数量.V = 1000000;
       this.CreatedDate.V = MainProcess.CurrentTime;
-      GameDataGateway.GuildData表.AddData(this, true);
+      GameDataGateway.行会数据表.AddData(this, true);
       SystemData.Data.更新行会(this);
     }
 

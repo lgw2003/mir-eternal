@@ -17,13 +17,13 @@ namespace GameServer.GMCommands
 
         public override void Execute()
         {
-            if (!GameDataGateway.CharacterDataTable.Keyword.TryGetValue(Character, out GameData gd))
+            if (!GameDataGateway.角色数据表.Keyword.TryGetValue(Character, out GameData gd))
             {
                 MainForm.AddCommandLog($"<= @Move Command execution failed, character {Character} does not exist");
                 return;
             }
 
-            if (!GameMap.DataSheet.TryGetValue(MapId, out GameMap map))
+            if (!游戏地图.DataSheet.TryGetValue(MapId, out 游戏地图 map))
             {
                 MainForm.AddCommandLog($"<= @Move Command execution failed, map {MapId} does not exist");
                 return;

@@ -21,13 +21,13 @@ namespace GameServer
     public override void Execute()
     {
       GameData GameData;
-      if (GameDataGateway.CharacterDataTable.Keyword.TryGetValue(this.CharName, out GameData))
+      if (GameDataGateway.角色数据表.Keyword.TryGetValue(this.CharName, out GameData))
       {
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
         {
-          GameItems 游戏物品;
-          if (!GameItems.DataSheetByName.TryGetValue(this.Name, out 游戏物品))
+          游戏物品 游戏物品;
+          if (!游戏物品.DataSheetByName.TryGetValue(this.Name, out 游戏物品))
           {
             MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, item does not exist");
             return;

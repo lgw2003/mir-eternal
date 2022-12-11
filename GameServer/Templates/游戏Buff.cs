@@ -7,9 +7,9 @@ namespace GameServer.Templates
 	/// <summary>
 	/// 游戏Buff
 	/// </summary>
-	public sealed class GameBuffs
+	public sealed class 游戏Buff
 	{
-		public static Dictionary<ushort, GameBuffs> DataSheet;
+		public static Dictionary<ushort, 游戏Buff> DataSheet;
 
 		public string Buff名字;
 		public ushort Buff编号;
@@ -76,11 +76,11 @@ namespace GameServer.Templates
 
 		public static void LoadData()
 		{
-			DataSheet = new Dictionary<ushort, GameBuffs>();
+			DataSheet = new Dictionary<ushort, 游戏Buff>();
 			string text = Config.GameDataPath + "\\System\\技能数据\\Buff数据\\";
 			if (Directory.Exists(text))
 			{
-				foreach (var obj in Serializer.Deserialize<GameBuffs>(text))
+				foreach (var obj in Serializer.Deserialize<游戏Buff>(text))
 					DataSheet.Add(obj.Buff编号, obj);
 			}
 		}

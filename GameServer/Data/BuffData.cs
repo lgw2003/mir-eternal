@@ -119,14 +119,14 @@ namespace GameServer.Data
             }
             if (目标 is PlayerObject)
             {
-                GameDataGateway.BuffData表.AddData(this, true);
+                GameDataGateway.Buff数据表.AddData(this, true);
             }
         }
 
 
         public override string ToString()
         {
-            GameBuffs buff模板 = this.Template;
+            游戏Buff buff模板 = this.Template;
             if (buff模板 == null)
             {
                 return null;
@@ -153,12 +153,12 @@ namespace GameServer.Data
         }
 
 
-        public GameBuffs Template
+        public 游戏Buff Template
         {
             get
             {
-                GameBuffs result;
-                if (!GameBuffs.DataSheet.TryGetValue(this.Id.V, out result))
+                游戏Buff result;
+                if (!游戏Buff.DataSheet.TryGetValue(this.Id.V, out result))
                 {
                     return null;
                 }
@@ -191,7 +191,7 @@ namespace GameServer.Data
         {
             get
             {
-                GameBuffs buff模板 = this.Template;
+                游戏Buff buff模板 = this.Template;
                 return buff模板 != null && buff模板.到期主动消失;
             }
         }

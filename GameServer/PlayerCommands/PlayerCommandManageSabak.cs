@@ -16,7 +16,7 @@ namespace GameServer.PlayerCommands
     public string SabakGuildName;
     public override void Execute()
     {
-      var guild = GameDataGateway.GuildData表.DataSheet.Values.OfType<GuildData>().FirstOrDefault(x => x.GuildName.V.Equals(SabakGuildName));
+      var guild = GameDataGateway.行会数据表.DataSheet.Values.OfType<GuildData>().FirstOrDefault(x => x.GuildName.V.Equals(SabakGuildName));
 
       if (guild == null)
       {

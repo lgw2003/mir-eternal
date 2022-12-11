@@ -13,10 +13,10 @@ namespace GameServer.Templates
     /// <summary>
     /// 游戏任务
     /// </summary>
-    public class GameQuests
+    public class 游戏任务
     {
-        public static IDictionary<int, GameQuests> DataSheet;
-        public static GameQuests[] 可用任务;
+        public static IDictionary<int, 游戏任务> DataSheet;
+        public static 游戏任务[] 可用任务;
 
         public int 编号;
         public int 章节;
@@ -49,13 +49,13 @@ namespace GameServer.Templates
 
         public static void LoadData()
         {
-            DataSheet = new Dictionary<int, GameQuests>();
+            DataSheet = new Dictionary<int, 游戏任务>();
 
-            var quests = new List<GameQuests>();
+            var quests = new List<游戏任务>();
             string text = Config.GameDataPath + "\\System\\任务数据\\";
             if (Directory.Exists(text))
             {
-                foreach (GameQuests obj in Serializer.Deserialize<GameQuests>(text))
+                foreach (游戏任务 obj in Serializer.Deserialize<游戏任务>(text))
                 {
                     for (var i = 0; i < obj.执行任务.Count; i++)
                     {

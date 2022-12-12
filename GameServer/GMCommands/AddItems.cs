@@ -45,7 +45,7 @@ namespace GameServer
 
           if (CharacterData.TryGetFreeSpaceAtInventory(out byte b))
           {
-            EquipmentItem 游戏装备 = 游戏物品 as EquipmentItem;
+            装备物品 游戏装备 = 游戏物品 as 装备物品;
             if (游戏装备 != null)
             {
               CharacterData.Backpack[b] = new EquipmentData(游戏装备, CharacterData, 1, b, true);

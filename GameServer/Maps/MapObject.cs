@@ -89,6 +89,10 @@ namespace GameServer.Maps
             }
         }
 
+
+        /// <summary>
+        /// 更新玩家属性
+        /// </summary>
         public virtual void RefreshStats()
         {
             int num = 0;

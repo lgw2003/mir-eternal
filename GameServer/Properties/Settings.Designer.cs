@@ -274,5 +274,17 @@ namespace GameServer.Properties {
                 this["DebugPackets"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        public double 数据保存间隔 {
+            get {
+                return ((double)(this["数据保存间隔"]));
+            }
+            set {
+                this["数据保存间隔"] = value;
+            }
+        }
     }
 }

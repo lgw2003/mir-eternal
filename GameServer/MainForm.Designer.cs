@@ -232,7 +232,7 @@
             this.主选项卡.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.主选项卡.Name = "主选项卡";
             this.主选项卡.SelectedIndex = 0;
-            this.主选项卡.Size = new System.Drawing.Size(1741, 855);
+            this.主选项卡.Size = new System.Drawing.Size(1391, 855);
             this.主选项卡.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.主选项卡.TabIndex = 5;
             this.主选项卡.TabStop = false;
@@ -259,7 +259,7 @@
             this.tabMain.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabMain.Name = "tabMain";
             this.tabMain.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabMain.Size = new System.Drawing.Size(1733, 817);
+            this.tabMain.Size = new System.Drawing.Size(1383, 817);
             this.tabMain.TabIndex = 0;
             this.tabMain.Text = "首页";
             // 
@@ -544,7 +544,7 @@
             this.tabCharacters.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabCharacters.Name = "tabCharacters";
             this.tabCharacters.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabCharacters.Size = new System.Drawing.Size(1733, 817);
+            this.tabCharacters.Size = new System.Drawing.Size(1383, 817);
             this.tabCharacters.TabIndex = 4;
             this.tabCharacters.Text = "游戏玩家";
             // 
@@ -874,7 +874,7 @@
             this.tabMaps.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabMaps.Name = "tabMaps";
             this.tabMaps.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabMaps.Size = new System.Drawing.Size(1733, 817);
+            this.tabMaps.Size = new System.Drawing.Size(1383, 817);
             this.tabMaps.TabIndex = 1;
             this.tabMaps.Text = "游戏地图";
             // 
@@ -931,7 +931,7 @@
             this.tabMonsters.Location = new System.Drawing.Point(4, 34);
             this.tabMonsters.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabMonsters.Name = "tabMonsters";
-            this.tabMonsters.Size = new System.Drawing.Size(1733, 817);
+            this.tabMonsters.Size = new System.Drawing.Size(1383, 817);
             this.tabMonsters.TabIndex = 2;
             this.tabMonsters.Text = "游戏怪物";
             // 
@@ -1029,7 +1029,7 @@
             this.tabBans.Location = new System.Drawing.Point(4, 34);
             this.tabBans.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabBans.Name = "tabBans";
-            this.tabBans.Size = new System.Drawing.Size(1733, 817);
+            this.tabBans.Size = new System.Drawing.Size(1383, 817);
             this.tabBans.TabIndex = 12;
             this.tabBans.Text = "封号数据";
             // 
@@ -1088,7 +1088,7 @@
             this.tabAnnouncements.Location = new System.Drawing.Point(4, 34);
             this.tabAnnouncements.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabAnnouncements.Name = "tabAnnouncements";
-            this.tabAnnouncements.Size = new System.Drawing.Size(1733, 817);
+            this.tabAnnouncements.Size = new System.Drawing.Size(1383, 817);
             this.tabAnnouncements.TabIndex = 13;
             this.tabAnnouncements.Text = "公告数据";
             // 
@@ -1265,7 +1265,7 @@
             this.tabConfig.Location = new System.Drawing.Point(4, 34);
             this.tabConfig.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabConfig.Name = "tabConfig";
-            this.tabConfig.Size = new System.Drawing.Size(1733, 817);
+            this.tabConfig.Size = new System.Drawing.Size(1383, 817);
             this.tabConfig.TabIndex = 11;
             this.tabConfig.Text = "游戏设置";
             // 

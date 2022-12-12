@@ -402,7 +402,7 @@ namespace GameServer.Data
                 if (!游戏物品.DataSheet.TryGetValue(inscriptionItem.物品编号, out 游戏物品 item))
                     continue;
 
-                if (inscriptionItem.角色背包 == ItemBackPack.人物穿戴 && item is not EquipmentItem)
+                if (inscriptionItem.角色背包 == ItemBackPack.人物穿戴 && item is not 装备物品)
                     continue;
 
                 switch (inscriptionItem.角色背包)
@@ -410,12 +410,12 @@ namespace GameServer.Data
                     case ItemBackPack.人物背包:
                         for (var i = 0; i < (inscriptionItem.数量 ?? 1); i++)
                             if (TryGetFreeSpaceAtInventory(out byte inventoryPosition))
-                                Backpack[inventoryPosition] = item is EquipmentItem
-                                    ? new EquipmentData((EquipmentItem)item, this, 1, inventoryPosition, false)
+                                Backpack[inventoryPosition] = item is 装备物品
+                                    ? new EquipmentData((装备物品)item, this, 1, inventoryPosition, false)
                                     : new ItemData(item, this, 1, inventoryPosition, 1);
                         break;
                     case ItemBackPack.人物穿戴:
-                        var equipment = (EquipmentItem)item;
+                        var equipment = (装备物品)item;
                         Equipment[equipment.Location] = new EquipmentData(equipment, this, 0, equipment.Location, false);
                         break;
                 }

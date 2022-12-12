@@ -124,7 +124,7 @@ namespace GameServer.Data
                     case PersistentItemType.装备:
                         {
                             EquipmentData EquipmentData2 = this as EquipmentData;
-                            EquipmentItem obj = 对应模板.V as EquipmentItem;
+                            装备物品 obj = 对应模板.V as 装备物品;
                             int v3 = EquipmentData2.当前持久.V;
                             int num2 = obj.物品持久 * 1000;
                             int num3 = obj.出售价格;

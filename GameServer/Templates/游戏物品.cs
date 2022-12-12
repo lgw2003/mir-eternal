@@ -79,10 +79,10 @@ namespace GameServer.Templates
             text = Config.GameDataPath + "\\System\\物品数据\\装备物品\\";
             if (Directory.Exists(text))
             {
-                var array = Serializer.Deserialize<EquipmentItem>(text);
+                var array = Serializer.Deserialize<装备物品>(text);
                 for (int i = 0; i < array.Length; i++)
                 {
-                    EquipmentItem gameItem = array[i] as EquipmentItem;
+                    装备物品 gameItem = array[i] as 装备物品;
                     DataSheet.Add(gameItem.物品编号, gameItem);
                     DataSheetByName.Add(gameItem.物品名字, gameItem);
                 }

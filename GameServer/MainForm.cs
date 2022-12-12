@@ -848,7 +848,7 @@ namespace GameServer
         public MainForm()
         {
             this.InitializeComponent();
-            //更具配置判断是否显示数据包选项卡
+            //根据配置文件判断是否显示数据包选项卡
             if (!Config.DebugPackets) MainTabs.TabPages.Remove(tabPackets);
 
             MainForm.Singleton = this;
@@ -994,7 +994,7 @@ namespace GameServer
             control3.Enabled = false;
             control2.Enabled = false;
             control.Enabled = false;
-            MainProcess.NextSaveDataTime = MainProcess.CurrentTime.AddSeconds(43200);
+            MainProcess.NextSaveDataTime = MainProcess.CurrentTime.AddSeconds(Settings.Default.数据保存间隔);
         }
 
 

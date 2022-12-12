@@ -1,6 +1,7 @@
 ﻿using GameServer.Data;
 using GameServer.Maps;
 using GameServer.Networking;
+using GameServer.Properties;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -85,7 +86,7 @@ namespace GameServer
           sw.Reset();
 
           CurrentTime = DateTime.Now;
-          ProcessSaveData();
+          自动保存数据();
           ProcessServerStats();
           ProcessGMCommands();
           NetworkServiceGateway.Process();
@@ -99,7 +100,6 @@ namespace GameServer
         catch (Exception ex)
         {
           GameDataGateway.SaveData();
-          GameDataGateway.PersistData();
           GameDataGateway.CleanUp();
           MainForm.AddSystemLog("A fatal error has occurred and the server is about to stop");
           if (!Directory.Exists(".\\Log\\Error"))
@@ -186,13 +186,12 @@ namespace GameServer
       }
     }
 
-    private static void ProcessSaveData()
+    private static void 自动保存数据()
     {
       if (NextSaveDataTime > CurrentTime) return;
       GameDataGateway.SaveData();
-      GameDataGateway.PersistData();
       GameDataGateway.CleanUp();
-      NextSaveDataTime = CurrentTime.AddSeconds(43200);
+      NextSaveDataTime = CurrentTime.AddSeconds(Settings.Default.数据保存间隔);
       MainForm.AddSystemLog("玩家数据保存成功!");
     }
   }

@@ -10,11 +10,11 @@ namespace GameServer.Data
   public class EquipmentData : ItemData
   {
 
-    public EquipmentItem 装备模板
+    public 装备物品 装备模板
     {
       get
       {
-        return base.物品模板 as EquipmentItem;
+        return base.物品模板 as 装备物品;
       }
     }
 
@@ -25,13 +25,13 @@ namespace GameServer.Data
       {
         if (装备模板.物品分类 == ItemType.武器)
         {
-          int num = (int)(装备模板.BasicPowerCombat * (Luck.V + 20) * 1717986919L >> 32 >> 3);
+          int num = (int)(装备模板.基础战力 * (Luck.V + 20) * 1717986919L >> 32 >> 3);
           int num2 = Sacred伤害.V * 3 + 升级Attack.V * 5 + 升级Magic.V * 5 + 升级Taoism.V * 5 + 升级Needle.V * 5 + 升级Archery.V * 5;
           int num3 = 随机Stat.Sum((随机属性 x) => x.战力加成);
           return num + num2 + num3;
         }
         int num4 = 0;
-        switch (装备模板.EquipSet)
+        switch (装备模板.装备套装)
         {
           case GameEquipmentSet.祖玛装备:
             switch (装备模板.物品分类)
@@ -297,7 +297,7 @@ namespace GameServer.Data
           }
         }
         int num6 = 随机Stat.Sum((随机属性 x) => x.战力加成);
-        return 装备模板.BasicPowerCombat + num4 + num6 + num5;
+        return 装备模板.基础战力 + num4 + num6 + num5;
       }
     }
 
@@ -307,8 +307,8 @@ namespace GameServer.Data
       get
       {
         int value = 最大持久.V - 当前持久.V;
-        decimal d = ((EquipmentItem)对应模板.V).RepairCost;
-        decimal d2 = ((EquipmentItem)对应模板.V).物品持久 * 1000m;
+        decimal d = ((装备物品)对应模板.V).修理花费;
+        decimal d2 = ((装备物品)对应模板.V).物品持久 * 1000m;
         return (int)(d / d2 * value);
       }
     }
@@ -319,8 +319,8 @@ namespace GameServer.Data
       get
       {
         decimal d = 最大持久.V - 当前持久.V;
-        decimal d2 = ((EquipmentItem)对应模板.V).SpecialRepairCost;
-        decimal d3 = ((EquipmentItem)对应模板.V).物品持久 * 1000m;
+        decimal d2 = ((装备物品)对应模板.V).特修花费;
+        decimal d3 = ((装备物品)对应模板.V).物品持久 * 1000m;
         return (int)(d2 / d3 * d * Config.EquipRepairDto * 1.15m);
       }
     }
@@ -330,7 +330,7 @@ namespace GameServer.Data
     {
       get
       {
-        return ((EquipmentItem)base.物品模板).NeedAttack;
+        return ((装备物品)base.物品模板).需要攻击;
       }
     }
 
@@ -339,7 +339,7 @@ namespace GameServer.Data
     {
       get
       {
-        return ((EquipmentItem)base.物品模板).NeedMagic;
+        return ((装备物品)base.物品模板).需要魔法;
       }
     }
 
@@ -348,7 +348,7 @@ namespace GameServer.Data
     {
       get
       {
-        return ((EquipmentItem)base.物品模板).NeedTaoism;
+        return ((装备物品)base.物品模板).需要道术;
       }
     }
 
@@ -357,7 +357,7 @@ namespace GameServer.Data
     {
       get
       {
-        return ((EquipmentItem)base.物品模板).NeedAcupuncture;
+        return ((装备物品)base.物品模板).需要刺术;
       }
     }
 
@@ -366,7 +366,7 @@ namespace GameServer.Data
     {
       get
       {
-        return ((EquipmentItem)base.物品模板).NeedArchery;
+        return ((装备物品)base.物品模板).需要弓术;
       }
     }
 
@@ -384,7 +384,7 @@ namespace GameServer.Data
     {
       get
       {
-        return ((EquipmentItem)对应模板.V).DisableDismount;
+        return ((装备物品)对应模板.V).禁止卸下;
       }
     }
 
@@ -763,85 +763,85 @@ namespace GameServer.Data
       get
       {
         Dictionary<GameObjectStats, int> dictionary = new Dictionary<GameObjectStats, int>();
-        if (装备模板.MinDC != 0)
+        if (装备模板.最小攻击 != 0)
         {
-          dictionary[GameObjectStats.最小攻击] = 装备模板.MinDC;
+          dictionary[GameObjectStats.最小攻击] = 装备模板.最小攻击;
         }
-        if (装备模板.MaxDC != 0)
+        if (装备模板.最大攻击 != 0)
         {
-          dictionary[GameObjectStats.最大攻击] = 装备模板.MaxDC;
+          dictionary[GameObjectStats.最大攻击] = 装备模板.最大攻击;
         }
-        if (装备模板.MinMC != 0)
+        if (装备模板.最小魔法 != 0)
         {
-          dictionary[GameObjectStats.最小魔法] = 装备模板.MinMC;
+          dictionary[GameObjectStats.最小魔法] = 装备模板.最小魔法;
         }
-        if (装备模板.MaxMC != 0)
+        if (装备模板.最大魔法 != 0)
         {
-          dictionary[GameObjectStats.最大魔法] = 装备模板.MaxMC;
+          dictionary[GameObjectStats.最大魔法] = 装备模板.最大魔法;
         }
-        if (装备模板.MinSC != 0)
+        if (装备模板.最小道术 != 0)
         {
-          dictionary[GameObjectStats.最小道术] = 装备模板.MinSC;
+          dictionary[GameObjectStats.最小道术] = 装备模板.最小道术;
         }
-        if (装备模板.MaxSC != 0)
+        if (装备模板.最大道术 != 0)
         {
-          dictionary[GameObjectStats.最大道术] = 装备模板.MaxSC;
+          dictionary[GameObjectStats.最大道术] = 装备模板.最大道术;
         }
-        if (装备模板.MinNC != 0)
+        if (装备模板.最小刺术 != 0)
         {
-          dictionary[GameObjectStats.最小刺术] = 装备模板.MinNC;
+          dictionary[GameObjectStats.最小刺术] = 装备模板.最小刺术;
         }
-        if (装备模板.MaxNC != 0)
+        if (装备模板.最大刺术 != 0)
         {
-          dictionary[GameObjectStats.最大刺术] = 装备模板.MaxNC;
+          dictionary[GameObjectStats.最大刺术] = 装备模板.最大刺术;
         }
-        if (装备模板.MinBC != 0)
+        if (装备模板.最小弓术 != 0)
         {
-          dictionary[GameObjectStats.最小弓术] = 装备模板.MinBC;
+          dictionary[GameObjectStats.最小弓术] = 装备模板.最小弓术;
         }
-        if (装备模板.MaxBC != 0)
+        if (装备模板.最大弓术 != 0)
         {
-          dictionary[GameObjectStats.最大弓术] = 装备模板.MaxBC;
+          dictionary[GameObjectStats.最大弓术] = 装备模板.最大弓术;
         }
-        if (装备模板.MinDef != 0)
+        if (装备模板.最小防御 != 0)
         {
-          dictionary[GameObjectStats.最小防御] = 装备模板.MinDef;
+          dictionary[GameObjectStats.最小防御] = 装备模板.最小防御;
         }
-        if (装备模板.MaxDef != 0)
+        if (装备模板.最大防御 != 0)
         {
-          dictionary[GameObjectStats.最大防御] = 装备模板.MaxDef;
+          dictionary[GameObjectStats.最大防御] = 装备模板.最大防御;
         }
-        if (装备模板.MinMCDef != 0)
+        if (装备模板.最小魔防 != 0)
         {
-          dictionary[GameObjectStats.最小魔防] = 装备模板.MinMCDef;
+          dictionary[GameObjectStats.最小魔防] = 装备模板.最小魔防;
         }
-        if (装备模板.MaxMCDef != 0)
+        if (装备模板.最大魔防 != 0)
         {
-          dictionary[GameObjectStats.最大魔防] = 装备模板.MaxMCDef;
+          dictionary[GameObjectStats.最大魔防] = 装备模板.最大魔防;
         }
-        if (装备模板.MaxHP != 0)
+        if (装备模板.最大体力 != 0)
         {
-          dictionary[GameObjectStats.最大体力] = 装备模板.MaxHP;
+          dictionary[GameObjectStats.最大体力] = 装备模板.最大体力;
         }
-        if (装备模板.MaxMP != 0)
+        if (装备模板.最大魔力 != 0)
         {
-          dictionary[GameObjectStats.最大魔力] = 装备模板.MaxMP;
+          dictionary[GameObjectStats.最大魔力] = 装备模板.最大魔力;
         }
-        if (装备模板.AttackSpeed != 0)
+        if (装备模板.攻击速度 != 0)
         {
-          dictionary[GameObjectStats.攻击速度] = 装备模板.AttackSpeed;
+          dictionary[GameObjectStats.攻击速度] = 装备模板.攻击速度;
         }
-        if (装备模板.MagicDodge != 0)
+        if (装备模板.魔法闪避 != 0)
         {
-          dictionary[GameObjectStats.魔法闪避] = 装备模板.MagicDodge;
+          dictionary[GameObjectStats.魔法闪避] = 装备模板.魔法闪避;
         }
-        if (装备模板.PhysicallyAccurate != 0)
+        if (装备模板.物理准确 != 0)
         {
-          dictionary[GameObjectStats.物理准确] = 装备模板.PhysicallyAccurate;
+          dictionary[GameObjectStats.物理准确] = 装备模板.物理准确;
         }
-        if (装备模板.PhysicalAgility != 0)
+        if (装备模板.物理敏捷 != 0)
         {
-          dictionary[GameObjectStats.物理敏捷] = 装备模板.PhysicalAgility;
+          dictionary[GameObjectStats.物理敏捷] = 装备模板.物理敏捷;
         }
         if (Luck.V != 0)
         {
@@ -1045,7 +1045,7 @@ namespace GameServer.Data
 
     public EquipmentData() { }
 
-    public EquipmentData(EquipmentItem item, CharacterData character, byte 容器, byte location, bool randomGenerated = false)
+    public EquipmentData(装备物品 item, CharacterData character, byte 容器, byte location, bool randomGenerated = false)
     {
       对应模板.V = item;
       生成来源.V = character;

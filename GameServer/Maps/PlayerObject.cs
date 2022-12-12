@@ -814,7 +814,7 @@ namespace GameServer.Maps
 
     public void GainItem(游戏物品 item, byte position, int qty = 1)
     {
-      if (item is EquipmentItem equipItem)
+      if (item is 装备物品 equipItem)
       {
         CharacterData.Backpack[position] = new EquipmentData(equipItem, CharacterData, 1, position, true);
       }
@@ -9269,7 +9269,7 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  EquipmentItem EquipmentItem = GameItems as EquipmentItem;
+                  装备物品 EquipmentItem = GameItems as 装备物品;
                   if (EquipmentItem != null)
                   {
                     this.Backpack[(byte)num4] = new EquipmentData(EquipmentItem, this.CharacterData, 1, (byte)num4, false);
@@ -10820,7 +10820,7 @@ namespace GameServer.Maps
             }
             else
             {
-              EquipmentItem EquipmentItem = 物品.物品模板 as EquipmentItem;
+              装备物品 EquipmentItem = 物品.物品模板 as 装备物品;
               if (EquipmentItem != null)
               {
                 this.Backpack[b] = new EquipmentData(EquipmentItem, this.CharacterData, 1, b, true);
@@ -11519,7 +11519,7 @@ namespace GameServer.Maps
               var randomPos = MainProcess.RandomNumber.Next(treasureItems.Length);
               if (游戏物品.DataSheetByName.TryGetValue(treasureItems[randomPos].物品名字, out var randomItem))
               {
-                ItemData newItem = randomItem is EquipmentItem equipmentItem
+                ItemData newItem = randomItem is 装备物品 equipmentItem
                     ? new EquipmentData(equipmentItem, CharacterData, 1, inventoryLocation)
                     : new ItemData(randomItem, CharacterData, 1, inventoryLocation, 2);
 
@@ -12287,7 +12287,7 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  EquipmentItem EquipmentItem = GameItems as EquipmentItem;
+                  装备物品 EquipmentItem = GameItems as 装备物品;
                   if (EquipmentItem != null)
                   {
                     this.Backpack[(byte)num3] = new EquipmentData(EquipmentItem, this.CharacterData, 1, (byte)num3, false);

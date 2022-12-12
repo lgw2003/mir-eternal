@@ -168,13 +168,13 @@ namespace GameServer.Maps
 
             if (MapInstances.TryGetValue(2433, out 沙城地图) && 游戏Buff.DataSheet.TryGetValue(22300, out 游戏Buff) && Templates.游戏怪物.DataSheet.TryGetValue("沙巴克城门", out 对应模板) && Templates.游戏怪物.DataSheet.TryGetValue("沙巴克宫门", out 对应模板2))
             {
-                if ((皇宫随机区域 = 沙城地图.地图区域.FirstOrDefault((地图区域 O) => O.区域名字 == "Shabak-Random areas of the Palace")) != null)
+                if ((皇宫随机区域 = 沙城地图.地图区域.FirstOrDefault((地图区域 O) => O.区域名字 == "沙巴克-皇宫随机区域")) != null)
                 {
-                    if ((外城复活区域 = 沙城地图.地图区域.FirstOrDefault((地图区域 O) => O.区域名字 == "Shabak-Outer Resurrection Area")) != null)
+                    if ((外城复活区域 = 沙城地图.地图区域.FirstOrDefault((地图区域 O) => O.区域名字 == "沙巴克-外城复活区域")) != null)
                     {
-                        if ((内城复活区域 = 沙城地图.地图区域.FirstOrDefault((地图区域 O) => O.区域名字 == "Shabak-Resurrection Area Town")) != null)
+                        if ((内城复活区域 = 沙城地图.地图区域.FirstOrDefault((地图区域 O) => O.区域名字 == "沙巴克-内城复活区域")) != null)
                         {
-                            if ((守方传送区域 = 沙城地图.地图区域.FirstOrDefault((地图区域 O) => O.区域名字 == "Shabak-Safe Teleport")) != null)
+                            if ((守方传送区域 = 沙城地图.地图区域.FirstOrDefault((地图区域 O) => O.区域名字 == "沙巴克-守方传送区域")) != null)
                             {
                                 沙城城门 = new MonsterObject(对应模板, 沙城地图, int.MaxValue, new Point[] { ShachengGateCoords }, true, true)
                                 {
@@ -206,22 +206,22 @@ namespace GameServer.Maps
                             }
                             else
                             {
-                                MainProcess.AddSystemLog("[SABAK] Region 'Shabak-Safe Teleport' not found");
+                                MainProcess.AddSystemLog("[SABAK] Region '沙巴克-守方传送区域' not found");
                             }
                         }
                         else
                         {
-                            MainProcess.AddSystemLog("[SABAK] Region 'Shabak-Resurrection Area Town' not found");
+                            MainProcess.AddSystemLog("[SABAK] Region '沙巴克-内城复活区域' not found");
                         }
                     }
                     else
                     {
-                        MainProcess.AddSystemLog("[SABAK] Region 'Shabak-Outer Resurrection Area' not found");
+                        MainProcess.AddSystemLog("[SABAK] Region '沙巴克-外城复活区域' not found");
                     }
                 }
                 else
                 {
-                    MainProcess.AddSystemLog("[SABAK] Region 'Shabak-Random areas of the Palace' not found");
+                    MainProcess.AddSystemLog("[SABAK] Region '沙巴克-皇宫随机区域' not found");
                 }
             }
 
@@ -719,7 +719,9 @@ namespace GameServer.Maps
 
             ProcessSabakCity();
         }
-
+        /// <summary>
+        /// 生成传送法阵
+        /// </summary>
         private static void LoadContentTeleports()
         {
             var watcher = new Stopwatch();
@@ -736,9 +738,11 @@ namespace GameServer.Maps
             }
 
             watcher.Stop();
-            MainForm.AddSystemLog($"Loaded teleport gates in {watcher.ElapsedMilliseconds}ms");
+            MainForm.AddSystemLog($"传送法阵生成完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
-
+        /// <summary>
+        /// 生成地图守卫
+        /// </summary>
         private static void LoadContentGuards()
         {
             var watcher = new Stopwatch();
@@ -756,9 +760,11 @@ namespace GameServer.Maps
                     new GuardObject(对应模板, mapInstance, 守卫刷新.所处方向, 守卫刷新.所处坐标);
             }
             watcher.Stop();
-            MainForm.AddSystemLog($"Loaded map guards in {watcher.ElapsedMilliseconds}ms");
+            MainForm.AddSystemLog($"地图守卫生成完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
-
+        /// <summary>
+        /// 生成地图宝箱
+        /// </summary>
         private static void LoadContentChests()
         {
             var watcher = new Stopwatch();
@@ -777,7 +783,7 @@ namespace GameServer.Maps
             }
 
             watcher.Stop();
-            MainForm.AddSystemLog($"Loaded map chests in {watcher.ElapsedMilliseconds}ms");
+            MainForm.AddSystemLog($"地图宝箱生成完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
 
         private static void ClearContentTeleports()
@@ -845,7 +851,9 @@ namespace GameServer.Maps
             watcher.Stop();
             MainForm.AddSystemLog($"Clear monster spawns in {watcher.ElapsedMilliseconds}ms");
         }
-
+        /// <summary>
+        /// 加载怪物刷新数据
+        /// </summary>
         private static void LoadContentSpawns()
         {
             var watcher = new Stopwatch();
@@ -868,7 +876,7 @@ namespace GameServer.Maps
                 instance.Initialize();
 
             watcher.Stop();
-            MainForm.AddSystemLog($"Loaded monster spawns in {watcher.ElapsedMilliseconds}ms");
+            MainForm.AddSystemLog($"加载怪物刷新点完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
 
         public static void LoadContent()
@@ -882,7 +890,7 @@ namespace GameServer.Maps
             LoadContentSpawns();
 
             watcher.Stop();
-            MainForm.AddSystemLog($"Initialized instances in {watcher.ElapsedMilliseconds}ms");
+            MainForm.AddSystemLog($"初始化全部完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
 
         public static void ReloadContent()
@@ -929,7 +937,7 @@ namespace GameServer.Maps
                 MapInstances.Add((int)(游戏地图.地图编号 * 16 + 1), new MapInstance(游戏地图, 16777217));
             }
             watcher.Stop();
-            MainForm.AddSystemLog($"Loaded map instances in {watcher.ElapsedMilliseconds}ms");
+            MainForm.AddSystemLog($"地图生成完成 用时 {watcher.ElapsedMilliseconds}ms");
 
             watcher.Restart();
             foreach (地形数据 地形数据 in 地形数据.DataSheet.Values)
@@ -950,7 +958,7 @@ namespace GameServer.Maps
                 }
             }
             watcher.Stop();
-            MainForm.AddSystemLog($"Loaded terrains in {watcher.ElapsedMilliseconds}ms");
+            MainForm.AddSystemLog($"地形加载完成 用时 {watcher.ElapsedMilliseconds}ms");
 
             watcher.Restart();
             foreach (地图区域 地图区域 in 地图区域.DataSheet)
@@ -977,7 +985,7 @@ namespace GameServer.Maps
                 }
             }
             watcher.Stop();
-            MainForm.AddSystemLog($"Loaded map areas in {watcher.ElapsedMilliseconds}ms");
+            MainForm.AddSystemLog($"地图区域加载完成 用时 {watcher.ElapsedMilliseconds}ms");
 
             LoadContent();
         }

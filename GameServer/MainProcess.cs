@@ -65,11 +65,11 @@ namespace GameServer
     private static void MainLoop()
     {
       CommandsQueue = new ConcurrentQueue<GMCommand>();
-      MainForm.AddSystemLog("Map elements are being generated...");
+      MainForm.AddSystemLog("正在生成游戏地图...");
       MapGatewayProcess.Start();
-      MainForm.AddSystemLog("Network services are being started...");
+      MainForm.AddSystemLog("正在启动网络服务...");
       NetworkServiceGateway.Start();
-      MainForm.AddSystemLog("The server has been successfully opened");
+      MainForm.AddSystemLog("服务器已成功启动...");
       Running = true;
       MainForm.ServerStartedCallback();
       var sw = new Stopwatch();

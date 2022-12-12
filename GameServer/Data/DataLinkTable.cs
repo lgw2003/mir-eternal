@@ -73,7 +73,7 @@ namespace GameServer.Data
         {
             int num = 0;
             Dictionary<Type, Dictionary<string, int>> dictionary = new Dictionary<Type, Dictionary<string, int>>();
-            MainForm.AddSystemLog("Start processing data association tasks......");
+            MainForm.AddSystemLog("开始加载关联数据......");
             while (!DataLinkTable.数据任务表.IsEmpty)
             {
                 DataLinkTable.数据关联参数 数据关联参数;
@@ -313,7 +313,7 @@ namespace GameServer.Data
                     }
                 }
             }
-            MainForm.AddSystemLog(string.Format("Data linkage tasks completed, total number of tasks: {0}", num));
+            MainForm.AddSystemLog(string.Format("关联数据已加载完成，数据总数: {0}", num));
 
             var totalErrors = dictionary.Sum((x) => x.Value.Sum((o) => o.Value));
 

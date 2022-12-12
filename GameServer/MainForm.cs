@@ -83,10 +83,10 @@ namespace GameServer
         }
 
 
-        public static void LoadUserData()
+        public static void 加载客户端数据()
         {
             MainForm MainForm = MainForm.Singleton;
-            MainForm.AddSystemLog("Loading client data...");
+            MainForm.AddSystemLog("客户端数据加载中...");
             MainForm.CharacterDataTable = new DataTable("CharacterDataTable");
             MainForm.SkillData表 = new DataTable("SkillData表");
             MainForm.EquipmentData表 = new DataTable("EquipmentData表");
@@ -199,7 +199,7 @@ namespace GameServer
                 }));
             }
             GameDataGateway.加载数据();
-            MainForm.AddSystemLog("Client data has been loaded successful");
+            MainForm.AddSystemLog("客户端数据加载完成...");
 
         }
 
@@ -903,7 +903,7 @@ namespace GameServer
                         control.Enabled = false;
                     }));
                 LoadSystemData();
-                LoadUserData();
+                加载客户端数据();
                 base.BeginInvoke(new MethodInvoker(delegate ()
                 {
                         this.界面定时更新.Tick += MainForm.界面更新处理;
@@ -1158,7 +1158,7 @@ namespace GameServer
             control.Enabled = false;
             Task.Run(delegate ()
             {
-                MainForm.LoadUserData();
+                MainForm.加载客户端数据();
                 base.BeginInvoke(new MethodInvoker(delegate ()
                 {
                         Control control2 = this.下方控件页;

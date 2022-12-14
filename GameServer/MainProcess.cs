@@ -111,13 +111,13 @@ namespace GameServer
         }
       }
 
-      MainForm.AddSystemLog("ItemData is being cleaned up...");
+      MainForm.AddSystemLog("清理游戏临时物品数据...");
       MapGatewayProcess.CleanUp();
-      MainForm.AddSystemLog("Customer data is being saved...");
+      MainForm.AddSystemLog("保存用户数据并备份...");
       GameDataGateway.CleanUp();
       MainForm.Stop();
       MainThread = null;
-      MainForm.AddSystemLog("The server has been successfully shut down");
+      MainForm.AddSystemLog("服务器已经关闭成功");
     }
 
     private static void ProcessReloadTasks()

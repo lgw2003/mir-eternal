@@ -19,12 +19,12 @@ namespace GameServer.PlayerCommands
 
             Player.CharacterData.AddStarterSkills();
 
-            Player?.SendPacket(new SyncSkillInfoPacket
+            Player?.SendPacket(new 同步技能信息
             {
                 技能描述 = Player.全部技能描述()
             });
 
-            Player?.SendPacket(new SyncSkillFieldsPacket
+            Player?.SendPacket(new 同步技能栏位
             {
                 栏位描述 = Player.ShorcutField描述()
             });

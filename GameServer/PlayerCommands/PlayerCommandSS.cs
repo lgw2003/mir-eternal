@@ -117,7 +117,7 @@ namespace GameServer.PlayerCommands
                     }
                     break;
                 case 9:
-                    Player.ActiveConnection?.SendPacket(new CharacterExpChangesPacket
+                    Player.ActiveConnection?.发送封包(new 角色经验变动
                     {
                         经验增加 = 0,
                         今日增加 = 0,
@@ -155,9 +155,9 @@ namespace GameServer.PlayerCommands
             bw.Write(data);
 
             for (var i = 4; i < buffer.Length; i++)
-                buffer[i] ^= GamePacket.EncryptionKey;
+                buffer[i] ^= GamePacket.加密字节;
 
-            Player.ActiveConnection.Connection.Client.Send(buffer);
+            Player.ActiveConnection.当前连接.Client.Send(buffer);
         }
     }
 }

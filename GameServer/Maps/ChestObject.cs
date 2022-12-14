@@ -63,7 +63,7 @@ namespace GameServer.Maps
             {
                 if (!opener.OpenCompleted && MainProcess.CurrentTime >= opener.EndOpensTime)
                 {
-                    opener.Player.ActiveConnection.SendPacket(new EndOpenChestPacket
+                    opener.Player.ActiveConnection.发送封包(new 结束操作道具
                     {
                         PlayerId = opener.Player.ObjectId,
                         ObjectId = ObjectId
@@ -79,13 +79,13 @@ namespace GameServer.Maps
                         new ItemObject(itemTemplate, null, CurrentMap, CurrentPosition, new HashSet<CharacterData> { opener.Player.CharacterData }, 堆叠数量: 1, dropperObject: this);
                     }
 
-                    opener.Player.ActiveConnection.SendPacket(new 同步道具次数
+                    opener.Player.ActiveConnection.发送封包(new 同步道具次数
                     {
                         PlayerId = opener.Player.ObjectId,
                         ObjectId = ObjectId
                     });
 
-                    opener.Player.ActiveConnection.SendPacket(new ObjectOutOfViewPacket
+                    opener.Player.ActiveConnection.发送封包(new 对象离开视野
                     {
                         对象编号 = ObjectId,
                         消失方式 = 1
@@ -114,7 +114,7 @@ namespace GameServer.Maps
                 EndOpensTime = MainProcess.CurrentTime.AddSeconds(1.6)
             });
 
-            player.ActiveConnection.SendPacket(new StartOpenChestPacket
+            player.ActiveConnection.发送封包(new 开始操作道具
             {
                 PlayerId = player.ObjectId,
                 ObjectId = ObjectId,

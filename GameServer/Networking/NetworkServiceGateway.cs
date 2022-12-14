@@ -16,22 +16,22 @@ namespace GameServer.Networking
 
         public static void Start()
         {
-            StoppedService = false;
-            Connections = new HashSet<SConnection>();
-            等待添加表 = new ConcurrentQueue<SConnection>();
-            等待移除表 = new ConcurrentQueue<SConnection>();
+            网络服务停止 = false;
+            网络连接表 = new HashSet<客户网络>();
+            等待添加表 = new ConcurrentQueue<客户网络>();
+            等待移除表 = new ConcurrentQueue<客户网络>();
             全服公告表 = new ConcurrentQueue<GamePacket>();
             网络监听器 = new TcpListener(IPAddress.Any, (int)Config.GSPort);
             网络监听器.Start();
             网络监听器.BeginAcceptTcpClient(new AsyncCallback(异步连接), null);
-            门票DataSheet = new Dictionary<string, TicketInformation>();
+            门票DataSheet = new Dictionary<string, 门票信息>();
             门票接收器 = new UdpClient(new IPEndPoint(IPAddress.Any, (int)Config.TSPort));
         }
 
 
         public static void Stop()
         {
-            StoppedService = true;
+            网络服务停止 = true;
             TcpListener tcpListener = 网络监听器;
             if (tcpListener != null)
             {
@@ -47,7 +47,7 @@ namespace GameServer.Networking
         }
 
 
-        public static void Process()
+        public static void 处理数据()
         {
             try
             {
@@ -60,7 +60,7 @@ namespace GameServer.Networking
                     string[] array = Encoding.UTF8.GetString(bytes).Split(';');
                     if (array.Length == 2)
                     {
-                        门票DataSheet[array[0]] = new TicketInformation
+                        门票DataSheet[array[0]] = new 门票信息
                         {
                             登录账号 = array[1],
                             EffectiveTime = MainProcess.CurrentTime.AddMinutes(5.0)
@@ -70,34 +70,34 @@ namespace GameServer.Networking
             }
             catch (Exception ex)
             {
-                MainProcess.AddSystemLog("An error occurred while receiving a login ticket. " + ex.Message);
+                MainProcess.AddSystemLog("接收登录门票时发生错误. " + ex.Message);
             }
 
-            foreach (var 客户网络 in Connections)
+            foreach (var 客户网络 in 网络连接表)
             {
-                if (!客户网络.ConnectionErrored && 客户网络.Account == null && MainProcess.CurrentTime.Subtract(客户网络.ConnectedTime).TotalSeconds > 30.0)
+                if (!客户网络.正在断开 && 客户网络.账号数据 == null && MainProcess.CurrentTime.Subtract(客户网络.接入时间).TotalSeconds > 30.0)
                 {
-                    客户网络.CallExceptionEventHandler(new Exception("Login timeout, disconnect!"));
+                    客户网络.尝试断开连接(new Exception("Login timeout, disconnect!"));
                 }
                 else
                 {
-                    客户网络.Process();
+                    客户网络.处理数据();
                 }
             }
 
             while (等待移除表.TryDequeue(out var item))
-                Connections.Remove(item);
+                网络连接表.Remove(item);
 
-            while (等待添加表.TryDequeue(out SConnection item2))
-                Connections.Add(item2);
+            while (等待添加表.TryDequeue(out 客户网络 item2))
+                网络连接表.Add(item2);
 
             while (全服公告表.TryDequeue(out GamePacket 封包))
             {
-                foreach (SConnection 客户网络2 in Connections)
+                foreach (客户网络 客户网络2 in 网络连接表)
                 {
-                    if (客户网络2.Player != null)
+                    if (客户网络2.玩家实例 != null)
                     {
-                        客户网络2.SendPacket(封包);
+                        客户网络2.发送封包(封包);
                     }
                 }
             }
@@ -108,7 +108,7 @@ namespace GameServer.Networking
         {
             try
             {
-                if (StoppedService)
+                if (网络服务停止)
                 {
                     return;
                 }
@@ -121,12 +121,12 @@ namespace GameServer.Networking
                 {
                     tcpClient.Client.Close();
                 }
-                else if (Connections.Count < 10000)
+                else if (网络连接表.Count < 10000)
                 {
-                    ConcurrentQueue<SConnection> concurrentQueue = 等待添加表;
+                    ConcurrentQueue<客户网络> concurrentQueue = 等待添加表;
                     if (concurrentQueue != null)
                     {
-                        concurrentQueue.Enqueue(new SConnection(tcpClient));
+                        concurrentQueue.Enqueue(new 客户网络(tcpClient));
                     }
                 }
                 goto IL_CA;
@@ -137,18 +137,18 @@ namespace GameServer.Networking
                 goto IL_CA;
             }
         IL_B6:
-            if (Connections.Count <= 100)
+            if (网络连接表.Count <= 100)
             {
                 goto IL_D1;
             }
             Thread.Sleep(1);
         IL_CA:
-            if (!StoppedService)
+            if (!网络服务停止)
             {
                 goto IL_B6;
             }
         IL_D1:
-            if (!StoppedService)
+            if (!网络服务停止)
             {
                 网络监听器.BeginAcceptTcpClient(new AsyncCallback(异步连接), null);
             }
@@ -157,15 +157,15 @@ namespace GameServer.Networking
 
         public static void 断网回调(object sender, Exception e)
         {
-            SConnection 客户网络 = sender as SConnection;
-            string text = "IP: " + 客户网络.NetAddress;
-            if (客户网络.Account != null)
+            客户网络 客户网络 = sender as 客户网络;
+            string text = "IP: " + 客户网络.网络地址;
+            if (客户网络.账号数据 != null)
             {
-                text = text + " Account: " + 客户网络.Account.Account.V;
+                text = text + " Account: " + 客户网络.账号数据.Account.V;
             }
-            if (客户网络.Player != null)
+            if (客户网络.玩家实例 != null)
             {
-                text = text + " Character: " + 客户网络.Player.ObjectName;
+                text = text + " Character: " + 客户网络.玩家实例.ObjectName;
             }
             text = text + " Info: " + e.Message;
             MainProcess.AddSystemLog(text);
@@ -188,7 +188,7 @@ namespace GameServer.Networking
                 binaryWriter.Write(滚动播报 ? 2 : 3);
                 binaryWriter.Write(0);
                 binaryWriter.Write(Encoding.UTF8.GetBytes(内容 + "\0"));
-                发送封包(new ReceiveChatMessagesPacket
+                发送封包(new 接收聊天消息
                 {
                     字节描述 = memoryStream.ToArray()
                 });
@@ -211,7 +211,7 @@ namespace GameServer.Networking
         }
 
 
-        public static void 添加网络(SConnection 网络)
+        public static void 添加网络(客户网络 网络)
         {
             if (网络 != null)
             {
@@ -220,7 +220,7 @@ namespace GameServer.Networking
         }
 
 
-        public static void Disconnected(SConnection 网络)
+        public static void Disconnected(客户网络 网络)
         {
             if (网络 != null)
             {
@@ -238,7 +238,7 @@ namespace GameServer.Networking
         private static TcpListener 网络监听器;
 
 
-        public static bool StoppedService;
+        public static bool 网络服务停止;
 
 
         public static bool 未登录连接数;
@@ -256,18 +256,18 @@ namespace GameServer.Networking
         public static long ReceivedBytes;
 
 
-        public static HashSet<SConnection> Connections;
+        public static HashSet<客户网络> 网络连接表;
 
 
-        public static ConcurrentQueue<SConnection> 等待移除表;
+        public static ConcurrentQueue<客户网络> 等待移除表;
 
 
-        public static ConcurrentQueue<SConnection> 等待添加表;
+        public static ConcurrentQueue<客户网络> 等待添加表;
 
 
         public static ConcurrentQueue<GamePacket> 全服公告表;
 
 
-        public static Dictionary<string, TicketInformation> 门票DataSheet;
+        public static Dictionary<string, 门票信息> 门票DataSheet;
     }
 }

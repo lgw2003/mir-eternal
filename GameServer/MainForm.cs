@@ -282,7 +282,7 @@ namespace GameServer
         public static void AddPacketLog(GamePacket packet, bool incoming)
         {
             if (!Config.DebugPackets) return;
-            if (packet.PacketInfo?.NoDebug ?? false) return;
+            if (packet.封包属性?.NoDebug ?? false) return;
 
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null) return;
@@ -294,8 +294,8 @@ namespace GameServer
                     "[{0}]: {1} {2} ({3}) - {{{4}}}\r\n",
                     DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                     incoming ? "C->S" : "S->C",
-                    packet.PacketInfo.Id,
-                    packet.PacketType.Name,
+                    packet.封包属性.Id,
+                    packet.封包类型.Name,
                     string.Join(", ", data.Select(x => x.ToString()).ToArray())
                 );
                 Singleton.rtbPacketsLogs.AppendText(message, incoming ? Color.Blue : Color.Green);
@@ -1000,11 +1000,11 @@ namespace GameServer
 
         private void 停止服务器_Click(object sender, EventArgs e)
         {
-            foreach (SConnection connection in NetworkServiceGateway.Connections)
+            foreach (客户网络 connection in NetworkServiceGateway.网络连接表)
             {
                 try
                 {
-                    TcpClient tcpClient = connection.Connection;
+                    TcpClient tcpClient = connection.当前连接;
                     if (tcpClient != null)
                     {
                         Socket client = tcpClient.Client;

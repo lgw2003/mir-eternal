@@ -25,7 +25,7 @@ namespace GameServer.PlayerCommands
                     mission.CompletedDate.V = MainProcess.CurrentTime;
                 }
 
-                Player.CompleteQuest(quest.Info.V.编号);
+                Player.完成任务(quest.Info.V.编号);
             }
         }
     }

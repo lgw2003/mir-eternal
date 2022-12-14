@@ -21,7 +21,7 @@ namespace GameServer.Maps
   public sealed class PlayerObject : MapObject
   {
 
-    public SConnection ActiveConnection
+    public 客户网络 ActiveConnection
     {
       get
       {
@@ -88,7 +88,7 @@ namespace GameServer.Maps
 
 
 
-    public PlayerObject(CharacterData CharacterData, SConnection 网络连接)
+    public PlayerObject(CharacterData CharacterData, 客户网络 网络连接)
     {
       this.CharacterData = CharacterData;
       this.ObjectId = CharacterData.CharId;
@@ -213,7 +213,7 @@ namespace GameServer.Maps
       CharacterData.LoginDate.V = MainProcess.CurrentTime;
       CharacterData.OnCharacterConnect(网络连接);
 
-      ActiveConnection.SendPacket(new SyncSupplementaryVariablesPacket
+      ActiveConnection.发送封包(new 同步补充变量
       {
         变量类型 = 1,
         变量索引 = 132,
@@ -244,7 +244,7 @@ namespace GameServer.Maps
       // Dragon System Guard (we need unpack packet)
       // ActiveConnection.SendRaw(323, 0, new byte[] { 1, 8, 0, 232, 174, 176, 229, 189, 149, 49, 0, 0, 0, 0, 0, 0, 232, 174, 176, 229, 189, 149, 50, 0, 0, 0, 0, 0, 0, 232, 174, 176, 229, 189, 149, 51, 0, 0, 0, 0, 0, 0, 232, 174, 176, 229, 189, 149, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-      网络连接.SendPacket(new SyncSupplementaryVariablesPacket
+      网络连接.发送封包(new 同步补充变量
       {
         变量类型 = 1,
         对象编号 = ObjectId,
@@ -252,7 +252,7 @@ namespace GameServer.Maps
         变量内容 = ComputingClass.TimeShift(CharacterData.补给日期.V)
       });
 
-      网络连接.SendPacket(new SyncSupplementaryVariablesPacket
+      网络连接.发送封包(new 同步补充变量
       {
         变量类型 = 1,
         对象编号 = ObjectId,
@@ -260,7 +260,7 @@ namespace GameServer.Maps
         变量内容 = ComputingClass.TimeShift(CharacterData.战备日期.V)
       });
 
-      网络连接.SendPacket(new SyncSupplementaryVariablesPacket
+      网络连接.发送封包(new 同步补充变量
       {
         变量类型 = 1,
         对象编号 = this.ObjectId,
@@ -382,7 +382,7 @@ namespace GameServer.Maps
       ActiveConnection.SendRaw(221, 10, new byte[] { 47, 0, 0, 0, 0, 0, 0, 0 });
 
       // UnknownS3
-      ActiveConnection.SendPacket(new UnknownS3
+      ActiveConnection.发送封包(new UnknownS3
       {
         Data = GetPlayerAgreement()
       });
@@ -397,7 +397,7 @@ namespace GameServer.Maps
       ActiveConnection.SendRaw(23, 6, new byte[] { 0, 0, 0, 0 });
 
       // Packet ID: 28, Name: SyncMountData
-      ActiveConnection.SendPacket(new SyncMountDataPacket { MountData = GetMountData() });
+      ActiveConnection.发送封包(new 同步坐骑数据 { MountData = GetMountData() });
 
 
 
@@ -415,7 +415,7 @@ namespace GameServer.Maps
       // ActiveConnection.SendRaw(184, 0, new byte[] { 20, 0, 73, 30, 2, 99 });
 
 
-      ActiveConnection.SendPacket(new SyncCharacterPacket
+      ActiveConnection.发送封包(new 同步角色数据
       {
         ObjectId = this.ObjectId,
         CurrentPosition = this.CurrentPosition,
@@ -439,69 +439,69 @@ namespace GameServer.Maps
       });
 
 
-      网络连接.SendPacket(new SyncBackpackSizePacket
+      网络连接.发送封包(new 同步背包大小
       {
-        BackpackSize = BackpackSize,
-        WarehouseSize = WarehouseSize,
+        背包大小 = BackpackSize,
+        仓库大小 = WarehouseSize,
         ExtraBackpackSize = ExtraBackpackSize
       });
 
-      网络连接.SendPacket(new SyncSkillInfoPacket
+      网络连接.发送封包(new 同步技能信息
       {
         技能描述 = this.全部技能描述()
       });
 
-      网络连接.SendPacket(new SyncSkillFieldsPacket
+      网络连接.发送封包(new 同步技能栏位
       {
         栏位描述 = this.ShorcutField描述()
       });
 
-      网络连接.SendPacket(new SyncBackpackInfoPacket
+      网络连接.发送封包(new 同步背包信息
       {
         物品描述 = this.全部物品描述()
       });
 
-      网络连接.SendPacket(new 同步角色Stat
+      网络连接.发送封包(new 同步角色属性
       {
-        StatDescription = this.玩家StatDescription()
+        属性描述 = this.玩家StatDescription()
       });
 
-      网络连接.SendPacket(new SyncReputationListPacket());
+      网络连接.发送封包(new 同步声望列表());
 
-      网络连接.SendPacket(new SyncClientVariablesPacket
+      网络连接.发送封包(new 同步客户变量
       {
         字节数据 = CharacterData.角色设置()
       });
 
-      网络连接.SendPacket(new SyncCurrencyQuantityPacket
+      网络连接.发送封包(new 同步货币数量
       {
         字节描述 = this.全部货币描述()
       });
 
       // TODO: check-in daily gifts
-      网络连接.SendPacket(new 同步签到信息());
+      网络连接.发送封包(new 同步签到信息());
 
-      网络连接.SendPacket(new SyncPrivilegedInfoPacket
+      网络连接.发送封包(new 同步特权信息
       {
         字节数组 = this.玛法特权描述()
       });
 
-      网络连接.SendPacket(new EndSyncDataPacket
+      网络连接.发送封包(new 同步数据结束
       {
         角色编号 = this.ObjectId
       });
 
-      网络连接.SendPacket(new SyncTeacherInfoPacket
+      网络连接.发送封包(new 同步师门信息
       {
         师门参数 = this.师门参数
       });
 
-      网络连接.SendPacket(new SyncTitleInfoPacket
+      网络连接.发送封包(new 同步称号信息
       {
         字节描述 = this.GetTitleBuffer()
       });
 
-      网络连接.SendPacket(new 玩家名字变灰
+      网络连接.发送封包(new 玩家名字变灰
       {
         对象编号 = this.ObjectId,
         是否灰名 = this.灰名玩家
@@ -509,7 +509,7 @@ namespace GameServer.Maps
 
       foreach (CharacterData fanPlayer in this.粉丝列表)
       {
-        fanPlayer.ActiveConnection?.SendPacket(new 好友上线下线
+        fanPlayer.ActiveConnection?.发送封包(new 好友上线下线
         {
           对象编号 = this.ObjectId,
           对象名字 = this.ObjectName,
@@ -521,7 +521,7 @@ namespace GameServer.Maps
 
       foreach (CharacterData hatePlayer in this.仇恨列表)
       {
-        hatePlayer.ActiveConnection?.SendPacket(new 好友上线下线
+        hatePlayer.ActiveConnection?.发送封包(new 好友上线下线
         {
           对象编号 = this.ObjectId,
           对象名字 = this.ObjectName,
@@ -533,7 +533,7 @@ namespace GameServer.Maps
 
       if ((this.偶像列表.Count != 0 || this.仇人列表.Count != 0))
       {
-        网络连接.SendPacket(new SyncFriendsListPacket
+        网络连接.发送封包(new 同步好友列表
         {
           字节描述 = this.社交列表描述()
         });
@@ -541,7 +541,7 @@ namespace GameServer.Maps
 
       if (this.黑名单表.Count != 0)
       {
-        网络连接.SendPacket(new SyncBlacklistPacket
+        网络连接.发送封包(new 同步黑名单表
         {
           字节描述 = this.社交屏蔽描述()
         });
@@ -549,7 +549,7 @@ namespace GameServer.Maps
 
       if (this.未读邮件.Count >= 1)
       {
-        网络连接.SendPacket(new 未读邮件提醒
+        网络连接.发送封包(new 未读邮件提醒
         {
           邮件数量 = this.未读邮件.Count
         });
@@ -557,7 +557,7 @@ namespace GameServer.Maps
 
       if (this.Team != null)
       {
-        网络连接.SendPacket(new 玩家加入队伍
+        网络连接.发送封包(new 玩家加入队伍
         {
           字节描述 = this.Team.队伍描述()
         });
@@ -565,35 +565,35 @@ namespace GameServer.Maps
 
       if (this.Guild != null)
       {
-        网络连接.SendPacket(new GuildInfoAnnouncementPacket
+        网络连接.发送封包(new 行会信息公告
         {
           字节数据 = this.Guild.行会信息描述()
         });
 
-        this.Guild.发送封包(new SyncMemberInfoPacket
+        this.Guild.发送封包(new 同步会员信息
         {
           对象编号 = this.ObjectId,
           对象信息 = this.CurrentMap.MapId,
-          CurrentRank = this.CurrentLevel
+          当前等级 = this.CurrentLevel
         });
 
         if (this.Guild.行会成员[this.CharacterData] <= GuildJobs.理事 && this.Guild.申请列表.Count > 0 && 网络连接 != null)
         {
-          网络连接.SendPacket(new SendGuildNoticePacket
+          网络连接.发送封包(new 发送行会通知
           {
             提醒类型 = 1
           });
         }
         if (this.Guild.行会成员[this.CharacterData] <= GuildJobs.副长 && this.Guild.结盟申请.Count > 0 && 网络连接 != null)
         {
-          网络连接.SendPacket(new SendGuildNoticePacket
+          网络连接.发送封包(new 发送行会通知
           {
             提醒类型 = 2
           });
         }
         if (this.Guild.行会成员[this.CharacterData] <= GuildJobs.副长 && this.Guild.解除申请.Count > 0 && 网络连接 != null)
         {
-          网络连接.SendPacket(new GuildDiplomaticAnnouncementPacket
+          网络连接.发送封包(new 行会外交公告
           {
             字节数据 = this.Guild.解除申请描述()
           });
@@ -602,7 +602,7 @@ namespace GameServer.Maps
 
       if (SystemData.Data.OccupyGuild.V != null)
       {
-        网络连接.SendPacket(new 同步占领行会
+        网络连接.发送封包(new 同步占领行会
         {
           行会编号 = SystemData.Data.OccupyGuild.V.行会编号
         });
@@ -622,7 +622,7 @@ namespace GameServer.Maps
       }
     }
 
-    public void TeleportToQuest(int questId)
+    public void 任务传送(int questId)
     {
       if (!游戏任务.DataSheet.TryGetValue(questId, out 游戏任务 questInfo))
         return;
@@ -680,11 +680,11 @@ namespace GameServer.Maps
       return null;
     }
 
-    public void RequestLockStorage(bool enabled)
+    public void 请求仓库锁定(bool enabled)
     {
       if (enabled == CharacterData.WarehouseLocked.V)
       {
-        ActiveConnection?.SendPacket(new SyncWarehouseLockedPacket
+        ActiveConnection?.发送封包(new 同步仓库锁封包
         {
           Enabled = CharacterData.WarehouseLocked.V
         });
@@ -695,7 +695,7 @@ namespace GameServer.Maps
       {
         CharacterData.WarehouseLocked.V = enabled;
 
-        ActiveConnection?.SendPacket(new SyncWarehouseLockedPacket
+        ActiveConnection?.发送封包(new 同步仓库锁封包
         {
           Enabled = CharacterData.WarehouseLocked.V
         });
@@ -726,13 +726,13 @@ namespace GameServer.Maps
       TemporalCode = ComputingClass.RandomString(6);
       OnVerifyCode = callback;
       MainProcess.AddSystemLog($"Secure random lock code for character: {TemporalCode}");
-      ActiveConnection?.SendPacket(new GameErrorMessagePacket
+      ActiveConnection?.发送封包(new 游戏错误提示
       {
         错误代码 = 292, // Request Code
       });
     }
 
-    public void VerifyTaskMessageCode(string code)
+    public void 验证消息码(string code)
     {
       if (string.IsNullOrEmpty(TemporalCode) || TemporalCode != code)
       {
@@ -767,7 +767,7 @@ namespace GameServer.Maps
       }
     }
 
-    public void CompleteQuest(int questId)
+    public void 完成任务(int questId)
     {
       var questToComplete = CharacterData.Quests.FirstOrDefault(x => x.Info.V.编号 == questId);
       if (questToComplete == null || questToComplete.CompleteDate.V != DateTime.MinValue) return;
@@ -806,9 +806,9 @@ namespace GameServer.Maps
 
       questToComplete.CompleteDate.V = MainProcess.CurrentTime;
 
-      ActiveConnection.SendPacket(new CompleteQuestPacket
+      ActiveConnection.发送封包(new 完成任务
       {
-        QuestId = questId
+        任务编号 = questId
       });
     }
 
@@ -833,18 +833,18 @@ namespace GameServer.Maps
 
       if (qty > 1) CharacterData.Backpack[position].当前持久.V = qty;
 
-      ActiveConnection?.SendPacket(new 玩家物品变动
+      ActiveConnection?.发送封包(new 玩家物品变动
       {
         物品描述 = CharacterData.Backpack[position].字节描述()
       });
     }
 
-    public void AddMountSkillPacket(ushort field, byte unknown)
+    public void 添加坐骑技能包(ushort field, byte unknown)
     {
 
     }
 
-    public void SyncSelectedMount(ushort selectedMountId)
+    public void 玩家选中坐骑(ushort selectedMountId)
     {
       if (CharacterData.Mounts.Contains(selectedMountId) && 游戏坐骑.DataSheet.TryGetValue(selectedMountId, out var mount))
       {
@@ -858,7 +858,7 @@ namespace GameServer.Maps
         if (Riding && mount.Buff编号 > 0)
           移除Buff时处理(mount.Buff编号);
 
-        ActiveConnection.SendPacket(new SyncSelectedMount { SelectedMountId = (byte)selectedMountId });
+        ActiveConnection.发送封包(new 同步选中坐骑 { SelectedMountId = (byte)selectedMountId });
       }
     }
 
@@ -997,7 +997,7 @@ namespace GameServer.Maps
 
       CharacterData.Quests.Add(quest);
 
-      ActiveConnection?.SendPacket(new AcceptQuestPacket
+      ActiveConnection?.发送封包(new 接受任务
       {
         QuestId = questId
       });
@@ -1035,7 +1035,7 @@ namespace GameServer.Maps
       }
     }
 
-    public void ProcessActionNPC(int actionValue, int actionType)
+    public void 执行NPC流程(int actionValue, int actionType)
     {
       switch (actionType)
       {
@@ -1045,7 +1045,7 @@ namespace GameServer.Maps
       }
     }
 
-    public void AcceptReward(int rewardId)
+    public void 接受奖励(int rewardId)
     {
       if (!CharacterData.Achievements.TryGetValue((ushort)rewardId, out var data))
         return;
@@ -1071,9 +1071,9 @@ namespace GameServer.Maps
 
       data.ReceivedAt.V = MainProcess.CurrentTime;
 
-      ActiveConnection?.SendPacket(new QuestRewardCompletedPacket
+      ActiveConnection?.发送封包(new 完成任务奖励
       {
-        QuestId = rewardId,
+        任务编号 = rewardId,
       });
 
       UpdateAchievementProgress();
@@ -1083,9 +1083,9 @@ namespace GameServer.Maps
     {
       CharacterData.Currencies[currency] += value;
 
-      ActiveConnection?.SendPacket(new 货币数量变动
+      ActiveConnection?.发送封包(new 货币数量变动
       {
-        CurrencyType = (byte)currency,
+        货币类型 = (byte)currency,
         货币数量 = CharacterData.Currencies[currency]
       });
     }
@@ -1289,7 +1289,7 @@ namespace GameServer.Maps
               SkillData.计数时间 = MainProcess.CurrentTime.AddMilliseconds(SkillData.PeriodCount);
             }
 
-            ActiveConnection?.SendPacket(new SyncSkillCountPacket
+            ActiveConnection?.发送封包(new 同步技能计数
             {
               SkillId = SkillData.SkillId.V,
               SkillCount = SkillData.RemainingTimeLeft.V,
@@ -1337,19 +1337,19 @@ namespace GameServer.Maps
         }
         if (this.CurrentPrivileges == 0)
         {
-          SConnection 网络连接2 = this.ActiveConnection;
+          客户网络 网络连接2 = this.ActiveConnection;
           if (网络连接2 != null)
           {
-            网络连接2.SendPacket(new GameErrorMessagePacket
+            网络连接2.发送封包(new 游戏错误提示
             {
               错误代码 = 65553
             });
           }
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 != null)
         {
-          网络连接3.SendPacket(new SyncPrivilegedInfoPacket
+          网络连接3.发送封包(new 同步特权信息
           {
             字节数组 = this.玛法特权描述()
           });
@@ -1555,18 +1555,18 @@ namespace GameServer.Maps
       {
         PetObject.Dies(null, false);
       }
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 != null)
       {
-        网络连接.SendPacket(new 离开战斗姿态
+        网络连接.发送封包(new 离开战斗姿态
         {
           对象编号 = this.ObjectId
         });
       }
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 != null)
       {
-        网络连接2.SendPacket(new SendResurrectionMessagePacket());
+        网络连接2.发送封包(new 发送复活信息());
       }
       PlayerObject PlayerObject = null;
       PlayerObject PlayerObject2 = 对象 as PlayerObject;
@@ -1604,19 +1604,19 @@ namespace GameServer.Maps
       }
       if (PlayerObject != null)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 != null)
         {
-          网络连接3.SendPacket(new 同步气泡提示
+          网络连接3.发送封包(new 同步气泡提示
           {
             泡泡类型 = 1,
             泡泡参数 = PlayerObject.ObjectId
           });
         }
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 != null)
         {
-          网络连接4.SendPacket(new 同步对战结果
+          网络连接4.发送封包(new 同步对战结果
           {
             击杀方式 = 1,
             胜方编号 = PlayerObject.ObjectId,
@@ -1644,18 +1644,18 @@ namespace GameServer.Maps
             new ItemObject(EquipmentData.物品模板, EquipmentData, this.CurrentMap, this.CurrentPosition, new HashSet<CharacterData>(), 0, false);
             this.Equipment.Remove(EquipmentData.当前位置);
             this.玩家穿卸装备((EquipmentWearingParts)EquipmentData.当前位置, EquipmentData, null);
-            SConnection 网络连接5 = this.ActiveConnection;
+            客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 != null)
             {
-              网络连接5.SendPacket(new 玩家掉落装备
+              网络连接5.发送封包(new 玩家掉落装备
               {
                 物品描述 = EquipmentData.字节描述()
               });
             }
-            SConnection 网络连接6 = this.ActiveConnection;
+            客户网络 网络连接6 = this.ActiveConnection;
             if (网络连接6 != null)
             {
-              网络连接6.SendPacket(new 删除玩家物品
+              网络连接6.发送封包(new 删除玩家物品
               {
                 背包类型 = 0,
                 物品位置 = EquipmentData.当前位置
@@ -1670,19 +1670,19 @@ namespace GameServer.Maps
             if (ItemData.PersistType == PersistentItemType.堆叠 && ItemData.当前持久.V > 1)
             {
               ItemObject ItemObject = new ItemObject(ItemData.物品模板, new ItemData(ItemData.物品模板, this.CharacterData, 1, ItemData.当前位置, 1), this.CurrentMap, this.CurrentPosition, new HashSet<CharacterData>(), 0, false);
-              SConnection 网络连接7 = this.ActiveConnection;
+              客户网络 网络连接7 = this.ActiveConnection;
               if (网络连接7 != null)
               {
-                网络连接7.SendPacket(new 玩家掉落装备
+                网络连接7.发送封包(new 玩家掉落装备
                 {
                   物品描述 = ItemObject.ItemData.字节描述()
                 });
               }
               ItemData.当前持久.V--;
-              SConnection 网络连接8 = this.ActiveConnection;
+              客户网络 网络连接8 = this.ActiveConnection;
               if (网络连接8 != null)
               {
-                网络连接8.SendPacket(new 玩家物品变动
+                网络连接8.发送封包(new 玩家物品变动
                 {
                   物品描述 = ItemData.字节描述()
                 });
@@ -1692,18 +1692,18 @@ namespace GameServer.Maps
             {
               new ItemObject(ItemData.物品模板, ItemData, this.CurrentMap, this.CurrentPosition, new HashSet<CharacterData>(), 0, false);
               this.Backpack.Remove(ItemData.当前位置);
-              SConnection 网络连接9 = this.ActiveConnection;
+              客户网络 网络连接9 = this.ActiveConnection;
               if (网络连接9 != null)
               {
-                网络连接9.SendPacket(new 玩家掉落装备
+                网络连接9.发送封包(new 玩家掉落装备
                 {
                   物品描述 = ItemData.字节描述()
                 });
               }
-              SConnection 网络连接10 = this.ActiveConnection;
+              客户网络 网络连接10 = this.ActiveConnection;
               if (网络连接10 != null)
               {
-                网络连接10.SendPacket(new 删除玩家物品
+                网络连接10.发送封包(new 删除玩家物品
                 {
                   背包类型 = 1,
                   物品位置 = ItemData.当前位置
@@ -1746,11 +1746,11 @@ namespace GameServer.Maps
         if (CurrentHP != value)
         {
           CharacterData.CurrentHP.V = value;
-          SendPacket(new SyncObjectHP
+          SendPacket(new 同步对象体力
           {
-            ObjectId = ObjectId,
-            CurrentHP = CurrentHP,
-            MaxHP = this[GameObjectStats.最大体力]
+            对象编号 = ObjectId,
+            当前体力 = CurrentHP,
+            体力上限 = this[GameObjectStats.最大体力]
           });
         }
       }
@@ -1769,12 +1769,12 @@ namespace GameServer.Maps
         if (this.CurrentMP != value)
         {
           this.CharacterData.CurrentMP.V = Math.Max(0, value);
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new 同步对象魔力
+          网络连接.发送封包(new 同步对象魔力
           {
             CurrentMP = this.CurrentMP
           });
@@ -1858,11 +1858,11 @@ namespace GameServer.Maps
           {
             return;
           }
-          Affiliation.发送封包(new SyncMemberInfoPacket
+          Affiliation.发送封包(new 同步会员信息
           {
             对象编号 = this.ObjectId,
             对象信息 = this.CharacterData.CurrentMap.V,
-            CurrentRank = this.CurrentLevel
+            当前等级 = this.CurrentLevel
           });
         }
       }
@@ -1880,7 +1880,7 @@ namespace GameServer.Maps
         if (this.CharacterData.CurrentDir.V != value)
         {
           this.CharacterData.CurrentDir.V = value;
-          base.SendPacket(new ObjectRotationDirectionPacket
+          base.SendPacket(new 对象转动方向
           {
             对象编号 = this.ObjectId,
             对象朝向 = (ushort)value
@@ -2005,15 +2005,15 @@ namespace GameServer.Maps
           base[Stat] = value;
           if ((byte)Stat <= 64)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new SyncPropChangePacket
+            网络连接.发送封包(new 同步属性变动
             {
-              StatId = (byte)Stat,
-              Value = value
+              属性编号 = (byte)Stat,
+              属性数值 = value
             });
           }
         }
@@ -2141,10 +2141,10 @@ namespace GameServer.Maps
         {
           if (value > this.CharacterData.DoubleExp.V)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 != null)
             {
-              网络连接.SendPacket(new DoubleExpChangePacket
+              网络连接.发送封包(new 双倍经验变动
               {
                 DoubleExp = value
               });
@@ -2176,14 +2176,14 @@ namespace GameServer.Maps
         if (this.CharacterData.NumberGoldCoins != value)
         {
           this.CharacterData.NumberGoldCoins = value;
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new 货币数量变动
+          网络连接.发送封包(new 货币数量变动
           {
-            CurrencyType = 1,
+            货币类型 = 1,
             货币数量 = value
           });
         }
@@ -2202,12 +2202,12 @@ namespace GameServer.Maps
         if (this.CharacterData.Ingots != value)
         {
           this.CharacterData.Ingots = value;
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new 同步Ingots
+          网络连接.发送封包(new 同步元宝数量
           {
             Ingots = value
           });
@@ -2227,14 +2227,14 @@ namespace GameServer.Maps
         if (this.CharacterData.MasterRep != value)
         {
           this.CharacterData.MasterRep = value;
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new 货币数量变动
+          网络连接.发送封包(new 货币数量变动
           {
-            CurrencyType = 6,
+            货币类型 = 6,
             货币数量 = value
           });
         }
@@ -2270,7 +2270,7 @@ namespace GameServer.Maps
       }
     }
 
-    public void OpenChest(int objectId)
+    public void 打开宝箱(int objectId)
     {
       if (!MapGatewayProcess.Chests.TryGetValue(objectId, out var chestObject))
         return;
@@ -2651,7 +2651,7 @@ namespace GameServer.Maps
     }
 
 
-    public AttackMode AttackMode
+    public 攻击模式 AttackMode
     {
       get
       {
@@ -2662,12 +2662,12 @@ namespace GameServer.Maps
         if (this.CharacterData.AttackMode.V != value)
         {
           this.CharacterData.AttackMode.V = value;
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new 同步对战模式
+          网络连接.发送封包(new 同步对战模式
           {
             对象编号 = this.ObjectId,
             AttackMode = (byte)value
@@ -2693,12 +2693,12 @@ namespace GameServer.Maps
         if (this.CharacterData.PetMode.V != value)
         {
           this.CharacterData.PetMode.V = value;
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new GameErrorMessagePacket
+          网络连接.发送封包(new 游戏错误提示
           {
             错误代码 = 9473,
             第一参数 = (int)value
@@ -2945,12 +2945,12 @@ namespace GameServer.Maps
       this.Pets.Remove(宠物);
       if (this.宠物数量 == 0)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 9473
         });
@@ -2960,16 +2960,16 @@ namespace GameServer.Maps
 
     public void 玩家升级处理()
     {
-      SendPacket(new CharacterLevelUpPacket
+      SendPacket(new 角色等级提升
       {
         对象编号 = this.ObjectId,
         对象等级 = this.CurrentLevel
       });
-      Guild?.发送封包(new SyncMemberInfoPacket
+      Guild?.发送封包(new 同步会员信息
       {
         对象编号 = this.ObjectId,
         对象信息 = this.CurrentMap.MapId,
-        CurrentRank = this.CurrentLevel
+        当前等级 = this.CurrentLevel
       });
       CombatBonus[this] = (int)(this.CurrentLevel * 10);
       更新玩家战力();
@@ -2983,7 +2983,7 @@ namespace GameServer.Maps
       TeacherData 所属师门 = this.所属师门;
       if (所属师门 != null)
       {
-        所属师门.发送封包(new SyncApprenticeshipLevelPacket
+        所属师门.发送封包(new 同步师徒等级
         {
           对象编号 = this.ObjectId,
           对象等级 = this.CurrentLevel
@@ -3012,10 +3012,10 @@ namespace GameServer.Maps
       }
       if (this.CurrentLevel == 30 && this.所属师门 == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 != null)
         {
-          网络连接.SendPacket(new SyncTeacherInfoPacket
+          网络连接.发送封包(new 同步师门信息
           {
             师门参数 = this.师门参数
           });
@@ -3032,20 +3032,20 @@ namespace GameServer.Maps
     {
       base.NotifyNeightborClear();
       base.UnbindGrid();
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 != null)
       {
-        网络连接.SendPacket(new 玩家离开场景());
+        网络连接.发送封包(new 玩家离开场景());
       }
       this.CurrentPosition = ((指定区域 == AreaType.未知区域) ? 坐标 : ToMapId.随机坐标(指定区域));
       if (this.CurrentMap.MapId != ToMapId.MapId)
       {
         bool CopyMap = this.CurrentMap.CopyMap;
         this.CurrentMap = ToMapId;
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 != null)
         {
-          网络连接2.SendPacket(new 玩家切换地图
+          网络连接2.发送封包(new 玩家切换地图
           {
             MapId = this.CurrentMap.MapId,
             路线编号 = this.CurrentMap.路线编号,
@@ -3067,20 +3067,20 @@ namespace GameServer.Maps
           return;
         }
       }
-      SConnection 网络连接3 = this.ActiveConnection;
+      客户网络 网络连接3 = this.ActiveConnection;
       if (网络连接3 != null)
       {
-        网络连接3.SendPacket(new ObjectCharacterStopPacket
+        网络连接3.发送封包(new 角色停止
         {
           对象编号 = this.ObjectId,
           对象坐标 = this.CurrentPosition,
           对象高度 = this.CurrentAltitude
         });
       }
-      SConnection 网络连接4 = this.ActiveConnection;
+      客户网络 网络连接4 = this.ActiveConnection;
       if (网络连接4 != null)
       {
-        网络连接4.SendPacket(new 玩家进入场景
+        网络连接4.发送封包(new 玩家进入场景
         {
           MapId = this.CurrentMap.MapId,
           CurrentCoords = this.CurrentPosition,
@@ -3124,7 +3124,7 @@ namespace GameServer.Maps
             {
               increaseAwakeningExp = Config.MaxAwakeningExp - CharacterData.AwakeningExp.V;
               CharacterData.AwakeningExpEnabled.V = false;
-              ActiveConnection?.SendPacket(new SyncSupplementaryVariablesPacket
+              ActiveConnection?.发送封包(new 同步补充变量
               {
                 变量类型 = 1,
                 变量索引 = 50,
@@ -3147,7 +3147,7 @@ namespace GameServer.Maps
             this.玩家升级处理();
           }
 
-          ActiveConnection?.SendPacket(new CharacterExpChangesPacket
+          ActiveConnection?.发送封包(new 角色经验变动
           {
             经验增加 = increaseExp,
             今日增加 = 0,
@@ -3167,7 +3167,7 @@ namespace GameServer.Maps
         {
           experience = Config.MaxAwakeningExp - CharacterData.AwakeningExp.V;
           CharacterData.AwakeningExpEnabled.V = false;
-          ActiveConnection?.SendPacket(new SyncSupplementaryVariablesPacket
+          ActiveConnection?.发送封包(new 同步补充变量
           {
             变量类型 = 1,
             变量索引 = 50,
@@ -3178,7 +3178,7 @@ namespace GameServer.Maps
 
         CharacterData.AwakeningExp.V = CharacterData.AwakeningExp.V + experience;
 
-        ActiveConnection?.SendPacket(new CharacterExpChangesPacket
+        ActiveConnection?.发送封包(new 角色经验变动
         {
           经验增加 = 0,
           今日增加 = 0,
@@ -3225,16 +3225,16 @@ namespace GameServer.Maps
         this.StatsBonus[skill] = skill.Stat加成;
         this.RefreshStats();
       }
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new SyncSkillLevelPacket
+      网络连接.发送封包(new 同步技能等级
       {
-        SkillId = skill.SkillId.V,
-        CurrentExp = skill.SkillExp.V,
-        CurrentRank = skill.SkillLevel.V
+        技能编号 = skill.SkillId.V,
+        当前经验 = skill.SkillExp.V,
+        当前等级 = skill.SkillLevel.V
       });
     }
 
@@ -3246,10 +3246,10 @@ namespace GameServer.Maps
 
       var newSkill = MainSkills表[SkillId] = new SkillData(SkillId);
 
-      ActiveConnection?.SendPacket(new CharacterLearningSkillPacket
+      ActiveConnection?.发送封包(new 角色学习技能
       {
         角色编号 = this.ObjectId,
-        SkillId = SkillId
+        技能编号 = SkillId
       });
 
       if (newSkill.自动装配)
@@ -3264,7 +3264,7 @@ namespace GameServer.Maps
           else
           {
             CharacterData.ShorcutField[b] = newSkill;
-            ActiveConnection?.SendPacket(new CharacterDragSkillsPacket
+            ActiveConnection?.发送封包(new 玩家拖动技能
             {
               技能栏位 = b,
               Id = newSkill.Id,
@@ -3285,13 +3285,13 @@ namespace GameServer.Maps
         if (num2.GetValueOrDefault() == (int)SkillId & num2 != null)
         {
           this.MainSkills表[SkillId].Id = EquipmentData.第一铭文.铭文编号;
-          SConnection 网络连接3 = this.ActiveConnection;
+          客户网络 网络连接3 = this.ActiveConnection;
           if (网络连接3 != null)
           {
-            网络连接3.SendPacket(new CharacterAssemblyInscriptionPacket
+            网络连接3.发送封包(new 角色装配铭文
             {
-              SkillId = SkillId,
-              Id = EquipmentData.第一铭文.铭文编号
+              技能编号 = SkillId,
+              铭文编号 = EquipmentData.第一铭文.铭文编号
             });
           }
         }
@@ -3301,13 +3301,13 @@ namespace GameServer.Maps
         if (num2.GetValueOrDefault() == (int)SkillId & num2 != null)
         {
           this.MainSkills表[SkillId].Id = EquipmentData.第二铭文.铭文编号;
-          SConnection 网络连接4 = this.ActiveConnection;
+          客户网络 网络连接4 = this.ActiveConnection;
           if (网络连接4 != null)
           {
-            网络连接4.SendPacket(new CharacterAssemblyInscriptionPacket
+            网络连接4.发送封包(new 角色装配铭文
             {
-              SkillId = SkillId,
-              Id = EquipmentData.第二铭文.铭文编号
+              技能编号 = SkillId,
+              铭文编号 = EquipmentData.第二铭文.铭文编号
             });
           }
         }
@@ -3357,14 +3357,14 @@ namespace GameServer.Maps
           }
         }
         SkillData.Id = Id;
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 != null)
         {
-          网络连接.SendPacket(new CharacterAssemblyInscriptionPacket
+          网络连接.发送封包(new 角色装配铭文
           {
-            Id = Id,
-            SkillId = SkillId,
-            SkillLevel = SkillData.SkillLevel.V
+            铭文编号 = Id,
+            技能编号 = SkillId,
+            技能等级 = SkillData.SkillLevel.V
           });
         }
         foreach (ushort key2 in SkillData.PassiveSkill)
@@ -3380,10 +3380,10 @@ namespace GameServer.Maps
           SkillData.RemainingTimeLeft.V = 0;
           SkillData.计数时间 = MainProcess.CurrentTime.AddMilliseconds((double)SkillData.PeriodCount);
           this.Coolings[(int)SkillId | 16777216] = MainProcess.CurrentTime.AddMilliseconds((double)SkillData.PeriodCount);
-          SConnection 网络连接2 = this.ActiveConnection;
+          客户网络 网络连接2 = this.ActiveConnection;
           if (网络连接2 != null)
           {
-            网络连接2.SendPacket(new SyncSkillCountPacket
+            网络连接2.发送封包(new 同步技能计数
             {
               SkillId = SkillData.SkillId.V,
               SkillCount = SkillData.RemainingTimeLeft.V,
@@ -3531,19 +3531,19 @@ namespace GameServer.Maps
             bool BoundWeapons = flag || num5 != 0 || 额外诱惑时长 != 0 || 额外诱惑概率 != 0f || this.Pets.Count >= num4;
             MonsterObject MonsterObject = 诱惑目标 as MonsterObject;
             PetObject PetObject = (MonsterObject != null) ? new PetObject(this, MonsterObject, (byte)Math.Max((int)MonsterObject.宠物等级, num10), BoundWeapons, 宠物时长) : new PetObject(this, (PetObject)诱惑目标, (byte)num10, BoundWeapons, 宠物时长);
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 != null)
             {
-              网络连接.SendPacket(new SyncPetLevelPacket
+              网络连接.发送封包(new 同步宠物等级
               {
                 宠物编号 = PetObject.ObjectId,
                 宠物等级 = PetObject.宠物等级
               });
             }
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 != null)
             {
-              网络连接2.SendPacket(new GameErrorMessagePacket
+              网络连接2.发送封包(new 游戏错误提示
               {
                 错误代码 = 9473,
                 第一参数 = (int)this.PetMode
@@ -3592,7 +3592,7 @@ namespace GameServer.Maps
           }
           else
           {
-            base.SendPacket(new ObjectStateChangePacket
+            base.SendPacket(new 对象状态变动
             {
               对象编号 = this.ObjectId,
               Id = BuffData.Id.V,
@@ -3628,12 +3628,12 @@ namespace GameServer.Maps
         {
           this.RefreshStats();
         }
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new EquipPermanentChangePacket
+        网络连接.发送封包(new 装备持久改变
         {
           装备容器 = EquipmentData.物品容器.V,
           装备位置 = EquipmentData.物品位置.V,
@@ -3650,7 +3650,7 @@ namespace GameServer.Maps
       {
         DataMonitor<sbyte> Luck = EquipmentData.Luck;
         Luck.V -= 1;
-        this.ActiveConnection.SendPacket(new 玩家物品变动
+        this.ActiveConnection.发送封包(new 玩家物品变动
         {
           物品描述 = EquipmentData.字节描述()
         });
@@ -3665,10 +3665,10 @@ namespace GameServer.Maps
       {
         if ((EquipmentData.当前持久.V -= 损失持久) <= 0)
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 != null)
           {
-            网络连接.SendPacket(new 删除玩家物品
+            网络连接.发送封包(new 删除玩家物品
             {
               背包类型 = EquipmentData.物品容器.V,
               物品位置 = EquipmentData.物品位置.V
@@ -3679,12 +3679,12 @@ namespace GameServer.Maps
           EquipmentData.Delete();
           return;
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new EquipPermanentChangePacket
+        网络连接2.发送封包(new 装备持久改变
         {
           装备容器 = EquipmentData.物品容器.V,
           装备位置 = EquipmentData.物品位置.V,
@@ -3705,10 +3705,10 @@ namespace GameServer.Maps
           {
             this.RefreshStats();
           }
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 != null)
           {
-            网络连接.SendPacket(new EquipPermanentChangePacket
+            网络连接.发送封包(new 装备持久改变
             {
               装备容器 = EquipmentData.物品容器.V,
               装备位置 = EquipmentData.物品位置.V,
@@ -3785,12 +3785,12 @@ namespace GameServer.Maps
             对象编号 = this.ObjectId
           });
         }
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 玩家失去称号
+        网络连接.发送封包(new 玩家失去称号
         {
           Id = Id
         });
@@ -3803,10 +3803,10 @@ namespace GameServer.Maps
       if (游戏称号.DataSheet.TryGetValue(Id, out var gameTitle))
       {
         AvailableTitles[Id] = MainProcess.CurrentTime.AddMinutes(gameTitle.有效时间);
-        ActiveConnection?.SendPacket(new ObtainTitlePacket
+        ActiveConnection?.发送封包(new 玩家获得称号
         {
-          Id = Id,
-          ExpireTime = (int)(this.AvailableTitles[Id] - MainProcess.CurrentTime).TotalMinutes
+          称号编号 = Id,
+          剩余时间 = (int)(this.AvailableTitles[Id] - MainProcess.CurrentTime).TotalMinutes
         });
       }
     }
@@ -3880,10 +3880,10 @@ namespace GameServer.Maps
     {
       if ((当前物品.当前持久.V -= 消耗总数) <= 0)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 != null)
         {
-          网络连接.SendPacket(new 删除玩家物品
+          网络连接.发送封包(new 删除玩家物品
           {
             背包类型 = 当前物品.物品容器.V,
             物品位置 = 当前物品.物品位置.V
@@ -3893,12 +3893,12 @@ namespace GameServer.Maps
         当前物品.Delete();
         return;
       }
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 == null)
       {
         return;
       }
-      网络连接2.SendPacket(new 玩家物品变动
+      网络连接2.发送封包(new 玩家物品变动
       {
         物品描述 = 当前物品.字节描述()
       });
@@ -3941,7 +3941,7 @@ namespace GameServer.Maps
       GuildData Affiliation = this.Guild;
       if (Affiliation != null)
       {
-        Affiliation.发送封包(new SyncMemberInfoPacket
+        Affiliation.发送封包(new 同步会员信息
         {
           对象编号 = this.ObjectId,
           对象信息 = ComputingClass.TimeShift(MainProcess.CurrentTime)
@@ -3949,10 +3949,10 @@ namespace GameServer.Maps
       }
       foreach (CharacterData CharacterData in this.粉丝列表)
       {
-        SConnection 网络连接 = CharacterData.ActiveConnection;
+        客户网络 网络连接 = CharacterData.ActiveConnection;
         if (网络连接 != null)
         {
-          网络连接.SendPacket(new 好友上线下线
+          网络连接.发送封包(new 好友上线下线
           {
             对象编号 = this.ObjectId,
             对象名字 = this.ObjectName,
@@ -3964,10 +3964,10 @@ namespace GameServer.Maps
       }
       foreach (CharacterData CharacterData2 in this.仇恨列表)
       {
-        SConnection 网络连接2 = CharacterData2.ActiveConnection;
+        客户网络 网络连接2 = CharacterData2.ActiveConnection;
         if (网络连接2 != null)
         {
-          网络连接2.SendPacket(new 好友上线下线
+          网络连接2.发送封包(new 好友上线下线
           {
             对象编号 = this.ObjectId,
             对象名字 = this.ObjectName,
@@ -3996,14 +3996,14 @@ namespace GameServer.Maps
 
     public void 玩家进入场景()
     {
-      ActiveConnection.SendPacket(new ObjectCharacterStopPacket
+      ActiveConnection.发送封包(new 角色停止
       {
         对象编号 = this.ObjectId,
         对象坐标 = this.CurrentPosition,
         对象高度 = this.CurrentAltitude
       });
 
-      ActiveConnection.SendPacket(new 玩家进入场景
+      ActiveConnection.发送封包(new 玩家进入场景
       {
         MapId = this.CurrentMap.MapId,
         CurrentCoords = this.CurrentPosition,
@@ -4012,7 +4012,7 @@ namespace GameServer.Maps
         RouteStatus = this.CurrentMap.地图状态
       });
 
-      ActiveConnection.SendPacket(new ObjectComesIntoViewPacket
+      ActiveConnection.发送封包(new 对象进入视野
       {
         出现方式 = 1,
         对象编号 = this.ObjectId,
@@ -4023,34 +4023,34 @@ namespace GameServer.Maps
         体力比例 = (byte)(this.CurrentHP * 100 / this[GameObjectStats.最大体力])
       });
 
-      ActiveConnection.SendPacket(new SyncObjectHP
+      ActiveConnection.发送封包(new 同步对象体力
       {
-        ObjectId = this.ObjectId,
-        CurrentHP = this.CurrentHP,
-        MaxHP = this[GameObjectStats.最大体力]
+        对象编号 = this.ObjectId,
+        当前体力 = this.CurrentHP,
+        体力上限 = this[GameObjectStats.最大体力]
       });
 
-      ActiveConnection.SendPacket(new 同步对象魔力
+      ActiveConnection.发送封包(new 同步对象魔力
       {
         CurrentMP = this.CurrentMP
       });
 
-      ActiveConnection.SendPacket(new 同步Ingots
+      ActiveConnection.发送封包(new 同步元宝数量
       {
         Ingots = this.Ingots
       });
 
-      ActiveConnection.SendPacket(new SyncCooldownListPacket
+      ActiveConnection.发送封包(new 同步冷却列表
       {
         字节描述 = this.全部冷却描述()
       });
 
-      ActiveConnection.SendPacket(new 同步状态列表
+      ActiveConnection.发送封包(new 同步状态列表
       {
         字节数据 = this.全部Buff描述()
       });
 
-      ActiveConnection.SendPacket(new SwitchBattleStancePacket
+      ActiveConnection.发送封包(new 切换战斗姿态
       {
         角色编号 = this.ObjectId
       });
@@ -4071,12 +4071,12 @@ namespace GameServer.Maps
           {
             PetObject PetObject = new PetObject(this, PetData);
             this.Pets.Add(PetObject);
-            ActiveConnection.SendPacket(new SyncPetLevelPacket
+            ActiveConnection.发送封包(new 同步宠物等级
             {
               宠物编号 = PetObject.ObjectId,
               宠物等级 = PetObject.宠物等级
             });
-            ActiveConnection.SendPacket(new GameErrorMessagePacket
+            ActiveConnection.发送封包(new 游戏错误提示
             {
               错误代码 = 9473,
               第一参数 = (int)this.PetMode
@@ -4090,7 +4090,7 @@ namespace GameServer.Maps
         }
       }
 
-      ActiveConnection.SendPacket(new SyncSelectedMount { SelectedMountId = (byte)CharacterData.CurrentMount.V });
+      ActiveConnection.发送封包(new 同步选中坐骑 { SelectedMountId = (byte)CharacterData.CurrentMount.V });
     }
 
 
@@ -4108,10 +4108,10 @@ namespace GameServer.Maps
     {
       if (this.Died)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 != null)
         {
-          网络连接.SendPacket(new 玩家角色复活
+          网络连接.发送封包(new 玩家角色复活
           {
             对象编号 = this.ObjectId,
             复活方式 = 3
@@ -4154,12 +4154,12 @@ namespace GameServer.Maps
           游戏地图 游戏地图;
           if (!this.CurrentMap.法阵列表.TryGetValue((byte)TeleportGateNumber, out 传送法阵))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new GameErrorMessagePacket
+            网络连接.发送封包(new 游戏错误提示
             {
               错误代码 = 775
             });
@@ -4167,12 +4167,12 @@ namespace GameServer.Maps
           }
           else if (base.GetDistance(传送法阵.所处坐标) >= 8)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new GameErrorMessagePacket
+            网络连接2.发送封包(new 游戏错误提示
             {
               错误代码 = 4609
             });
@@ -4180,12 +4180,12 @@ namespace GameServer.Maps
           }
           else if (!游戏地图.DataSheet.TryGetValue(传送法阵.跳转地图, out 游戏地图))
           {
-            SConnection 网络连接3 = this.ActiveConnection;
+            客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new GameErrorMessagePacket
+            网络连接3.发送封包(new 游戏错误提示
             {
               错误代码 = 775
             });
@@ -4193,12 +4193,12 @@ namespace GameServer.Maps
           }
           else if (this.CurrentLevel < 游戏地图.限制等级)
           {
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
             {
               return;
             }
-            网络连接4.SendPacket(new GameErrorMessagePacket
+            网络连接4.发送封包(new 游戏错误提示
             {
               错误代码 = 4624
             });
@@ -4211,12 +4211,12 @@ namespace GameServer.Maps
         }
         else
         {
-          SConnection 网络连接5 = this.ActiveConnection;
+          客户网络 网络连接5 = this.ActiveConnection;
           if (网络连接5 == null)
           {
             return;
           }
-          网络连接5.SendPacket(new GameErrorMessagePacket
+          网络连接5.发送封包(new 游戏错误提示
           {
             错误代码 = 769
           });
@@ -4234,12 +4234,12 @@ namespace GameServer.Maps
       }
       if (this.CurrentPosition == 终点坐标)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new ObjectCharacterStopPacket
+        网络连接.发送封包(new 角色停止
         {
           对象编号 = this.ObjectId,
           对象坐标 = this.CurrentPosition,
@@ -4249,12 +4249,12 @@ namespace GameServer.Maps
       }
       else if (!this.CanMove())
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new ObjectCharacterStopPacket
+        网络连接2.发送封包(new 角色停止
         {
           对象编号 = this.ObjectId,
           对象坐标 = this.CurrentPosition,
@@ -4271,14 +4271,14 @@ namespace GameServer.Maps
           if (this.CurrentDirection != (GameDirection = ComputingClass.GetDirection(this.CurrentPosition, point)))
           {
             this.CharacterData.CurrentDir.V = GameDirection;
-            base.SendPacket(new ObjectRotationDirectionPacket
+            base.SendPacket(new 对象转动方向
             {
               对象编号 = this.ObjectId,
               对象朝向 = (ushort)GameDirection,
               转向耗时 = 100
             });
           }
-          base.SendPacket(new ObjectCharacterStopPacket
+          base.SendPacket(new 角色停止
           {
             对象编号 = this.ObjectId,
             对象坐标 = this.CurrentPosition,
@@ -4291,14 +4291,14 @@ namespace GameServer.Maps
         if (this.CurrentDirection != (GameDirection = ComputingClass.GetDirection(this.CurrentPosition, point)))
         {
           this.CharacterData.CurrentDir.V = GameDirection;
-          base.SendPacket(new ObjectRotationDirectionPacket
+          base.SendPacket(new 对象转动方向
           {
             对象编号 = this.ObjectId,
             对象朝向 = (ushort)GameDirection,
             转向耗时 = 100
           });
         }
-        base.SendPacket(new ObjectCharacterWalkPacket
+        base.SendPacket(new 角色走动
         {
           对象编号 = this.ObjectId,
           移动坐标 = point,
@@ -4318,12 +4318,12 @@ namespace GameServer.Maps
       }
       if (this.CurrentPosition == 终点坐标)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new ObjectCharacterStopPacket
+        网络连接.发送封包(new 角色停止
         {
           对象编号 = this.ObjectId,
           对象坐标 = this.CurrentPosition,
@@ -4341,14 +4341,14 @@ namespace GameServer.Maps
           if (this.CurrentDirection != (GameDirection = ComputingClass.GetDirection(this.CurrentPosition, point)))
           {
             this.CharacterData.CurrentDir.V = GameDirection;
-            base.SendPacket(new ObjectRotationDirectionPacket
+            base.SendPacket(new 对象转动方向
             {
               对象编号 = this.ObjectId,
               对象朝向 = (ushort)GameDirection,
               转向耗时 = 100
             });
           }
-          base.SendPacket(new ObjectCharacterStopPacket
+          base.SendPacket(new 角色停止
           {
             对象编号 = this.ObjectId,
             对象坐标 = this.CurrentPosition,
@@ -4366,14 +4366,14 @@ namespace GameServer.Maps
         if (this.CurrentDirection != (GameDirection = ComputingClass.GetDirection(this.CurrentPosition, point2)))
         {
           this.CharacterData.CurrentDir.V = GameDirection;
-          base.SendPacket(new ObjectRotationDirectionPacket
+          base.SendPacket(new 对象转动方向
           {
             对象编号 = this.ObjectId,
             对象朝向 = (ushort)GameDirection,
             转向耗时 = 100
           });
         }
-        base.SendPacket(new ObjectCharacterRunPacket
+        base.SendPacket(new 角色跑动
         {
           对象编号 = this.ObjectId,
           移动坐标 = point2,
@@ -4389,7 +4389,7 @@ namespace GameServer.Maps
           this.玩家角色走动(终点坐标);
           return;
         }
-        base.SendPacket(new ObjectCharacterStopPacket
+        base.SendPacket(new 角色停止
         {
           对象编号 = this.ObjectId,
           对象坐标 = this.CurrentPosition,
@@ -4430,7 +4430,7 @@ namespace GameServer.Maps
       {
         if (this != null)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Release unlearned skills, try to disconnect."));
+          this.ActiveConnection.尝试断开连接(new Exception("Release unlearned skills, try to disconnect."));
           return;
         }
       }
@@ -4463,30 +4463,30 @@ namespace GameServer.Maps
       }
     }
 
-    public void UseSkill(ushort skillId, byte actionId, int targetId, Point targetLocation)
+    public void 释放技能(ushort skillId, byte actionId, int targetId, Point targetLocation)
     {
       if (Died || ParalysisState > 0 || 交易状态 >= 3)
         return;
 
       if (!MainSkills表.TryGetValue(skillId, out var skill) && !PassiveSkill.TryGetValue(skillId, out skill))
       {
-        ActiveConnection.CallExceptionEventHandler(new Exception($"错误操作: 玩家释放技能. 错误: 没有学会技能. 技能编号:{skillId}"));
+        ActiveConnection.尝试断开连接(new Exception($"错误操作: 玩家释放技能. 错误: 没有学会技能. 技能编号:{skillId}"));
         return;
       }
 
       if (Coolings.TryGetValue(skillId | 0x1000000, out var v2) && MainProcess.CurrentTime < v2)
       {
-        ActiveConnection?.SendPacket(new AddedSkillCooldownPacket
+        ActiveConnection?.发送封包(new 添加技能冷却
         {
           CoolingId = (skillId | 0x1000000),
           Cooldown = (int)(v2 - MainProcess.CurrentTime).TotalMilliseconds
         });
-        ActiveConnection?.SendPacket(new 技能释放完成
+        ActiveConnection?.发送封包(new 技能释放完成
         {
           SkillId = skillId,
           动作编号 = actionId
         });
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1281,
           第一参数 = skillId,
@@ -4504,12 +4504,12 @@ namespace GameServer.Maps
         else if (Riding && (BuffData.Effect & BuffEffectType.坐骑状态) != BuffEffectType.技能标志)
         {
           删除Buff时处理(BuffData.Id.V);
-          ActiveConnection?.SendPacket(new AddedSkillCooldownPacket
+          ActiveConnection?.发送封包(new 添加技能冷却
           {
             CoolingId = (skillId | 0x1000000),
             Cooldown = 0
           });
-          ActiveConnection?.SendPacket(new 技能释放完成
+          ActiveConnection?.发送封包(new 技能释放完成
           {
             SkillId = skillId,
             动作编号 = actionId
@@ -4544,12 +4544,12 @@ namespace GameServer.Maps
           {
             if (value2.检查硬直状态 && HardTime > MainProcess.CurrentTime)
             {
-              ActiveConnection?.SendPacket(new AddedSkillCooldownPacket
+              ActiveConnection?.发送封包(new 添加技能冷却
               {
                 CoolingId = (skillId | 0x1000000),
                 Cooldown = (int)(HardTime - MainProcess.CurrentTime).TotalMilliseconds
               });
-              ActiveConnection?.SendPacket(new 技能释放完成
+              ActiveConnection?.发送封包(new 技能释放完成
               {
                 SkillId = skillId,
                 动作编号 = actionId
@@ -4642,12 +4642,12 @@ namespace GameServer.Maps
             new SkillInstance(this, value2, skill, actionId, CurrentMap, CurrentPosition, targetObj, targetLocation, null);
             break;
           }
-          ActiveConnection?.SendPacket(new AddedSkillCooldownPacket
+          ActiveConnection?.发送封包(new 添加技能冷却
           {
             CoolingId = (skillId | 0x1000000),
             Cooldown = (int)(BusyTime - MainProcess.CurrentTime).TotalMilliseconds
           });
-          ActiveConnection?.SendPacket(new 技能释放完成
+          ActiveConnection?.发送封包(new 技能释放完成
           {
             SkillId = skillId,
             动作编号 = actionId
@@ -4655,12 +4655,12 @@ namespace GameServer.Maps
           break;
         }
 
-        ActiveConnection?.SendPacket(new AddedSkillCooldownPacket
+        ActiveConnection?.发送封包(new 添加技能冷却
         {
           CoolingId = (skillId | 0x1000000),
           Cooldown = (int)(v3 - MainProcess.CurrentTime).TotalMilliseconds
         });
-        ActiveConnection?.SendPacket(new 技能释放完成
+        ActiveConnection?.发送封包(new 技能释放完成
         {
           SkillId = skillId,
           动作编号 = actionId
@@ -4669,13 +4669,13 @@ namespace GameServer.Maps
       }
     }
 
-    public void 更改AttackMode(AttackMode 模式)
+    public void 更改攻击模式(攻击模式 模式)
     {
       this.AttackMode = 模式;
     }
 
 
-    public void 更改PetMode(PetMode 模式)
+    public void 更改宠物模式(PetMode 模式)
     {
       if (this.宠物数量 == 0)
       {
@@ -4697,7 +4697,7 @@ namespace GameServer.Maps
     }
 
 
-    public void EquipSkill(byte 技能栏位, ushort SkillId)
+    public void 装备技能(byte 技能栏位, ushort SkillId)
     {
       if (技能栏位 <= 7 || 技能栏位 >= 32)
       {
@@ -4731,12 +4731,12 @@ namespace GameServer.Maps
       }
       this.ShorcutField[技能栏位] = SkillData;
       SkillData.ShorcutField.V = 技能栏位;
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new CharacterDragSkillsPacket
+      网络连接.发送封包(new 玩家拖动技能
       {
         技能栏位 = 技能栏位,
         Id = SkillData.Id,
@@ -4746,24 +4746,24 @@ namespace GameServer.Maps
     }
 
 
-    public void SelectObject(int objectId)
+    public void 选中目标(int objectId)
     {
       MapObject MapObject;
       if (MapGatewayProcess.Objects.TryGetValue(objectId, out MapObject))
       {
-        ActiveConnection.SendPacket(new 玩家选中目标
+        ActiveConnection.发送封包(new 玩家选中目标
         {
           角色编号 = this.ObjectId,
           目标编号 = MapObject.ObjectId
         });
 
-        ActiveConnection.SendPacket(new SelectTargetDetailsPacket
+        ActiveConnection.发送封包(new 选中目标详情
         {
           对象编号 = MapObject.ObjectId,
-          CurrentHP = MapObject.CurrentHP,
-          CurrentMP = MapObject.CurrentMP,
-          MaxHP = MapObject[GameObjectStats.最大体力],
-          MaxMP = MapObject[GameObjectStats.最大魔力],
+          当前体力 = MapObject.CurrentHP,
+          当前魔力 = MapObject.CurrentMP,
+          最大体力 = MapObject[GameObjectStats.最大体力],
+          最大魔力 = MapObject[GameObjectStats.最大魔力],
           Buff描述 = MapObject.对象Buff详述()
         });
       }
@@ -4778,17 +4778,17 @@ namespace GameServer.Maps
       }
       if (!MapGatewayProcess.NPCs.TryGetValue(对象编号, out this.对话守卫))
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Start Npcc conversation. Error: No object found."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Start Npcc conversation. Error: No object found."));
         return;
       }
       if (this.CurrentMap != this.对话守卫.CurrentMap)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Start Npcc conversation. Error: Cross map dialogue."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Start Npcc conversation. Error: Cross map dialogue."));
         return;
       }
       if (base.GetDistance(this.对话守卫) > 12)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Start Npcc conversation. Error: Long distance conversation."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Start Npcc conversation. Error: Long distance conversation."));
         return;
       }
 
@@ -4799,7 +4799,7 @@ namespace GameServer.Maps
         this.对话超时 = MainProcess.CurrentTime.AddSeconds(30.0);
         this.对话页面 = (int)this.对话守卫.MobId * 100000;
 
-        ActiveConnection?.SendPacket(new 同步交互结果
+        ActiveConnection?.发送封包(new 同步交互结果
         {
           对象编号 = this.对话守卫.ObjectId,
           交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -4816,17 +4816,17 @@ namespace GameServer.Maps
       }
       if (this.对话守卫 == null)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Continue Npcc conversation.  Error: No guards selected."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Continue Npcc conversation.  Error: No guards selected."));
         return;
       }
       if (this.CurrentMap != this.对话守卫.CurrentMap)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Start Npcc conversation. Error: Cross map dialogue."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Start Npcc conversation. Error: Cross map dialogue."));
         return;
       }
       if (base.GetDistance(this.对话守卫) > 12)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Start Npcc conversation. Error: Long distance conversation."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Start Npcc conversation. Error: Long distance conversation."));
         return;
       }
       if (!(MainProcess.CurrentTime > this.对话超时))
@@ -4858,12 +4858,12 @@ namespace GameServer.Maps
                   if (MainProcess.CurrentTime.Hour != (int)Config.武斗场时间一 && MainProcess.CurrentTime.Hour != (int)Config.武斗场时间二)
                   {
                     this.对话页面 = 479501000;
-                    SConnection 网络连接 = this.ActiveConnection;
+                    客户网络 网络连接 = this.ActiveConnection;
                     if (网络连接 == null)
                     {
                       return;
                     }
-                    网络连接.SendPacket(new 同步交互结果
+                    网络连接.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", Config.武斗场时间一, Config.武斗场时间二))
@@ -4873,12 +4873,12 @@ namespace GameServer.Maps
                   else if (MainProcess.CurrentTime.Hour == this.CharacterData.武斗日期.V.Hour)
                   {
                     this.对话页面 = 479502000;
-                    SConnection 网络连接2 = this.ActiveConnection;
+                    客户网络 网络连接2 = this.ActiveConnection;
                     if (网络连接2 == null)
                     {
                       return;
                     }
-                    网络连接2.SendPacket(new 同步交互结果
+                    网络连接2.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -4890,10 +4890,10 @@ namespace GameServer.Maps
                     if (this.CurrentLevel < 25)
                     {
                       this.对话页面 = 711900001;
-                      SConnection 网络连接3 = this.ActiveConnection;
+                      客户网络 网络连接3 = this.ActiveConnection;
                       if (网络连接3 != null)
                       {
-                        网络连接3.SendPacket(new 同步交互结果
+                        网络连接3.发送封包(new 同步交互结果
                         {
                           交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", 25)),
                           对象编号 = this.对话守卫.ObjectId
@@ -4908,12 +4908,12 @@ namespace GameServer.Maps
                       return;
                     }
                     this.对话页面 = 479503000;
-                    SConnection 网络连接4 = this.ActiveConnection;
+                    客户网络 网络连接4 = this.ActiveConnection;
                     if (网络连接4 == null)
                     {
                       return;
                     }
-                    网络连接4.SendPacket(new 同步交互结果
+                    网络连接4.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", 50000))
@@ -4936,12 +4936,12 @@ namespace GameServer.Maps
                   if ((int)this.CurrentLevel < num2)
                   {
                     this.对话页面 = 711900001;
-                    SConnection 网络连接5 = this.ActiveConnection;
+                    客户网络 网络连接5 = this.ActiveConnection;
                     if (网络连接5 == null)
                     {
                       return;
                     }
-                    网络连接5.SendPacket(new 同步交互结果
+                    网络连接5.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num2)),
                       对象编号 = this.对话守卫.ObjectId
@@ -4957,12 +4957,12 @@ namespace GameServer.Maps
                       return;
                     }
                     this.对话页面 = 711900002;
-                    SConnection 网络连接6 = this.ActiveConnection;
+                    客户网络 网络连接6 = this.ActiveConnection;
                     if (网络连接6 == null)
                     {
                       return;
                     }
-                    网络连接6.SendPacket(new 同步交互结果
+                    网络连接6.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num3)),
                       对象编号 = this.对话守卫.ObjectId
@@ -4981,12 +4981,12 @@ namespace GameServer.Maps
                   if ((int)this.CurrentLevel < num5)
                   {
                     this.对话页面 = 711900001;
-                    SConnection 网络连接7 = this.ActiveConnection;
+                    客户网络 网络连接7 = this.ActiveConnection;
                     if (网络连接7 == null)
                     {
                       return;
                     }
-                    网络连接7.SendPacket(new 同步交互结果
+                    网络连接7.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num5)),
                       对象编号 = this.对话守卫.ObjectId
@@ -5002,12 +5002,12 @@ namespace GameServer.Maps
                       return;
                     }
                     this.对话页面 = 711900002;
-                    SConnection 网络连接8 = this.ActiveConnection;
+                    客户网络 网络连接8 = this.ActiveConnection;
                     if (网络连接8 == null)
                     {
                       return;
                     }
-                    网络连接8.SendPacket(new 同步交互结果
+                    网络连接8.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num6)),
                       对象编号 = this.对话守卫.ObjectId
@@ -5031,12 +5031,12 @@ namespace GameServer.Maps
                   if (!this.Equipment.TryGetValue(0, out EquipmentData))
                   {
                     this.对话页面 = 612603000;
-                    SConnection 网络连接9 = this.ActiveConnection;
+                    客户网络 网络连接9 = this.ActiveConnection;
                     if (网络连接9 == null)
                     {
                       return;
                     }
-                    网络连接9.SendPacket(new 同步交互结果
+                    网络连接9.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5047,12 +5047,12 @@ namespace GameServer.Maps
                   {
                     this.对话页面 = 612604000;
                     this.重铸部位 = 0;
-                    SConnection 网络连接10 = this.ActiveConnection;
+                    客户网络 网络连接10 = this.ActiveConnection;
                     if (网络连接10 == null)
                     {
                       return;
                     }
-                    网络连接10.SendPacket(new 同步交互结果
+                    网络连接10.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5063,12 +5063,12 @@ namespace GameServer.Maps
                 else if (选项编号 == 2)
                 {
                   this.对话页面 = 612601000;
-                  SConnection 网络连接11 = this.ActiveConnection;
+                  客户网络 网络连接11 = this.ActiveConnection;
                   if (网络连接11 == null)
                   {
                     return;
                   }
-                  网络连接11.SendPacket(new 同步交互结果
+                  网络连接11.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5078,12 +5078,12 @@ namespace GameServer.Maps
                 else if (选项编号 == 3)
                 {
                   this.对话页面 = 612602000;
-                  SConnection 网络连接12 = this.ActiveConnection;
+                  客户网络 网络连接12 = this.ActiveConnection;
                   if (网络连接12 == null)
                   {
                     return;
                   }
-                  网络连接12.SendPacket(new 同步交互结果
+                  网络连接12.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5111,12 +5111,12 @@ namespace GameServer.Maps
                   if (!this.Equipment.TryGetValue(this.重铸部位, out EquipmentData2))
                   {
                     this.对话页面 = 612603000;
-                    SConnection 网络连接13 = this.ActiveConnection;
+                    客户网络 网络连接13 = this.ActiveConnection;
                     if (网络连接13 == null)
                     {
                       return;
                     }
-                    网络连接13.SendPacket(new 同步交互结果
+                    网络连接13.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5132,12 +5132,12 @@ namespace GameServer.Maps
                     if (this.NumberGoldCoins < 500000)
                     {
                       this.对话页面 = 612605000;
-                      SConnection 网络连接14 = this.ActiveConnection;
+                      客户网络 网络连接14 = this.ActiveConnection;
                       if (网络连接14 == null)
                       {
                         return;
                       }
-                      网络连接14.SendPacket(new 同步交互结果
+                      网络连接14.发送封包(new 同步交互结果
                       {
                         对象编号 = this.对话守卫.ObjectId,
                         交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, 游戏物品.DataSheet[重铸所需灵气].物品名字, num8 / 10000))
@@ -5147,12 +5147,12 @@ namespace GameServer.Maps
                     else if (!this.查找背包物品(num9, 重铸所需灵气, out 物品列表))
                     {
                       this.对话页面 = 612605000;
-                      SConnection 网络连接15 = this.ActiveConnection;
+                      客户网络 网络连接15 = this.ActiveConnection;
                       if (网络连接15 == null)
                       {
                         return;
                       }
-                      网络连接15.SendPacket(new 同步交互结果
+                      网络连接15.发送封包(new 同步交互结果
                       {
                         对象编号 = this.对话守卫.ObjectId,
                         交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:[{0}] 个 [{1}]><#P1:{2}>", num9, 游戏物品.DataSheet[重铸所需灵气].物品名字, num8 / 10000))
@@ -5164,10 +5164,10 @@ namespace GameServer.Maps
                       this.NumberGoldCoins -= num8;
                       this.消耗背包物品(num9, 物品列表);
                       EquipmentData2.随机Stat.SetValue(装备属性.GenerateStats(EquipmentData2.物品类型, true));
-                      SConnection 网络连接16 = this.ActiveConnection;
+                      客户网络 网络连接16 = this.ActiveConnection;
                       if (网络连接16 != null)
                       {
-                        网络连接16.SendPacket(new 玩家物品变动
+                        网络连接16.发送封包(new 玩家物品变动
                         {
                           物品描述 = EquipmentData2.字节描述()
                         });
@@ -5175,12 +5175,12 @@ namespace GameServer.Maps
                       this.StatsBonus[EquipmentData2] = EquipmentData2.装备Stat;
                       this.RefreshStats();
                       this.对话页面 = 612606000;
-                      SConnection 网络连接17 = this.ActiveConnection;
+                      客户网络 网络连接17 = this.ActiveConnection;
                       if (网络连接17 == null)
                       {
                         return;
                       }
-                      网络连接17.SendPacket(new 同步交互结果
+                      网络连接17.发送封包(new 同步交互结果
                       {
                         对象编号 = this.对话守卫.ObjectId,
                         交互文本 = 对话数据.CombineDialog(this.对话页面, "<#P1:" + EquipmentData2.StatDescription + ">")
@@ -5196,12 +5196,12 @@ namespace GameServer.Maps
                 if (!this.Equipment.TryGetValue(9, out EquipmentData3))
                 {
                   this.对话页面 = 612603000;
-                  SConnection 网络连接18 = this.ActiveConnection;
+                  客户网络 网络连接18 = this.ActiveConnection;
                   if (网络连接18 == null)
                   {
                     return;
                   }
-                  网络连接18.SendPacket(new 同步交互结果
+                  网络连接18.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5212,12 +5212,12 @@ namespace GameServer.Maps
                 {
                   this.对话页面 = 612604000;
                   this.重铸部位 = 9;
-                  SConnection 网络连接19 = this.ActiveConnection;
+                  客户网络 网络连接19 = this.ActiveConnection;
                   if (网络连接19 == null)
                   {
                     return;
                   }
-                  网络连接19.SendPacket(new 同步交互结果
+                  网络连接19.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5231,12 +5231,12 @@ namespace GameServer.Maps
                 if (!this.Equipment.TryGetValue(10, out EquipmentData4))
                 {
                   this.对话页面 = 612603000;
-                  SConnection 网络连接20 = this.ActiveConnection;
+                  客户网络 网络连接20 = this.ActiveConnection;
                   if (网络连接20 == null)
                   {
                     return;
                   }
-                  网络连接20.SendPacket(new 同步交互结果
+                  网络连接20.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5247,12 +5247,12 @@ namespace GameServer.Maps
                 {
                   this.对话页面 = 612604000;
                   this.重铸部位 = 10;
-                  SConnection 网络连接21 = this.ActiveConnection;
+                  客户网络 网络连接21 = this.ActiveConnection;
                   if (网络连接21 == null)
                   {
                     return;
                   }
-                  网络连接21.SendPacket(new 同步交互结果
+                  网络连接21.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5266,12 +5266,12 @@ namespace GameServer.Maps
                 if (!this.Equipment.TryGetValue(11, out EquipmentData5))
                 {
                   this.对话页面 = 612603000;
-                  SConnection 网络连接22 = this.ActiveConnection;
+                  客户网络 网络连接22 = this.ActiveConnection;
                   if (网络连接22 == null)
                   {
                     return;
                   }
-                  网络连接22.SendPacket(new 同步交互结果
+                  网络连接22.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5282,12 +5282,12 @@ namespace GameServer.Maps
                 {
                   this.对话页面 = 612604000;
                   this.重铸部位 = 11;
-                  SConnection 网络连接23 = this.ActiveConnection;
+                  客户网络 网络连接23 = this.ActiveConnection;
                   if (网络连接23 == null)
                   {
                     return;
                   }
-                  网络连接23.SendPacket(new 同步交互结果
+                  网络连接23.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5301,12 +5301,12 @@ namespace GameServer.Maps
                 if (!this.Equipment.TryGetValue(12, out EquipmentData6))
                 {
                   this.对话页面 = 612603000;
-                  SConnection 网络连接24 = this.ActiveConnection;
+                  客户网络 网络连接24 = this.ActiveConnection;
                   if (网络连接24 == null)
                   {
                     return;
                   }
-                  网络连接24.SendPacket(new 同步交互结果
+                  网络连接24.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5317,12 +5317,12 @@ namespace GameServer.Maps
                 {
                   this.对话页面 = 612604000;
                   this.重铸部位 = 12;
-                  SConnection 网络连接25 = this.ActiveConnection;
+                  客户网络 网络连接25 = this.ActiveConnection;
                   if (网络连接25 == null)
                   {
                     return;
                   }
-                  网络连接25.SendPacket(new 同步交互结果
+                  网络连接25.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5336,12 +5336,12 @@ namespace GameServer.Maps
                 if (!this.Equipment.TryGetValue(8, out EquipmentData7))
                 {
                   this.对话页面 = 612603000;
-                  SConnection 网络连接26 = this.ActiveConnection;
+                  客户网络 网络连接26 = this.ActiveConnection;
                   if (网络连接26 == null)
                   {
                     return;
                   }
-                  网络连接26.SendPacket(new 同步交互结果
+                  网络连接26.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5352,12 +5352,12 @@ namespace GameServer.Maps
                 {
                   this.对话页面 = 612604000;
                   this.重铸部位 = 8;
-                  SConnection 网络连接27 = this.ActiveConnection;
+                  客户网络 网络连接27 = this.ActiveConnection;
                   if (网络连接27 == null)
                   {
                     return;
                   }
-                  网络连接27.SendPacket(new 同步交互结果
+                  网络连接27.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5371,12 +5371,12 @@ namespace GameServer.Maps
                 if (!this.Equipment.TryGetValue(14, out EquipmentData8))
                 {
                   this.对话页面 = 612603000;
-                  SConnection 网络连接28 = this.ActiveConnection;
+                  客户网络 网络连接28 = this.ActiveConnection;
                   if (网络连接28 == null)
                   {
                     return;
                   }
-                  网络连接28.SendPacket(new 同步交互结果
+                  网络连接28.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5387,12 +5387,12 @@ namespace GameServer.Maps
                 {
                   this.对话页面 = 612604000;
                   this.重铸部位 = 14;
-                  SConnection 网络连接29 = this.ActiveConnection;
+                  客户网络 网络连接29 = this.ActiveConnection;
                   if (网络连接29 == null)
                   {
                     return;
                   }
-                  网络连接29.SendPacket(new 同步交互结果
+                  网络连接29.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5406,12 +5406,12 @@ namespace GameServer.Maps
                 if (!this.Equipment.TryGetValue(13, out EquipmentData9))
                 {
                   this.对话页面 = 612603000;
-                  SConnection 网络连接30 = this.ActiveConnection;
+                  客户网络 网络连接30 = this.ActiveConnection;
                   if (网络连接30 == null)
                   {
                     return;
                   }
-                  网络连接30.SendPacket(new 同步交互结果
+                  网络连接30.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5422,12 +5422,12 @@ namespace GameServer.Maps
                 {
                   this.对话页面 = 612604000;
                   this.重铸部位 = 13;
-                  SConnection 网络连接31 = this.ActiveConnection;
+                  客户网络 网络连接31 = this.ActiveConnection;
                   if (网络连接31 == null)
                   {
                     return;
                   }
-                  网络连接31.SendPacket(new 同步交互结果
+                  网络连接31.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5442,12 +5442,12 @@ namespace GameServer.Maps
               if (!this.Equipment.TryGetValue(1, out EquipmentData10))
               {
                 this.对话页面 = 612603000;
-                SConnection 网络连接32 = this.ActiveConnection;
+                客户网络 网络连接32 = this.ActiveConnection;
                 if (网络连接32 == null)
                 {
                   return;
                 }
-                网络连接32.SendPacket(new 同步交互结果
+                网络连接32.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5458,12 +5458,12 @@ namespace GameServer.Maps
               {
                 this.对话页面 = 612604000;
                 this.重铸部位 = 1;
-                SConnection 网络连接33 = this.ActiveConnection;
+                客户网络 网络连接33 = this.ActiveConnection;
                 if (网络连接33 == null)
                 {
                   return;
                 }
-                网络连接33.SendPacket(new 同步交互结果
+                网络连接33.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5477,12 +5477,12 @@ namespace GameServer.Maps
               if (!this.Equipment.TryGetValue(3, out EquipmentData11))
               {
                 this.对话页面 = 612603000;
-                SConnection 网络连接34 = this.ActiveConnection;
+                客户网络 网络连接34 = this.ActiveConnection;
                 if (网络连接34 == null)
                 {
                   return;
                 }
-                网络连接34.SendPacket(new 同步交互结果
+                网络连接34.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5493,12 +5493,12 @@ namespace GameServer.Maps
               {
                 this.对话页面 = 612604000;
                 this.重铸部位 = 3;
-                SConnection 网络连接35 = this.ActiveConnection;
+                客户网络 网络连接35 = this.ActiveConnection;
                 if (网络连接35 == null)
                 {
                   return;
                 }
-                网络连接35.SendPacket(new 同步交互结果
+                网络连接35.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5512,12 +5512,12 @@ namespace GameServer.Maps
               if (!this.Equipment.TryGetValue(6, out EquipmentData12))
               {
                 this.对话页面 = 612603000;
-                SConnection 网络连接36 = this.ActiveConnection;
+                客户网络 网络连接36 = this.ActiveConnection;
                 if (网络连接36 == null)
                 {
                   return;
                 }
-                网络连接36.SendPacket(new 同步交互结果
+                网络连接36.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5528,12 +5528,12 @@ namespace GameServer.Maps
               {
                 this.对话页面 = 612604000;
                 this.重铸部位 = 6;
-                SConnection 网络连接37 = this.ActiveConnection;
+                客户网络 网络连接37 = this.ActiveConnection;
                 if (网络连接37 == null)
                 {
                   return;
                 }
-                网络连接37.SendPacket(new 同步交互结果
+                网络连接37.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5547,12 +5547,12 @@ namespace GameServer.Maps
               if (!this.Equipment.TryGetValue(7, out EquipmentData13))
               {
                 this.对话页面 = 612603000;
-                SConnection 网络连接38 = this.ActiveConnection;
+                客户网络 网络连接38 = this.ActiveConnection;
                 if (网络连接38 == null)
                 {
                   return;
                 }
-                网络连接38.SendPacket(new 同步交互结果
+                网络连接38.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5563,12 +5563,12 @@ namespace GameServer.Maps
               {
                 this.对话页面 = 612604000;
                 this.重铸部位 = 7;
-                SConnection 网络连接39 = this.ActiveConnection;
+                客户网络 网络连接39 = this.ActiveConnection;
                 if (网络连接39 == null)
                 {
                   return;
                 }
-                网络连接39.SendPacket(new 同步交互结果
+                网络连接39.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5582,12 +5582,12 @@ namespace GameServer.Maps
               if (!this.Equipment.TryGetValue(4, out EquipmentData14))
               {
                 this.对话页面 = 612603000;
-                SConnection 网络连接40 = this.ActiveConnection;
+                客户网络 网络连接40 = this.ActiveConnection;
                 if (网络连接40 == null)
                 {
                   return;
                 }
-                网络连接40.SendPacket(new 同步交互结果
+                网络连接40.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5598,12 +5598,12 @@ namespace GameServer.Maps
               {
                 this.对话页面 = 612604000;
                 this.重铸部位 = 4;
-                SConnection 网络连接41 = this.ActiveConnection;
+                客户网络 网络连接41 = this.ActiveConnection;
                 if (网络连接41 == null)
                 {
                   return;
                 }
-                网络连接41.SendPacket(new 同步交互结果
+                网络连接41.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5617,12 +5617,12 @@ namespace GameServer.Maps
               if (!this.Equipment.TryGetValue(5, out EquipmentData15))
               {
                 this.对话页面 = 612603000;
-                SConnection 网络连接42 = this.ActiveConnection;
+                客户网络 网络连接42 = this.ActiveConnection;
                 if (网络连接42 == null)
                 {
                   return;
                 }
-                网络连接42.SendPacket(new 同步交互结果
+                网络连接42.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5633,12 +5633,12 @@ namespace GameServer.Maps
               {
                 this.对话页面 = 612604000;
                 this.重铸部位 = 5;
-                SConnection 网络连接43 = this.ActiveConnection;
+                客户网络 网络连接43 = this.ActiveConnection;
                 if (网络连接43 == null)
                 {
                   return;
                 }
-                网络连接43.SendPacket(new 同步交互结果
+                网络连接43.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5652,12 +5652,12 @@ namespace GameServer.Maps
               if (!this.Equipment.TryGetValue(2, out EquipmentData16))
               {
                 this.对话页面 = 612603000;
-                SConnection 网络连接44 = this.ActiveConnection;
+                客户网络 网络连接44 = this.ActiveConnection;
                 if (网络连接44 == null)
                 {
                   return;
                 }
-                网络连接44.SendPacket(new 同步交互结果
+                网络连接44.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5668,12 +5668,12 @@ namespace GameServer.Maps
               {
                 this.对话页面 = 612604000;
                 this.重铸部位 = 2;
-                SConnection 网络连接45 = this.ActiveConnection;
+                客户网络 网络连接45 = this.ActiveConnection;
                 if (网络连接45 == null)
                 {
                   return;
                 }
-                网络连接45.SendPacket(new 同步交互结果
+                网络连接45.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5704,12 +5704,12 @@ namespace GameServer.Maps
                   }
                   this.对话页面 = 619202000;
                 }
-                SConnection 网络连接46 = this.ActiveConnection;
+                客户网络 网络连接46 = this.ActiveConnection;
                 if (网络连接46 == null)
                 {
                   return;
                 }
-                网络连接46.SendPacket(new 同步交互结果
+                网络连接46.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5719,12 +5719,12 @@ namespace GameServer.Maps
               else if (选项编号 == 1)
               {
                 this.对话页面 = 612604000;
-                SConnection 网络连接47 = this.ActiveConnection;
+                客户网络 网络连接47 = this.ActiveConnection;
                 if (网络连接47 == null)
                 {
                   return;
                 }
-                网络连接47.SendPacket(new 同步交互结果
+                网络连接47.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}>", (EquipmentWearingParts)this.重铸部位))
@@ -5782,12 +5782,12 @@ namespace GameServer.Maps
                   if (EquipmentData17 == null)
                   {
                     this.对话页面 = 619202100;
-                    SConnection 网络连接48 = this.ActiveConnection;
+                    客户网络 网络连接48 = this.ActiveConnection;
                     if (网络连接48 == null)
                     {
                       return;
                     }
-                    网络连接48.SendPacket(new 同步交互结果
+                    网络连接48.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5797,12 +5797,12 @@ namespace GameServer.Maps
                   else if (EquipmentData17.孔洞颜色.Count == 0)
                   {
                     this.对话页面 = 619202400;
-                    SConnection 网络连接49 = this.ActiveConnection;
+                    客户网络 网络连接49 = this.ActiveConnection;
                     if (网络连接49 == null)
                     {
                       return;
                     }
-                    网络连接49.SendPacket(new 同步交互结果
+                    网络连接49.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5812,12 +5812,12 @@ namespace GameServer.Maps
                   else if (EquipmentData17.镶嵌灵石.Count != 0)
                   {
                     this.对话页面 = 619202300;
-                    SConnection 网络连接50 = this.ActiveConnection;
+                    客户网络 网络连接50 = this.ActiveConnection;
                     if (网络连接50 == null)
                     {
                       return;
                     }
-                    网络连接50.SendPacket(new 同步交互结果
+                    网络连接50.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5832,12 +5832,12 @@ namespace GameServer.Maps
                     if (this.NumberGoldCoins < 100000)
                     {
                       this.对话页面 = 619202200;
-                      SConnection 网络连接51 = this.ActiveConnection;
+                      客户网络 网络连接51 = this.ActiveConnection;
                       if (网络连接51 == null)
                       {
                         return;
                       }
-                      网络连接51.SendPacket(new 同步交互结果
+                      网络连接51.发送封包(new 同步交互结果
                       {
                         交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0><#P1:{1}>", num10, num11 / 10000)),
                         对象编号 = this.对话守卫.ObjectId
@@ -5847,12 +5847,12 @@ namespace GameServer.Maps
                     else if (!this.查找背包物品(num10, 91116, out 物品列表2))
                     {
                       this.对话页面 = 619202200;
-                      SConnection 网络连接52 = this.ActiveConnection;
+                      客户网络 网络连接52 = this.ActiveConnection;
                       if (网络连接52 == null)
                       {
                         return;
                       }
-                      网络连接52.SendPacket(new 同步交互结果
+                      网络连接52.发送封包(new 同步交互结果
                       {
                         交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0><#P1:{1}>", num10, num11 / 10000)),
                         对象编号 = this.对话守卫.ObjectId
@@ -5864,10 +5864,10 @@ namespace GameServer.Maps
                       this.NumberGoldCoins -= num11;
                       this.消耗背包物品(num10, 物品列表2);
                       EquipmentData17.孔洞颜色[MainProcess.RandomNumber.Next(EquipmentData17.孔洞颜色.Count)] = (EquipHoleColor)MainProcess.RandomNumber.Next(1, 8);
-                      SConnection 网络连接53 = this.ActiveConnection;
+                      客户网络 网络连接53 = this.ActiveConnection;
                       if (网络连接53 != null)
                       {
-                        网络连接53.SendPacket(new 玩家物品变动
+                        网络连接53.发送封包(new 玩家物品变动
                         {
                           物品描述 = EquipmentData17.字节描述()
                         });
@@ -5875,12 +5875,12 @@ namespace GameServer.Maps
                       if (EquipmentData17.孔洞颜色.Count == 1)
                       {
                         this.对话页面 = 619202500;
-                        SConnection 网络连接54 = this.ActiveConnection;
+                        客户网络 网络连接54 = this.ActiveConnection;
                         if (网络连接54 == null)
                         {
                           return;
                         }
-                        网络连接54.SendPacket(new 同步交互结果
+                        网络连接54.发送封包(new 同步交互结果
                         {
                           交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", EquipmentData17.孔洞颜色[0])),
                           对象编号 = this.对话守卫.ObjectId
@@ -5890,12 +5890,12 @@ namespace GameServer.Maps
                       else if (EquipmentData17.孔洞颜色.Count == 2)
                       {
                         this.对话页面 = 619202600;
-                        SConnection 网络连接55 = this.ActiveConnection;
+                        客户网络 网络连接55 = this.ActiveConnection;
                         if (网络连接55 == null)
                         {
                           return;
                         }
-                        网络连接55.SendPacket(new 同步交互结果
+                        网络连接55.发送封包(new 同步交互结果
                         {
                           交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", EquipmentData17.孔洞颜色[0], EquipmentData17.孔洞颜色[1])),
                           对象编号 = this.对话守卫.ObjectId
@@ -5948,12 +5948,12 @@ namespace GameServer.Maps
                 if (EquipmentData18 == null)
                 {
                   this.对话页面 = 619202100;
-                  SConnection 网络连接56 = this.ActiveConnection;
+                  客户网络 网络连接56 = this.ActiveConnection;
                   if (网络连接56 == null)
                   {
                     return;
                   }
-                  网络连接56.SendPacket(new 同步交互结果
+                  网络连接56.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5963,12 +5963,12 @@ namespace GameServer.Maps
                 else if (EquipmentData18.孔洞颜色.Count == 0)
                 {
                   this.对话页面 = 619202400;
-                  SConnection 网络连接57 = this.ActiveConnection;
+                  客户网络 网络连接57 = this.ActiveConnection;
                   if (网络连接57 == null)
                   {
                     return;
                   }
-                  网络连接57.SendPacket(new 同步交互结果
+                  网络连接57.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5978,12 +5978,12 @@ namespace GameServer.Maps
                 else if (EquipmentData18.镶嵌灵石.Count != 0)
                 {
                   this.对话页面 = 619202300;
-                  SConnection 网络连接58 = this.ActiveConnection;
+                  客户网络 网络连接58 = this.ActiveConnection;
                   if (网络连接58 == null)
                   {
                     return;
                   }
-                  网络连接58.SendPacket(new 同步交互结果
+                  网络连接58.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -5996,12 +5996,12 @@ namespace GameServer.Maps
                   if (EquipmentData18.孔洞颜色.Count == 1)
                   {
                     this.对话页面 = 619202500;
-                    SConnection 网络连接59 = this.ActiveConnection;
+                    客户网络 网络连接59 = this.ActiveConnection;
                     if (网络连接59 == null)
                     {
                       return;
                     }
-                    网络连接59.SendPacket(new 同步交互结果
+                    网络连接59.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", EquipmentData18.孔洞颜色[0])),
                       对象编号 = this.对话守卫.ObjectId
@@ -6011,12 +6011,12 @@ namespace GameServer.Maps
                   else if (EquipmentData18.孔洞颜色.Count == 2)
                   {
                     this.对话页面 = 619202600;
-                    SConnection 网络连接60 = this.ActiveConnection;
+                    客户网络 网络连接60 = this.ActiveConnection;
                     if (网络连接60 == null)
                     {
                       return;
                     }
-                    网络连接60.SendPacket(new 同步交互结果
+                    网络连接60.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", EquipmentData18.孔洞颜色[0], EquipmentData18.孔洞颜色[1])),
                       对象编号 = this.对话守卫.ObjectId
@@ -6068,12 +6068,12 @@ namespace GameServer.Maps
               if (EquipmentData19 == null)
               {
                 this.对话页面 = 619201100;
-                SConnection 网络连接61 = this.ActiveConnection;
+                客户网络 网络连接61 = this.ActiveConnection;
                 if (网络连接61 == null)
                 {
                   return;
                 }
-                网络连接61.SendPacket(new 同步交互结果
+                网络连接61.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6083,12 +6083,12 @@ namespace GameServer.Maps
               else if (EquipmentData19.孔洞颜色.Count >= 2)
               {
                 this.对话页面 = 619201300;
-                SConnection 网络连接62 = this.ActiveConnection;
+                客户网络 网络连接62 = this.ActiveConnection;
                 if (网络连接62 == null)
                 {
                   return;
                 }
-                网络连接62.SendPacket(new 同步交互结果
+                网络连接62.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6102,12 +6102,12 @@ namespace GameServer.Maps
                 if (!this.查找背包物品(num12, 91115, out 物品列表3))
                 {
                   this.对话页面 = 619201200;
-                  SConnection 网络连接63 = this.ActiveConnection;
+                  客户网络 网络连接63 = this.ActiveConnection;
                   if (网络连接63 == null)
                   {
                     return;
                   }
-                  网络连接63.SendPacket(new 同步交互结果
+                  网络连接63.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num12)),
                     对象编号 = this.对话守卫.ObjectId
@@ -6118,12 +6118,12 @@ namespace GameServer.Maps
                 {
                   this.消耗背包物品(num12, 物品列表3);
                   EquipmentData19.孔洞颜色.Add(EquipHoleColor.黄色);
-                  SConnection 网络连接64 = this.ActiveConnection;
+                  客户网络 网络连接64 = this.ActiveConnection;
                   if (网络连接64 == null)
                   {
                     return;
                   }
-                  网络连接64.SendPacket(new 玩家物品变动
+                  网络连接64.发送封包(new 玩家物品变动
                   {
                     物品描述 = EquipmentData19.字节描述()
                   });
@@ -6143,12 +6143,12 @@ namespace GameServer.Maps
               if (选项编号 == 1)
               {
                 this.对话页面 = 619401000;
-                SConnection 网络连接65 = this.ActiveConnection;
+                客户网络 网络连接65 = this.ActiveConnection;
                 if (网络连接65 == null)
                 {
                   return;
                 }
-                网络连接65.SendPacket(new 同步交互结果
+                网络连接65.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6158,12 +6158,12 @@ namespace GameServer.Maps
               else if (选项编号 == 2)
               {
                 this.对话页面 = 619402000;
-                SConnection 网络连接66 = this.ActiveConnection;
+                客户网络 网络连接66 = this.ActiveConnection;
                 if (网络连接66 == null)
                 {
                   return;
                 }
-                网络连接66.SendPacket(new 同步交互结果
+                网络连接66.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6173,12 +6173,12 @@ namespace GameServer.Maps
               else if (选项编号 == 3)
               {
                 this.对话页面 = 619403000;
-                SConnection 网络连接67 = this.ActiveConnection;
+                客户网络 网络连接67 = this.ActiveConnection;
                 if (网络连接67 == null)
                 {
                   return;
                 }
-                网络连接67.SendPacket(new 同步交互结果
+                网络连接67.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6188,12 +6188,12 @@ namespace GameServer.Maps
               else if (选项编号 == 4)
               {
                 this.对话页面 = 619404000;
-                SConnection 网络连接68 = this.ActiveConnection;
+                客户网络 网络连接68 = this.ActiveConnection;
                 if (网络连接68 == null)
                 {
                   return;
                 }
-                网络连接68.SendPacket(new 同步交互结果
+                网络连接68.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6203,12 +6203,12 @@ namespace GameServer.Maps
               else if (选项编号 == 5)
               {
                 this.对话页面 = 619405000;
-                SConnection 网络连接69 = this.ActiveConnection;
+                客户网络 网络连接69 = this.ActiveConnection;
                 if (网络连接69 == null)
                 {
                   return;
                 }
-                网络连接69.SendPacket(new 同步交互结果
+                网络连接69.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6218,12 +6218,12 @@ namespace GameServer.Maps
               else if (选项编号 == 6)
               {
                 this.对话页面 = 619406000;
-                SConnection 网络连接70 = this.ActiveConnection;
+                客户网络 网络连接70 = this.ActiveConnection;
                 if (网络连接70 == null)
                 {
                   return;
                 }
-                网络连接70.SendPacket(new 同步交互结果
+                网络连接70.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6233,12 +6233,12 @@ namespace GameServer.Maps
               else if (选项编号 == 7)
               {
                 this.对话页面 = 619407000;
-                SConnection 网络连接71 = this.ActiveConnection;
+                客户网络 网络连接71 = this.ActiveConnection;
                 if (网络连接71 == null)
                 {
                   return;
                 }
-                网络连接71.SendPacket(new 同步交互结果
+                网络连接71.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6248,12 +6248,12 @@ namespace GameServer.Maps
               else if (选项编号 == 8)
               {
                 this.对话页面 = 619408000;
-                SConnection 网络连接72 = this.ActiveConnection;
+                客户网络 网络连接72 = this.ActiveConnection;
                 if (网络连接72 == null)
                 {
                   return;
                 }
-                网络连接72.SendPacket(new 同步交互结果
+                网络连接72.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6303,12 +6303,12 @@ namespace GameServer.Maps
               if (EquipmentData20 == null)
               {
                 this.对话页面 = 619202100;
-                SConnection 网络连接73 = this.ActiveConnection;
+                客户网络 网络连接73 = this.ActiveConnection;
                 if (网络连接73 == null)
                 {
                   return;
                 }
-                网络连接73.SendPacket(new 同步交互结果
+                网络连接73.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6318,12 +6318,12 @@ namespace GameServer.Maps
               else if (EquipmentData20.孔洞颜色.Count == 0)
               {
                 this.对话页面 = 619202400;
-                SConnection 网络连接74 = this.ActiveConnection;
+                客户网络 网络连接74 = this.ActiveConnection;
                 if (网络连接74 == null)
                 {
                   return;
                 }
-                网络连接74.SendPacket(new 同步交互结果
+                网络连接74.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6333,12 +6333,12 @@ namespace GameServer.Maps
               else if (EquipmentData20.镶嵌灵石.Count != 0)
               {
                 this.对话页面 = 619202300;
-                SConnection 网络连接75 = this.ActiveConnection;
+                客户网络 网络连接75 = this.ActiveConnection;
                 if (网络连接75 == null)
                 {
                   return;
                 }
-                网络连接75.SendPacket(new 同步交互结果
+                网络连接75.发送封包(new 同步交互结果
                 {
                   对象编号 = this.对话守卫.ObjectId,
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -6353,12 +6353,12 @@ namespace GameServer.Maps
                 if (this.NumberGoldCoins < 100000)
                 {
                   this.对话页面 = 619202200;
-                  SConnection 网络连接76 = this.ActiveConnection;
+                  客户网络 网络连接76 = this.ActiveConnection;
                   if (网络连接76 == null)
                   {
                     return;
                   }
-                  网络连接76.SendPacket(new 同步交互结果
+                  网络连接76.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", num13, num14 / 10000)),
                     对象编号 = this.对话守卫.ObjectId
@@ -6368,12 +6368,12 @@ namespace GameServer.Maps
                 else if (!this.查找背包物品(num13, 91116, out 物品列表4))
                 {
                   this.对话页面 = 619202200;
-                  SConnection 网络连接77 = this.ActiveConnection;
+                  客户网络 网络连接77 = this.ActiveConnection;
                   if (网络连接77 == null)
                   {
                     return;
                   }
-                  网络连接77.SendPacket(new 同步交互结果
+                  网络连接77.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", num13, num14 / 10000)),
                     对象编号 = this.对话守卫.ObjectId
@@ -6385,10 +6385,10 @@ namespace GameServer.Maps
                   this.NumberGoldCoins -= num14;
                   this.消耗背包物品(num13, 物品列表4);
                   EquipmentData20.孔洞颜色[MainProcess.RandomNumber.Next(EquipmentData20.孔洞颜色.Count)] = (EquipHoleColor)MainProcess.RandomNumber.Next(1, 8);
-                  SConnection 网络连接78 = this.ActiveConnection;
+                  客户网络 网络连接78 = this.ActiveConnection;
                   if (网络连接78 != null)
                   {
-                    网络连接78.SendPacket(new 玩家物品变动
+                    网络连接78.发送封包(new 玩家物品变动
                     {
                       物品描述 = EquipmentData20.字节描述()
                     });
@@ -6396,12 +6396,12 @@ namespace GameServer.Maps
                   if (EquipmentData20.孔洞颜色.Count == 1)
                   {
                     this.对话页面 = 619202500;
-                    SConnection 网络连接79 = this.ActiveConnection;
+                    客户网络 网络连接79 = this.ActiveConnection;
                     if (网络连接79 == null)
                     {
                       return;
                     }
-                    网络连接79.SendPacket(new 同步交互结果
+                    网络连接79.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", EquipmentData20.孔洞颜色[0])),
                       对象编号 = this.对话守卫.ObjectId
@@ -6411,12 +6411,12 @@ namespace GameServer.Maps
                   else if (EquipmentData20.孔洞颜色.Count == 2)
                   {
                     this.对话页面 = 619202600;
-                    SConnection 网络连接80 = this.ActiveConnection;
+                    客户网络 网络连接80 = this.ActiveConnection;
                     if (网络连接80 == null)
                     {
                       return;
                     }
-                    网络连接80.SendPacket(new 同步交互结果
+                    网络连接80.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", EquipmentData20.孔洞颜色[0], EquipmentData20.孔洞颜色[1])),
                       对象编号 = this.对话守卫.ObjectId
@@ -6452,12 +6452,12 @@ namespace GameServer.Maps
               if (this.BackpackSizeAvailable <= 0)
               {
                 this.对话页面 = 619400200;
-                SConnection 网络连接81 = this.ActiveConnection;
+                客户网络 网络连接81 = this.ActiveConnection;
                 if (网络连接81 == null)
                 {
                   return;
                 }
-                网络连接81.SendPacket(new 同步交互结果
+                网络连接81.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
@@ -6480,20 +6480,20 @@ namespace GameServer.Maps
                     {
                       this.消耗背包物品(num15, 物品列表5);
                       this.Backpack[b] = new ItemData(游戏物品.DataSheet[num16 + 1], this.CharacterData, 1, b, 1);
-                      SConnection 网络连接82 = this.ActiveConnection;
+                      客户网络 网络连接82 = this.ActiveConnection;
                       if (网络连接82 != null)
                       {
-                        网络连接82.SendPacket(new 玩家物品变动
+                        网络连接82.发送封包(new 玩家物品变动
                         {
                           物品描述 = this.Backpack[b].字节描述()
                         });
                       }
-                      SConnection 网络连接83 = this.ActiveConnection;
+                      客户网络 网络连接83 = this.ActiveConnection;
                       if (网络连接83 == null)
                       {
                         return;
                       }
-                      网络连接83.SendPacket(new 成功合成灵石
+                      网络连接83.发送封包(new 成功合成灵石
                       {
                         灵石状态 = 1
                       });
@@ -6502,12 +6502,12 @@ namespace GameServer.Maps
                   }
                 }
                 this.对话页面 = 619400100;
-                SConnection 网络连接84 = this.ActiveConnection;
+                客户网络 网络连接84 = this.ActiveConnection;
                 if (网络连接84 == null)
                 {
                   return;
                 }
-                网络连接84.SendPacket(new 同步交互结果
+                网络连接84.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num15)),
                   对象编号 = this.对话守卫.ObjectId
@@ -6534,12 +6534,12 @@ namespace GameServer.Maps
               if (this.BackpackSizeAvailable <= 0)
               {
                 this.对话页面 = 619400200;
-                SConnection 网络连接85 = this.ActiveConnection;
+                客户网络 网络连接85 = this.ActiveConnection;
                 if (网络连接85 == null)
                 {
                   return;
                 }
-                网络连接85.SendPacket(new 同步交互结果
+                网络连接85.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
@@ -6562,20 +6562,20 @@ namespace GameServer.Maps
                     {
                       this.消耗背包物品(num17, 物品列表6);
                       this.Backpack[b2] = new ItemData(游戏物品.DataSheet[num18 + 1], this.CharacterData, 1, b2, 1);
-                      SConnection 网络连接86 = this.ActiveConnection;
+                      客户网络 网络连接86 = this.ActiveConnection;
                       if (网络连接86 != null)
                       {
-                        网络连接86.SendPacket(new 玩家物品变动
+                        网络连接86.发送封包(new 玩家物品变动
                         {
                           物品描述 = this.Backpack[b2].字节描述()
                         });
                       }
-                      SConnection 网络连接87 = this.ActiveConnection;
+                      客户网络 网络连接87 = this.ActiveConnection;
                       if (网络连接87 == null)
                       {
                         return;
                       }
-                      网络连接87.SendPacket(new 成功合成灵石
+                      网络连接87.发送封包(new 成功合成灵石
                       {
                         灵石状态 = 1
                       });
@@ -6584,12 +6584,12 @@ namespace GameServer.Maps
                   }
                 }
                 this.对话页面 = 619400100;
-                SConnection 网络连接88 = this.ActiveConnection;
+                客户网络 网络连接88 = this.ActiveConnection;
                 if (网络连接88 == null)
                 {
                   return;
                 }
-                网络连接88.SendPacket(new 同步交互结果
+                网络连接88.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num17)),
                   对象编号 = this.对话守卫.ObjectId
@@ -6617,12 +6617,12 @@ namespace GameServer.Maps
             if (this.BackpackSizeAvailable <= 0)
             {
               this.对话页面 = 619400200;
-              SConnection 网络连接89 = this.ActiveConnection;
+              客户网络 网络连接89 = this.ActiveConnection;
               if (网络连接89 == null)
               {
                 return;
               }
-              网络连接89.SendPacket(new 同步交互结果
+              网络连接89.发送封包(new 同步交互结果
               {
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                 对象编号 = this.对话守卫.ObjectId
@@ -6645,20 +6645,20 @@ namespace GameServer.Maps
                   {
                     this.消耗背包物品(num19, 物品列表7);
                     this.Backpack[b3] = new ItemData(游戏物品.DataSheet[num20 + 1], this.CharacterData, 1, b3, 1);
-                    SConnection 网络连接90 = this.ActiveConnection;
+                    客户网络 网络连接90 = this.ActiveConnection;
                     if (网络连接90 != null)
                     {
-                      网络连接90.SendPacket(new 玩家物品变动
+                      网络连接90.发送封包(new 玩家物品变动
                       {
                         物品描述 = this.Backpack[b3].字节描述()
                       });
                     }
-                    SConnection 网络连接91 = this.ActiveConnection;
+                    客户网络 网络连接91 = this.ActiveConnection;
                     if (网络连接91 == null)
                     {
                       return;
                     }
-                    网络连接91.SendPacket(new 成功合成灵石
+                    网络连接91.发送封包(new 成功合成灵石
                     {
                       灵石状态 = 1
                     });
@@ -6667,12 +6667,12 @@ namespace GameServer.Maps
                 }
               }
               this.对话页面 = 619400100;
-              SConnection 网络连接92 = this.ActiveConnection;
+              客户网络 网络连接92 = this.ActiveConnection;
               if (网络连接92 == null)
               {
                 return;
               }
-              网络连接92.SendPacket(new 同步交互结果
+              网络连接92.发送封包(new 同步交互结果
               {
                 交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num19)),
                 对象编号 = this.对话守卫.ObjectId
@@ -6710,12 +6710,12 @@ namespace GameServer.Maps
                 if (this.BackpackSizeAvailable <= 0)
                 {
                   this.对话页面 = 619400200;
-                  SConnection 网络连接93 = this.ActiveConnection;
+                  客户网络 网络连接93 = this.ActiveConnection;
                   if (网络连接93 == null)
                   {
                     return;
                   }
-                  网络连接93.SendPacket(new 同步交互结果
+                  网络连接93.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -6738,20 +6738,20 @@ namespace GameServer.Maps
                       {
                         this.消耗背包物品(num21, 物品列表8);
                         this.Backpack[b4] = new ItemData(游戏物品.DataSheet[num22 + 1], this.CharacterData, 1, b4, 1);
-                        SConnection 网络连接94 = this.ActiveConnection;
+                        客户网络 网络连接94 = this.ActiveConnection;
                         if (网络连接94 != null)
                         {
-                          网络连接94.SendPacket(new 玩家物品变动
+                          网络连接94.发送封包(new 玩家物品变动
                           {
                             物品描述 = this.Backpack[b4].字节描述()
                           });
                         }
-                        SConnection 网络连接95 = this.ActiveConnection;
+                        客户网络 网络连接95 = this.ActiveConnection;
                         if (网络连接95 == null)
                         {
                           return;
                         }
-                        网络连接95.SendPacket(new 成功合成灵石
+                        网络连接95.发送封包(new 成功合成灵石
                         {
                           灵石状态 = 1
                         });
@@ -6760,12 +6760,12 @@ namespace GameServer.Maps
                     }
                   }
                   this.对话页面 = 619400100;
-                  SConnection 网络连接96 = this.ActiveConnection;
+                  客户网络 网络连接96 = this.ActiveConnection;
                   if (网络连接96 == null)
                   {
                     return;
                   }
-                  网络连接96.SendPacket(new 同步交互结果
+                  网络连接96.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num21)),
                     对象编号 = this.对话守卫.ObjectId
@@ -6792,12 +6792,12 @@ namespace GameServer.Maps
                 if (this.BackpackSizeAvailable <= 0)
                 {
                   this.对话页面 = 619400200;
-                  SConnection 网络连接97 = this.ActiveConnection;
+                  客户网络 网络连接97 = this.ActiveConnection;
                   if (网络连接97 == null)
                   {
                     return;
                   }
-                  网络连接97.SendPacket(new 同步交互结果
+                  网络连接97.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -6820,20 +6820,20 @@ namespace GameServer.Maps
                       {
                         this.消耗背包物品(num23, 物品列表9);
                         this.Backpack[b5] = new ItemData(游戏物品.DataSheet[num24 + 1], this.CharacterData, 1, b5, 1);
-                        SConnection 网络连接98 = this.ActiveConnection;
+                        客户网络 网络连接98 = this.ActiveConnection;
                         if (网络连接98 != null)
                         {
-                          网络连接98.SendPacket(new 玩家物品变动
+                          网络连接98.发送封包(new 玩家物品变动
                           {
                             物品描述 = this.Backpack[b5].字节描述()
                           });
                         }
-                        SConnection 网络连接99 = this.ActiveConnection;
+                        客户网络 网络连接99 = this.ActiveConnection;
                         if (网络连接99 == null)
                         {
                           return;
                         }
-                        网络连接99.SendPacket(new 成功合成灵石
+                        网络连接99.发送封包(new 成功合成灵石
                         {
                           灵石状态 = 1
                         });
@@ -6842,12 +6842,12 @@ namespace GameServer.Maps
                     }
                   }
                   this.对话页面 = 619400100;
-                  SConnection 网络连接100 = this.ActiveConnection;
+                  客户网络 网络连接100 = this.ActiveConnection;
                   if (网络连接100 == null)
                   {
                     return;
                   }
-                  网络连接100.SendPacket(new 同步交互结果
+                  网络连接100.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num23)),
                     对象编号 = this.对话守卫.ObjectId
@@ -6881,12 +6881,12 @@ namespace GameServer.Maps
                 if (this.BackpackSizeAvailable <= 0)
                 {
                   this.对话页面 = 619400200;
-                  SConnection 网络连接101 = this.ActiveConnection;
+                  客户网络 网络连接101 = this.ActiveConnection;
                   if (网络连接101 == null)
                   {
                     return;
                   }
-                  网络连接101.SendPacket(new 同步交互结果
+                  网络连接101.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -6909,20 +6909,20 @@ namespace GameServer.Maps
                       {
                         this.消耗背包物品(num25, 物品列表10);
                         this.Backpack[b6] = new ItemData(游戏物品.DataSheet[num26 + 1], this.CharacterData, 1, b6, 1);
-                        SConnection 网络连接102 = this.ActiveConnection;
+                        客户网络 网络连接102 = this.ActiveConnection;
                         if (网络连接102 != null)
                         {
-                          网络连接102.SendPacket(new 玩家物品变动
+                          网络连接102.发送封包(new 玩家物品变动
                           {
                             物品描述 = this.Backpack[b6].字节描述()
                           });
                         }
-                        SConnection 网络连接103 = this.ActiveConnection;
+                        客户网络 网络连接103 = this.ActiveConnection;
                         if (网络连接103 == null)
                         {
                           return;
                         }
-                        网络连接103.SendPacket(new 成功合成灵石
+                        网络连接103.发送封包(new 成功合成灵石
                         {
                           灵石状态 = 1
                         });
@@ -6931,12 +6931,12 @@ namespace GameServer.Maps
                     }
                   }
                   this.对话页面 = 619400100;
-                  SConnection 网络连接104 = this.ActiveConnection;
+                  客户网络 网络连接104 = this.ActiveConnection;
                   if (网络连接104 == null)
                   {
                     return;
                   }
-                  网络连接104.SendPacket(new 同步交互结果
+                  网络连接104.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num25)),
                     对象编号 = this.对话守卫.ObjectId
@@ -6963,12 +6963,12 @@ namespace GameServer.Maps
                 if (this.BackpackSizeAvailable <= 0)
                 {
                   this.对话页面 = 619400200;
-                  SConnection 网络连接105 = this.ActiveConnection;
+                  客户网络 网络连接105 = this.ActiveConnection;
                   if (网络连接105 == null)
                   {
                     return;
                   }
-                  网络连接105.SendPacket(new 同步交互结果
+                  网络连接105.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -6991,20 +6991,20 @@ namespace GameServer.Maps
                       {
                         this.消耗背包物品(num27, 物品列表11);
                         this.Backpack[b7] = new ItemData(游戏物品.DataSheet[num28 + 1], this.CharacterData, 1, b7, 1);
-                        SConnection 网络连接106 = this.ActiveConnection;
+                        客户网络 网络连接106 = this.ActiveConnection;
                         if (网络连接106 != null)
                         {
-                          网络连接106.SendPacket(new 玩家物品变动
+                          网络连接106.发送封包(new 玩家物品变动
                           {
                             物品描述 = this.Backpack[b7].字节描述()
                           });
                         }
-                        SConnection 网络连接107 = this.ActiveConnection;
+                        客户网络 网络连接107 = this.ActiveConnection;
                         if (网络连接107 == null)
                         {
                           return;
                         }
-                        网络连接107.SendPacket(new 成功合成灵石
+                        网络连接107.发送封包(new 成功合成灵石
                         {
                           灵石状态 = 1
                         });
@@ -7013,12 +7013,12 @@ namespace GameServer.Maps
                     }
                   }
                   this.对话页面 = 619400100;
-                  SConnection 网络连接108 = this.ActiveConnection;
+                  客户网络 网络连接108 = this.ActiveConnection;
                   if (网络连接108 == null)
                   {
                     return;
                   }
-                  网络连接108.SendPacket(new 同步交互结果
+                  网络连接108.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num27)),
                     对象编号 = this.对话守卫.ObjectId
@@ -7046,12 +7046,12 @@ namespace GameServer.Maps
               if (this.BackpackSizeAvailable <= 0)
               {
                 this.对话页面 = 619400200;
-                SConnection 网络连接109 = this.ActiveConnection;
+                客户网络 网络连接109 = this.ActiveConnection;
                 if (网络连接109 == null)
                 {
                   return;
                 }
-                网络连接109.SendPacket(new 同步交互结果
+                网络连接109.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
@@ -7074,20 +7074,20 @@ namespace GameServer.Maps
                     {
                       this.消耗背包物品(num29, 物品列表12);
                       this.Backpack[b8] = new ItemData(游戏物品.DataSheet[num30 + 1], this.CharacterData, 1, b8, 1);
-                      SConnection 网络连接110 = this.ActiveConnection;
+                      客户网络 网络连接110 = this.ActiveConnection;
                       if (网络连接110 != null)
                       {
-                        网络连接110.SendPacket(new 玩家物品变动
+                        网络连接110.发送封包(new 玩家物品变动
                         {
                           物品描述 = this.Backpack[b8].字节描述()
                         });
                       }
-                      SConnection 网络连接111 = this.ActiveConnection;
+                      客户网络 网络连接111 = this.ActiveConnection;
                       if (网络连接111 == null)
                       {
                         return;
                       }
-                      网络连接111.SendPacket(new 成功合成灵石
+                      网络连接111.发送封包(new 成功合成灵石
                       {
                         灵石状态 = 1
                       });
@@ -7096,12 +7096,12 @@ namespace GameServer.Maps
                   }
                 }
                 this.对话页面 = 619400100;
-                SConnection 网络连接112 = this.ActiveConnection;
+                客户网络 网络连接112 = this.ActiveConnection;
                 if (网络连接112 == null)
                 {
                   return;
                 }
-                网络连接112.SendPacket(new 同步交互结果
+                网络连接112.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num29)),
                   对象编号 = this.对话守卫.ObjectId
@@ -7140,12 +7140,12 @@ namespace GameServer.Maps
                   return;
                 }
                 this.对话页面 = 625201000;
-                SConnection 网络连接113 = this.ActiveConnection;
+                客户网络 网络连接113 = this.ActiveConnection;
                 if (网络连接113 == null)
                 {
                   return;
                 }
-                网络连接113.SendPacket(new 同步交互结果
+                网络连接113.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
@@ -7163,12 +7163,12 @@ namespace GameServer.Maps
                 if (this.Team == null)
                 {
                   this.对话页面 = 624201000;
-                  SConnection 网络连接114 = this.ActiveConnection;
+                  客户网络 网络连接114 = this.ActiveConnection;
                   if (网络连接114 == null)
                   {
                     return;
                   }
-                  网络连接114.SendPacket(new 同步交互结果
+                  网络连接114.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -7178,12 +7178,12 @@ namespace GameServer.Maps
                 else if (this.CharacterData != this.Team.队长数据)
                 {
                   this.对话页面 = 624202000;
-                  SConnection 网络连接115 = this.ActiveConnection;
+                  客户网络 网络连接115 = this.ActiveConnection;
                   if (网络连接115 == null)
                   {
                     return;
                   }
-                  网络连接115.SendPacket(new 同步交互结果
+                  网络连接115.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -7193,12 +7193,12 @@ namespace GameServer.Maps
                 else if (this.Team.Members.Count < 4)
                 {
                   this.对话页面 = 624207000;
-                  SConnection 网络连接116 = this.ActiveConnection;
+                  客户网络 网络连接116 = this.ActiveConnection;
                   if (网络连接116 == null)
                   {
                     return;
                   }
-                  网络连接116.SendPacket(new 同步交互结果
+                  网络连接116.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -7212,12 +7212,12 @@ namespace GameServer.Maps
                 }) != null)
                 {
                   this.对话页面 = 624203000;
-                  SConnection 网络连接117 = this.ActiveConnection;
+                  客户网络 网络连接117 = this.ActiveConnection;
                   if (网络连接117 == null)
                   {
                     return;
                   }
-                  网络连接117.SendPacket(new 同步交互结果
+                  网络连接117.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -7227,12 +7227,12 @@ namespace GameServer.Maps
                 else if (this.Team.Members.FirstOrDefault((CharacterData O) => O.NumberGoldCoins < DeductCoinsCommand) != null)
                 {
                   this.对话页面 = 624204000;
-                  SConnection 网络连接118 = this.ActiveConnection;
+                  客户网络 网络连接118 = this.ActiveConnection;
                   if (网络连接118 == null)
                   {
                     return;
                   }
-                  网络连接118.SendPacket(new 同步交互结果
+                  网络连接118.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", DeductCoinsCommand / 10000)),
                     对象编号 = this.对话守卫.ObjectId
@@ -7242,12 +7242,12 @@ namespace GameServer.Maps
                 else if (this.Team.Members.FirstOrDefault((CharacterData O) => O.屠魔大厅.V.Date == MainProcess.CurrentTime.Date) != null)
                 {
                   this.对话页面 = 624205000;
-                  SConnection 网络连接119 = this.ActiveConnection;
+                  客户网络 网络连接119 = this.ActiveConnection;
                   if (网络连接119 == null)
                   {
                     return;
                   }
-                  网络连接119.SendPacket(new 同步交互结果
+                  网络连接119.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -7257,12 +7257,12 @@ namespace GameServer.Maps
                 else if (this.Team.Members.FirstOrDefault((CharacterData O) => (int)O.Level.V < NeedLevel) != null)
                 {
                   this.对话页面 = 624206000;
-                  SConnection 网络连接120 = this.ActiveConnection;
+                  客户网络 网络连接120 = this.ActiveConnection;
                   if (网络连接120 == null)
                   {
                     return;
                   }
-                  网络连接120.SendPacket(new 同步交互结果
+                  网络连接120.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", NeedLevel)),
                     对象编号 = this.对话守卫.ObjectId
@@ -7272,12 +7272,12 @@ namespace GameServer.Maps
                 else if (this.Team.Members.FirstOrDefault((CharacterData O) => MapGatewayProcess.ActiveObjects[O.CharId].Died) != null)
                 {
                   this.对话页面 = 624208000;
-                  SConnection 网络连接121 = this.ActiveConnection;
+                  客户网络 网络连接121 = this.ActiveConnection;
                   if (网络连接121 == null)
                   {
                     return;
                   }
-                  网络连接121.SendPacket(new 同步交互结果
+                  网络连接121.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -7348,12 +7348,12 @@ namespace GameServer.Maps
                   if ((int)this.CurrentLevel < num31)
                   {
                     this.对话页面 = 711900001;
-                    SConnection 网络连接122 = this.ActiveConnection;
+                    客户网络 网络连接122 = this.ActiveConnection;
                     if (网络连接122 == null)
                     {
                       return;
                     }
-                    网络连接122.SendPacket(new 同步交互结果
+                    网络连接122.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num31)),
                       对象编号 = this.对话守卫.ObjectId
@@ -7369,12 +7369,12 @@ namespace GameServer.Maps
                       return;
                     }
                     this.对话页面 = 711900002;
-                    SConnection 网络连接123 = this.ActiveConnection;
+                    客户网络 网络连接123 = this.ActiveConnection;
                     if (网络连接123 == null)
                     {
                       return;
                     }
-                    网络连接123.SendPacket(new 同步交互结果
+                    网络连接123.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num32)),
                       对象编号 = this.对话守卫.ObjectId
@@ -7391,12 +7391,12 @@ namespace GameServer.Maps
                 if (this.CharacterData.攻沙日期.V != SystemData.Data.占领时间.V)
                 {
                   this.对话页面 = 627403000;
-                  SConnection 网络连接124 = this.ActiveConnection;
+                  客户网络 网络连接124 = this.ActiveConnection;
                   if (网络连接124 == null)
                   {
                     return;
                   }
-                  网络连接124.SendPacket(new 同步交互结果
+                  网络连接124.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -7420,12 +7420,12 @@ namespace GameServer.Maps
                         游戏物品 模板;
                         if (b10 == 255)
                         {
-                          SConnection 网络连接125 = this.ActiveConnection;
+                          客户网络 网络连接125 = this.ActiveConnection;
                           if (网络连接125 == null)
                           {
                             return;
                           }
-                          网络连接125.SendPacket(new GameErrorMessagePacket
+                          网络连接125.发送封包(new 游戏错误提示
                           {
                             错误代码 = 6459
                           });
@@ -7433,12 +7433,12 @@ namespace GameServer.Maps
                         }
                         else if (!游戏物品.DataSheetByName.TryGetValue("沙城每日宝箱", out 模板))
                         {
-                          SConnection 网络连接126 = this.ActiveConnection;
+                          客户网络 网络连接126 = this.ActiveConnection;
                           if (网络连接126 == null)
                           {
                             return;
                           }
-                          网络连接126.SendPacket(new GameErrorMessagePacket
+                          网络连接126.发送封包(new 游戏错误提示
                           {
                             错误代码 = 1802
                           });
@@ -7448,12 +7448,12 @@ namespace GameServer.Maps
                         {
                           this.CharacterData.领奖日期.V = MainProcess.CurrentTime;
                           this.Backpack[b10] = new ItemData(模板, this.CharacterData, 1, b10, 1);
-                          SConnection 网络连接127 = this.ActiveConnection;
+                          客户网络 网络连接127 = this.ActiveConnection;
                           if (网络连接127 == null)
                           {
                             return;
                           }
-                          网络连接127.SendPacket(new 玩家物品变动
+                          网络连接127.发送封包(new 玩家物品变动
                           {
                             物品描述 = this.Backpack[b10].字节描述()
                           });
@@ -7463,12 +7463,12 @@ namespace GameServer.Maps
                     }
                   }
                   this.对话页面 = 627402000;
-                  SConnection 网络连接128 = this.ActiveConnection;
+                  客户网络 网络连接128 = this.ActiveConnection;
                   if (网络连接128 == null)
                   {
                     return;
                   }
-                  网络连接128.SendPacket(new 同步交互结果
+                  网络连接128.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                     对象编号 = this.对话守卫.ObjectId
@@ -7479,12 +7479,12 @@ namespace GameServer.Maps
               else
               {
                 this.对话页面 = 627401000;
-                SConnection 网络连接129 = this.ActiveConnection;
+                客户网络 网络连接129 = this.ActiveConnection;
                 if (网络连接129 == null)
                 {
                   return;
                 }
-                网络连接129.SendPacket(new 同步交互结果
+                网络连接129.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
@@ -7527,12 +7527,12 @@ namespace GameServer.Maps
               if (选项编号 == 1)
               {
                 this.对话页面 = 674001000;
-                SConnection 网络连接130 = this.ActiveConnection;
+                客户网络 网络连接130 = this.ActiveConnection;
                 if (网络连接130 == null)
                 {
                   return;
                 }
-                网络连接130.SendPacket(new 同步交互结果
+                网络连接130.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面),
                   对象编号 = this.对话守卫.ObjectId
@@ -7541,12 +7541,12 @@ namespace GameServer.Maps
               }
               else if (选项编号 == 2)
               {
-                SConnection 网络连接131 = this.ActiveConnection;
+                客户网络 网络连接131 = this.ActiveConnection;
                 if (网络连接131 == null)
                 {
                   return;
                 }
-                网络连接131.SendPacket(new 查看攻城名单
+                网络连接131.发送封包(new 查看攻城名单
                 {
                   字节描述 = SystemData.Data.沙城申请描述()
                 });
@@ -7557,7 +7557,7 @@ namespace GameServer.Maps
             {
               if (this.CharacterData.升级装备.V == null)
               {
-                this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Continue Npcc conversation.  Error: Trying to retrieve a weapon."));
+                this.ActiveConnection.尝试断开连接(new Exception("Error: Continue Npcc conversation.  Error: Trying to retrieve a weapon."));
                 return;
               }
               if (选项编号 == 1)
@@ -7565,12 +7565,12 @@ namespace GameServer.Maps
                 if (this.BackpackSizeAvailable <= 0)
                 {
                   this.对话页面 = 670505000;
-                  SConnection 网络连接132 = this.ActiveConnection;
+                  客户网络 网络连接132 = this.ActiveConnection;
                   if (网络连接132 == null)
                   {
                     return;
                   }
-                  网络连接132.SendPacket(new 同步交互结果
+                  网络连接132.发送封包(new 同步交互结果
                   {
                     对象编号 = this.对话守卫.ObjectId,
                     交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7583,12 +7583,12 @@ namespace GameServer.Maps
                   if (this.NumberGoldCoins < num34)
                   {
                     this.对话页面 = 670510000;
-                    SConnection 网络连接133 = this.ActiveConnection;
+                    客户网络 网络连接133 = this.ActiveConnection;
                     if (网络连接133 == null)
                     {
                       return;
                     }
-                    网络连接133.SendPacket(new 同步交互结果
+                    网络连接133.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7614,12 +7614,12 @@ namespace GameServer.Maps
                           if (b12 == 255)
                           {
                             this.对话页面 = 670505000;
-                            SConnection 网络连接134 = this.ActiveConnection;
+                            客户网络 网络连接134 = this.ActiveConnection;
                             if (网络连接134 == null)
                             {
                               return;
                             }
-                            网络连接134.SendPacket(new 同步交互结果
+                            网络连接134.发送封包(new 同步交互结果
                             {
                               对象编号 = this.对话守卫.ObjectId,
                               交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7634,28 +7634,28 @@ namespace GameServer.Maps
                             this.CharacterData.升级装备.V = null;
                             this.Backpack[b12].物品容器.V = 1;
                             this.Backpack[b12].物品位置.V = b12;
-                            SConnection 网络连接135 = this.ActiveConnection;
+                            客户网络 网络连接135 = this.ActiveConnection;
                             if (网络连接135 != null)
                             {
-                              网络连接135.SendPacket(new 玩家物品变动
+                              网络连接135.发送封包(new 玩家物品变动
                               {
                                 物品描述 = this.Backpack[b12].字节描述()
                               });
                             }
-                            SConnection 网络连接136 = this.ActiveConnection;
+                            客户网络 网络连接136 = this.ActiveConnection;
                             if (网络连接136 != null)
                             {
-                              网络连接136.SendPacket(new 武器升级结果
+                              网络连接136.发送封包(new 武器升级结果
                               {
                                 升级结果 = 2
                               });
                             }
-                            SConnection 网络连接137 = this.ActiveConnection;
+                            客户网络 网络连接137 = this.ActiveConnection;
                             if (网络连接137 == null)
                             {
                               return;
                             }
-                            网络连接137.SendPacket(new 武器升级结果
+                            网络连接137.发送封包(new 武器升级结果
                             {
                               升级结果 = 2
                             });
@@ -7665,12 +7665,12 @@ namespace GameServer.Maps
                       }
                     }
                     this.对话页面 = 670509000;
-                    SConnection 网络连接138 = this.ActiveConnection;
+                    客户网络 网络连接138 = this.ActiveConnection;
                     if (网络连接138 == null)
                     {
                       return;
                     }
-                    网络连接138.SendPacket(new 同步交互结果
+                    网络连接138.发送封包(new 同步交互结果
                     {
                       对象编号 = this.对话守卫.ObjectId,
                       交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7691,12 +7691,12 @@ namespace GameServer.Maps
             if (this.CharacterData.升级装备.V != null)
             {
               this.对话页面 = 670501000;
-              SConnection 网络连接139 = this.ActiveConnection;
+              客户网络 网络连接139 = this.ActiveConnection;
               if (网络连接139 == null)
               {
                 return;
               }
-              网络连接139.SendPacket(new 同步交互结果
+              网络连接139.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7707,12 +7707,12 @@ namespace GameServer.Maps
             {
               this.打开界面 = "UpgradeCurEquippedWepn";
               this.对话页面 = 670502000;
-              SConnection 网络连接140 = this.ActiveConnection;
+              客户网络 网络连接140 = this.ActiveConnection;
               if (网络连接140 == null)
               {
                 return;
               }
-              网络连接140.SendPacket(new 同步交互结果
+              网络连接140.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7725,12 +7725,12 @@ namespace GameServer.Maps
             if (this.CharacterData.升级装备.V == null)
             {
               this.对话页面 = 670503000;
-              SConnection 网络连接141 = this.ActiveConnection;
+              客户网络 网络连接141 = this.ActiveConnection;
               if (网络连接141 == null)
               {
                 return;
               }
-              网络连接141.SendPacket(new 同步交互结果
+              网络连接141.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7740,12 +7740,12 @@ namespace GameServer.Maps
             else if (MainProcess.CurrentTime < this.CharacterData.取回时间.V)
             {
               this.对话页面 = 670504000;
-              SConnection 网络连接142 = this.ActiveConnection;
+              客户网络 网络连接142 = this.ActiveConnection;
               if (网络连接142 == null)
               {
                 return;
               }
-              网络连接142.SendPacket(new 同步交互结果
+              网络连接142.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", (int)(this.CharacterData.取回时间.V - MainProcess.CurrentTime).TotalMinutes + 1))
@@ -7755,12 +7755,12 @@ namespace GameServer.Maps
             else if (this.BackpackSizeAvailable <= 0)
             {
               this.对话页面 = 670505000;
-              SConnection 网络连接143 = this.ActiveConnection;
+              客户网络 网络连接143 = this.ActiveConnection;
               if (网络连接143 == null)
               {
                 return;
               }
-              网络连接143.SendPacket(new 同步交互结果
+              网络连接143.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7770,12 +7770,12 @@ namespace GameServer.Maps
             else if (this.玩家取回装备(0))
             {
               this.对话页面 = 670507000;
-              SConnection 网络连接144 = this.ActiveConnection;
+              客户网络 网络连接144 = this.ActiveConnection;
               if (网络连接144 == null)
               {
                 return;
               }
-              网络连接144.SendPacket(new 同步交互结果
+              网络连接144.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7785,12 +7785,12 @@ namespace GameServer.Maps
             else
             {
               this.对话页面 = 670508000;
-              SConnection 网络连接145 = this.ActiveConnection;
+              客户网络 网络连接145 = this.ActiveConnection;
               if (网络连接145 == null)
               {
                 return;
               }
-              网络连接145.SendPacket(new 同步交互结果
+              网络连接145.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", (int)(this.CharacterData.升级装备.V.升级次数.V * 10 + 10), (int)(this.CharacterData.升级装备.V.升级次数.V * 100 + 100)))
@@ -7803,12 +7803,12 @@ namespace GameServer.Maps
             if (this.CharacterData.升级装备.V == null)
             {
               this.对话页面 = 670503000;
-              SConnection 网络连接146 = this.ActiveConnection;
+              客户网络 网络连接146 = this.ActiveConnection;
               if (网络连接146 == null)
               {
                 return;
               }
-              网络连接146.SendPacket(new 同步交互结果
+              网络连接146.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7818,12 +7818,12 @@ namespace GameServer.Maps
             else if (this.NumberGoldCoins < 100000)
             {
               this.对话页面 = 670506000;
-              SConnection 网络连接147 = this.ActiveConnection;
+              客户网络 网络连接147 = this.ActiveConnection;
               if (网络连接147 == null)
               {
                 return;
               }
-              网络连接147.SendPacket(new 同步交互结果
+              网络连接147.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7833,12 +7833,12 @@ namespace GameServer.Maps
             else if (this.BackpackSizeAvailable <= 0)
             {
               this.对话页面 = 670505000;
-              SConnection 网络连接148 = this.ActiveConnection;
+              客户网络 网络连接148 = this.ActiveConnection;
               if (网络连接148 == null)
               {
                 return;
               }
-              网络连接148.SendPacket(new 同步交互结果
+              网络连接148.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7848,12 +7848,12 @@ namespace GameServer.Maps
             else if (this.玩家取回装备(100000))
             {
               this.对话页面 = 670507000;
-              SConnection 网络连接149 = this.ActiveConnection;
+              客户网络 网络连接149 = this.ActiveConnection;
               if (网络连接149 == null)
               {
                 return;
               }
-              网络连接149.SendPacket(new 同步交互结果
+              网络连接149.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7864,12 +7864,12 @@ namespace GameServer.Maps
             {
               this.CharacterData.取回时间.V = MainProcess.CurrentTime;
               this.对话页面 = 670508000;
-              SConnection 网络连接150 = this.ActiveConnection;
+              客户网络 网络连接150 = this.ActiveConnection;
               if (网络连接150 == null)
               {
                 return;
               }
-              网络连接150.SendPacket(new 同步交互结果
+              网络连接150.发送封包(new 同步交互结果
               {
                 对象编号 = this.对话守卫.ObjectId,
                 交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:{1}>", (int)(this.CharacterData.升级装备.V.升级次数.V * 10 + 10), (int)(this.CharacterData.升级装备.V.升级次数.V * 100 + 100)))
@@ -7910,12 +7910,12 @@ namespace GameServer.Maps
               }
               this.对话页面 = 711905000;
             }
-            SConnection 网络连接151 = this.ActiveConnection;
+            客户网络 网络连接151 = this.ActiveConnection;
             if (网络连接151 == null)
             {
               return;
             }
-            网络连接151.SendPacket(new 同步交互结果
+            网络连接151.发送封包(new 同步交互结果
             {
               对象编号 = this.对话守卫.ObjectId,
               交互文本 = 对话数据.GetBufferFromDialogId(this.对话页面)
@@ -7926,12 +7926,12 @@ namespace GameServer.Maps
           {
             if (this.Guild == null)
             {
-              SConnection 网络连接152 = this.ActiveConnection;
+              客户网络 网络连接152 = this.ActiveConnection;
               if (网络连接152 == null)
               {
                 return;
               }
-              网络连接152.SendPacket(new 社交错误提示
+              网络连接152.发送封包(new 社交错误提示
               {
                 错误编号 = 6668
               });
@@ -7939,12 +7939,12 @@ namespace GameServer.Maps
             }
             else if (this.CharacterData != this.Guild.行会会长.V)
             {
-              SConnection 网络连接153 = this.ActiveConnection;
+              客户网络 网络连接153 = this.ActiveConnection;
               if (网络连接153 == null)
               {
                 return;
               }
-              网络连接153.SendPacket(new 社交错误提示
+              网络连接153.发送封包(new 社交错误提示
               {
                 错误编号 = 8961
               });
@@ -7952,12 +7952,12 @@ namespace GameServer.Maps
             }
             else if (this.Guild == SystemData.Data.OccupyGuild.V)
             {
-              SConnection 网络连接154 = this.ActiveConnection;
+              客户网络 网络连接154 = this.ActiveConnection;
               if (网络连接154 == null)
               {
                 return;
               }
-              网络连接154.SendPacket(new 社交错误提示
+              网络连接154.发送封包(new 社交错误提示
               {
                 错误编号 = 8965
               });
@@ -7965,12 +7965,12 @@ namespace GameServer.Maps
             }
             else if (SystemData.Data.申请行会.Values.FirstOrDefault((GuildData O) => O == this.Guild) != null)
             {
-              SConnection 网络连接155 = this.ActiveConnection;
+              客户网络 网络连接155 = this.ActiveConnection;
               if (网络连接155 == null)
               {
                 return;
               }
-              网络连接155.SendPacket(new 社交错误提示
+              网络连接155.发送封包(new 社交错误提示
               {
                 错误编号 = 8964
               });
@@ -7978,12 +7978,12 @@ namespace GameServer.Maps
             }
             else if (this.NumberGoldCoins < 1000000)
             {
-              SConnection 网络连接156 = this.ActiveConnection;
+              客户网络 网络连接156 = this.ActiveConnection;
               if (网络连接156 == null)
               {
                 return;
               }
-              网络连接156.SendPacket(new 社交错误提示
+              网络连接156.发送封包(new 社交错误提示
               {
                 错误编号 = 8962
               });
@@ -8000,12 +8000,12 @@ namespace GameServer.Maps
                 NetworkServiceGateway.SendAnnouncement(string.Format("公会[{0}]已经签约参加第二天的沙巴克战役", this.Guild), true);
                 return;
               }
-              SConnection 网络连接157 = this.ActiveConnection;
+              客户网络 网络连接157 = this.ActiveConnection;
               if (网络连接157 == null)
               {
                 return;
               }
-              网络连接157.SendPacket(new 社交错误提示
+              网络连接157.发送封包(new 社交错误提示
               {
                 错误编号 = 8963
               });
@@ -8073,12 +8073,12 @@ namespace GameServer.Maps
                   if ((int)this.CurrentLevel < num48)
                   {
                     this.对话页面 = 711900001;
-                    SConnection 网络连接167 = this.ActiveConnection;
+                    客户网络 网络连接167 = this.ActiveConnection;
                     if (网络连接167 == null)
                     {
                       return;
                     }
-                    网络连接167.SendPacket(new 同步交互结果
+                    网络连接167.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num48)),
                       对象编号 = this.对话守卫.ObjectId
@@ -8094,12 +8094,12 @@ namespace GameServer.Maps
                       return;
                     }
                     this.对话页面 = 711900003;
-                    SConnection 网络连接168 = this.ActiveConnection;
+                    客户网络 网络连接168 = this.ActiveConnection;
                     if (网络连接168 == null)
                     {
                       return;
                     }
-                    网络连接168.SendPacket(new 同步交互结果
+                    网络连接168.发送封包(new 同步交互结果
                     {
                       交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num49)),
                       对象编号 = this.对话守卫.ObjectId
@@ -8174,12 +8174,12 @@ namespace GameServer.Maps
                 if ((int)this.CurrentLevel < num45)
                 {
                   this.对话页面 = 711900001;
-                  SConnection 网络连接165 = this.ActiveConnection;
+                  客户网络 网络连接165 = this.ActiveConnection;
                   if (网络连接165 == null)
                   {
                     return;
                   }
-                  网络连接165.SendPacket(new 同步交互结果
+                  网络连接165.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num45)),
                     对象编号 = this.对话守卫.ObjectId
@@ -8195,12 +8195,12 @@ namespace GameServer.Maps
                     return;
                   }
                   this.对话页面 = 711900002;
-                  SConnection 网络连接166 = this.ActiveConnection;
+                  客户网络 网络连接166 = this.ActiveConnection;
                   if (网络连接166 == null)
                   {
                     return;
                   }
-                  网络连接166.SendPacket(new 同步交互结果
+                  网络连接166.发送封包(new 同步交互结果
                   {
                     交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num46)),
                     对象编号 = this.对话守卫.ObjectId
@@ -8281,12 +8281,12 @@ namespace GameServer.Maps
               if ((int)this.CurrentLevel < num36)
               {
                 this.对话页面 = 711900001;
-                SConnection 网络连接158 = this.ActiveConnection;
+                客户网络 网络连接158 = this.ActiveConnection;
                 if (网络连接158 == null)
                 {
                   return;
                 }
-                网络连接158.SendPacket(new 同步交互结果
+                网络连接158.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num36)),
                   对象编号 = this.对话守卫.ObjectId
@@ -8302,12 +8302,12 @@ namespace GameServer.Maps
                   return;
                 }
                 this.对话页面 = 711900002;
-                SConnection 网络连接159 = this.ActiveConnection;
+                客户网络 网络连接159 = this.ActiveConnection;
                 if (网络连接159 == null)
                 {
                   return;
                 }
-                网络连接159.SendPacket(new 同步交互结果
+                网络连接159.发送封包(new 同步交互结果
                 {
                   交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num37)),
                   对象编号 = this.对话守卫.ObjectId
@@ -8358,12 +8358,12 @@ namespace GameServer.Maps
             if ((int)this.CurrentLevel < num39)
             {
               this.对话页面 = 711900001;
-              SConnection 网络连接160 = this.ActiveConnection;
+              客户网络 网络连接160 = this.ActiveConnection;
               if (网络连接160 == null)
               {
                 return;
               }
-              网络连接160.SendPacket(new 同步交互结果
+              网络连接160.发送封包(new 同步交互结果
               {
                 交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num39)),
                 对象编号 = this.对话守卫.ObjectId
@@ -8379,12 +8379,12 @@ namespace GameServer.Maps
                 return;
               }
               this.对话页面 = 711900002;
-              SConnection 网络连接161 = this.ActiveConnection;
+              客户网络 网络连接161 = this.ActiveConnection;
               if (网络连接161 == null)
               {
                 return;
               }
-              网络连接161.SendPacket(new 同步交互结果
+              网络连接161.发送封包(new 同步交互结果
               {
                 交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num40)),
                 对象编号 = this.对话守卫.ObjectId
@@ -8447,12 +8447,12 @@ namespace GameServer.Maps
           if ((int)this.CurrentLevel < num42)
           {
             this.对话页面 = 711900001;
-            SConnection 网络连接162 = this.ActiveConnection;
+            客户网络 网络连接162 = this.ActiveConnection;
             if (网络连接162 == null)
             {
               return;
             }
-            网络连接162.SendPacket(new 同步交互结果
+            网络连接162.发送封包(new 同步交互结果
             {
               交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num42)),
               对象编号 = this.对话守卫.ObjectId
@@ -8462,12 +8462,12 @@ namespace GameServer.Maps
           else if (this.NumberGoldCoins < num43)
           {
             this.对话页面 = 711900002;
-            SConnection 网络连接163 = this.ActiveConnection;
+            客户网络 网络连接163 = this.ActiveConnection;
             if (网络连接163 == null)
             {
               return;
             }
-            网络连接163.SendPacket(new 同步交互结果
+            网络连接163.发送封包(new 同步交互结果
             {
               交互文本 = 对话数据.CombineDialog(this.对话页面, string.Format("<#P0:{0}><#P1:0>", num43)),
               对象编号 = this.对话守卫.ObjectId
@@ -8493,12 +8493,12 @@ namespace GameServer.Maps
         }
         return;
       }
-      SConnection 网络连接164 = this.ActiveConnection;
+      客户网络 网络连接164 = this.ActiveConnection;
       if (网络连接164 == null)
       {
         return;
       }
-      网络连接164.SendPacket(new GameErrorMessagePacket
+      网络连接164.发送封包(new 游戏错误提示
       {
         错误代码 = 3333
       });
@@ -8534,14 +8534,14 @@ namespace GameServer.Maps
         binaryWriter.Write(16777216 + i);
         binaryWriter.Write(MapGatewayProcess.MapInstances[this.CurrentMap.MapId * 16 + i].地图状态);
       }
-      ActiveConnection?.SendPacket(new 查询线路信息
+      ActiveConnection?.发送封包(new 查询线路信息
       {
         字节数据 = memoryStream.ToArray()
       });
     }
 
 
-    public void ToggleMapRoutePacket()
+    public void 切换地图路线()
     {
     }
 
@@ -8554,7 +8554,7 @@ namespace GameServer.Maps
     {
       if (BackpackSize + position > 64)
       {
-        ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player expanded backpack.  Error: Backpack exceeds limit."));
+        ActiveConnection.尝试断开连接(new Exception("Wrong action: Player expanded backpack.  Error: Backpack exceeds limit."));
         return;
       }
 
@@ -8562,7 +8562,7 @@ namespace GameServer.Maps
       int num4 = ComputingClass.Extendedbackpack((int)(BackpackSize + position - 32), 0, 1, 0) - num3;
       if (this.NumberGoldCoins < num4)
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1821
         });
@@ -8571,7 +8571,7 @@ namespace GameServer.Maps
       {
         this.NumberGoldCoins -= num4;
         BackpackSize += position;
-        ActiveConnection?.SendPacket(new 背包容量改变
+        ActiveConnection?.发送封包(new 背包容量改变
         {
           背包类型 = 1,
           背包容量 = BackpackSize
@@ -8583,7 +8583,7 @@ namespace GameServer.Maps
     {
       if (WarehouseSize + position > (72 * 2))
       {
-        ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player expanded backpack.  Error: Warehouse exceeded limit."));
+        ActiveConnection.尝试断开连接(new Exception("Wrong action: Player expanded backpack.  Error: Warehouse exceeded limit."));
         return;
       }
 
@@ -8592,7 +8592,7 @@ namespace GameServer.Maps
 
       if (this.NumberGoldCoins < num2)
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1821
         });
@@ -8601,7 +8601,7 @@ namespace GameServer.Maps
       {
         this.NumberGoldCoins -= num2;
         WarehouseSize += position;
-        ActiveConnection?.SendPacket(new 背包容量改变
+        ActiveConnection?.发送封包(new 背包容量改变
         {
           背包类型 = 2,
           背包容量 = WarehouseSize
@@ -8613,7 +8613,7 @@ namespace GameServer.Maps
     {
       if (BackpackSize + addCells > (72 * 3))
       {
-        ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player expanded backpack.  Error: Warehouse exceeded limit."));
+        ActiveConnection.尝试断开连接(new Exception("Wrong action: Player expanded backpack.  Error: Warehouse exceeded limit."));
         return;
       }
 
@@ -8628,7 +8628,7 @@ namespace GameServer.Maps
 
       if (this.NumberGoldCoins < cost)
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1821
         });
@@ -8638,7 +8638,7 @@ namespace GameServer.Maps
         cost *= 10000;
         NumberGoldCoins -= cost;
         ExtraBackpackSize += addCells;
-        ActiveConnection?.SendPacket(new 背包容量改变
+        ActiveConnection?.发送封包(new 背包容量改变
         {
           背包类型 = 7,
           背包容量 = ExtraBackpackSize
@@ -8646,11 +8646,11 @@ namespace GameServer.Maps
       }
     }
 
-    public void ExpandStorage(byte storageType, byte position)
+    public void 扩展背包(byte storageType, byte position)
     {
       if (position == 0)
       {
-        ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player expand storage. Error: Wrong storage type."));
+        ActiveConnection.尝试断开连接(new Exception("Wrong action: Player expand storage. Error: Wrong storage type."));
         return;
       }
 
@@ -8672,7 +8672,7 @@ namespace GameServer.Maps
 
     public void 商店特修单件(byte 背包类型, byte 装备位置)
     {
-      this.ActiveConnection.CallExceptionEventHandler(new Exception("MISTAKE: Special repair of a single piece of equipment.  Error: Function blocked."));
+      this.ActiveConnection.尝试断开连接(new Exception("MISTAKE: Special repair of a single piece of equipment.  Error: Function blocked."));
     }
 
 
@@ -8684,17 +8684,17 @@ namespace GameServer.Maps
       }
       if (this.对话守卫 == null)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Bug: Shop repair single piece.  Error: Npc not selected."));
+        this.ActiveConnection.尝试断开连接(new Exception("Bug: Shop repair single piece.  Error: Npc not selected."));
         return;
       }
       if (this.打开商店 == 0)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Shop repairing single piece.  Error: Shop not opened."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Shop repairing single piece.  Error: Shop not opened."));
         return;
       }
       if (this.CurrentMap != this.对话守卫.CurrentMap || base.GetDistance(this.对话守卫) > 12)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Bug: Shop repair single piece.  Bug: Character is too far away."));
+        this.ActiveConnection.尝试断开连接(new Exception("Bug: Shop repair single piece.  Bug: Character is too far away."));
         return;
       }
       if (背包类型 != 1)
@@ -8704,12 +8704,12 @@ namespace GameServer.Maps
           EquipmentData EquipmentData;
           if (!this.Equipment.TryGetValue(装备位置, out EquipmentData))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new GameErrorMessagePacket
+            网络连接.发送封包(new 游戏错误提示
             {
               错误代码 = 1802
             });
@@ -8717,12 +8717,12 @@ namespace GameServer.Maps
           }
           else if (!EquipmentData.CanRepair)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new GameErrorMessagePacket
+            网络连接2.发送封包(new 游戏错误提示
             {
               错误代码 = 1814
             });
@@ -8730,12 +8730,12 @@ namespace GameServer.Maps
           }
           else if (this.NumberGoldCoins < EquipmentData.修理费用)
           {
-            SConnection 网络连接3 = this.ActiveConnection;
+            客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new GameErrorMessagePacket
+            网络连接3.发送封包(new 游戏错误提示
             {
               错误代码 = 1821
             });
@@ -8751,20 +8751,20 @@ namespace GameServer.Maps
               this.RefreshStats();
             }
             EquipmentData.当前持久.V = EquipmentData.最大持久.V;
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 != null)
             {
-              网络连接4.SendPacket(new 玩家物品变动
+              网络连接4.发送封包(new 玩家物品变动
               {
                 物品描述 = EquipmentData.字节描述()
               });
             }
-            SConnection 网络连接5 = this.ActiveConnection;
+            客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 == null)
             {
               return;
             }
-            网络连接5.SendPacket(new RepairItemResponsePacket());
+            网络连接5.发送封包(new 修理物品应答());
           }
         }
         return;
@@ -8772,12 +8772,12 @@ namespace GameServer.Maps
       ItemData ItemData;
       if (!this.Backpack.TryGetValue(装备位置, out ItemData))
       {
-        SConnection 网络连接6 = this.ActiveConnection;
+        客户网络 网络连接6 = this.ActiveConnection;
         if (网络连接6 == null)
         {
           return;
         }
-        网络连接6.SendPacket(new GameErrorMessagePacket
+        网络连接6.发送封包(new 游戏错误提示
         {
           错误代码 = 1802
         });
@@ -8788,12 +8788,12 @@ namespace GameServer.Maps
         EquipmentData EquipmentData2 = ItemData as EquipmentData;
         if (EquipmentData2 == null)
         {
-          SConnection 网络连接7 = this.ActiveConnection;
+          客户网络 网络连接7 = this.ActiveConnection;
           if (网络连接7 == null)
           {
             return;
           }
-          网络连接7.SendPacket(new GameErrorMessagePacket
+          网络连接7.发送封包(new 游戏错误提示
           {
             错误代码 = 1814
           });
@@ -8801,12 +8801,12 @@ namespace GameServer.Maps
         }
         else if (!EquipmentData2.CanRepair)
         {
-          SConnection 网络连接8 = this.ActiveConnection;
+          客户网络 网络连接8 = this.ActiveConnection;
           if (网络连接8 == null)
           {
             return;
           }
-          网络连接8.SendPacket(new GameErrorMessagePacket
+          网络连接8.发送封包(new 游戏错误提示
           {
             错误代码 = 1814
           });
@@ -8814,12 +8814,12 @@ namespace GameServer.Maps
         }
         else if (this.NumberGoldCoins < EquipmentData2.修理费用)
         {
-          SConnection 网络连接9 = this.ActiveConnection;
+          客户网络 网络连接9 = this.ActiveConnection;
           if (网络连接9 == null)
           {
             return;
           }
-          网络连接9.SendPacket(new GameErrorMessagePacket
+          网络连接9.发送封包(new 游戏错误提示
           {
             错误代码 = 1821
           });
@@ -8830,12 +8830,12 @@ namespace GameServer.Maps
           this.NumberGoldCoins -= EquipmentData2.修理费用;
           EquipmentData2.最大持久.V = Math.Max(1000, EquipmentData2.最大持久.V - 334);
           EquipmentData2.当前持久.V = EquipmentData2.最大持久.V;
-          SConnection 网络连接10 = this.ActiveConnection;
+          客户网络 网络连接10 = this.ActiveConnection;
           if (网络连接10 == null)
           {
             return;
           }
-          网络连接10.SendPacket(new 玩家物品变动
+          网络连接10.发送封包(new 玩家物品变动
           {
             物品描述 = EquipmentData2.字节描述()
           });
@@ -8853,17 +8853,17 @@ namespace GameServer.Maps
       }
       if (this.对话守卫 == null)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Shop repair single piece.  Error: Npc not selected."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Shop repair single piece.  Error: Npc not selected."));
         return;
       }
       if (this.打开商店 == 0)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Shop repairing single piece.  Error: Shop not opened."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Shop repairing single piece.  Error: Shop not opened."));
         return;
       }
       if (this.CurrentMap != this.对话守卫.CurrentMap || base.GetDistance(this.对话守卫) > 12)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Bug: Shop repair single piece.  Bug: Character is too far away."));
+        this.ActiveConnection.尝试断开连接(new Exception("Bug: Shop repair single piece.  Bug: Character is too far away."));
         return;
       }
       if (this.NumberGoldCoins < this.Equipment.Values.Sum(delegate (EquipmentData O)
@@ -8875,12 +8875,12 @@ namespace GameServer.Maps
         return O.修理费用;
       }))
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 1821
         });
@@ -8900,22 +8900,22 @@ namespace GameServer.Maps
               this.RefreshStats();
             }
             EquipmentData.当前持久.V = EquipmentData.最大持久.V;
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 != null)
             {
-              网络连接2.SendPacket(new 玩家物品变动
+              网络连接2.发送封包(new 玩家物品变动
               {
                 物品描述 = EquipmentData.字节描述()
               });
             }
           }
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new RepairItemResponsePacket());
+        网络连接3.发送封包(new 修理物品应答());
         return;
       }
     }
@@ -8929,7 +8929,7 @@ namespace GameServer.Maps
       }
       if (Id != 0)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("MISTAKE: Shop repair of a single item.  Error: Prohibited item."));
+        this.ActiveConnection.尝试断开连接(new Exception("MISTAKE: Shop repair of a single item.  Error: Prohibited item."));
         return;
       }
       if (背包类型 != 1)
@@ -8939,12 +8939,12 @@ namespace GameServer.Maps
           EquipmentData EquipmentData;
           if (!this.Equipment.TryGetValue(装备位置, out EquipmentData))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new GameErrorMessagePacket
+            网络连接.发送封包(new 游戏错误提示
             {
               错误代码 = 1802
             });
@@ -8952,12 +8952,12 @@ namespace GameServer.Maps
           }
           else if (!EquipmentData.CanRepair)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new GameErrorMessagePacket
+            网络连接2.发送封包(new 游戏错误提示
             {
               错误代码 = 1814
             });
@@ -8965,12 +8965,12 @@ namespace GameServer.Maps
           }
           else if (this.NumberGoldCoins < EquipmentData.特修费用)
           {
-            SConnection 网络连接3 = this.ActiveConnection;
+            客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new GameErrorMessagePacket
+            网络连接3.发送封包(new 游戏错误提示
             {
               错误代码 = 1821
             });
@@ -8980,12 +8980,12 @@ namespace GameServer.Maps
           {
             this.NumberGoldCoins -= EquipmentData.特修费用;
             EquipmentData.当前持久.V = EquipmentData.最大持久.V;
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
             {
               return;
             }
-            网络连接4.SendPacket(new 玩家物品变动
+            网络连接4.发送封包(new 玩家物品变动
             {
               物品描述 = EquipmentData.字节描述()
             });
@@ -8996,12 +8996,12 @@ namespace GameServer.Maps
       ItemData ItemData;
       if (!this.Backpack.TryGetValue(装备位置, out ItemData))
       {
-        SConnection 网络连接5 = this.ActiveConnection;
+        客户网络 网络连接5 = this.ActiveConnection;
         if (网络连接5 == null)
         {
           return;
         }
-        网络连接5.SendPacket(new GameErrorMessagePacket
+        网络连接5.发送封包(new 游戏错误提示
         {
           错误代码 = 1802
         });
@@ -9012,12 +9012,12 @@ namespace GameServer.Maps
         EquipmentData EquipmentData2 = ItemData as EquipmentData;
         if (EquipmentData2 == null)
         {
-          SConnection 网络连接6 = this.ActiveConnection;
+          客户网络 网络连接6 = this.ActiveConnection;
           if (网络连接6 == null)
           {
             return;
           }
-          网络连接6.SendPacket(new GameErrorMessagePacket
+          网络连接6.发送封包(new 游戏错误提示
           {
             错误代码 = 1814
           });
@@ -9025,12 +9025,12 @@ namespace GameServer.Maps
         }
         else if (!EquipmentData2.CanRepair)
         {
-          SConnection 网络连接7 = this.ActiveConnection;
+          客户网络 网络连接7 = this.ActiveConnection;
           if (网络连接7 == null)
           {
             return;
           }
-          网络连接7.SendPacket(new GameErrorMessagePacket
+          网络连接7.发送封包(new 游戏错误提示
           {
             错误代码 = 1814
           });
@@ -9038,12 +9038,12 @@ namespace GameServer.Maps
         }
         else if (this.NumberGoldCoins < EquipmentData2.特修费用)
         {
-          SConnection 网络连接8 = this.ActiveConnection;
+          客户网络 网络连接8 = this.ActiveConnection;
           if (网络连接8 == null)
           {
             return;
           }
-          网络连接8.SendPacket(new GameErrorMessagePacket
+          网络连接8.发送封包(new 游戏错误提示
           {
             错误代码 = 1821
           });
@@ -9058,20 +9058,20 @@ namespace GameServer.Maps
             this.RefreshStats();
           }
           EquipmentData2.当前持久.V = EquipmentData2.最大持久.V;
-          SConnection 网络连接9 = this.ActiveConnection;
+          客户网络 网络连接9 = this.ActiveConnection;
           if (网络连接9 != null)
           {
-            网络连接9.SendPacket(new 玩家物品变动
+            网络连接9.发送封包(new 玩家物品变动
             {
               物品描述 = EquipmentData2.字节描述()
             });
           }
-          SConnection 网络连接10 = this.ActiveConnection;
+          客户网络 网络连接10 = this.ActiveConnection;
           if (网络连接10 == null)
           {
             return;
           }
-          网络连接10.SendPacket(new RepairItemResponsePacket());
+          网络连接10.发送封包(new 修理物品应答());
           return;
         }
       }
@@ -9093,12 +9093,12 @@ namespace GameServer.Maps
         return O.特修费用;
       }))
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 1821
         });
@@ -9117,32 +9117,32 @@ namespace GameServer.Maps
               this.RefreshStats();
             }
             EquipmentData.当前持久.V = EquipmentData.最大持久.V;
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 != null)
             {
-              网络连接2.SendPacket(new 玩家物品变动
+              网络连接2.发送封包(new 玩家物品变动
               {
                 物品描述 = EquipmentData.字节描述()
               });
             }
           }
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new RepairItemResponsePacket());
+        网络连接3.发送封包(new 修理物品应答());
         return;
       }
     }
 
 
-    public void RequestStoreDataPacket(int storeVersion)
+    public void 请求商店数据(int storeVersion)
     {
       if (storeVersion != 0 && storeVersion == 游戏商店.商店文件效验)
       {
-        ActiveConnection?.SendPacket(new SyncStoreDataPacket
+        ActiveConnection?.发送封包(new 同步商店版本
         {
           StoreVersion = 游戏商店.商店文件效验,
           ItemsCount = 0,
@@ -9151,7 +9151,7 @@ namespace GameServer.Maps
       }
       else
       {
-        ActiveConnection?.SendPacket(new SyncStoreDataPacket
+        ActiveConnection?.发送封包(new 同步商店版本
         {
           StoreVersion = 游戏商店.商店文件效验,
           ItemsCount = 游戏商店.商店物品数量,
@@ -9167,12 +9167,12 @@ namespace GameServer.Maps
       {
         if (数据版本 == 珍宝商品.珍宝商店效验)
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new 同步珍宝数据
+          网络连接.发送封包(new 同步珍宝数据
           {
             版本编号 = 珍宝商品.珍宝商店效验,
             商品数量 = 0,
@@ -9181,12 +9181,12 @@ namespace GameServer.Maps
           return;
         }
       }
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 == null)
       {
         return;
       }
-      网络连接2.SendPacket(new 同步珍宝数据
+      网络连接2.发送封包(new 同步珍宝数据
       {
         版本编号 = 珍宝商品.珍宝商店效验,
         商品数量 = 珍宝商品.珍宝商品数量,
@@ -9234,12 +9234,12 @@ namespace GameServer.Maps
 
             if (num4 == -1)
             {
-              SConnection 网络连接 = this.ActiveConnection;
+              客户网络 网络连接 = this.ActiveConnection;
               if (网络连接 == null)
               {
                 return;
               }
-              网络连接.SendPacket(new GameErrorMessagePacket
+              网络连接.发送封包(new 游戏错误提示
               {
                 错误代码 = 1793
               });
@@ -9258,10 +9258,10 @@ namespace GameServer.Maps
                 if (this.Backpack.TryGetValue((byte)num4, out ItemData2))
                 {
                   ItemData2.当前持久.V += num2;
-                  SConnection 网络连接2 = this.ActiveConnection;
+                  客户网络 网络连接2 = this.ActiveConnection;
                   if (网络连接2 != null)
                   {
-                    网络连接2.SendPacket(new 玩家物品变动
+                    网络连接2.发送封包(new 玩家物品变动
                     {
                       物品描述 = ItemData2.字节描述()
                     });
@@ -9292,10 +9292,10 @@ namespace GameServer.Maps
                     }
                     this.Backpack[(byte)num4] = new ItemData(GameItems, this.CharacterData, 1, (byte)num4, 持久);
                   }
-                  SConnection 网络连接3 = this.ActiveConnection;
+                  客户网络 网络连接3 = this.ActiveConnection;
                   if (网络连接3 != null)
                   {
-                    网络连接3.SendPacket(new 玩家物品变动
+                    网络连接3.发送封包(new 玩家物品变动
                     {
                       物品描述 = this.Backpack[(byte)num4].字节描述()
                     });
@@ -9311,12 +9311,12 @@ namespace GameServer.Maps
                 }));
                 return;
               }
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new 社交错误提示
+              网络连接4.发送封包(new 社交错误提示
               {
                 错误编号 = 8451
               });
@@ -9336,12 +9336,12 @@ namespace GameServer.Maps
         游戏物品 模板;
         if (this.Ingots < 600)
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new GameErrorMessagePacket
+          网络连接.发送封包(new 游戏错误提示
           {
             错误代码 = 2561
           });
@@ -9349,12 +9349,12 @@ namespace GameServer.Maps
         }
         else if (ComputingClass.DateIsOnSameWeek(this.CharacterData.补给日期.V, MainProcess.CurrentTime))
         {
-          SConnection 网络连接2 = this.ActiveConnection;
+          客户网络 网络连接2 = this.ActiveConnection;
           if (网络连接2 == null)
           {
             return;
           }
-          网络连接2.SendPacket(new GameErrorMessagePacket
+          网络连接2.发送封包(new 游戏错误提示
           {
             错误代码 = 8466
           });
@@ -9362,12 +9362,12 @@ namespace GameServer.Maps
         }
         else if (this.BackpackSizeAvailable <= 0)
         {
-          SConnection 网络连接3 = this.ActiveConnection;
+          客户网络 网络连接3 = this.ActiveConnection;
           if (网络连接3 == null)
           {
             return;
           }
-          网络连接3.SendPacket(new GameErrorMessagePacket
+          网络连接3.发送封包(new 游戏错误提示
           {
             错误代码 = 1793
           });
@@ -9384,19 +9384,19 @@ namespace GameServer.Maps
               this.DoubleExp += 500000;
               this.CharacterData.DollarConsumption.V += 600L;
               this.Backpack[b] = new ItemData(模板, this.CharacterData, 1, b, 1);
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 != null)
               {
-                网络连接4.SendPacket(new 玩家物品变动
+                网络连接4.发送封包(new 玩家物品变动
                 {
                   物品描述 = this.Backpack[b].字节描述()
                 });
               }
               this.CharacterData.补给日期.V = MainProcess.CurrentTime;
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 != null)
               {
-                网络连接5.SendPacket(new SyncSupplementaryVariablesPacket
+                网络连接5.发送封包(new 同步补充变量
                 {
                   变量类型 = 1,
                   对象编号 = this.ObjectId,
@@ -9417,12 +9417,12 @@ namespace GameServer.Maps
         游戏物品 模板3;
         if (this.Ingots < 3000)
         {
-          SConnection 网络连接6 = this.ActiveConnection;
+          客户网络 网络连接6 = this.ActiveConnection;
           if (网络连接6 == null)
           {
             return;
           }
-          网络连接6.SendPacket(new GameErrorMessagePacket
+          网络连接6.发送封包(new 游戏错误提示
           {
             错误代码 = 2561
           });
@@ -9430,12 +9430,12 @@ namespace GameServer.Maps
         }
         else if (ComputingClass.DateIsOnSameWeek(this.CharacterData.战备日期.V, MainProcess.CurrentTime))
         {
-          SConnection 网络连接7 = this.ActiveConnection;
+          客户网络 网络连接7 = this.ActiveConnection;
           if (网络连接7 == null)
           {
             return;
           }
-          网络连接7.SendPacket(new GameErrorMessagePacket
+          网络连接7.发送封包(new 游戏错误提示
           {
             错误代码 = 8466
           });
@@ -9464,19 +9464,19 @@ namespace GameServer.Maps
                   this.DoubleExp += 2750000;
                   this.CharacterData.DollarConsumption.V += 3000L;
                   this.Backpack[b2] = new ItemData(模板2, this.CharacterData, 1, b2, 1);
-                  SConnection 网络连接8 = this.ActiveConnection;
+                  客户网络 网络连接8 = this.ActiveConnection;
                   if (网络连接8 != null)
                   {
-                    网络连接8.SendPacket(new 玩家物品变动
+                    网络连接8.发送封包(new 玩家物品变动
                     {
                       物品描述 = this.Backpack[b2].字节描述()
                     });
                   }
                   this.CharacterData.战备日期.V = MainProcess.CurrentTime;
-                  SConnection 网络连接9 = this.ActiveConnection;
+                  客户网络 网络连接9 = this.ActiveConnection;
                   if (网络连接9 != null)
                   {
-                    网络连接9.SendPacket(new SyncSupplementaryVariablesPacket
+                    网络连接9.发送封包(new 同步补充变量
                     {
                       变量类型 = 1,
                       对象编号 = this.ObjectId,
@@ -9487,12 +9487,12 @@ namespace GameServer.Maps
                   MainProcess.AddSystemLog(string.Format("[{0}][Level {1}] Purchased [Weekly Battle Pack], consumed [3000] GameCoins", this.ObjectName, this.CurrentLevel));
                   return;
                 }
-                SConnection 网络连接10 = this.ActiveConnection;
+                客户网络 网络连接10 = this.ActiveConnection;
                 if (网络连接10 == null)
                 {
                   return;
                 }
-                网络连接10.SendPacket(new GameErrorMessagePacket
+                网络连接10.发送封包(new 游戏错误提示
                 {
                   错误代码 = 1793
                 });
@@ -9528,19 +9528,19 @@ namespace GameServer.Maps
             this.DoubleExp += 2750000;
             this.CharacterData.DollarConsumption.V += 3000L;
             this.Backpack[b4] = new ItemData(模板2, this.CharacterData, 1, b4, 1);
-            ActiveConnection?.SendPacket(new 玩家物品变动
+            ActiveConnection?.发送封包(new 玩家物品变动
             {
               物品描述 = this.Backpack[b4].字节描述()
             });
 
             this.Backpack[b5] = new ItemData(模板3, this.CharacterData, 1, b5, 1);
-            ActiveConnection?.SendPacket(new 玩家物品变动
+            ActiveConnection?.发送封包(new 玩家物品变动
             {
               物品描述 = this.Backpack[b5].字节描述()
             });
 
             this.CharacterData.战备日期.V = MainProcess.CurrentTime;
-            ActiveConnection?.SendPacket(new SyncSupplementaryVariablesPacket
+            ActiveConnection?.发送封包(new 同步补充变量
             {
               变量类型 = 1,
               对象编号 = this.ObjectId,
@@ -9550,12 +9550,12 @@ namespace GameServer.Maps
             MainProcess.AddSystemLog(string.Format("Level [{0}][{1}] purchased [Weekly Battle Pack], consumed [3000] Game Coins", this.ObjectName, this.CurrentLevel));
             return;
           }
-          SConnection 网络连接14 = this.ActiveConnection;
+          客户网络 网络连接14 = this.ActiveConnection;
           if (网络连接14 == null)
           {
             return;
           }
-          网络连接14.SendPacket(new GameErrorMessagePacket
+          网络连接14.发送封包(new 游戏错误提示
           {
             错误代码 = 1793
           });
@@ -9564,12 +9564,12 @@ namespace GameServer.Maps
       }
       else
       {
-        SConnection 网络连接15 = this.ActiveConnection;
+        客户网络 网络连接15 = this.ActiveConnection;
         if (网络连接15 == null)
         {
           return;
         }
-        网络连接15.SendPacket(new GameErrorMessagePacket
+        网络连接15.发送封包(new 游戏错误提示
         {
           错误代码 = 8467
         });
@@ -9597,12 +9597,12 @@ namespace GameServer.Maps
       }
       if (this.Ingots < num)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 8451
         });
@@ -9621,19 +9621,19 @@ namespace GameServer.Maps
         {
           this.玩家激活特权(特权类型);
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 != null)
         {
-          网络连接2.SendPacket(new GameErrorMessagePacket
+          网络连接2.发送封包(new 游戏错误提示
           {
             错误代码 = 65548,
             第一参数 = (int)特权类型
           });
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 != null)
         {
-          网络连接3.SendPacket(new SyncPrivilegedInfoPacket
+          网络连接3.发送封包(new 同步特权信息
           {
             字节数组 = this.玛法特权描述()
           });
@@ -9657,7 +9657,7 @@ namespace GameServer.Maps
     }
 
 
-    public void BookMarfaPrivilegesPacket(byte 特权类型)
+    public void 预定玛法特权(byte 特权类型)
     {
       if (this.RemainingPrivileges[特权类型] <= 0)
       {
@@ -9676,21 +9676,21 @@ namespace GameServer.Maps
       {
         this.预定特权 = 特权类型;
       }
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 != null)
       {
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 65550,
           第一参数 = (int)this.预定特权
         });
       }
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 == null)
       {
         return;
       }
-      网络连接2.SendPacket(new SyncPrivilegedInfoPacket
+      网络连接2.发送封包(new 同步特权信息
       {
         字节数组 = this.玛法特权描述()
       });
@@ -9701,19 +9701,19 @@ namespace GameServer.Maps
     {
       if (礼包位置 >= 28)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Receive privilege pack Error: Wrong pack location"));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Receive privilege pack Error: Wrong pack location"));
         return;
       }
       if (特权类型 == 1)
       {
         if (this.CurrentPrivileges != 3 && this.CurrentPrivileges != 4)
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new GameErrorMessagePacket
+          网络连接.发送封包(new 游戏错误提示
           {
             错误代码 = 65556
           });
@@ -9721,12 +9721,12 @@ namespace GameServer.Maps
         }
         else if ((MainProcess.CurrentTime.Date.AddDays(1.0) - this.CurrentIssueDate.Date).TotalDays < (double)礼包位置)
         {
-          SConnection 网络连接2 = this.ActiveConnection;
+          客户网络 网络连接2 = this.ActiveConnection;
           if (网络连接2 == null)
           {
             return;
           }
-          网络连接2.SendPacket(new GameErrorMessagePacket
+          网络连接2.发送封包(new 游戏错误提示
           {
             错误代码 = 65547
           });
@@ -9734,12 +9734,12 @@ namespace GameServer.Maps
         }
         else if (((ulong)this.本期记录 & (ulong)(1L << (int)(礼包位置 & 31))) == 0UL)
         {
-          SConnection 网络连接3 = this.ActiveConnection;
+          客户网络 网络连接3 = this.ActiveConnection;
           if (网络连接3 == null)
           {
             return;
           }
-          网络连接3.SendPacket(new GameErrorMessagePacket
+          网络连接3.发送封包(new 游戏错误提示
           {
             错误代码 = 65546
           });
@@ -9751,10 +9751,10 @@ namespace GameServer.Maps
           if (num == 0)
           {
             this.本期记录 &= ~(1U << (int)礼包位置);
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 != null)
             {
-              网络连接4.SendPacket(new SyncPrivilegedInfoPacket
+              网络连接4.发送封包(new 同步特权信息
               {
                 字节数组 = this.玛法特权描述()
               });
@@ -9778,12 +9778,12 @@ namespace GameServer.Maps
               IL_181:
                 if (b == 255)
                 {
-                  SConnection 网络连接5 = this.ActiveConnection;
+                  客户网络 网络连接5 = this.ActiveConnection;
                   if (网络连接5 == null)
                   {
                     return;
                   }
-                  网络连接5.SendPacket(new GameErrorMessagePacket
+                  网络连接5.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -9797,21 +9797,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.本期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接6 = this.ActiveConnection;
+                  客户网络 网络连接6 = this.ActiveConnection;
                   if (网络连接6 != null)
                   {
-                    网络连接6.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接6.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b] = new ItemData(模板, this.CharacterData, 1, b, 1);
-                  SConnection 网络连接7 = this.ActiveConnection;
+                  客户网络 网络连接7 = this.ActiveConnection;
                   if (网络连接7 == null)
                   {
                     return;
                   }
-                  网络连接7.SendPacket(new 玩家物品变动
+                  网络连接7.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b].字节描述()
                   });
@@ -9837,12 +9837,12 @@ namespace GameServer.Maps
               IL_28C:
                 if (b3 == 255)
                 {
-                  SConnection 网络连接8 = this.ActiveConnection;
+                  客户网络 网络连接8 = this.ActiveConnection;
                   if (网络连接8 == null)
                   {
                     return;
                   }
-                  网络连接8.SendPacket(new GameErrorMessagePacket
+                  网络连接8.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -9856,21 +9856,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.本期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接9 = this.ActiveConnection;
+                  客户网络 网络连接9 = this.ActiveConnection;
                   if (网络连接9 != null)
                   {
-                    网络连接9.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接9.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b3] = new ItemData(模板2, this.CharacterData, 1, b3, 50);
-                  SConnection 网络连接10 = this.ActiveConnection;
+                  客户网络 网络连接10 = this.ActiveConnection;
                   if (网络连接10 == null)
                   {
                     return;
                   }
-                  网络连接10.SendPacket(new 玩家物品变动
+                  网络连接10.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b3].字节描述()
                   });
@@ -9896,12 +9896,12 @@ namespace GameServer.Maps
               IL_389:
                 if (b5 == 255)
                 {
-                  SConnection 网络连接11 = this.ActiveConnection;
+                  客户网络 网络连接11 = this.ActiveConnection;
                   if (网络连接11 == null)
                   {
                     return;
                   }
-                  网络连接11.SendPacket(new GameErrorMessagePacket
+                  网络连接11.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -9915,21 +9915,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.本期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接12 = this.ActiveConnection;
+                  客户网络 网络连接12 = this.ActiveConnection;
                   if (网络连接12 != null)
                   {
-                    网络连接12.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接12.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b5] = new ItemData(模板3, this.CharacterData, 1, b5, 1);
-                  SConnection 网络连接13 = this.ActiveConnection;
+                  客户网络 网络连接13 = this.ActiveConnection;
                   if (网络连接13 == null)
                   {
                     return;
                   }
-                  网络连接13.SendPacket(new 玩家物品变动
+                  网络连接13.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b5].字节描述()
                   });
@@ -9955,12 +9955,12 @@ namespace GameServer.Maps
               IL_493:
                 if (b7 == 255)
                 {
-                  SConnection 网络连接14 = this.ActiveConnection;
+                  客户网络 网络连接14 = this.ActiveConnection;
                   if (网络连接14 == null)
                   {
                     return;
                   }
-                  网络连接14.SendPacket(new GameErrorMessagePacket
+                  网络连接14.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -9974,21 +9974,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.本期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接15 = this.ActiveConnection;
+                  客户网络 网络连接15 = this.ActiveConnection;
                   if (网络连接15 != null)
                   {
-                    网络连接15.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接15.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b7] = new ItemData(模板4, this.CharacterData, 1, b7, (this.CurrentPrivileges == 3) ? 1 : 2);
-                  SConnection 网络连接16 = this.ActiveConnection;
+                  客户网络 网络连接16 = this.ActiveConnection;
                   if (网络连接16 == null)
                   {
                     return;
                   }
-                  网络连接16.SendPacket(new 玩家物品变动
+                  网络连接16.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b7].字节描述()
                   });
@@ -10014,12 +10014,12 @@ namespace GameServer.Maps
               IL_596:
                 if (b9 == 255)
                 {
-                  SConnection 网络连接17 = this.ActiveConnection;
+                  客户网络 网络连接17 = this.ActiveConnection;
                   if (网络连接17 == null)
                   {
                     return;
                   }
-                  网络连接17.SendPacket(new GameErrorMessagePacket
+                  网络连接17.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -10033,21 +10033,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.本期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接18 = this.ActiveConnection;
+                  客户网络 网络连接18 = this.ActiveConnection;
                   if (网络连接18 != null)
                   {
-                    网络连接18.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接18.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b9] = new ItemData(模板5, this.CharacterData, 1, b9, (this.CurrentPrivileges == 3) ? 1 : 2);
-                  SConnection 网络连接19 = this.ActiveConnection;
+                  客户网络 网络连接19 = this.ActiveConnection;
                   if (网络连接19 == null)
                   {
                     return;
                   }
-                  网络连接19.SendPacket(new 玩家物品变动
+                  网络连接19.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b9].字节描述()
                   });
@@ -10073,12 +10073,12 @@ namespace GameServer.Maps
               IL_69E:
                 if (b11 == 255)
                 {
-                  SConnection 网络连接20 = this.ActiveConnection;
+                  客户网络 网络连接20 = this.ActiveConnection;
                   if (网络连接20 == null)
                   {
                     return;
                   }
-                  网络连接20.SendPacket(new GameErrorMessagePacket
+                  网络连接20.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -10092,21 +10092,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.本期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接21 = this.ActiveConnection;
+                  客户网络 网络连接21 = this.ActiveConnection;
                   if (网络连接21 != null)
                   {
-                    网络连接21.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接21.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b11] = new ItemData(模板6, this.CharacterData, 1, b11, (this.CurrentPrivileges == 3) ? 2 : 4);
-                  SConnection 网络连接22 = this.ActiveConnection;
+                  客户网络 网络连接22 = this.ActiveConnection;
                   if (网络连接22 == null)
                   {
                     return;
                   }
-                  网络连接22.SendPacket(new 玩家物品变动
+                  网络连接22.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b11].字节描述()
                   });
@@ -10122,12 +10122,12 @@ namespace GameServer.Maps
       {
         if (this.PreviousPrivilege != 3 && this.PreviousPrivilege != 4)
         {
-          SConnection 网络连接23 = this.ActiveConnection;
+          客户网络 网络连接23 = this.ActiveConnection;
           if (网络连接23 == null)
           {
             return;
           }
-          网络连接23.SendPacket(new GameErrorMessagePacket
+          网络连接23.发送封包(new 游戏错误提示
           {
             错误代码 = 65556
           });
@@ -10135,12 +10135,12 @@ namespace GameServer.Maps
         }
         else if (((ulong)this.上期记录 & (ulong)(1L << (int)(礼包位置 & 31))) == 0UL)
         {
-          SConnection 网络连接24 = this.ActiveConnection;
+          客户网络 网络连接24 = this.ActiveConnection;
           if (网络连接24 == null)
           {
             return;
           }
-          网络连接24.SendPacket(new GameErrorMessagePacket
+          网络连接24.发送封包(new 游戏错误提示
           {
             错误代码 = 65546
           });
@@ -10152,10 +10152,10 @@ namespace GameServer.Maps
           if (num2 == 0)
           {
             this.上期记录 &= ~(1U << (int)礼包位置);
-            SConnection 网络连接25 = this.ActiveConnection;
+            客户网络 网络连接25 = this.ActiveConnection;
             if (网络连接25 != null)
             {
-              网络连接25.SendPacket(new SyncPrivilegedInfoPacket
+              网络连接25.发送封包(new 同步特权信息
               {
                 字节数组 = this.玛法特权描述()
               });
@@ -10179,12 +10179,12 @@ namespace GameServer.Maps
               IL_86E:
                 if (b13 == 255)
                 {
-                  SConnection 网络连接26 = this.ActiveConnection;
+                  客户网络 网络连接26 = this.ActiveConnection;
                   if (网络连接26 == null)
                   {
                     return;
                   }
-                  网络连接26.SendPacket(new GameErrorMessagePacket
+                  网络连接26.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -10198,21 +10198,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.上期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接27 = this.ActiveConnection;
+                  客户网络 网络连接27 = this.ActiveConnection;
                   if (网络连接27 != null)
                   {
-                    网络连接27.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接27.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b13] = new ItemData(模板7, this.CharacterData, 1, b13, 1);
-                  SConnection 网络连接28 = this.ActiveConnection;
+                  客户网络 网络连接28 = this.ActiveConnection;
                   if (网络连接28 == null)
                   {
                     return;
                   }
-                  网络连接28.SendPacket(new 玩家物品变动
+                  网络连接28.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b13].字节描述()
                   });
@@ -10238,12 +10238,12 @@ namespace GameServer.Maps
               IL_97A:
                 if (b15 == 255)
                 {
-                  SConnection 网络连接29 = this.ActiveConnection;
+                  客户网络 网络连接29 = this.ActiveConnection;
                   if (网络连接29 == null)
                   {
                     return;
                   }
-                  网络连接29.SendPacket(new GameErrorMessagePacket
+                  网络连接29.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -10257,21 +10257,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.上期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接30 = this.ActiveConnection;
+                  客户网络 网络连接30 = this.ActiveConnection;
                   if (网络连接30 != null)
                   {
-                    网络连接30.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接30.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b15] = new ItemData(模板8, this.CharacterData, 1, b15, 50);
-                  SConnection 网络连接31 = this.ActiveConnection;
+                  客户网络 网络连接31 = this.ActiveConnection;
                   if (网络连接31 == null)
                   {
                     return;
                   }
-                  网络连接31.SendPacket(new 玩家物品变动
+                  网络连接31.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b15].字节描述()
                   });
@@ -10297,12 +10297,12 @@ namespace GameServer.Maps
               IL_A77:
                 if (b17 == 255)
                 {
-                  SConnection 网络连接32 = this.ActiveConnection;
+                  客户网络 网络连接32 = this.ActiveConnection;
                   if (网络连接32 == null)
                   {
                     return;
                   }
-                  网络连接32.SendPacket(new GameErrorMessagePacket
+                  网络连接32.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -10316,21 +10316,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.上期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接33 = this.ActiveConnection;
+                  客户网络 网络连接33 = this.ActiveConnection;
                   if (网络连接33 != null)
                   {
-                    网络连接33.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接33.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b17] = new ItemData(模板9, this.CharacterData, 1, b17, 1);
-                  SConnection 网络连接34 = this.ActiveConnection;
+                  客户网络 网络连接34 = this.ActiveConnection;
                   if (网络连接34 == null)
                   {
                     return;
                   }
-                  网络连接34.SendPacket(new 玩家物品变动
+                  网络连接34.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b17].字节描述()
                   });
@@ -10356,12 +10356,12 @@ namespace GameServer.Maps
               IL_B83:
                 if (b19 == 255)
                 {
-                  SConnection 网络连接35 = this.ActiveConnection;
+                  客户网络 网络连接35 = this.ActiveConnection;
                   if (网络连接35 == null)
                   {
                     return;
                   }
-                  网络连接35.SendPacket(new GameErrorMessagePacket
+                  网络连接35.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -10375,21 +10375,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.上期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接36 = this.ActiveConnection;
+                  客户网络 网络连接36 = this.ActiveConnection;
                   if (网络连接36 != null)
                   {
-                    网络连接36.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接36.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b19] = new ItemData(模板10, this.CharacterData, 1, b19, (this.PreviousPrivilege == 3) ? 1 : 2);
-                  SConnection 网络连接37 = this.ActiveConnection;
+                  客户网络 网络连接37 = this.ActiveConnection;
                   if (网络连接37 == null)
                   {
                     return;
                   }
-                  网络连接37.SendPacket(new 玩家物品变动
+                  网络连接37.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b19].字节描述()
                   });
@@ -10415,12 +10415,12 @@ namespace GameServer.Maps
               IL_C8B:
                 if (b21 == 255)
                 {
-                  SConnection 网络连接38 = this.ActiveConnection;
+                  客户网络 网络连接38 = this.ActiveConnection;
                   if (网络连接38 == null)
                   {
                     return;
                   }
-                  网络连接38.SendPacket(new GameErrorMessagePacket
+                  网络连接38.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -10434,21 +10434,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.上期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接39 = this.ActiveConnection;
+                  客户网络 网络连接39 = this.ActiveConnection;
                   if (网络连接39 != null)
                   {
-                    网络连接39.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接39.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b21] = new ItemData(模板11, this.CharacterData, 1, b21, (this.PreviousPrivilege == 3) ? 1 : 2);
-                  SConnection 网络连接40 = this.ActiveConnection;
+                  客户网络 网络连接40 = this.ActiveConnection;
                   if (网络连接40 == null)
                   {
                     return;
                   }
-                  网络连接40.SendPacket(new 玩家物品变动
+                  网络连接40.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b21].字节描述()
                   });
@@ -10474,12 +10474,12 @@ namespace GameServer.Maps
               IL_D93:
                 if (b23 == 255)
                 {
-                  SConnection 网络连接41 = this.ActiveConnection;
+                  客户网络 网络连接41 = this.ActiveConnection;
                   if (网络连接41 == null)
                   {
                     return;
                   }
-                  网络连接41.SendPacket(new GameErrorMessagePacket
+                  网络连接41.发送封包(new 游戏错误提示
                   {
                     错误代码 = 6459
                   });
@@ -10493,21 +10493,21 @@ namespace GameServer.Maps
                     return;
                   }
                   this.上期记录 &= ~(1U << (int)礼包位置);
-                  SConnection 网络连接42 = this.ActiveConnection;
+                  客户网络 网络连接42 = this.ActiveConnection;
                   if (网络连接42 != null)
                   {
-                    网络连接42.SendPacket(new SyncPrivilegedInfoPacket
+                    网络连接42.发送封包(new 同步特权信息
                     {
                       字节数组 = this.玛法特权描述()
                     });
                   }
                   this.Backpack[b23] = new ItemData(模板12, this.CharacterData, 1, b23, (this.PreviousPrivilege == 3) ? 2 : 4);
-                  SConnection 网络连接43 = this.ActiveConnection;
+                  客户网络 网络连接43 = this.ActiveConnection;
                   if (网络连接43 == null)
                   {
                     return;
                   }
-                  网络连接43.SendPacket(new 玩家物品变动
+                  网络连接43.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b23].字节描述()
                   });
@@ -10521,12 +10521,12 @@ namespace GameServer.Maps
       }
       else
       {
-        SConnection 网络连接44 = this.ActiveConnection;
+        客户网络 网络连接44 = this.ActiveConnection;
         if (网络连接44 == null)
         {
           return;
         }
-        网络连接44.SendPacket(new GameErrorMessagePacket
+        网络连接44.发送封包(new 游戏错误提示
         {
           错误代码 = 65556
         });
@@ -10539,12 +10539,12 @@ namespace GameServer.Maps
       游戏称号 游戏称号;
       if (!this.AvailableTitles.ContainsKey(Id))
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 5377
         });
@@ -10552,12 +10552,12 @@ namespace GameServer.Maps
       }
       else if (!游戏称号.DataSheet.TryGetValue(Id, out 游戏称号))
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 5378
         });
@@ -10577,10 +10577,10 @@ namespace GameServer.Maps
           this.更新玩家战力();
           this.StatsBonus[Id] = 游戏称号.称号属性;
           this.RefreshStats();
-          SConnection 网络连接3 = this.ActiveConnection;
+          客户网络 网络连接3 = this.ActiveConnection;
           if (网络连接3 != null)
           {
-            网络连接3.SendPacket(new GameErrorMessagePacket
+            网络连接3.发送封包(new 游戏错误提示
             {
               错误代码 = 1500,
               第一参数 = (int)Id
@@ -10593,12 +10593,12 @@ namespace GameServer.Maps
           });
           return;
         }
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 == null)
         {
           return;
         }
-        网络连接4.SendPacket(new 同步装配称号
+        网络连接4.发送封包(new 同步装配称号
         {
           对象编号 = this.ObjectId,
           Id = Id
@@ -10672,10 +10672,10 @@ namespace GameServer.Maps
             this.Backpack[b2].当前位置 = b2;
             b2 += 1;
           }
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 != null)
           {
-            网络连接.SendPacket(new SyncBackpackInfoPacket
+            网络连接.发送封包(new 同步背包信息
             {
               物品描述 = this.背包物品描述()
             });
@@ -10719,12 +10719,12 @@ namespace GameServer.Maps
             this.Warehouse[b4].当前位置 = b4;
             b4 += 1;
           }
-          SConnection 网络连接2 = this.ActiveConnection;
+          客户网络 网络连接2 = this.ActiveConnection;
           if (网络连接2 == null)
           {
             return;
           }
-          网络连接2.SendPacket(new SyncBackpackInfoPacket
+          网络连接2.发送封包(new 同步背包信息
           {
             物品描述 = this.仓库物品描述()
           });
@@ -10742,12 +10742,12 @@ namespace GameServer.Maps
       }
       if (物品.物品绑定 && !物品.物品归属.Contains(this.CharacterData))
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 2310
         });
@@ -10755,12 +10755,12 @@ namespace GameServer.Maps
       }
       else if (物品.物品归属.Count != 0 && !物品.物品归属.Contains(this.CharacterData) && MainProcess.CurrentTime < 物品.归属时间)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 2307
         });
@@ -10768,12 +10768,12 @@ namespace GameServer.Maps
       }
       else if (物品.Weight != 0 && 物品.Weight > this.最大负重 - this.背包重量)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 1863
         });
@@ -10781,12 +10781,12 @@ namespace GameServer.Maps
       }
       else if (物品.默认持久 != 0 && this.BackpackSizeAvailable <= 0)
       {
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 == null)
         {
           return;
         }
-        网络连接4.SendPacket(new GameErrorMessagePacket
+        网络连接4.发送封包(new 游戏错误提示
         {
           错误代码 = 1793
         });
@@ -10796,10 +10796,10 @@ namespace GameServer.Maps
       {
         if (物品.Id == 1)
         {
-          SConnection 网络连接5 = this.ActiveConnection;
+          客户网络 网络连接5 = this.ActiveConnection;
           if (网络连接5 != null)
           {
-            网络连接5.SendPacket(new 玩家拾取金币
+            网络连接5.发送封包(new 玩家拾取金币
             {
               NumberGoldCoins = 物品.堆叠数量
             });
@@ -10839,21 +10839,21 @@ namespace GameServer.Maps
               }
             }
 
-            ActiveConnection?.SendPacket(new 玩家物品变动
+            ActiveConnection?.发送封包(new 玩家物品变动
             {
               物品描述 = this.Backpack[b].字节描述()
             });
 
-            ActiveConnection?.SendPacket(new PlayersPickupItemPacket
+            ActiveConnection?.发送封包(new 玩家拾取物品
             {
-              ObjectId = this.ObjectId,
-              ItemData = this.Backpack[b].字节描述(),
+              角色编号 = this.ObjectId,
+              物品描述 = this.Backpack[b].字节描述(),
             });
 
             // TODO: Complete Reward after pickup chest scroll
             if (this.Backpack[b].Id == 90178)
             {
-              ActiveConnection?.SendPacket(new UnknownS4
+              ActiveConnection?.发送封包(new UnknownS4
               {
                 U1 = 11,
                 U2 = 10
@@ -10888,12 +10888,12 @@ namespace GameServer.Maps
             new ItemObject(ItemData.物品模板, ItemData, this.CurrentMap, this.CurrentPosition, new HashSet<CharacterData>(), 0, false);
           }
           this.Backpack.Remove(ItemData.物品位置.V);
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new 删除玩家物品
+          网络连接.发送封包(new 删除玩家物品
           {
             背包类型 = 背包类型,
             物品位置 = 物品位置
@@ -10913,21 +10913,21 @@ namespace GameServer.Maps
         if (当前背包 == 1 && this.Backpack.TryGetValue(物品位置, out ItemData) && 目标背包 == 1 && 目标位置 < this.BackpackSize && ItemData != null && ItemData.PersistType == PersistentItemType.堆叠 && ItemData.当前持久.V > (int)拆分数量 && !this.Backpack.TryGetValue(目标位置, out ItemData2))
         {
           ItemData.当前持久.V -= (int)拆分数量;
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 != null)
           {
-            网络连接.SendPacket(new 玩家物品变动
+            网络连接.发送封包(new 玩家物品变动
             {
               物品描述 = ItemData.字节描述()
             });
           }
           this.Backpack[目标位置] = new ItemData(ItemData.物品模板, this.CharacterData, 目标背包, 目标位置, (int)拆分数量);
-          SConnection 网络连接2 = this.ActiveConnection;
+          客户网络 网络连接2 = this.ActiveConnection;
           if (网络连接2 == null)
           {
             return;
           }
-          网络连接2.SendPacket(new 玩家物品变动
+          网络连接2.发送封包(new 玩家物品变动
           {
             物品描述 = this.Backpack[目标位置].字节描述()
           });
@@ -10943,7 +10943,7 @@ namespace GameServer.Maps
       {
         if (背包类型 != 1)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Bug: Player breaking down an item.  Error: Wrong type of backpack."));
+          this.ActiveConnection.尝试断开连接(new Exception("Bug: Player breaking down an item.  Error: Wrong type of backpack."));
           return;
         }
         ItemData ItemData;
@@ -10964,12 +10964,12 @@ namespace GameServer.Maps
             this.CharacterData.分解经验.V += num;
             this.Backpack.Remove(EquipmentData.当前位置);
             EquipmentData.Delete();
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 删除玩家物品
+            网络连接.发送封包(new 删除玩家物品
             {
               背包类型 = 背包类型,
               物品位置 = 物品位置
@@ -10977,12 +10977,12 @@ namespace GameServer.Maps
           }
           return;
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 1802
         });
@@ -10990,12 +10990,12 @@ namespace GameServer.Maps
       }
       else
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 1877
         });
@@ -11004,7 +11004,7 @@ namespace GameServer.Maps
     }
 
 
-    public void TransferItem(byte fromStorageType, byte fromStoragePosition, byte toStorageType, byte toStoragePosition)
+    public void 转移物品(byte fromStorageType, byte fromStoragePosition, byte toStorageType, byte toStoragePosition)
     {
       if (this.Died || this.ParalysisState > 0 || this.交易状态 >= 3)
         return;
@@ -11260,7 +11260,7 @@ namespace GameServer.Maps
         destItem.当前持久.V += num3;
         sourceItem.当前持久.V -= num3;
 
-        ActiveConnection?.SendPacket(new 玩家物品变动
+        ActiveConnection?.发送封包(new 玩家物品变动
         {
           物品描述 = destItem.字节描述()
         });
@@ -11281,7 +11281,7 @@ namespace GameServer.Maps
               break;
           }
 
-          ActiveConnection?.SendPacket(new 删除玩家物品
+          ActiveConnection?.发送封包(new 删除玩家物品
           {
             背包类型 = fromStorageType,
             物品位置 = fromStoragePosition
@@ -11289,7 +11289,7 @@ namespace GameServer.Maps
         }
         else
         {
-          ActiveConnection?.SendPacket(new 玩家物品变动
+          ActiveConnection?.发送封包(new 玩家物品变动
           {
             物品描述 = sourceItem.字节描述()
           });
@@ -11377,7 +11377,7 @@ namespace GameServer.Maps
           }
         }
 
-        ActiveConnection?.SendPacket(new 玩家转移物品
+        ActiveConnection?.发送封包(new 玩家转移物品
         {
           原有容器 = fromStorageType,
           目标容器 = toStorageType,
@@ -11422,7 +11422,7 @@ namespace GameServer.Maps
     {
       if (BackpackSize - Backpack.Count < 5)
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1793
         });
@@ -11440,7 +11440,7 @@ namespace GameServer.Maps
         if (!Backpack.ContainsKey(b21))
         {
           Backpack[b21] = new ItemData(drugItem, CharacterData, 1, b21, 1);
-          ActiveConnection?.SendPacket(new 玩家物品变动
+          ActiveConnection?.发送封包(new 玩家物品变动
           {
             物品描述 = Backpack[b21].字节描述()
           });
@@ -11462,7 +11462,7 @@ namespace GameServer.Maps
       }
       else
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 776
         });
@@ -11474,7 +11474,7 @@ namespace GameServer.Maps
     {
       if (!CharacterData.TryGetFreeSpaceAtInventory(out byte inventoryLocation))
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1825
         });
@@ -11525,7 +11525,7 @@ namespace GameServer.Maps
 
                 Backpack[inventoryLocation] = newItem;
 
-                ActiveConnection?.SendPacket(new 玩家物品变动
+                ActiveConnection?.发送封包(new 玩家物品变动
                 {
                   物品描述 = Backpack[inventoryLocation].字节描述()
                 });
@@ -11573,7 +11573,7 @@ namespace GameServer.Maps
     {
       if (!Equipment.TryGetValue(0, out var v5))
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1927
         });
@@ -11581,7 +11581,7 @@ namespace GameServer.Maps
       }
       if (v5.Luck.V >= 7)
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1843
         });
@@ -11606,11 +11606,11 @@ namespace GameServer.Maps
       if (num3 < num2)
       {
         v5.Luck.V++;
-        ActiveConnection?.SendPacket(new 玩家物品变动
+        ActiveConnection?.发送封包(new 玩家物品变动
         {
           物品描述 = v5.字节描述()
         });
-        ActiveConnection?.SendPacket(new 武器幸运变化
+        ActiveConnection?.发送封包(new 武器幸运变化
         {
           幸运变化 = 1
         });
@@ -11624,11 +11624,11 @@ namespace GameServer.Maps
       else if (num3 >= 95 && v5.Luck.V > -9)
       {
         v5.Luck.V--;
-        ActiveConnection?.SendPacket(new 玩家物品变动
+        ActiveConnection?.发送封包(new 玩家物品变动
         {
           物品描述 = v5.字节描述()
         });
-        ActiveConnection?.SendPacket(new 武器幸运变化
+        ActiveConnection?.发送封包(new 武器幸运变化
         {
           幸运变化 = -1
         });
@@ -11637,7 +11637,7 @@ namespace GameServer.Maps
       }
       else
       {
-        ActiveConnection?.SendPacket(new 武器幸运变化
+        ActiveConnection?.发送封包(new 武器幸运变化
         {
           幸运变化 = 0
         });
@@ -11649,7 +11649,7 @@ namespace GameServer.Maps
     {
       if (!Equipment.TryGetValue(0, out var v5))
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1927
         });
@@ -11657,7 +11657,7 @@ namespace GameServer.Maps
       }
       if (v5.Luck.V >= 7)
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1843
         });
@@ -11682,11 +11682,11 @@ namespace GameServer.Maps
       if (num3 < num2)
       {
         v5.Luck.V++;
-        ActiveConnection?.SendPacket(new 玩家物品变动
+        ActiveConnection?.发送封包(new 玩家物品变动
         {
           物品描述 = v5.字节描述()
         });
-        ActiveConnection?.SendPacket(new 武器幸运变化
+        ActiveConnection?.发送封包(new 武器幸运变化
         {
           幸运变化 = 1
         });
@@ -11700,11 +11700,11 @@ namespace GameServer.Maps
       else if (num3 >= 95 && v5.Luck.V > -9)
       {
         v5.Luck.V--;
-        ActiveConnection?.SendPacket(new 玩家物品变动
+        ActiveConnection?.发送封包(new 玩家物品变动
         {
           物品描述 = v5.字节描述()
         });
-        ActiveConnection?.SendPacket(new 武器幸运变化
+        ActiveConnection?.发送封包(new 武器幸运变化
         {
           幸运变化 = -1
         });
@@ -11713,7 +11713,7 @@ namespace GameServer.Maps
       }
       else
       {
-        ActiveConnection?.SendPacket(new 武器幸运变化
+        ActiveConnection?.发送封包(new 武器幸运变化
         {
           幸运变化 = 0
         });
@@ -11725,7 +11725,7 @@ namespace GameServer.Maps
     {
       if (!Equipment.TryGetValue(0, out var v4))
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1927
         });
@@ -11733,7 +11733,7 @@ namespace GameServer.Maps
       }
       if (!v4.双铭文栏.V)
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1926
         });
@@ -11758,12 +11758,12 @@ namespace GameServer.Maps
         玩家装卸铭文(v4.第二铭文.技能编号, v4.第二铭文.铭文编号);
       }
 
-      ActiveConnection?.SendPacket(new 玩家物品变动
+      ActiveConnection?.发送封包(new 玩家物品变动
       {
         物品描述 = v4.字节描述()
       });
 
-      ActiveConnection?.SendPacket(new DoubleInscriptionPositionSwitchPacket
+      ActiveConnection?.发送封包(new 双铭文位切换
       {
         当前栏位 = v4.当前铭栏.V,
         第一铭文 = (v4.第一铭文?.Index ?? 0),
@@ -11783,9 +11783,9 @@ namespace GameServer.Maps
 
       CharacterData.Mounts.Add(mountId);
 
-      ActiveConnection.SendPacket(new SyncMountDataPacket { MountData = GetMountData() });
+      ActiveConnection.发送封包(new 同步坐骑数据 { MountData = GetMountData() });
 
-      SyncSelectedMount(mountId);
+      玩家选中坐骑(mountId);
     }
 
     public bool ProcessConsumableAdquireMount(ItemData item)
@@ -11861,7 +11861,7 @@ namespace GameServer.Maps
         if (item.GroupId > 0 && item.GroupCooling > 0)
         {
           Coolings[item.GroupId | 0] = MainProcess.CurrentTime.AddMilliseconds(item.GroupCooling);
-          ActiveConnection?.SendPacket(new AddedSkillCooldownPacket
+          ActiveConnection?.发送封包(new 添加技能冷却
           {
             CoolingId = (item.GroupId | 0),
             Cooldown = item.GroupCooling
@@ -11870,7 +11870,7 @@ namespace GameServer.Maps
         if (item.Cooldown > 0)
         {
           Coolings[item.Id | 0x2000000] = MainProcess.CurrentTime.AddMilliseconds(item.Cooldown);
-          ActiveConnection?.SendPacket(new AddedSkillCooldownPacket
+          ActiveConnection?.发送封包(new 添加技能冷却
           {
             CoolingId = (item.Id | 0x2000000),
             Cooldown = item.Cooldown
@@ -11881,18 +11881,18 @@ namespace GameServer.Maps
       }
     }
 
-    public void UseItem(byte backpackType, byte itemPosition)
+    public void 使用物品(byte backpackType, byte itemPosition)
     {
       if (!Died && ParalysisState <= 0 && 交易状态 < 3)
       {
         if (backpackType != 1)
         {
-          ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player using an item.  Error: Wrong type of backpack."));
+          ActiveConnection.尝试断开连接(new Exception("Wrong action: Player using an item.  Error: Wrong type of backpack."));
           return;
         }
         if (!Backpack.TryGetValue(itemPosition, out var v))
         {
-          ActiveConnection?.SendPacket(new GameErrorMessagePacket
+          ActiveConnection?.发送封包(new 游戏错误提示
           {
             错误代码 = 1802
           });
@@ -11900,22 +11900,22 @@ namespace GameServer.Maps
         }
         if (CurrentLevel < v.NeedLevel)
         {
-          ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player using an item.  Error: Level cannot be used."));
+          ActiveConnection.尝试断开连接(new Exception("Wrong action: Player using an item.  Error: Level cannot be used."));
           return;
         }
         if (v.NeedRace != GameObjectRace.通用 && CharRole != v.NeedRace)
         {
-          ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player using an item.  Error: Gender is not available."));
+          ActiveConnection.尝试断开连接(new Exception("Wrong action: Player using an item.  Error: Gender is not available."));
           return;
         }
         if (v.NeedRace != GameObjectRace.通用 && CharRole != v.NeedRace)
         {
-          ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player uses an item.  Error: Occupation cannot be used."));
+          ActiveConnection.尝试断开连接(new Exception("Error: Player uses an item.  Error: Occupation cannot be used."));
           return;
         }
         if (Coolings.TryGetValue(v.Id | 0x2000000, out var v2) && MainProcess.CurrentTime < v2)
         {
-          ActiveConnection?.SendPacket(new GameErrorMessagePacket
+          ActiveConnection?.发送封包(new 游戏错误提示
           {
             错误代码 = 1825
           });
@@ -11923,7 +11923,7 @@ namespace GameServer.Maps
         }
         if (v.GroupId > 0 && Coolings.TryGetValue(v.GroupId | 0, out var v3) && MainProcess.CurrentTime < v3)
         {
-          ActiveConnection?.SendPacket(new GameErrorMessagePacket
+          ActiveConnection?.发送封包(new 游戏错误提示
           {
             错误代码 = 1825
           });
@@ -11934,7 +11934,7 @@ namespace GameServer.Maps
       }
       else
       {
-        ActiveConnection?.SendPacket(new GameErrorMessagePacket
+        ActiveConnection?.发送封包(new 游戏错误提示
         {
           错误代码 = 1877
         });
@@ -11963,12 +11963,12 @@ namespace GameServer.Maps
         ItemData 当前物品;
         if (EquipmentData == null)
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new GameErrorMessagePacket
+          网络连接.发送封包(new 游戏错误提示
           {
             错误代码 = 1802
           });
@@ -11976,12 +11976,12 @@ namespace GameServer.Maps
         }
         else if (!EquipmentData.CanRepair)
         {
-          SConnection 网络连接2 = this.ActiveConnection;
+          客户网络 网络连接2 = this.ActiveConnection;
           if (网络连接2 == null)
           {
             return;
           }
-          网络连接2.SendPacket(new GameErrorMessagePacket
+          网络连接2.发送封包(new 游戏错误提示
           {
             错误代码 = 1814
           });
@@ -11989,12 +11989,12 @@ namespace GameServer.Maps
         }
         else if (EquipmentData.最大持久.V >= EquipmentData.默认持久 * 2)
         {
-          SConnection 网络连接3 = this.ActiveConnection;
+          客户网络 网络连接3 = this.ActiveConnection;
           if (网络连接3 == null)
           {
             return;
           }
-          网络连接3.SendPacket(new GameErrorMessagePacket
+          网络连接3.发送封包(new 游戏错误提示
           {
             错误代码 = 1953
           });
@@ -12002,12 +12002,12 @@ namespace GameServer.Maps
         }
         else if (!this.查找背包物品(110012, out 当前物品))
         {
-          SConnection 网络连接4 = this.ActiveConnection;
+          客户网络 网络连接4 = this.ActiveConnection;
           if (网络连接4 == null)
           {
             return;
           }
-          网络连接4.SendPacket(new GameErrorMessagePacket
+          网络连接4.发送封包(new 游戏错误提示
           {
             错误代码 = 1802
           });
@@ -12019,20 +12019,20 @@ namespace GameServer.Maps
           if (ComputingClass.CheckProbability(1f - (float)EquipmentData.最大持久.V * 0.5f / (float)EquipmentData.默认持久))
           {
             EquipmentData.最大持久.V += 1000;
-            SConnection 网络连接5 = this.ActiveConnection;
+            客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 != null)
             {
-              网络连接5.SendPacket(new FixMaxPersistentPacket
+              网络连接5.发送封包(new 修复最大持久
               {
                 修复失败 = false
               });
             }
-            SConnection 网络连接6 = this.ActiveConnection;
+            客户网络 网络连接6 = this.ActiveConnection;
             if (网络连接6 == null)
             {
               return;
             }
-            网络连接6.SendPacket(new 玩家物品变动
+            网络连接6.发送封包(new 玩家物品变动
             {
               物品描述 = EquipmentData.字节描述()
             });
@@ -12040,12 +12040,12 @@ namespace GameServer.Maps
           }
           else
           {
-            SConnection 网络连接7 = this.ActiveConnection;
+            客户网络 网络连接7 = this.ActiveConnection;
             if (网络连接7 == null)
             {
               return;
             }
-            网络连接7.SendPacket(new FixMaxPersistentPacket
+            网络连接7.发送封包(new 修复最大持久
             {
               修复失败 = true
             });
@@ -12055,12 +12055,12 @@ namespace GameServer.Maps
       }
       else
       {
-        SConnection 网络连接8 = this.ActiveConnection;
+        客户网络 网络连接8 = this.ActiveConnection;
         if (网络连接8 == null)
         {
           return;
         }
-        网络连接8.SendPacket(new GameErrorMessagePacket
+        网络连接8.发送封包(new 游戏错误提示
         {
           错误代码 = 1877
         });
@@ -12101,12 +12101,12 @@ namespace GameServer.Maps
           this.Backpack.Remove(物品位置);
           游戏商店.SellItem(ItemData);
           this.NumberGoldCoins += ItemData.SalePrice;
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new 删除玩家物品
+          网络连接.发送封包(new 删除玩家物品
           {
             背包类型 = 背包类型,
             物品位置 = 物品位置
@@ -12153,12 +12153,12 @@ namespace GameServer.Maps
             IL_149:
               if (num3 == -1)
               {
-                SConnection 网络连接 = this.ActiveConnection;
+                客户网络 网络连接 = this.ActiveConnection;
                 if (网络连接 == null)
                 {
                   return;
                 }
-                网络连接.SendPacket(new GameErrorMessagePacket
+                网络连接.发送封包(new 游戏错误提示
                 {
                   错误代码 = 1793
                 });
@@ -12182,12 +12182,12 @@ namespace GameServer.Maps
                   {
                     if (this.NumberGoldCoins < num4)
                     {
-                      SConnection 网络连接2 = this.ActiveConnection;
+                      客户网络 网络连接2 = this.ActiveConnection;
                       if (网络连接2 == null)
                       {
                         return;
                       }
-                      网络连接2.SendPacket(new GameErrorMessagePacket
+                      网络连接2.发送封包(new 游戏错误提示
                       {
                         错误代码 = 13057
                       });
@@ -12202,12 +12202,12 @@ namespace GameServer.Maps
                   {
                     if (this.Ingots < num4)
                     {
-                      SConnection 网络连接3 = this.ActiveConnection;
+                      客户网络 网络连接3 = this.ActiveConnection;
                       if (网络连接3 == null)
                       {
                         return;
                       }
-                      网络连接3.SendPacket(new GameErrorMessagePacket
+                      网络连接3.发送封包(new 游戏错误提示
                       {
                         错误代码 = 13057
                       });
@@ -12222,12 +12222,12 @@ namespace GameServer.Maps
                   {
                     if (this.MasterRep < num4)
                     {
-                      SConnection 网络连接4 = this.ActiveConnection;
+                      客户网络 网络连接4 = this.ActiveConnection;
                       if (网络连接4 == null)
                       {
                         return;
                       }
-                      网络连接4.SendPacket(new GameErrorMessagePacket
+                      网络连接4.发送封包(new 游戏错误提示
                       {
                         错误代码 = 13057
                       });
@@ -12240,23 +12240,23 @@ namespace GameServer.Maps
                   }
                   else
                   {
-                    SConnection 网络连接5 = this.ActiveConnection;
+                    客户网络 网络连接5 = this.ActiveConnection;
                     if (网络连接5 == null)
                     {
                       return;
                     }
-                    网络连接5.SendPacket(new GameErrorMessagePacket
+                    网络连接5.发送封包(new 游戏错误提示
                     {
                       错误代码 = 13057
                     });
                     return;
                   }
-                  SConnection 网络连接6 = this.ActiveConnection;
+                  客户网络 网络连接6 = this.ActiveConnection;
                   if (网络连接6 != null)
                   {
-                    网络连接6.SendPacket(new 货币数量变动
+                    网络连接6.发送封包(new 货币数量变动
                     {
-                      CurrencyType = (byte)游戏商品.货币类型,
+                      货币类型 = (byte)游戏商品.货币类型,
                       货币数量 = this.CharacterData.Currencies[GameCurrency]
                     });
                   }
@@ -12274,12 +12274,12 @@ namespace GameServer.Maps
                 if (this.Backpack.TryGetValue((byte)num3, out ItemData2))
                 {
                   ItemData2.当前持久.V += num2;
-                  SConnection 网络连接7 = this.ActiveConnection;
+                  客户网络 网络连接7 = this.ActiveConnection;
                   if (网络连接7 == null)
                   {
                     return;
                   }
-                  网络连接7.SendPacket(new 玩家物品变动
+                  网络连接7.发送封包(new 玩家物品变动
                   {
                     物品描述 = ItemData2.字节描述()
                   });
@@ -12310,12 +12310,12 @@ namespace GameServer.Maps
                     }
                     this.Backpack[(byte)num3] = new ItemData(GameItems, this.CharacterData, 1, (byte)num3, 持久);
                   }
-                  SConnection 网络连接8 = this.ActiveConnection;
+                  客户网络 网络连接8 = this.ActiveConnection;
                   if (网络连接8 == null)
                   {
                     return;
                   }
-                  网络连接8.SendPacket(new 玩家物品变动
+                  网络连接8.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[(byte)num3].字节描述()
                   });
@@ -12356,12 +12356,12 @@ namespace GameServer.Maps
           IL_F9:
             if (num == -1)
             {
-              SConnection 网络连接 = this.ActiveConnection;
+              客户网络 网络连接 = this.ActiveConnection;
               if (网络连接 == null)
               {
                 return;
               }
-              网络连接.SendPacket(new GameErrorMessagePacket
+              网络连接.发送封包(new 游戏错误提示
               {
                 错误代码 = 1793
               });
@@ -12369,12 +12369,12 @@ namespace GameServer.Maps
             }
             else if (this.NumberGoldCoins < ItemData.SalePrice)
             {
-              SConnection 网络连接2 = this.ActiveConnection;
+              客户网络 网络连接2 = this.ActiveConnection;
               if (网络连接2 == null)
               {
                 return;
               }
-              网络连接2.SendPacket(new GameErrorMessagePacket
+              网络连接2.发送封包(new 游戏错误提示
               {
                 错误代码 = 1821
               });
@@ -12389,12 +12389,12 @@ namespace GameServer.Maps
                 ItemData3.当前持久.V += ItemData.当前持久.V;
                 游戏商店.BuyItem(ItemData);
                 ItemData.Delete();
-                SConnection 网络连接3 = this.ActiveConnection;
+                客户网络 网络连接3 = this.ActiveConnection;
                 if (网络连接3 == null)
                 {
                   return;
                 }
-                网络连接3.SendPacket(new 玩家物品变动
+                网络连接3.发送封包(new 玩家物品变动
                 {
                   物品描述 = ItemData3.字节描述()
                 });
@@ -12405,12 +12405,12 @@ namespace GameServer.Maps
                 this.Backpack[(byte)num] = ItemData;
                 ItemData.物品位置.V = (byte)num;
                 ItemData.物品容器.V = 1;
-                SConnection 网络连接4 = this.ActiveConnection;
+                客户网络 网络连接4 = this.ActiveConnection;
                 if (网络连接4 == null)
                 {
                   return;
                 }
-                网络连接4.SendPacket(new 玩家物品变动
+                网络连接4.发送封包(new 玩家物品变动
                 {
                   物品描述 = this.Backpack[(byte)num].字节描述()
                 });
@@ -12419,12 +12419,12 @@ namespace GameServer.Maps
             }
             else
             {
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 == null)
               {
                 return;
               }
-              网络连接5.SendPacket(new GameErrorMessagePacket
+              网络连接5.发送封包(new 游戏错误提示
               {
                 错误代码 = 12807
               });
@@ -12454,10 +12454,10 @@ namespace GameServer.Maps
               {
                 binaryWriter.Write(ItemData.字节描述());
               }
-              SConnection 网络连接 = this.ActiveConnection;
+              客户网络 网络连接 = this.ActiveConnection;
               if (网络连接 != null)
               {
-                网络连接.SendPacket(new SyncRepoListPacket
+                网络连接.发送封包(new 同步回购列表
                 {
                   字节描述 = memoryStream.ToArray()
                 });
@@ -12478,7 +12478,7 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "SoulEmbed")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player inlaid a spirit stone.  Error: Interface not opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Error: Player inlaid a spirit stone.  Error: Interface not opened"));
         return;
       }
       if (装备类型 == 1)
@@ -12494,51 +12494,51 @@ namespace GameServer.Maps
               ItemData ItemData2;
               if (!this.Backpack.TryGetValue(灵石位置, out ItemData2))
               {
-                this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: The player set the spirit stone.  Error: No stone found"));
+                this.ActiveConnection.尝试断开连接(new Exception("Error: The player set the spirit stone.  Error: No stone found"));
                 return;
               }
               if (EquipmentData.孔洞颜色.Count <= (int)装备孔位)
               {
-                this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player inlaid a spirit stone.  Error: Wrong hole in equipment"));
+                this.ActiveConnection.尝试断开连接(new Exception("Error: Player inlaid a spirit stone.  Error: Wrong hole in equipment"));
                 return;
               }
               if (EquipmentData.镶嵌灵石.ContainsKey(装备孔位))
               {
-                this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: The player has set the stone.  Error: There are already stones inlaid"));
+                this.ActiveConnection.尝试断开连接(new Exception("Error: The player has set the stone.  Error: There are already stones inlaid"));
                 return;
               }
               if ((EquipmentData.孔洞颜色[(int)装备孔位] == EquipHoleColor.绿色 && ItemData2.Name.IndexOf("精绿灵石") == -1) || (EquipmentData.孔洞颜色[(int)装备孔位] == EquipHoleColor.黄色 && ItemData2.Name.IndexOf("守阳灵石") == -1) || (EquipmentData.孔洞颜色[(int)装备孔位] == EquipHoleColor.蓝色 && ItemData2.Name.IndexOf("蔚蓝灵石") == -1) || (EquipmentData.孔洞颜色[(int)装备孔位] == EquipHoleColor.紫色 && ItemData2.Name.IndexOf("纯紫灵石") == -1) || (EquipmentData.孔洞颜色[(int)装备孔位] == EquipHoleColor.灰色 && ItemData2.Name.IndexOf("深灰灵石") == -1) || (EquipmentData.孔洞颜色[(int)装备孔位] == EquipHoleColor.橙色 && ItemData2.Name.IndexOf("橙黄灵石") == -1) || (EquipmentData.孔洞颜色[(int)装备孔位] == EquipHoleColor.红色 && ItemData2.Name.IndexOf("驭朱灵石") == -1 && ItemData2.Name.IndexOf("命朱灵石") == -1))
               {
-                this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player inlaid a spirit stone.  Error: Error specifying a stone"));
+                this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Player inlaid a spirit stone.  Error: Error specifying a stone"));
                 return;
               }
               this.ConsumeBackpackItem(1, ItemData2);
               EquipmentData.镶嵌灵石[装备孔位] = ItemData2.物品模板;
-              SConnection 网络连接 = this.ActiveConnection;
+              客户网络 网络连接 = this.ActiveConnection;
               if (网络连接 != null)
               {
-                网络连接.SendPacket(new 玩家物品变动
+                网络连接.发送封包(new 玩家物品变动
                 {
                   物品描述 = EquipmentData.字节描述()
                 });
               }
-              SConnection 网络连接2 = this.ActiveConnection;
+              客户网络 网络连接2 = this.ActiveConnection;
               if (网络连接2 == null)
               {
                 return;
               }
-              网络连接2.SendPacket(new 成功镶嵌灵石
+              网络连接2.发送封包(new 成功镶嵌灵石
               {
                 灵石状态 = 1
               });
               return;
             }
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("MISTAKE: Player inlaid spirit stones.  Error: Equipment not found"));
+          this.ActiveConnection.尝试断开连接(new Exception("MISTAKE: Player inlaid spirit stones.  Error: Equipment not found"));
           return;
         }
       }
-      this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: The player set the spirit stone.  Error: Not in character backpack"));
+      this.ActiveConnection.尝试断开连接(new Exception("Error: The player set the spirit stone.  Error: Not in character backpack"));
     }
 
 
@@ -12551,12 +12551,12 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "SoulEmbed")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player inlaid a spirit stone.  Error: Interface not opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Error: Player inlaid a spirit stone.  Error: Interface not opened"));
         return;
       }
       if (装备类型 != 1)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player inlaid a spirit stone.  Error: Not in character backpack"));
+        this.ActiveConnection.尝试断开连接(new Exception("Error: Player inlaid a spirit stone.  Error: Not in character backpack"));
         return;
       }
       if (this.BackpackSizeAvailable > 0)
@@ -12570,7 +12570,7 @@ namespace GameServer.Maps
             游戏物品 GameItems;
             if (!EquipmentData.镶嵌灵石.TryGetValue(装备孔位, out GameItems))
             {
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: The player has set a spirit stone.  Error: No stones are inlaid"));
+              this.ActiveConnection.尝试断开连接(new Exception("Error: The player has set a spirit stone.  Error: No stones are inlaid"));
               return;
             }
             if (GameItems.物品名字.IndexOf("1级") > 0)
@@ -12634,29 +12634,29 @@ namespace GameServer.Maps
               {
                 this.NumberGoldCoins -= num;
                 EquipmentData.镶嵌灵石.Remove(装备孔位);
-                SConnection 网络连接 = this.ActiveConnection;
+                客户网络 网络连接 = this.ActiveConnection;
                 if (网络连接 != null)
                 {
-                  网络连接.SendPacket(new 玩家物品变动
+                  网络连接.发送封包(new 玩家物品变动
                   {
                     物品描述 = EquipmentData.字节描述()
                   });
                 }
                 this.Backpack[b] = new ItemData(GameItems, this.CharacterData, 1, b, 1);
-                SConnection 网络连接2 = this.ActiveConnection;
+                客户网络 网络连接2 = this.ActiveConnection;
                 if (网络连接2 != null)
                 {
-                  网络连接2.SendPacket(new 玩家物品变动
+                  网络连接2.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b].字节描述()
                   });
                 }
-                SConnection 网络连接3 = this.ActiveConnection;
+                客户网络 网络连接3 = this.ActiveConnection;
                 if (网络连接3 == null)
                 {
                   return;
                 }
-                网络连接3.SendPacket(new 成功取下灵石
+                网络连接3.发送封包(new 成功取下灵石
                 {
                   灵石状态 = 1
                 });
@@ -12665,34 +12665,34 @@ namespace GameServer.Maps
             }
             return;
           IL_199:
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
             {
               return;
             }
-            网络连接4.SendPacket(new GameErrorMessagePacket
+            网络连接4.发送封包(new 游戏错误提示
             {
               错误代码 = 1821
             });
             return;
           }
         }
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("MISTAKE: Player inlaid spirit stones.  Error: Equipment not found"));
+        this.ActiveConnection.尝试断开连接(new Exception("MISTAKE: Player inlaid spirit stones.  Error: Equipment not found"));
         return;
       }
-      SConnection 网络连接5 = this.ActiveConnection;
+      客户网络 网络连接5 = this.ActiveConnection;
       if (网络连接5 == null)
       {
         return;
       }
-      网络连接5.SendPacket(new GameErrorMessagePacket
+      网络连接5.发送封包(new 游戏错误提示
       {
         错误代码 = 1793
       });
     }
 
 
-    public void OrdinaryInscriptionRefinementPacket(byte 装备类型, byte 装备位置, int Id)
+    public void 普通铭文洗练(byte 装备类型, byte 装备位置, int Id)
     {
       EquipmentData EquipmentData = null;
       EquipmentData EquipmentData2;
@@ -12711,7 +12711,7 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "WeaponRune")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
         return;
       }
       if (this.Died || this.ParalysisState > 0 || this.交易状态 >= 3)
@@ -12720,12 +12720,12 @@ namespace GameServer.Maps
       }
       if (this.NumberGoldCoins < 10000)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 1821
         });
@@ -12733,12 +12733,12 @@ namespace GameServer.Maps
       }
       else if (EquipmentData == null)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 1802
         });
@@ -12748,23 +12748,23 @@ namespace GameServer.Maps
       {
         if (EquipmentData.物品类型 != ItemType.武器)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
           return;
         }
         if (Id <= 0)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material number."));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material number."));
           return;
         }
         ItemData ItemData2;
         if (!this.查找背包物品(Id, out ItemData2))
         {
-          SConnection 网络连接3 = this.ActiveConnection;
+          客户网络 网络连接3 = this.ActiveConnection;
           if (网络连接3 == null)
           {
             return;
           }
-          网络连接3.SendPacket(new GameErrorMessagePacket
+          网络连接3.发送封包(new 游戏错误提示
           {
             错误代码 = 1835
           });
@@ -12774,7 +12774,7 @@ namespace GameServer.Maps
         {
           if (ItemData2.物品类型 != ItemType.普通铭文)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material type."));
+            this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material type."));
             return;
           }
           this.NumberGoldCoins -= 10000;
@@ -12883,15 +12883,15 @@ namespace GameServer.Maps
               }), false);
             }
           }
-          SConnection 网络连接4 = this.ActiveConnection;
+          客户网络 网络连接4 = this.ActiveConnection;
           if (网络连接4 != null)
           {
-            网络连接4.SendPacket(new 玩家物品变动
+            网络连接4.发送封包(new 玩家物品变动
             {
               物品描述 = EquipmentData.字节描述()
             });
           }
-          SConnection 网络连接5 = this.ActiveConnection;
+          客户网络 网络连接5 = this.ActiveConnection;
           if (网络连接5 == null)
           {
             return;
@@ -12901,7 +12901,7 @@ namespace GameServer.Maps
           玩家普通洗练.铭文位一 = ((ushort)((第一铭文2 != null) ? 第一铭文2.Index : 0));
           铭文技能 第二铭文2 = EquipmentData.第二铭文;
           玩家普通洗练.铭文位二 = ((ushort)((第二铭文2 != null) ? 第二铭文2.Index : 0));
-          网络连接5.SendPacket(玩家普通洗练);
+          网络连接5.发送封包(玩家普通洗练);
           return;
         }
       }
@@ -12927,7 +12927,7 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "WeaponRune")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
         return;
       }
       if (this.Died || this.ParalysisState > 0 || this.交易状态 >= 3)
@@ -12936,12 +12936,12 @@ namespace GameServer.Maps
       }
       if (this.NumberGoldCoins < 100000)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 1821
         });
@@ -12949,12 +12949,12 @@ namespace GameServer.Maps
       }
       else if (EquipmentData == null)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 1802
         });
@@ -12964,28 +12964,28 @@ namespace GameServer.Maps
       {
         if (EquipmentData.物品类型 != ItemType.武器)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
           return;
         }
         if (EquipmentData.第二铭文 == null)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Second inscription is empty."));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Second inscription is empty."));
           return;
         }
         if (Id <= 0)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material number."));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material number."));
           return;
         }
         ItemData ItemData2;
         if (!this.查找背包物品(Id, out ItemData2))
         {
-          SConnection 网络连接3 = this.ActiveConnection;
+          客户网络 网络连接3 = this.ActiveConnection;
           if (网络连接3 == null)
           {
             return;
           }
-          网络连接3.SendPacket(new GameErrorMessagePacket
+          网络连接3.发送封包(new 游戏错误提示
           {
             错误代码 = 1835
           });
@@ -12995,7 +12995,7 @@ namespace GameServer.Maps
         {
           if (ItemData2.物品类型 != ItemType.普通铭文)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material type."));
+            this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material type."));
             return;
           }
           this.NumberGoldCoins -= 100000;
@@ -13027,10 +13027,10 @@ namespace GameServer.Maps
           }
           if (EquipmentData.最优铭文 == EquipmentData.第一铭文)
           {
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 != null)
             {
-              网络连接4.SendPacket(new 玩家高级洗练
+              网络连接4.发送封包(new 玩家高级洗练
               {
                 洗练结果 = 1,
                 铭文位一 = EquipmentData.最优铭文.Index,
@@ -13040,10 +13040,10 @@ namespace GameServer.Maps
           }
           else
           {
-            SConnection 网络连接5 = this.ActiveConnection;
+            客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 != null)
             {
-              网络连接5.SendPacket(new 玩家高级洗练
+              网络连接5.发送封包(new 玩家高级洗练
               {
                 洗练结果 = 1,
                 铭文位一 = this.InscriptionSkill.Index,
@@ -13071,7 +13071,7 @@ namespace GameServer.Maps
     }
 
 
-    public void ReplaceInscriptionRefinementPacket(byte 装备类型, byte 装备位置, int Id)
+    public void 替换铭文洗练(byte 装备类型, byte 装备位置, int Id)
     {
       EquipmentData EquipmentData = null;
       int num = 10;
@@ -13091,7 +13091,7 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "WeaponRune")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
         return;
       }
       if (this.Died || this.ParalysisState > 0 || this.交易状态 >= 3)
@@ -13100,12 +13100,12 @@ namespace GameServer.Maps
       }
       if (this.NumberGoldCoins < 1000000)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 1821
         });
@@ -13113,12 +13113,12 @@ namespace GameServer.Maps
       }
       else if (EquipmentData == null)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 1802
         });
@@ -13128,28 +13128,28 @@ namespace GameServer.Maps
       {
         if (EquipmentData.物品类型 != ItemType.武器)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
           return;
         }
         if (EquipmentData.第二铭文 == null)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: OrdinaryInscriptionRefinementPacket. Wrong: Second inscription is empty."));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: OrdinaryInscriptionRefinementPacket. Wrong: Second inscription is empty."));
           return;
         }
         if (Id <= 0)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material number."));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material number."));
           return;
         }
         List<ItemData> list;
         if (!this.查找背包物品(num, Id, out list))
         {
-          SConnection 网络连接3 = this.ActiveConnection;
+          客户网络 网络连接3 = this.ActiveConnection;
           if (网络连接3 == null)
           {
             return;
           }
-          网络连接3.SendPacket(new GameErrorMessagePacket
+          网络连接3.发送封包(new 游戏错误提示
           {
             错误代码 = 1835
           });
@@ -13159,7 +13159,7 @@ namespace GameServer.Maps
         {
           if (list.FirstOrDefault((ItemData O) => O.物品类型 != ItemType.普通铭文) != null)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material type."));
+            this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong material type."));
             return;
           }
           this.NumberGoldCoins -= 1000000;
@@ -13189,10 +13189,10 @@ namespace GameServer.Maps
           while ((this.InscriptionSkill = 铭文技能.RandomWashing(洗练职业)).技能编号 == EquipmentData.最差铭文.技能编号)
           {
           }
-          SConnection 网络连接4 = this.ActiveConnection;
+          客户网络 网络连接4 = this.ActiveConnection;
           if (网络连接4 != null)
           {
-            网络连接4.SendPacket(new 玩家高级洗练
+            网络连接4.发送封包(new 玩家高级洗练
             {
               洗练结果 = 1,
               铭文位一 = EquipmentData.最差铭文.Index,
@@ -13238,17 +13238,17 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "WeaponRune")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
         return;
       }
       if (EquipmentData == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 1802
         });
@@ -13258,17 +13258,17 @@ namespace GameServer.Maps
       {
         if (this.InscriptionSkill == null)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Confirmation of replacement inscription.  Error: There is no no record of the inscription.."));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Confirmation of replacement inscription.  Error: There is no no record of the inscription.."));
           return;
         }
         if (EquipmentData.物品类型 != ItemType.武器)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
           return;
         }
         if (EquipmentData.第二铭文 == null)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: OrdinaryInscriptionRefinementPacket. Wrong: Second inscription is empty."));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: OrdinaryInscriptionRefinementPacket. Wrong: Second inscription is empty."));
           return;
         }
         if (装备类型 == 0)
@@ -13280,20 +13280,20 @@ namespace GameServer.Maps
         {
           this.玩家装卸铭文(this.InscriptionSkill.技能编号, this.InscriptionSkill.铭文编号);
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 != null)
         {
-          网络连接2.SendPacket(new 玩家物品变动
+          网络连接2.发送封包(new 玩家物品变动
           {
             物品描述 = EquipmentData.字节描述()
           });
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 确认替换铭文
+        网络连接3.发送封包(new 确认替换铭文
         {
           确定替换 = true
         });
@@ -13321,17 +13321,17 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "WeaponRune")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: No interface opened"));
         return;
       }
       if (EquipmentData == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 1802
         });
@@ -13341,17 +13341,17 @@ namespace GameServer.Maps
       {
         if (this.InscriptionSkill == null)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Mistake: Confirmation of replacement inscription.  Error: There is no record of the inscription."));
+          this.ActiveConnection.尝试断开连接(new Exception("Mistake: Confirmation of replacement inscription.  Error: There is no record of the inscription."));
           return;
         }
         if (EquipmentData.物品类型 != ItemType.武器)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Operation: OrdinaryInscriptionRefinementPacket. Error: Wrong item type."));
           return;
         }
         if (EquipmentData.第二铭文 == null)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: OrdinaryInscriptionRefinementPacket. Wrong: Second inscription is empty."));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: OrdinaryInscriptionRefinementPacket. Wrong: Second inscription is empty."));
           return;
         }
         if (装备类型 == 0)
@@ -13363,20 +13363,20 @@ namespace GameServer.Maps
         {
           this.玩家装卸铭文(this.InscriptionSkill.技能编号, this.InscriptionSkill.铭文编号);
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 != null)
         {
-          网络连接2.SendPacket(new 玩家物品变动
+          网络连接2.发送封包(new 玩家物品变动
           {
             物品描述 = EquipmentData.字节描述()
           });
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 确认替换铭文
+        网络连接3.发送封包(new 确认替换铭文
         {
           确定替换 = true
         });
@@ -13388,19 +13388,19 @@ namespace GameServer.Maps
     public void 放弃替换铭文()
     {
       this.InscriptionSkill = null;
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new 确认替换铭文
+      网络连接.发送封包(new 确认替换铭文
       {
         确定替换 = false
       });
     }
 
 
-    public void UnlockDoubleInscriptionSlotPacket(byte 装备类型, byte 装备位置, byte 操作参数)
+    public void 解锁双铭文位(byte 装备类型, byte 装备位置, byte 操作参数)
     {
       if (this.Died || this.ParalysisState > 0 || this.交易状态 >= 3)
       {
@@ -13408,7 +13408,7 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "WeaponRune")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: UnlockDoubleInscriptionSlotPacket. Error: No interface opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Error: UnlockDoubleInscriptionSlotPacket. Error: No interface opened"));
         return;
       }
       if (装备类型 == 1)
@@ -13421,7 +13421,7 @@ namespace GameServer.Maps
           {
             if (EquipmentData.物品类型 != ItemType.武器)
             {
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Action: UnlockDoubleInscriptionSlotPacket. Error: Wrong item type."));
+              this.ActiveConnection.尝试断开连接(new Exception("Error Action: UnlockDoubleInscriptionSlotPacket. Error: Wrong item type."));
               return;
             }
             if (操作参数 == 1)
@@ -13429,12 +13429,12 @@ namespace GameServer.Maps
               int num = 2000000;
               if (EquipmentData.双铭文栏.V)
               {
-                SConnection 网络连接 = this.ActiveConnection;
+                客户网络 网络连接 = this.ActiveConnection;
                 if (网络连接 == null)
                 {
                   return;
                 }
-                网络连接.SendPacket(new GameErrorMessagePacket
+                网络连接.发送封包(new 游戏错误提示
                 {
                   错误代码 = 1909
                 });
@@ -13442,12 +13442,12 @@ namespace GameServer.Maps
               }
               else if (this.NumberGoldCoins < num)
               {
-                SConnection 网络连接2 = this.ActiveConnection;
+                客户网络 网络连接2 = this.ActiveConnection;
                 if (网络连接2 == null)
                 {
                   return;
                 }
-                网络连接2.SendPacket(new GameErrorMessagePacket
+                网络连接2.发送封包(new 游戏错误提示
                 {
                   错误代码 = 1821
                 });
@@ -13457,47 +13457,47 @@ namespace GameServer.Maps
               {
                 this.NumberGoldCoins -= num;
                 EquipmentData.双铭文栏.V = true;
-                SConnection 网络连接3 = this.ActiveConnection;
+                客户网络 网络连接3 = this.ActiveConnection;
                 if (网络连接3 != null)
                 {
-                  网络连接3.SendPacket(new 玩家物品变动
+                  网络连接3.发送封包(new 玩家物品变动
                   {
                     物品描述 = EquipmentData.字节描述()
                   });
                 }
-                SConnection 网络连接4 = this.ActiveConnection;
+                客户网络 网络连接4 = this.ActiveConnection;
                 if (网络连接4 == null)
                 {
                   return;
                 }
-                DoubleInscriptionPositionSwitchPacket DoubleInscriptionPositionSwitchPacket = new DoubleInscriptionPositionSwitchPacket();
+                双铭文位切换 DoubleInscriptionPositionSwitchPacket = new 双铭文位切换();
                 DoubleInscriptionPositionSwitchPacket.当前栏位 = (ushort)EquipmentData.当前铭栏.V;
                 铭文技能 第一铭文 = EquipmentData.第一铭文;
                 DoubleInscriptionPositionSwitchPacket.第一铭文 = ((ushort)((第一铭文 != null) ? 第一铭文.Index : 0));
                 铭文技能 第二铭文 = EquipmentData.第二铭文;
                 DoubleInscriptionPositionSwitchPacket.第二铭文 = ((ushort)((第二铭文 != null) ? 第二铭文.Index : 0));
-                网络连接4.SendPacket(DoubleInscriptionPositionSwitchPacket);
+                网络连接4.发送封包(DoubleInscriptionPositionSwitchPacket);
               }
             }
             return;
           }
         }
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Operation: UnlockDoubleInscriptionSlotPacket. Error: Not an equipment type."));
+        this.ActiveConnection.尝试断开连接(new Exception("Error Operation: UnlockDoubleInscriptionSlotPacket. Error: Not an equipment type."));
         return;
       }
-      SConnection 网络连接5 = this.ActiveConnection;
+      客户网络 网络连接5 = this.ActiveConnection;
       if (网络连接5 == null)
       {
         return;
       }
-      网络连接5.SendPacket(new GameErrorMessagePacket
+      网络连接5.发送封包(new 游戏错误提示
       {
         错误代码 = 1839
       });
     }
 
 
-    public void ToggleDoubleInscriptionBitPacket(byte 装备类型, byte 装备位置, byte 操作参数)
+    public void 切换双铭文位(byte 装备类型, byte 装备位置, byte 操作参数)
     {
       if (this.Died || this.ParalysisState > 0 || this.交易状态 >= 3)
       {
@@ -13505,7 +13505,7 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "WeaponRune")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: ToggleDoubleInscriptionBitPacket. Error: No interface opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: ToggleDoubleInscriptionBitPacket. Error: No interface opened"));
         return;
       }
       if (装备类型 == 1)
@@ -13518,17 +13518,17 @@ namespace GameServer.Maps
           {
             if (EquipmentData.物品类型 != ItemType.武器)
             {
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Action: ToggleDoubleInscriptionBitPacket. Error: Wrong item type."));
+              this.ActiveConnection.尝试断开连接(new Exception("Error Action: ToggleDoubleInscriptionBitPacket. Error: Wrong item type."));
               return;
             }
             if (!EquipmentData.双铭文栏.V)
             {
-              SConnection 网络连接 = this.ActiveConnection;
+              客户网络 网络连接 = this.ActiveConnection;
               if (网络连接 == null)
               {
                 return;
               }
-              网络连接.SendPacket(new GameErrorMessagePacket
+              网络连接.发送封包(new 游戏错误提示
               {
                 错误代码 = 1926
               });
@@ -13538,43 +13538,43 @@ namespace GameServer.Maps
             {
               if (操作参数 == EquipmentData.当前铭栏.V)
               {
-                this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Action: ToggleDoubleInscriptionBitPacket. Error: Toggle inscription error."));
+                this.ActiveConnection.尝试断开连接(new Exception("Error Action: ToggleDoubleInscriptionBitPacket. Error: Toggle inscription error."));
                 return;
               }
               EquipmentData.当前铭栏.V = 操作参数;
-              SConnection 网络连接2 = this.ActiveConnection;
+              客户网络 网络连接2 = this.ActiveConnection;
               if (网络连接2 != null)
               {
-                网络连接2.SendPacket(new 玩家物品变动
+                网络连接2.发送封包(new 玩家物品变动
                 {
                   物品描述 = EquipmentData.字节描述()
                 });
               }
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              DoubleInscriptionPositionSwitchPacket DoubleInscriptionPositionSwitchPacket = new DoubleInscriptionPositionSwitchPacket();
+              双铭文位切换 DoubleInscriptionPositionSwitchPacket = new 双铭文位切换();
               DoubleInscriptionPositionSwitchPacket.当前栏位 = (ushort)EquipmentData.当前铭栏.V;
               铭文技能 第一铭文 = EquipmentData.第一铭文;
               DoubleInscriptionPositionSwitchPacket.第一铭文 = ((ushort)((第一铭文 != null) ? 第一铭文.Index : 0));
               铭文技能 第二铭文 = EquipmentData.第二铭文;
               DoubleInscriptionPositionSwitchPacket.第二铭文 = ((ushort)((第二铭文 != null) ? 第二铭文.Index : 0));
-              网络连接3.SendPacket(DoubleInscriptionPositionSwitchPacket);
+              网络连接3.发送封包(DoubleInscriptionPositionSwitchPacket);
               return;
             }
           }
         }
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Action: ToggleDoubleInscriptionBitPacket. Error: Not an equipment type."));
+        this.ActiveConnection.尝试断开连接(new Exception("Error Action: ToggleDoubleInscriptionBitPacket. Error: Not an equipment type."));
         return;
       }
-      SConnection 网络连接4 = this.ActiveConnection;
+      客户网络 网络连接4 = this.ActiveConnection;
       if (网络连接4 == null)
       {
         return;
       }
-      网络连接4.SendPacket(new GameErrorMessagePacket
+      网络连接4.发送封包(new 游戏错误提示
       {
         错误代码 = 1839
       });
@@ -13591,7 +13591,7 @@ namespace GameServer.Maps
       }
       if (this.打开界面 != "WeaponRune")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Bug: Inherited weapon inscription.  Error: Interface not opened"));
+        this.ActiveConnection.尝试断开连接(new Exception("Bug: Inherited weapon inscription.  Error: Interface not opened"));
         return;
       }
       if (来源类型 == 1)
@@ -13621,12 +13621,12 @@ namespace GameServer.Maps
                           List<ItemData> 物品列表;
                           if (this.NumberGoldCoins < num)
                           {
-                            SConnection 网络连接 = this.ActiveConnection;
+                            客户网络 网络连接 = this.ActiveConnection;
                             if (网络连接 == null)
                             {
                               return;
                             }
-                            网络连接.SendPacket(new GameErrorMessagePacket
+                            网络连接.发送封包(new 游戏错误提示
                             {
                               错误代码 = 1821
                             });
@@ -13634,12 +13634,12 @@ namespace GameServer.Maps
                           }
                           else if (!this.查找背包物品(num2, EquipmentData.传承材料, out 物品列表))
                           {
-                            SConnection 网络连接2 = this.ActiveConnection;
+                            客户网络 网络连接2 = this.ActiveConnection;
                             if (网络连接2 == null)
                             {
                               return;
                             }
-                            网络连接2.SendPacket(new GameErrorMessagePacket
+                            网络连接2.发送封包(new 游戏错误提示
                             {
                               错误代码 = 1835
                             });
@@ -13653,39 +13653,39 @@ namespace GameServer.Maps
                             EquipmentData2.第二铭文 = EquipmentData.第二铭文;
                             EquipmentData.铭文技能.Remove((byte)(EquipmentData.当前铭栏.V * 2));
                             EquipmentData.铭文技能.Remove((byte)(EquipmentData.当前铭栏.V * 2 + 1));
-                            SConnection 网络连接3 = this.ActiveConnection;
+                            客户网络 网络连接3 = this.ActiveConnection;
                             if (网络连接3 != null)
                             {
-                              网络连接3.SendPacket(new 玩家物品变动
+                              网络连接3.发送封包(new 玩家物品变动
                               {
                                 物品描述 = EquipmentData.字节描述()
                               });
                             }
-                            SConnection 网络连接4 = this.ActiveConnection;
+                            客户网络 网络连接4 = this.ActiveConnection;
                             if (网络连接4 != null)
                             {
-                              网络连接4.SendPacket(new 玩家物品变动
+                              网络连接4.发送封包(new 玩家物品变动
                               {
                                 物品描述 = EquipmentData2.字节描述()
                               });
                             }
-                            SConnection 网络连接5 = this.ActiveConnection;
+                            客户网络 网络连接5 = this.ActiveConnection;
                             if (网络连接5 == null)
                             {
                               return;
                             }
-                            网络连接5.SendPacket(new 铭文传承应答());
+                            网络连接5.发送封包(new 铭文传承应答());
                             return;
                           }
                         }
                         else
                         {
-                          SConnection 网络连接6 = this.ActiveConnection;
+                          客户网络 网络连接6 = this.ActiveConnection;
                           if (网络连接6 == null)
                           {
                             return;
                           }
-                          网络连接6.SendPacket(new GameErrorMessagePacket
+                          网络连接6.发送封包(new 游戏错误提示
                           {
                             错误代码 = 1887
                           });
@@ -13693,33 +13693,33 @@ namespace GameServer.Maps
                         }
                       }
                     }
-                    SConnection 网络连接7 = this.ActiveConnection;
+                    客户网络 网络连接7 = this.ActiveConnection;
                     if (网络连接7 == null)
                     {
                       return;
                     }
-                    网络连接7.SendPacket(new GameErrorMessagePacket
+                    网络连接7.发送封包(new 游戏错误提示
                     {
                       错误代码 = 1887
                     });
                     return;
                   }
                 }
-                this.ActiveConnection.CallExceptionEventHandler(new Exception("Mishap: Inherited weapon inscription.  Error: Wrong item type."));
+                this.ActiveConnection.尝试断开连接(new Exception("Mishap: Inherited weapon inscription.  Error: Wrong item type."));
                 return;
               }
             }
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Mistake: Inherited weapon inscription.  Error: Not an equipment type."));
+          this.ActiveConnection.尝试断开连接(new Exception("Mistake: Inherited weapon inscription.  Error: Not an equipment type."));
           return;
         }
       }
-      SConnection 网络连接8 = this.ActiveConnection;
+      客户网络 网络连接8 = this.ActiveConnection;
       if (网络连接8 == null)
       {
         return;
       }
-      网络连接8.SendPacket(new GameErrorMessagePacket
+      网络连接8.发送封包(new 游戏错误提示
       {
         错误代码 = 1839
       });
@@ -13735,12 +13735,12 @@ namespace GameServer.Maps
       EquipmentData EquipmentData;
       if (this.CharacterData.升级装备.V != null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 1854
         });
@@ -13748,12 +13748,12 @@ namespace GameServer.Maps
       }
       else if (this.NumberGoldCoins < 10000)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 1821
         });
@@ -13761,12 +13761,12 @@ namespace GameServer.Maps
       }
       else if (!this.Equipment.TryGetValue(0, out EquipmentData))
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 1853
         });
@@ -13776,12 +13776,12 @@ namespace GameServer.Maps
       {
         if (EquipmentData.升级次数.V >= 9)
         {
-          SConnection 网络连接4 = this.ActiveConnection;
+          客户网络 网络连接4 = this.ActiveConnection;
           if (网络连接4 == null)
           {
             return;
           }
-          网络连接4.SendPacket(new GameErrorMessagePacket
+          网络连接4.发送封包(new 游戏错误提示
           {
             错误代码 = 1815
           });
@@ -13807,24 +13807,24 @@ namespace GameServer.Maps
                       dictionary.Add(b, EquipmentData2);
                       goto IL_19A;
                     }
-                    SConnection 网络连接5 = this.ActiveConnection;
+                    客户网络 网络连接5 = this.ActiveConnection;
                     if (网络连接5 == null)
                     {
                       return;
                     }
-                    网络连接5.SendPacket(new GameErrorMessagePacket
+                    网络连接5.发送封包(new 游戏错误提示
                     {
                       错误代码 = 1859
                     });
                     return;
                   }
                 }
-                SConnection 网络连接6 = this.ActiveConnection;
+                客户网络 网络连接6 = this.ActiveConnection;
                 if (网络连接6 == null)
                 {
                   return;
                 }
-                网络连接6.SendPacket(new GameErrorMessagePacket
+                网络连接6.发送封包(new 游戏错误提示
                 {
                   错误代码 = 1859
                 });
@@ -13832,12 +13832,12 @@ namespace GameServer.Maps
               }
               else
               {
-                SConnection 网络连接7 = this.ActiveConnection;
+                客户网络 网络连接7 = this.ActiveConnection;
                 if (网络连接7 == null)
                 {
                   return;
                 }
-                网络连接7.SendPacket(new GameErrorMessagePacket
+                网络连接7.发送封包(new 游戏错误提示
                 {
                   错误代码 = 1859
                 });
@@ -13856,12 +13856,12 @@ namespace GameServer.Maps
               {
                 if (ItemData2.物品类型 != ItemType.武器锻造)
                 {
-                  SConnection 网络连接8 = this.ActiveConnection;
+                  客户网络 网络连接8 = this.ActiveConnection;
                   if (网络连接8 == null)
                   {
                     return;
                   }
-                  网络连接8.SendPacket(new GameErrorMessagePacket
+                  网络连接8.发送封包(new 游戏错误提示
                   {
                     错误代码 = 1859
                   });
@@ -13873,12 +13873,12 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  SConnection 网络连接9 = this.ActiveConnection;
+                  客户网络 网络连接9 = this.ActiveConnection;
                   if (网络连接9 == null)
                   {
                     return;
                   }
-                  网络连接9.SendPacket(new GameErrorMessagePacket
+                  网络连接9.发送封包(new 游戏错误提示
                   {
                     错误代码 = 1859
                   });
@@ -13887,12 +13887,12 @@ namespace GameServer.Maps
               }
               else
               {
-                SConnection 网络连接10 = this.ActiveConnection;
+                客户网络 网络连接10 = this.ActiveConnection;
                 if (网络连接10 == null)
                 {
                   return;
                 }
-                网络连接10.SendPacket(new GameErrorMessagePacket
+                网络连接10.发送封包(new 游戏错误提示
                 {
                   错误代码 = 1859
                 });
@@ -13907,10 +13907,10 @@ namespace GameServer.Maps
             {
               this.Backpack[b3].Delete();
               this.Backpack.Remove(b3);
-              SConnection 网络连接11 = this.ActiveConnection;
+              客户网络 网络连接11 = this.ActiveConnection;
               if (网络连接11 != null)
               {
-                网络连接11.SendPacket(new 删除玩家物品
+                网络连接11.发送封包(new 删除玩家物品
                 {
                   背包类型 = 1,
                   物品位置 = b3
@@ -13924,10 +13924,10 @@ namespace GameServer.Maps
             {
               this.Backpack[b4].Delete();
               this.Backpack.Remove(b4);
-              SConnection 网络连接12 = this.ActiveConnection;
+              客户网络 网络连接12 = this.ActiveConnection;
               if (网络连接12 != null)
               {
-                网络连接12.SendPacket(new 删除玩家物品
+                网络连接12.发送封包(new 删除玩家物品
                 {
                   背包类型 = 1,
                   物品位置 = b4
@@ -13937,19 +13937,19 @@ namespace GameServer.Maps
           }
           this.Equipment.Remove(0);
           this.玩家穿卸装备(EquipmentWearingParts.武器, EquipmentData, null);
-          SConnection 网络连接13 = this.ActiveConnection;
+          客户网络 网络连接13 = this.ActiveConnection;
           if (网络连接13 != null)
           {
-            网络连接13.SendPacket(new 删除玩家物品
+            网络连接13.发送封包(new 删除玩家物品
             {
               背包类型 = 0,
               物品位置 = 0
             });
           }
-          SConnection 网络连接14 = this.ActiveConnection;
+          客户网络 网络连接14 = this.ActiveConnection;
           if (网络连接14 != null)
           {
-            网络连接14.SendPacket(new PutInUpgradedWeaponPacket());
+            网络连接14.发送封包(new 放入升级武器());
           }
           Dictionary<byte, Dictionary<EquipmentData, int>> dictionary3 = new Dictionary<byte, Dictionary<EquipmentData, int>>();
           dictionary3[0] = new Dictionary<EquipmentData, int>();
@@ -14058,12 +14058,12 @@ namespace GameServer.Maps
       }
       else
       {
-        SConnection 网络连接15 = this.ActiveConnection;
+        客户网络 网络连接15 = this.ActiveConnection;
         if (网络连接15 == null)
         {
           return;
         }
-        网络连接15.SendPacket(new GameErrorMessagePacket
+        网络连接15.发送封包(new 游戏错误提示
         {
           错误代码 = 1856
         });
@@ -14088,23 +14088,23 @@ namespace GameServer.Maps
             this.Backpack[b] = this.CharacterData.升级装备.V;
             this.Backpack[b].物品位置.V = b;
             this.Backpack[b].物品容器.V = 1;
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 != null)
             {
-              网络连接.SendPacket(new 玩家物品变动
+              网络连接.发送封包(new 玩家物品变动
               {
                 物品描述 = this.Backpack[b].字节描述()
               });
             }
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 != null)
             {
-              网络连接2.SendPacket(new 取回升级武器());
+              网络连接2.发送封包(new 取回升级武器());
             }
-            SConnection 网络连接3 = this.ActiveConnection;
+            客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 != null)
             {
-              网络连接3.SendPacket(new 武器升级结果());
+              网络连接3.发送封包(new 武器升级结果());
             }
             if (this.CharacterData.升级装备.V.升级次数.V >= 5)
             {
@@ -14128,12 +14128,12 @@ namespace GameServer.Maps
         v.Delete();
       }
       this.CharacterData.升级装备.V = null;
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new 武器升级结果
+      网络连接.发送封包(new 武器升级结果
       {
         升级结果 = 1
       });
@@ -14167,7 +14167,7 @@ namespace GameServer.Maps
             字节描述 = memoryStream.ToArray();
           }
         }
-        base.SendPacket(new ReceiveChatMessagesNearbyPacket
+        base.SendPacket(new 接收聊天信息
         {
           字节描述 = 字节描述
         });
@@ -14180,12 +14180,12 @@ namespace GameServer.Maps
         {
           if (this.NumberGoldCoins < 1000)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new GameErrorMessagePacket
+            网络连接.发送封包(new 游戏错误提示
             {
               错误代码 = 4873
             });
@@ -14200,7 +14200,7 @@ namespace GameServer.Maps
         {
           if (b != 6)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception(string.Format("Incorrect channel parameters are provided when transmitting or broadcasting, disconnect. Channel: {0:X8} Parameter: {1}", num, b)));
+            this.ActiveConnection.尝试断开连接(new Exception(string.Format("Incorrect channel parameters are provided when transmitting or broadcasting, disconnect. Channel: {0:X8} Parameter: {1}", num, b)));
             return;
           }
           ItemData 当前物品;
@@ -14210,12 +14210,12 @@ namespace GameServer.Maps
           }
           else
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new GameErrorMessagePacket
+            网络连接2.发送封包(new 游戏错误提示
             {
               错误代码 = 4869
             });
@@ -14237,7 +14237,7 @@ namespace GameServer.Maps
             字节描述2 = memoryStream2.ToArray();
           }
         }
-        NetworkServiceGateway.发送封包(new ReceiveChatMessagesPacket
+        NetworkServiceGateway.发送封包(new 接收聊天消息
         {
           字节描述 = 字节描述2
         });
@@ -14251,7 +14251,7 @@ namespace GameServer.Maps
         }), array);
         return;
       }
-      this.ActiveConnection.CallExceptionEventHandler(new Exception(string.Format("When a player sends a broadcast, the wrong channel parameter is provided. Channel: {0:X8}", num)));
+      this.ActiveConnection.尝试断开连接(new Exception(string.Format("When a player sends a broadcast, the wrong channel parameter is provided. Channel: {0:X8}", num)));
     }
 
     public void SendMessage(string message)
@@ -14267,7 +14267,7 @@ namespace GameServer.Maps
           binaryWriter3.Write(Encoding.UTF8.GetBytes(message + '\0'));
           binaryWriter3.Write(String.Empty);
           binaryWriter3.Write((byte)0);
-          ActiveConnection?.SendPacket(new ReceiveChatMessagesPacket
+          ActiveConnection?.发送封包(new 接收聊天消息
           {
             字节描述 = memoryStream3.ToArray()
           });
@@ -14290,12 +14290,12 @@ namespace GameServer.Maps
           }
           if (this.Team == null)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 3853
             });
@@ -14313,7 +14313,7 @@ namespace GameServer.Maps
                 binaryWriter.Write((int)this.CurrentLevel);
                 binaryWriter.Write(array);
                 binaryWriter.Write(Encoding.UTF8.GetBytes(this.ObjectName + "\0"));
-                this.Team.发送封包(new ReceiveChatMessagesPacket
+                this.Team.发送封包(new 接收聊天消息
                 {
                   字节描述 = memoryStream.ToArray()
                 });
@@ -14325,12 +14325,12 @@ namespace GameServer.Maps
         }
         if (this.Guild == null)
         {
-          SConnection 网络连接2 = this.ActiveConnection;
+          客户网络 网络连接2 = this.ActiveConnection;
           if (网络连接2 == null)
           {
             return;
           }
-          网络连接2.SendPacket(new 社交错误提示
+          网络连接2.发送封包(new 社交错误提示
           {
             错误编号 = 6668
           });
@@ -14338,12 +14338,12 @@ namespace GameServer.Maps
         }
         else if (this.Guild.行会禁言.ContainsKey(this.CharacterData))
         {
-          SConnection 网络连接3 = this.ActiveConnection;
+          客户网络 网络连接3 = this.ActiveConnection;
           if (网络连接3 == null)
           {
             return;
           }
-          网络连接3.SendPacket(new 社交错误提示
+          网络连接3.发送封包(new 社交错误提示
           {
             错误编号 = 4870
           });
@@ -14362,7 +14362,7 @@ namespace GameServer.Maps
               binaryWriter2.Write(array);
               binaryWriter2.Write(Encoding.UTF8.GetBytes(this.ObjectName));
               binaryWriter2.Write((byte)0);
-              this.Guild.发送封包(new ReceiveChatMessagesPacket
+              this.Guild.发送封包(new 接收聊天消息
               {
                 字节描述 = memoryStream2.ToArray()
               });
@@ -14405,10 +14405,10 @@ namespace GameServer.Maps
               字节描述 = memoryStream3.ToArray();
             }
           }
-          SConnection 网络连接4 = this.ActiveConnection;
+          客户网络 网络连接4 = this.ActiveConnection;
           if (网络连接4 != null)
           {
-            网络连接4.SendPacket(new ReceiveChatMessagesPacket
+            网络连接4.发送封包(new 接收聊天消息
             {
               字节描述 = 字节描述
             });
@@ -14428,7 +14428,7 @@ namespace GameServer.Maps
               字节描述2 = memoryStream4.ToArray();
             }
           }
-          CharacterData.ActiveConnection.SendPacket(new ReceiveChatMessagesPacket
+          CharacterData.ActiveConnection.发送封包(new 接收聊天消息
           {
             字节描述 = 字节描述2
           });
@@ -14436,12 +14436,12 @@ namespace GameServer.Maps
           return;
         }
       }
-      SConnection 网络连接5 = this.ActiveConnection;
+      客户网络 网络连接5 = this.ActiveConnection;
       if (网络连接5 == null)
       {
         return;
       }
-      网络连接5.SendPacket(new 社交错误提示
+      网络连接5.发送封包(new 社交错误提示
       {
         错误编号 = 4868
       });
@@ -14471,31 +14471,31 @@ namespace GameServer.Maps
                 字节数据 = memoryStream.ToArray();
               }
             }
-            CharacterData.ActiveConnection.SendPacket(new SendFriendMessagePacket
+            CharacterData.ActiveConnection.发送封包(new 发送好友消息
             {
               字节数据 = 字节数据
             });
             MainProcess.AddChatLog(string.Format("[Friend][{0}]=>[{1}]: ", this.ObjectName, CharacterData), array);
             return;
           }
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new 社交错误提示
+          网络连接.发送封包(new 社交错误提示
           {
             错误编号 = 5124
           });
           return;
         }
       }
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 == null)
       {
         return;
       }
-      网络连接2.SendPacket(new 社交错误提示
+      网络连接2.发送封包(new 社交错误提示
       {
         错误编号 = 4868
       });
@@ -14506,12 +14506,12 @@ namespace GameServer.Maps
     {
       if (this.偶像列表.Count >= 100)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 5125
         });
@@ -14529,12 +14529,12 @@ namespace GameServer.Maps
             {
               if (this.偶像列表.Contains(CharacterData))
               {
-                SConnection 网络连接2 = this.ActiveConnection;
+                客户网络 网络连接2 = this.ActiveConnection;
                 if (网络连接2 == null)
                 {
                   return;
                 }
-                网络连接2.SendPacket(new 社交错误提示
+                网络连接2.发送封包(new 社交错误提示
                 {
                   错误编号 = 5122
                 });
@@ -14552,20 +14552,20 @@ namespace GameServer.Maps
                 }
                 this.偶像列表.Add(CharacterData);
                 CharacterData.粉丝列表.Add(this.CharacterData);
-                SConnection 网络连接3 = this.ActiveConnection;
+                客户网络 网络连接3 = this.ActiveConnection;
                 if (网络连接3 != null)
                 {
-                  网络连接3.SendPacket(new 玩家添加关注
+                  网络连接3.发送封包(new 玩家添加关注
                   {
                     对象编号 = CharacterData.Index.V,
                     对象名字 = CharacterData.CharName.V,
                     是否好友 = (this.粉丝列表.Contains(CharacterData) || CharacterData.偶像列表.Contains(this.CharacterData))
                   });
                 }
-                SConnection 网络连接4 = this.ActiveConnection;
+                客户网络 网络连接4 = this.ActiveConnection;
                 if (网络连接4 != null)
                 {
-                  网络连接4.SendPacket(new 好友上线下线
+                  网络连接4.发送封包(new 好友上线下线
                   {
                     对象编号 = CharacterData.Index.V,
                     对象名字 = CharacterData.CharName.V,
@@ -14579,12 +14579,12 @@ namespace GameServer.Maps
                   this.好友列表.Add(CharacterData);
                   CharacterData.好友列表.Add(this.CharacterData);
                 }
-                SConnection 网络连接5 = CharacterData.ActiveConnection;
+                客户网络 网络连接5 = CharacterData.ActiveConnection;
                 if (网络连接5 == null)
                 {
                   return;
                 }
-                网络连接5.SendPacket(new OtherPersonPaysAttentionToHimselfPacket
+                网络连接5.发送封包(new 对方关注自己
                 {
                   对象编号 = this.ObjectId,
                   对象名字 = this.ObjectName
@@ -14593,7 +14593,7 @@ namespace GameServer.Maps
               }
             }
           }
-          this.ActiveConnection.SendPacket(new GameErrorMessagePacket
+          this.ActiveConnection.发送封包(new 游戏错误提示
           {
             错误代码 = 6732
           });
@@ -14607,12 +14607,12 @@ namespace GameServer.Maps
           {
             if (this.偶像列表.Contains(CharacterData2))
             {
-              SConnection 网络连接6 = this.ActiveConnection;
+              客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 == null)
               {
                 return;
               }
-              网络连接6.SendPacket(new 社交错误提示
+              网络连接6.发送封包(new 社交错误提示
               {
                 错误编号 = 5122
               });
@@ -14630,20 +14630,20 @@ namespace GameServer.Maps
               }
               this.偶像列表.Add(CharacterData2);
               CharacterData2.粉丝列表.Add(this.CharacterData);
-              SConnection 网络连接7 = this.ActiveConnection;
+              客户网络 网络连接7 = this.ActiveConnection;
               if (网络连接7 != null)
               {
-                网络连接7.SendPacket(new 玩家添加关注
+                网络连接7.发送封包(new 玩家添加关注
                 {
                   对象编号 = CharacterData2.Index.V,
                   对象名字 = CharacterData2.CharName.V,
                   是否好友 = (this.粉丝列表.Contains(CharacterData2) || CharacterData2.偶像列表.Contains(this.CharacterData))
                 });
               }
-              SConnection 网络连接8 = this.ActiveConnection;
+              客户网络 网络连接8 = this.ActiveConnection;
               if (网络连接8 != null)
               {
-                网络连接8.SendPacket(new 好友上线下线
+                网络连接8.发送封包(new 好友上线下线
                 {
                   对象编号 = CharacterData2.Index.V,
                   对象名字 = CharacterData2.CharName.V,
@@ -14657,12 +14657,12 @@ namespace GameServer.Maps
                 this.好友列表.Add(CharacterData2);
                 CharacterData2.好友列表.Add(this.CharacterData);
               }
-              SConnection 网络连接9 = CharacterData2.ActiveConnection;
+              客户网络 网络连接9 = CharacterData2.ActiveConnection;
               if (网络连接9 == null)
               {
                 return;
               }
-              网络连接9.SendPacket(new OtherPersonPaysAttentionToHimselfPacket
+              网络连接9.发送封包(new 对方关注自己
               {
                 对象编号 = this.ObjectId,
                 对象名字 = this.ObjectName
@@ -14671,7 +14671,7 @@ namespace GameServer.Maps
             }
           }
         }
-        this.ActiveConnection.SendPacket(new GameErrorMessagePacket
+        this.ActiveConnection.发送封包(new 游戏错误提示
         {
           错误代码 = 6732
         });
@@ -14690,12 +14690,12 @@ namespace GameServer.Maps
         {
           if (!this.偶像列表.Contains(CharacterData))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 5121
             });
@@ -14705,10 +14705,10 @@ namespace GameServer.Maps
           {
             this.偶像列表.Remove(CharacterData);
             CharacterData.粉丝列表.Remove(this.CharacterData);
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 != null)
             {
-              网络连接2.SendPacket(new 玩家取消关注
+              网络连接2.发送封包(new 玩家取消关注
               {
                 对象编号 = CharacterData.CharId
               });
@@ -14718,12 +14718,12 @@ namespace GameServer.Maps
               this.好友列表.Remove(CharacterData);
               CharacterData.好友列表.Remove(this.CharacterData);
             }
-            SConnection 网络连接3 = CharacterData.ActiveConnection;
+            客户网络 网络连接3 = CharacterData.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new OtherPartyUnfollowsPacket
+            网络连接3.发送封包(new 对方取消关注
             {
               对象编号 = this.ObjectId,
               对象名字 = this.ObjectName
@@ -14732,7 +14732,7 @@ namespace GameServer.Maps
           }
         }
       }
-      this.ActiveConnection.SendPacket(new GameErrorMessagePacket
+      this.ActiveConnection.发送封包(new 游戏错误提示
       {
         错误代码 = 6732
       });
@@ -14749,12 +14749,12 @@ namespace GameServer.Maps
         {
           if (this.仇人列表.Count >= 100)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 5125
             });
@@ -14762,12 +14762,12 @@ namespace GameServer.Maps
           }
           else if (this.偶像列表.Contains(CharacterData))
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new 社交错误提示
+            网络连接2.发送封包(new 社交错误提示
             {
               错误编号 = 5122
             });
@@ -14777,20 +14777,20 @@ namespace GameServer.Maps
           {
             this.仇人列表.Add(CharacterData);
             CharacterData.仇恨列表.Add(this.CharacterData);
-            SConnection 网络连接3 = this.ActiveConnection;
+            客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 != null)
             {
-              网络连接3.SendPacket(new 玩家标记仇人
+              网络连接3.发送封包(new 玩家标记仇人
               {
                 对象编号 = CharacterData.Index.V
               });
             }
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
             {
               return;
             }
-            网络连接4.SendPacket(new 好友上线下线
+            网络连接4.发送封包(new 好友上线下线
             {
               对象编号 = CharacterData.Index.V,
               对象名字 = CharacterData.CharName.V,
@@ -14802,7 +14802,7 @@ namespace GameServer.Maps
           }
         }
       }
-      this.ActiveConnection.SendPacket(new GameErrorMessagePacket
+      this.ActiveConnection.发送封包(new 游戏错误提示
       {
         错误代码 = 6732
       });
@@ -14819,12 +14819,12 @@ namespace GameServer.Maps
         {
           if (!this.仇人列表.Contains(CharacterData))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 5126
             });
@@ -14834,12 +14834,12 @@ namespace GameServer.Maps
           {
             this.仇人列表.Remove(CharacterData);
             CharacterData.仇恨列表.Remove(this.CharacterData);
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new 玩家移除仇人
+            网络连接2.发送封包(new 玩家移除仇人
             {
               对象编号 = CharacterData.Index.V
             });
@@ -14847,7 +14847,7 @@ namespace GameServer.Maps
           }
         }
       }
-      this.ActiveConnection.SendPacket(new GameErrorMessagePacket
+      this.ActiveConnection.发送封包(new 游戏错误提示
       {
         错误代码 = 6732
       });
@@ -14864,12 +14864,12 @@ namespace GameServer.Maps
         {
           if (this.黑名单表.Count >= 100)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 7428
             });
@@ -14877,12 +14877,12 @@ namespace GameServer.Maps
           }
           else if (this.黑名单表.Contains(CharacterData))
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new 社交错误提示
+            网络连接2.发送封包(new 社交错误提示
             {
               错误编号 = 7426
             });
@@ -14890,12 +14890,12 @@ namespace GameServer.Maps
           }
           else if (对象编号 == this.ObjectId)
           {
-            SConnection 网络连接3 = this.ActiveConnection;
+            客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new 社交错误提示
+            网络连接3.发送封包(new 社交错误提示
             {
               错误编号 = 7429
             });
@@ -14908,12 +14908,12 @@ namespace GameServer.Maps
               this.玩家取消关注(CharacterData.CharId);
             }
             this.黑名单表.Add(CharacterData);
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
             {
               return;
             }
-            网络连接4.SendPacket(new 玩家屏蔽目标
+            网络连接4.发送封包(new 玩家屏蔽目标
             {
               对象编号 = CharacterData.Index.V,
               对象名字 = CharacterData.CharName.V
@@ -14922,7 +14922,7 @@ namespace GameServer.Maps
           }
         }
       }
-      this.ActiveConnection.SendPacket(new GameErrorMessagePacket
+      this.ActiveConnection.发送封包(new 游戏错误提示
       {
         错误代码 = 6732
       });
@@ -14939,12 +14939,12 @@ namespace GameServer.Maps
         {
           if (!this.黑名单表.Contains(CharacterData))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 7427
             });
@@ -14953,12 +14953,12 @@ namespace GameServer.Maps
           else
           {
             this.黑名单表.Remove(CharacterData);
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new UnblockPlayerPacket
+            网络连接2.发送封包(new 解除玩家屏蔽
             {
               对象编号 = CharacterData.Index.V
             });
@@ -14966,7 +14966,7 @@ namespace GameServer.Maps
           }
         }
       }
-      this.ActiveConnection.SendPacket(new GameErrorMessagePacket
+      this.ActiveConnection.发送封包(new 游戏错误提示
       {
         错误代码 = 6732
       });
@@ -14977,7 +14977,7 @@ namespace GameServer.Maps
     {
       if (!MapGatewayProcess.Objects.TryGetValue(obectId, out var obj))
       {
-        ActiveConnection?.SendPacket(new 社交错误提示
+        ActiveConnection?.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -14986,34 +14986,34 @@ namespace GameServer.Maps
       {
         if (obj is PlayerObject playerObj)
         {
-          ActiveConnection?.SendPacket(new SyncPlayerAppearancePacket
+          ActiveConnection?.发送封包(new 同步玩家外观
           {
-            ObjectId = playerObj.ObjectId,
-            PKLevel = playerObj.PK值惩罚,
-            Race = (byte)playerObj.CharRole,
-            Gender = (byte)playerObj.CharGender,
-            HairType = (byte)playerObj.角色发型,
-            HairColor = (byte)playerObj.角色发色,
-            Face = (byte)playerObj.角色脸型,
-            StallStatus = playerObj.ParalysisState,
-            BoothName = playerObj.摊位名字,
-            WeaponType = playerObj.Equipment.TryGetValue(0, out var EquipmentData) ? EquipmentData.升级次数?.V ?? 0 : (byte)0,
-            WeaponBody = EquipmentData?.对应模板?.V.物品编号 ?? 0,
-            Clothes = playerObj.Equipment.TryGetValue(1, out var EquipmentData2) ? EquipmentData2.对应模板?.V?.物品编号 ?? 0 : 0,
-            Cloak = playerObj.Equipment.TryGetValue(2, out var EquipmentData3) ? EquipmentData3.对应模板?.V?.物品编号 ?? 0 : 0,
-            CurrentHP = playerObj[GameObjectStats.最大体力],
-            CurrentMP = playerObj[GameObjectStats.最大魔力],
-            Name = playerObj.ObjectName,
-            GuildId = playerObj.Guild?.Index.V ?? 0,
+            对象编号 = playerObj.ObjectId,
+            对象PK值 = playerObj.PK值惩罚,
+            对象职业 = (byte)playerObj.CharRole,
+            对象性别 = (byte)playerObj.CharGender,
+            对象发型 = (byte)playerObj.角色发型,
+            对象发色 = (byte)playerObj.角色发色,
+            对象脸型 = (byte)playerObj.角色脸型,
+            摆摊状态 = playerObj.ParalysisState,
+            摆摊名字 = playerObj.摊位名字,
+            武器等级 = playerObj.Equipment.TryGetValue(0, out var EquipmentData) ? EquipmentData.升级次数?.V ?? 0 : (byte)0,
+            身上武器 = EquipmentData?.对应模板?.V.物品编号 ?? 0,
+            身上衣服 = playerObj.Equipment.TryGetValue(1, out var EquipmentData2) ? EquipmentData2.对应模板?.V?.物品编号 ?? 0 : 0,
+            身上披风 = playerObj.Equipment.TryGetValue(2, out var EquipmentData3) ? EquipmentData3.对应模板?.V?.物品编号 ?? 0 : 0,
+            当前体力 = playerObj[GameObjectStats.最大体力],
+            当前魔力 = playerObj[GameObjectStats.最大魔力],
+            对象名字 = playerObj.ObjectName,
+            行会编号 = playerObj.Guild?.Index.V ?? 0,
 
           });
 
           if (playerObj.Riding)
           {
-            ActiveConnection.SendPacket(new SyncObjectMountPacket
+            ActiveConnection.发送封包(new 同步对象坐骑
             {
-              ObjectId = ObjectId,
-              MountId = (byte)playerObj.CharacterData.CurrentMount.V
+              对象编号 = ObjectId,
+              坐骑编号 = (byte)playerObj.CharacterData.CurrentMount.V
             });
           }
         }
@@ -15021,22 +15021,22 @@ namespace GameServer.Maps
         {
           if (monsterObj.出生地图 == null)
           {
-            ActiveConnection?.SendPacket(new SyncExtendedDataPacket
+            ActiveConnection?.发送封包(new 同步扩展数据
             {
               对象类型 = 1,
               主人编号 = 0,
               主人名字 = "",
               对象等级 = monsterObj.CurrentLevel,
               对象编号 = monsterObj.ObjectId,
-              MobId = monsterObj.MonsterId,
-              CurrentRank = monsterObj.宠物等级,
+              模板编号 = monsterObj.MonsterId,
+              当前等级 = monsterObj.宠物等级,
               对象质量 = (byte)monsterObj.Category,
-              MaxHP = monsterObj[GameObjectStats.最大体力]
+              最大体力 = monsterObj[GameObjectStats.最大体力]
             });
           }
           else
           {
-            ActiveConnection?.SendPacket(new SyncNPCData
+            ActiveConnection?.发送封包(new 同步Npcc数据
             {
               ObjectId = monsterObj.ObjectId,
               ObjectClass = monsterObj.CurrentLevel,
@@ -15048,22 +15048,22 @@ namespace GameServer.Maps
         }
         else if (obj is PetObject PetObject)
         {
-          ActiveConnection?.SendPacket(new SyncExtendedDataPacket
+          ActiveConnection?.发送封包(new 同步扩展数据
           {
             对象类型 = 2,
             对象编号 = PetObject.ObjectId,
-            MobId = PetObject.MobId,
-            CurrentRank = PetObject.宠物等级,
+            模板编号 = PetObject.MobId,
+            当前等级 = PetObject.宠物等级,
             对象等级 = PetObject.CurrentLevel,
             对象质量 = (byte)PetObject.宠物级别,
-            MaxHP = PetObject[GameObjectStats.最大体力],
+            最大体力 = PetObject[GameObjectStats.最大体力],
             主人编号 = PetObject.PlayerOwner?.ObjectId ?? 0,
             主人名字 = PetObject.PlayerOwner?.ObjectName ?? string.Empty
           });
         }
         else if (obj is GuardObject GuardInstance)
         {
-          ActiveConnection?.SendPacket(new SyncNPCData
+          ActiveConnection?.发送封包(new 同步Npcc数据
           {
             ObjectMass = 3,
             ObjectId = GuardInstance.ObjectId,
@@ -15084,7 +15084,7 @@ namespace GameServer.Maps
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
@@ -15107,16 +15107,16 @@ namespace GameServer.Maps
           GuildName = "";
         IL_B1:
           同步角色信息.GuildName = GuildName;
-          网络连接.SendPacket(同步角色信息);
+          网络连接.发送封包(同步角色信息);
           return;
         }
       }
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 == null)
       {
         return;
       }
-      网络连接2.SendPacket(new 社交错误提示
+      网络连接2.发送封包(new 社交错误提示
       {
         错误编号 = 6732
       });
@@ -15131,12 +15131,12 @@ namespace GameServer.Maps
         PlayerObject PlayerObject = MapObject as PlayerObject;
         if (PlayerObject != null)
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new SyncPlayerPowerPacket
+          网络连接.发送封包(new 同步战力
           {
             角色编号 = PlayerObject.ObjectId,
             角色战力 = PlayerObject.CurrentBattlePower
@@ -15144,12 +15144,12 @@ namespace GameServer.Maps
           return;
         }
       }
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 == null)
       {
         return;
       }
-      网络连接2.SendPacket(new GameErrorMessagePacket
+      网络连接2.发送封包(new 游戏错误提示
       {
         错误代码 = 7171
       });
@@ -15162,13 +15162,13 @@ namespace GameServer.Maps
       {
         if (MapObject is PlayerObject PlayerObject)
         {
-          ActiveConnection?.SendPacket(new SyncPlayerEquipPacket
+          ActiveConnection?.发送封包(new 同步角色装备
           {
-            ObjectId = PlayerObject.ObjectId,
-            EquipmentItemCount = (byte)PlayerObject.Equipment.Count,
-            Info = PlayerObject.装备物品描述()
+            对象编号 = PlayerObject.ObjectId,
+            装备数量 = (byte)PlayerObject.Equipment.Count,
+            字节描述 = PlayerObject.装备物品描述()
           });
-          ActiveConnection?.SendPacket(new SyncMarfaPrivilegesPacket
+          ActiveConnection?.发送封包(new 同步玛法特权
           {
             玛法特权 = PlayerObject.CurrentPrivileges
           });
@@ -15176,7 +15176,7 @@ namespace GameServer.Maps
         }
       }
 
-      ActiveConnection?.SendPacket(new GameErrorMessagePacket
+      ActiveConnection?.发送封包(new 游戏错误提示
       {
         错误代码 = 7171
       });
@@ -15301,7 +15301,7 @@ namespace GameServer.Maps
       for (int k = num2; k < num3; k++)
         binaryWriter.Write((ushort)(characters[k]?.历史排名[b] ?? 0));
 
-      ActiveConnection?.SendPacket(new 查询排行榜单
+      ActiveConnection?.发送封包(new 查询排行榜单
       {
         字节数据 = memoryStream.ToArray()
       });
@@ -15317,12 +15317,12 @@ namespace GameServer.Maps
     {
       if (对象编号 == this.ObjectId)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 3852
         });
@@ -15336,7 +15336,7 @@ namespace GameServer.Maps
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
@@ -15358,16 +15358,16 @@ namespace GameServer.Maps
             队伍名字 = "";
           IL_A4:
             查询队伍应答.队伍名字 = 队伍名字;
-            网络连接2.SendPacket(查询队伍应答);
+            网络连接2.发送封包(查询队伍应答);
             return;
           }
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -15380,12 +15380,12 @@ namespace GameServer.Maps
     {
       if (this.Team != null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 3847
         });
@@ -15394,12 +15394,12 @@ namespace GameServer.Maps
       else if (this.ObjectId == 对象编号)
       {
         this.Team = new TeamData(this.CharacterData, 1);
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 玩家加入队伍
+        网络连接2.发送封包(new 玩家加入队伍
         {
           字节描述 = this.Team.队伍描述()
         });
@@ -15415,12 +15415,12 @@ namespace GameServer.Maps
           {
             if (CharacterData.CurrentTeam != null)
             {
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 3847
               });
@@ -15428,28 +15428,28 @@ namespace GameServer.Maps
             }
             else
             {
-              SConnection 客户网络;
+              客户网络 客户网络;
               if (CharacterData.IsOnline(out 客户网络))
               {
                 this.Team = new TeamData(this.CharacterData, 1);
-                SConnection 网络连接4 = this.ActiveConnection;
+                客户网络 网络连接4 = this.ActiveConnection;
                 if (网络连接4 != null)
                 {
-                  网络连接4.SendPacket(new 玩家加入队伍
+                  网络连接4.发送封包(new 玩家加入队伍
                   {
                     字节描述 = this.Team.队伍描述()
                   });
                 }
                 this.Team.邀请列表[CharacterData] = MainProcess.CurrentTime.AddMinutes(5.0);
-                SConnection 网络连接5 = this.ActiveConnection;
+                客户网络 网络连接5 = this.ActiveConnection;
                 if (网络连接5 != null)
                 {
-                  网络连接5.SendPacket(new 社交错误提示
+                  网络连接5.发送封包(new 社交错误提示
                   {
                     错误编号 = 3842
                   });
                 }
-                客户网络.SendPacket(new SendTeamRequestBPacket
+                客户网络.发送封包(new 发送组队申请
                 {
                   组队方式 = 0,
                   对象编号 = this.ObjectId,
@@ -15458,12 +15458,12 @@ namespace GameServer.Maps
                 });
                 return;
               }
-              SConnection 网络连接6 = this.ActiveConnection;
+              客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 == null)
               {
                 return;
               }
-              网络连接6.SendPacket(new 社交错误提示
+              网络连接6.发送封包(new 社交错误提示
               {
                 错误编号 = 3844
               });
@@ -15471,12 +15471,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接7 = this.ActiveConnection;
+        客户网络 网络连接7 = this.ActiveConnection;
         if (网络连接7 == null)
         {
           return;
         }
-        网络连接7.SendPacket(new 社交错误提示
+        网络连接7.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -15485,16 +15485,16 @@ namespace GameServer.Maps
     }
 
 
-    public void SendTeamRequestPacket(int 对象编号)
+    public void 发送组队请求(int 对象编号)
     {
       if (对象编号 == this.ObjectId)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 3852
         });
@@ -15510,15 +15510,15 @@ namespace GameServer.Maps
           {
             if (this.Team == null)
             {
-              SConnection 客户网络;
+              客户网络 客户网络;
               if (CharacterData.CurrentTeam == null)
               {
-                SConnection 网络连接2 = this.ActiveConnection;
+                客户网络 网络连接2 = this.ActiveConnection;
                 if (网络连接2 == null)
                 {
                   return;
                 }
-                网络连接2.SendPacket(new 社交错误提示
+                网络连接2.发送封包(new 社交错误提示
                 {
                   错误编号 = 3860
                 });
@@ -15526,12 +15526,12 @@ namespace GameServer.Maps
               }
               else if (CharacterData.CurrentTeam.队员数量 >= 11)
               {
-                SConnection 网络连接3 = this.ActiveConnection;
+                客户网络 网络连接3 = this.ActiveConnection;
                 if (网络连接3 == null)
                 {
                   return;
                 }
-                网络连接3.SendPacket(new 社交错误提示
+                网络连接3.发送封包(new 社交错误提示
                 {
                   错误编号 = 3848
                 });
@@ -15540,19 +15540,19 @@ namespace GameServer.Maps
               else if (CharacterData.CurrentTeam.队长数据.IsOnline(out 客户网络))
               {
                 CharacterData.CurrentTeam.申请列表[this.CharacterData] = MainProcess.CurrentTime.AddMinutes(5.0);
-                客户网络.SendPacket(new SendTeamRequestBPacket
+                客户网络.发送封包(new 发送组队申请
                 {
                   组队方式 = 1,
                   对象编号 = this.ObjectId,
                   对象职业 = (byte)this.CharRole,
                   对象名字 = this.ObjectName
                 });
-                SConnection 网络连接4 = this.ActiveConnection;
+                客户网络 网络连接4 = this.ActiveConnection;
                 if (网络连接4 == null)
                 {
                   return;
                 }
-                网络连接4.SendPacket(new 社交错误提示
+                网络连接4.发送封包(new 社交错误提示
                 {
                   错误编号 = 3842
                 });
@@ -15560,12 +15560,12 @@ namespace GameServer.Maps
               }
               else
               {
-                SConnection 网络连接5 = this.ActiveConnection;
+                客户网络 网络连接5 = this.ActiveConnection;
                 if (网络连接5 == null)
                 {
                   return;
                 }
-                网络连接5.SendPacket(new 社交错误提示
+                网络连接5.发送封包(new 社交错误提示
                 {
                   错误编号 = 3844
                 });
@@ -15574,12 +15574,12 @@ namespace GameServer.Maps
             }
             else if (this.ObjectId != this.Team.队长编号)
             {
-              SConnection 网络连接6 = this.ActiveConnection;
+              客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 == null)
               {
                 return;
               }
-              网络连接6.SendPacket(new 社交错误提示
+              网络连接6.发送封包(new 社交错误提示
               {
                 错误编号 = 3850
               });
@@ -15587,12 +15587,12 @@ namespace GameServer.Maps
             }
             else if (CharacterData.CurrentTeam != null)
             {
-              SConnection 网络连接7 = this.ActiveConnection;
+              客户网络 网络连接7 = this.ActiveConnection;
               if (网络连接7 == null)
               {
                 return;
               }
-              网络连接7.SendPacket(new 社交错误提示
+              网络连接7.发送封包(new 社交错误提示
               {
                 错误编号 = 3847
               });
@@ -15600,12 +15600,12 @@ namespace GameServer.Maps
             }
             else if (this.Team.队员数量 >= 11)
             {
-              SConnection 网络连接8 = this.ActiveConnection;
+              客户网络 网络连接8 = this.ActiveConnection;
               if (网络连接8 == null)
               {
                 return;
               }
-              网络连接8.SendPacket(new 社交错误提示
+              网络连接8.发送封包(new 社交错误提示
               {
                 错误编号 = 3848
               });
@@ -15613,19 +15613,19 @@ namespace GameServer.Maps
             }
             else
             {
-              SConnection 客户网络2;
+              客户网络 客户网络2;
               if (CharacterData.IsOnline(out 客户网络2))
               {
                 this.Team.邀请列表[CharacterData] = MainProcess.CurrentTime.AddMinutes(5.0);
-                SConnection 网络连接9 = this.ActiveConnection;
+                客户网络 网络连接9 = this.ActiveConnection;
                 if (网络连接9 != null)
                 {
-                  网络连接9.SendPacket(new 社交错误提示
+                  网络连接9.发送封包(new 社交错误提示
                   {
                     错误编号 = 3842
                   });
                 }
-                客户网络2.SendPacket(new SendTeamRequestBPacket
+                客户网络2.发送封包(new 发送组队申请
                 {
                   组队方式 = 0,
                   对象编号 = this.ObjectId,
@@ -15634,12 +15634,12 @@ namespace GameServer.Maps
                 });
                 return;
               }
-              SConnection 网络连接10 = this.ActiveConnection;
+              客户网络 网络连接10 = this.ActiveConnection;
               if (网络连接10 == null)
               {
                 return;
               }
-              网络连接10.SendPacket(new 社交错误提示
+              网络连接10.发送封包(new 社交错误提示
               {
                 错误编号 = 3844
               });
@@ -15647,12 +15647,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接11 = this.ActiveConnection;
+        客户网络 网络连接11 = this.ActiveConnection;
         if (网络连接11 == null)
         {
           return;
         }
-        网络连接11.SendPacket(new 社交错误提示
+        网络连接11.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -15677,12 +15677,12 @@ namespace GameServer.Maps
               {
                 if (CharacterData.CurrentTeam == null)
                 {
-                  SConnection 网络连接 = this.ActiveConnection;
+                  客户网络 网络连接 = this.ActiveConnection;
                   if (网络连接 == null)
                   {
                     return;
                   }
-                  网络连接.SendPacket(new 社交错误提示
+                  网络连接.发送封包(new 社交错误提示
                   {
                     错误编号 = 3860
                   });
@@ -15690,12 +15690,12 @@ namespace GameServer.Maps
                 }
                 else if (this.Team != null)
                 {
-                  SConnection 网络连接2 = this.ActiveConnection;
+                  客户网络 网络连接2 = this.ActiveConnection;
                   if (网络连接2 == null)
                   {
                     return;
                   }
-                  网络连接2.SendPacket(new 社交错误提示
+                  网络连接2.发送封包(new 社交错误提示
                   {
                     错误编号 = 3847
                   });
@@ -15703,12 +15703,12 @@ namespace GameServer.Maps
                 }
                 else if (CharacterData.CurrentTeam.队员数量 >= 11)
                 {
-                  SConnection 网络连接3 = this.ActiveConnection;
+                  客户网络 网络连接3 = this.ActiveConnection;
                   if (网络连接3 == null)
                   {
                     return;
                   }
-                  网络连接3.SendPacket(new 社交错误提示
+                  网络连接3.发送封包(new 社交错误提示
                   {
                     错误编号 = 3848
                   });
@@ -15716,12 +15716,12 @@ namespace GameServer.Maps
                 }
                 else if (!CharacterData.CurrentTeam.邀请列表.ContainsKey(this.CharacterData))
                 {
-                  SConnection 网络连接4 = this.ActiveConnection;
+                  客户网络 网络连接4 = this.ActiveConnection;
                   if (网络连接4 == null)
                   {
                     return;
                   }
-                  网络连接4.SendPacket(new 社交错误提示
+                  网络连接4.发送封包(new 社交错误提示
                   {
                     错误编号 = 3860
                   });
@@ -15729,12 +15729,12 @@ namespace GameServer.Maps
                 }
                 else if (CharacterData.CurrentTeam.邀请列表[this.CharacterData] < MainProcess.CurrentTime)
                 {
-                  SConnection 网络连接5 = this.ActiveConnection;
+                  客户网络 网络连接5 = this.ActiveConnection;
                   if (网络连接5 == null)
                   {
                     return;
                   }
-                  网络连接5.SendPacket(new 社交错误提示
+                  网络连接5.发送封包(new 社交错误提示
                   {
                     错误编号 = 3860
                   });
@@ -15742,7 +15742,7 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  CharacterData.CurrentTeam.发送封包(new AddMembersToTeamPacket
+                  CharacterData.CurrentTeam.发送封包(new 队伍增加成员
                   {
                     队伍编号 = CharacterData.CurrentTeam.队伍编号,
                     对象编号 = this.ObjectId,
@@ -15753,12 +15753,12 @@ namespace GameServer.Maps
                   });
                   this.Team = CharacterData.CurrentTeam;
                   CharacterData.CurrentTeam.Members.Add(this.CharacterData);
-                  SConnection 网络连接6 = this.ActiveConnection;
+                  客户网络 网络连接6 = this.ActiveConnection;
                   if (网络连接6 == null)
                   {
                     return;
                   }
-                  网络连接6.SendPacket(new 玩家加入队伍
+                  网络连接6.发送封包(new 玩家加入队伍
                   {
                     字节描述 = this.Team.队伍描述()
                   });
@@ -15768,20 +15768,20 @@ namespace GameServer.Maps
               else
               {
                 TeamData 当前队伍 = CharacterData.CurrentTeam;
-                SConnection 客户网络;
+                客户网络 客户网络;
                 if (当前队伍 != null && 当前队伍.邀请列表.Remove(this.CharacterData) && CharacterData.IsOnline(out 客户网络))
                 {
-                  客户网络.SendPacket(new 社交错误提示
+                  客户网络.发送封包(new 社交错误提示
                   {
                     错误编号 = 3856
                   });
                 }
-                SConnection 网络连接7 = this.ActiveConnection;
+                客户网络 网络连接7 = this.ActiveConnection;
                 if (网络连接7 == null)
                 {
                   return;
                 }
-                网络连接7.SendPacket(new 社交错误提示
+                网络连接7.发送封包(new 社交错误提示
                 {
                   错误编号 = 3855
                 });
@@ -15792,12 +15792,12 @@ namespace GameServer.Maps
             {
               if (this.Team == null)
               {
-                SConnection 网络连接8 = this.ActiveConnection;
+                客户网络 网络连接8 = this.ActiveConnection;
                 if (网络连接8 == null)
                 {
                   return;
                 }
-                网络连接8.SendPacket(new 社交错误提示
+                网络连接8.发送封包(new 社交错误提示
                 {
                   错误编号 = 3860
                 });
@@ -15805,12 +15805,12 @@ namespace GameServer.Maps
               }
               else if (this.Team.队员数量 >= 11)
               {
-                SConnection 网络连接9 = this.ActiveConnection;
+                客户网络 网络连接9 = this.ActiveConnection;
                 if (网络连接9 == null)
                 {
                   return;
                 }
-                网络连接9.SendPacket(new 社交错误提示
+                网络连接9.发送封包(new 社交错误提示
                 {
                   错误编号 = 3848
                 });
@@ -15818,12 +15818,12 @@ namespace GameServer.Maps
               }
               else if (this.ObjectId != this.Team.队长编号)
               {
-                SConnection 网络连接10 = this.ActiveConnection;
+                客户网络 网络连接10 = this.ActiveConnection;
                 if (网络连接10 == null)
                 {
                   return;
                 }
-                网络连接10.SendPacket(new 社交错误提示
+                网络连接10.发送封包(new 社交错误提示
                 {
                   错误编号 = 3850
                 });
@@ -15831,12 +15831,12 @@ namespace GameServer.Maps
               }
               else if (!this.Team.申请列表.ContainsKey(CharacterData))
               {
-                SConnection 网络连接11 = this.ActiveConnection;
+                客户网络 网络连接11 = this.ActiveConnection;
                 if (网络连接11 == null)
                 {
                   return;
                 }
-                网络连接11.SendPacket(new 社交错误提示
+                网络连接11.发送封包(new 社交错误提示
                 {
                   错误编号 = 3860
                 });
@@ -15844,12 +15844,12 @@ namespace GameServer.Maps
               }
               else if (this.Team.申请列表[CharacterData] < MainProcess.CurrentTime)
               {
-                SConnection 网络连接12 = this.ActiveConnection;
+                客户网络 网络连接12 = this.ActiveConnection;
                 if (网络连接12 == null)
                 {
                   return;
                 }
-                网络连接12.SendPacket(new 社交错误提示
+                网络连接12.发送封包(new 社交错误提示
                 {
                   错误编号 = 3860
                 });
@@ -15857,12 +15857,12 @@ namespace GameServer.Maps
               }
               else if (CharacterData.CurrentTeam != null)
               {
-                SConnection 网络连接13 = this.ActiveConnection;
+                客户网络 网络连接13 = this.ActiveConnection;
                 if (网络连接13 == null)
                 {
                   return;
                 }
-                网络连接13.SendPacket(new 社交错误提示
+                网络连接13.发送封包(new 社交错误提示
                 {
                   错误编号 = 3847
                 });
@@ -15870,10 +15870,10 @@ namespace GameServer.Maps
               }
               else
               {
-                SConnection 客户网络2;
+                客户网络 客户网络2;
                 if (CharacterData.IsOnline(out 客户网络2))
                 {
-                  this.Team.发送封包(new AddMembersToTeamPacket
+                  this.Team.发送封包(new 队伍增加成员
                   {
                     队伍编号 = this.Team.队伍编号,
                     对象编号 = CharacterData.CharId,
@@ -15884,7 +15884,7 @@ namespace GameServer.Maps
                   });
                   CharacterData.CurrentTeam = this.Team;
                   this.Team.Members.Add(CharacterData);
-                  客户网络2.SendPacket(new 玩家加入队伍
+                  客户网络2.发送封包(new 玩家加入队伍
                   {
                     字节描述 = this.Team.队伍描述()
                   });
@@ -15896,20 +15896,20 @@ namespace GameServer.Maps
             else
             {
               TeamData 所属队伍 = this.Team;
-              SConnection 客户网络3;
+              客户网络 客户网络3;
               if (所属队伍 != null && 所属队伍.申请列表.Remove(CharacterData) && CharacterData.IsOnline(out 客户网络3))
               {
-                客户网络3.SendPacket(new 社交错误提示
+                客户网络3.发送封包(new 社交错误提示
                 {
                   错误编号 = 3858
                 });
               }
-              SConnection 网络连接14 = this.ActiveConnection;
+              客户网络 网络连接14 = this.ActiveConnection;
               if (网络连接14 == null)
               {
                 return;
               }
-              网络连接14.SendPacket(new 社交错误提示
+              网络连接14.发送封包(new 社交错误提示
               {
                 错误编号 = 3857
               });
@@ -15917,23 +15917,23 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接15 = this.ActiveConnection;
+        客户网络 网络连接15 = this.ActiveConnection;
         if (网络连接15 == null)
         {
           return;
         }
-        网络连接15.SendPacket(new 社交错误提示
+        网络连接15.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
         return;
       }
-      SConnection 网络连接16 = this.ActiveConnection;
+      客户网络 网络连接16 = this.ActiveConnection;
       if (网络连接16 == null)
       {
         return;
       }
-      网络连接16.SendPacket(new 社交错误提示
+      网络连接16.发送封包(new 社交错误提示
       {
         错误编号 = 3852
       });
@@ -15944,12 +15944,12 @@ namespace GameServer.Maps
     {
       if (this.Team == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 3854
         });
@@ -15966,15 +15966,15 @@ namespace GameServer.Maps
             if (this.CharacterData == CharacterData)
             {
               this.Team.Members.Remove(this.CharacterData);
-              this.Team.发送封包(new TeamMembersLeavePacket
+              this.Team.发送封包(new 队伍成员离开
               {
                 对象编号 = this.ObjectId,
                 队伍编号 = this.Team.Index.V
               });
-              SConnection 网络连接2 = this.ActiveConnection;
+              客户网络 网络连接2 = this.ActiveConnection;
               if (网络连接2 != null)
               {
-                网络连接2.SendPacket(new 玩家离开队伍
+                网络连接2.发送封包(new 玩家离开队伍
                 {
                   队伍编号 = this.Team.Index.V
                 });
@@ -15985,7 +15985,7 @@ namespace GameServer.Maps
                 if (CharacterData2 != null)
                 {
                   this.Team.队长数据 = CharacterData2;
-                  this.Team.发送封包(new TeamStatusChangePacket
+                  this.Team.发送封包(new 队伍状态改变
                   {
                     成员上限 = 11,
                     队伍编号 = this.Team.队伍编号,
@@ -16004,12 +16004,12 @@ namespace GameServer.Maps
             }
             if (!this.Team.Members.Contains(CharacterData))
             {
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 6732
               });
@@ -16017,12 +16017,12 @@ namespace GameServer.Maps
             }
             else if (this.CharacterData != this.Team.队长数据)
             {
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new 社交错误提示
+              网络连接4.发送封包(new 社交错误提示
               {
                 错误编号 = 3850
               });
@@ -16032,17 +16032,17 @@ namespace GameServer.Maps
             {
               this.Team.Members.Remove(CharacterData);
               CharacterData.CurrentTeam = null;
-              this.Team.发送封包(new TeamMembersLeavePacket
+              this.Team.发送封包(new 队伍成员离开
               {
                 队伍编号 = this.Team.Index.V,
                 对象编号 = CharacterData.CharId
               });
-              SConnection 网络连接5 = CharacterData.ActiveConnection;
+              客户网络 网络连接5 = CharacterData.ActiveConnection;
               if (网络连接5 == null)
               {
                 return;
               }
-              网络连接5.SendPacket(new 玩家离开队伍
+              网络连接5.发送封包(new 玩家离开队伍
               {
                 队伍编号 = this.Team.Index.V
               });
@@ -16050,12 +16050,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接6 = this.ActiveConnection;
+        客户网络 网络连接6 = this.ActiveConnection;
         if (网络连接6 == null)
         {
           return;
         }
-        网络连接6.SendPacket(new 社交错误提示
+        网络连接6.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -16068,12 +16068,12 @@ namespace GameServer.Maps
     {
       if (this.Team == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 3854
         });
@@ -16081,12 +16081,12 @@ namespace GameServer.Maps
       }
       else if (this.CharacterData != this.Team.队长数据)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 3850
         });
@@ -16102,12 +16102,12 @@ namespace GameServer.Maps
           {
             if (CharacterData == this.CharacterData)
             {
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 3852
               });
@@ -16118,7 +16118,7 @@ namespace GameServer.Maps
               if (this.Team.Members.Contains(CharacterData))
               {
                 this.Team.队长数据 = CharacterData;
-                this.Team.发送封包(new TeamStatusChangePacket
+                this.Team.发送封包(new 队伍状态改变
                 {
                   成员上限 = 11,
                   队伍编号 = this.Team.队伍编号,
@@ -16128,12 +16128,12 @@ namespace GameServer.Maps
                 });
                 return;
               }
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new 社交错误提示
+              网络连接4.发送封包(new 社交错误提示
               {
                 错误编号 = 6732
               });
@@ -16141,12 +16141,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接5 = this.ActiveConnection;
+        客户网络 网络连接5 = this.ActiveConnection;
         if (网络连接5 == null)
         {
           return;
         }
-        网络连接5.SendPacket(new 社交错误提示
+        网络连接5.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -16155,14 +16155,14 @@ namespace GameServer.Maps
     }
 
 
-    public void QueryMailboxContentPacket()
+    public void 查询邮件内容()
     {
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new 同步邮箱内容
+      网络连接.发送封包(new 同步邮箱内容
       {
         字节数据 = this.全部邮件描述()
       });
@@ -16173,17 +16173,17 @@ namespace GameServer.Maps
     {
       if (数据.Length < 94 || 数据.Length > 839)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Request to send mail.  Error: Incorrect data length."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Request to send mail.  Error: Incorrect data length."));
         return;
       }
       if (MainProcess.CurrentTime < this.邮件时间)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6151
         });
@@ -16191,12 +16191,12 @@ namespace GameServer.Maps
       }
       else if (this.NumberGoldCoins < 1000)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6149
         });
@@ -16210,7 +16210,7 @@ namespace GameServer.Maps
         byte[] array3 = 数据.Skip(97).ToArray<byte>();
         if (array[0] == 0 || array2[0] == 0 || array3[0] == 0)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Request to send an email.  Error: Incorrect message text."));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Request to send an email.  Error: Incorrect message text."));
           return;
         }
         string key = Encoding.UTF8.GetString(array).Split(new char[1], StringSplitOptions.RemoveEmptyEntries)[0];
@@ -16224,12 +16224,12 @@ namespace GameServer.Maps
           {
             if (CharacterData.Mails.Count >= 100)
             {
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 6147
               });
@@ -16239,22 +16239,22 @@ namespace GameServer.Maps
             {
               this.NumberGoldCoins -= 1000;
               CharacterData.SendEmail(new MailData(this.CharacterData, 标题, 正文, null));
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new 成功发送邮件());
+              网络连接4.发送封包(new 成功发送邮件());
               return;
             }
           }
         }
-        SConnection 网络连接5 = this.ActiveConnection;
+        客户网络 网络连接5 = this.ActiveConnection;
         if (网络连接5 == null)
         {
           return;
         }
-        网络连接5.SendPacket(new 社交错误提示
+        网络连接5.发送封包(new 社交错误提示
         {
           错误编号 = 6146
         });
@@ -16273,12 +16273,12 @@ namespace GameServer.Maps
         {
           if (!this.全部邮件.Contains(MailData))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 6148
             });
@@ -16288,12 +16288,12 @@ namespace GameServer.Maps
           {
             this.未读邮件.Remove(MailData);
             MailData.未读邮件.V = false;
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new 同步邮件内容
+            网络连接2.发送封包(new 同步邮件内容
             {
               字节数据 = MailData.邮件内容描述()
             });
@@ -16301,12 +16301,12 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接3 = this.ActiveConnection;
+      客户网络 网络连接3 = this.ActiveConnection;
       if (网络连接3 == null)
       {
         return;
       }
-      网络连接3.SendPacket(new 社交错误提示
+      网络连接3.发送封包(new 社交错误提示
       {
         错误编号 = 6148
       });
@@ -16323,10 +16323,10 @@ namespace GameServer.Maps
         {
           if (this.全部邮件.Contains(MailData))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 != null)
             {
-              网络连接.SendPacket(new EmailDeletedOkPacket
+              网络连接.发送封包(new 邮件删除成功
               {
                 邮件编号 = MailData.邮件编号
               });
@@ -16341,24 +16341,24 @@ namespace GameServer.Maps
             MailData.Delete();
             return;
           }
-          SConnection 网络连接2 = this.ActiveConnection;
+          客户网络 网络连接2 = this.ActiveConnection;
           if (网络连接2 == null)
           {
             return;
           }
-          网络连接2.SendPacket(new 社交错误提示
+          网络连接2.发送封包(new 社交错误提示
           {
             错误编号 = 6148
           });
           return;
         }
       }
-      SConnection 网络连接3 = this.ActiveConnection;
+      客户网络 网络连接3 = this.ActiveConnection;
       if (网络连接3 == null)
       {
         return;
       }
-      网络连接3.SendPacket(new 社交错误提示
+      网络连接3.发送封包(new 社交错误提示
       {
         错误编号 = 6148
       });
@@ -16375,12 +16375,12 @@ namespace GameServer.Maps
         {
           if (!this.全部邮件.Contains(MailData))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 6148
             });
@@ -16388,12 +16388,12 @@ namespace GameServer.Maps
           }
           else if (MailData.邮件附件.V == null)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new 社交错误提示
+            网络连接2.发送封包(new 社交错误提示
             {
               错误编号 = 6150
             });
@@ -16417,10 +16417,10 @@ namespace GameServer.Maps
                 IL_D1:
                   if (num != -1)
                   {
-                    SConnection 网络连接3 = this.ActiveConnection;
+                    客户网络 网络连接3 = this.ActiveConnection;
                     if (网络连接3 != null)
                     {
-                      网络连接3.SendPacket(new 成功提取附件
+                      网络连接3.发送封包(new 成功提取附件
                       {
                         邮件编号 = MailData.邮件编号
                       });
@@ -16431,12 +16431,12 @@ namespace GameServer.Maps
                     MailData.邮件附件.V = null;
                     return;
                   }
-                  SConnection 网络连接4 = this.ActiveConnection;
+                  客户网络 网络连接4 = this.ActiveConnection;
                   if (网络连接4 == null)
                   {
                     return;
                   }
-                  网络连接4.SendPacket(new 社交错误提示
+                  网络连接4.发送封包(new 社交错误提示
                   {
                     错误编号 = 1793
                   });
@@ -16445,12 +16445,12 @@ namespace GameServer.Maps
               }
               //goto IL_D1;
             }
-            SConnection 网络连接5 = this.ActiveConnection;
+            客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 == null)
             {
               return;
             }
-            网络连接5.SendPacket(new 社交错误提示
+            网络连接5.发送封包(new 社交错误提示
             {
               错误编号 = 1793
             });
@@ -16458,12 +16458,12 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接6 = this.ActiveConnection;
+      客户网络 网络连接6 = this.ActiveConnection;
       if (网络连接6 == null)
       {
         return;
       }
-      网络连接6.SendPacket(new 社交错误提示
+      网络连接6.发送封包(new 社交错误提示
       {
         错误编号 = 6148
       });
@@ -16478,15 +16478,15 @@ namespace GameServer.Maps
         GuildData GuildData = GameData as GuildData;
         if (GuildData != null)
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new GuildNameAnswerPAcket
+          网络连接.发送封包(new 行会名字应答
           {
             行会编号 = GuildData.Index.V,
-            GuildName = GuildData.GuildName.V,
+            行会名字 = GuildData.GuildName.V,
             创建时间 = GuildData.CreatedDate.V,
             会长编号 = GuildData.行会会长.V.Index.V,
             行会人数 = (byte)GuildData.行会成员.Count,
@@ -16495,12 +16495,12 @@ namespace GameServer.Maps
           return;
         }
       }
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 == null)
       {
         return;
       }
-      网络连接2.SendPacket(new 社交错误提示
+      网络连接2.发送封包(new 社交错误提示
       {
         错误编号 = 6669
       });
@@ -16512,7 +16512,7 @@ namespace GameServer.Maps
     }
 
 
-    public void 更多GuildEvents()
+    public void 更多行会事记()
     {
     }
 
@@ -16534,7 +16534,7 @@ namespace GameServer.Maps
         {
           binaryWriter.Write(item.行会检索描述());
         }
-        ActiveConnection?.SendPacket(new 同步行会列表
+        ActiveConnection?.发送封包(new 同步行会列表
         {
           字节数据 = memoryStream.ToArray()
         });
@@ -16544,7 +16544,7 @@ namespace GameServer.Maps
       using BinaryWriter binaryWriter2 = new BinaryWriter(memoryStream2);
       binaryWriter2.Write(查看方式);
       binaryWriter2.Write((byte)0);
-      ActiveConnection?.SendPacket(new 同步行会列表
+      ActiveConnection?.发送封包(new 同步行会列表
       {
         字节数据 = memoryStream2.ToArray()
       });
@@ -16558,24 +16558,24 @@ namespace GameServer.Maps
         GuildData GuildData = GameData as GuildData;
         if (GuildData != null)
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new FindGuildAnswersPacket
+          网络连接.发送封包(new 查找行会应答
           {
             字节数据 = GuildData.行会检索描述()
           });
           return;
         }
       }
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 == null)
       {
         return;
       }
-      网络连接2.SendPacket(new GameErrorMessagePacket
+      网络连接2.发送封包(new 游戏错误提示
       {
         错误代码 = 6669
       });
@@ -16586,12 +16586,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -16599,12 +16599,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] != GuildJobs.会长)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -16612,12 +16612,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.结盟行会.Count != 0)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6739
         });
@@ -16625,12 +16625,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.结盟行会.Count != 0)
       {
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 == null)
         {
           return;
         }
-        网络连接4.SendPacket(new 社交错误提示
+        网络连接4.发送封包(new 社交错误提示
         {
           错误编号 = 6740
         });
@@ -16638,12 +16638,12 @@ namespace GameServer.Maps
       }
       else if (MapGatewayProcess.攻城行会.Contains(this.Guild))
       {
-        SConnection 网络连接5 = this.ActiveConnection;
+        客户网络 网络连接5 = this.ActiveConnection;
         if (网络连接5 == null)
         {
           return;
         }
-        网络连接5.SendPacket(new 社交错误提示
+        网络连接5.发送封包(new 社交错误提示
         {
           错误编号 = 6819
         });
@@ -16656,12 +16656,12 @@ namespace GameServer.Maps
           this.Guild.解散行会();
           return;
         }
-        SConnection 网络连接6 = this.ActiveConnection;
+        客户网络 网络连接6 = this.ActiveConnection;
         if (网络连接6 == null)
         {
           return;
         }
-        网络连接6.SendPacket(new 社交错误提示
+        网络连接6.发送封包(new 社交错误提示
         {
           错误编号 = 6819
         });
@@ -16674,18 +16674,18 @@ namespace GameServer.Maps
     {
       if (this.打开界面 != "Guild")
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Request to create a guild. Error: Interface not opened."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Request to create a guild. Error: Interface not opened."));
         return;
       }
       ItemData 当前物品;
       if (this.Guild != null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 6707
         });
@@ -16693,12 +16693,12 @@ namespace GameServer.Maps
       }
       else if (this.CurrentLevel < 12)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 6699
         });
@@ -16706,12 +16706,12 @@ namespace GameServer.Maps
       }
       else if (this.NumberGoldCoins < 200000)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 6699
         });
@@ -16719,12 +16719,12 @@ namespace GameServer.Maps
       }
       else if (!this.查找背包物品(80002, out 当前物品))
       {
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 == null)
         {
           return;
         }
-        网络连接4.SendPacket(new GameErrorMessagePacket
+        网络连接4.发送封包(new 游戏错误提示
         {
           错误代码 = 6664
         });
@@ -16734,14 +16734,14 @@ namespace GameServer.Maps
       {
         if (数据.Length <= 25 || 数据.Length >= 128)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Request to create a guild. Error: Wrong data length."));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Request to create a guild. Error: Wrong data length."));
           return;
         }
         string[] array = Encoding.UTF8.GetString(数据.Take(25).ToArray<byte>()).Split(new char[1], StringSplitOptions.RemoveEmptyEntries);
         string[] array2 = Encoding.UTF8.GetString(数据.Skip(25).ToArray<byte>()).Split(new char[1], StringSplitOptions.RemoveEmptyEntries);
         if (array.Length == 0 || array2.Length == 0 || Encoding.UTF8.GetBytes(array[0]).Length >= 25 || Encoding.UTF8.GetBytes(array2[0]).Length >= 101)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Request to create a guild. Error: Wrong character length."));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Request to create a guild. Error: Wrong character length."));
           return;
         }
         if (!GameDataGateway.行会数据表.Keyword.ContainsKey(array[0]))
@@ -16749,18 +16749,18 @@ namespace GameServer.Maps
           this.NumberGoldCoins -= 200000;
           this.ConsumeBackpackItem(1, 当前物品);
           this.Guild = new GuildData(this, array[0], array2[0]);
-          SConnection 网络连接5 = this.ActiveConnection;
+          客户网络 网络连接5 = this.ActiveConnection;
           if (网络连接5 != null)
           {
-            网络连接5.SendPacket(new 创建行会应答
+            网络连接5.发送封包(new 创建行会应答
             {
               GuildName = this.Guild.GuildName.V
             });
           }
-          SConnection 网络连接6 = this.ActiveConnection;
+          客户网络 网络连接6 = this.ActiveConnection;
           if (网络连接6 != null)
           {
-            网络连接6.SendPacket(new GuildInfoAnnouncementPacket
+            网络连接6.发送封包(new 行会信息公告
             {
               字节数据 = this.Guild.行会信息描述()
             });
@@ -16773,12 +16773,12 @@ namespace GameServer.Maps
           NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]创建公会[{1}]", this.ObjectName, this.Guild), false);
           return;
         }
-        SConnection 网络连接7 = this.ActiveConnection;
+        客户网络 网络连接7 = this.ActiveConnection;
         if (网络连接7 == null)
         {
           return;
         }
-        网络连接7.SendPacket(new GameErrorMessagePacket
+        网络连接7.发送封包(new 游戏错误提示
         {
           错误代码 = 6697
         });
@@ -16791,12 +16791,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -16804,12 +16804,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] > GuildJobs.监事)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -16819,7 +16819,7 @@ namespace GameServer.Maps
       {
         if (数据.Length == 0 || 数据.Length >= 255)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Change of guild notice. Error: Incorrect data length"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error: Change of guild notice. Error: Incorrect data length"));
           return;
         }
         if (数据[0] == 0)
@@ -16837,12 +16837,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -16850,12 +16850,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] > GuildJobs.监事)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -16865,7 +16865,7 @@ namespace GameServer.Maps
       {
         if (数据.Length == 0 || 数据.Length >= 101)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Change of guild notice. Error: Incorrect data length"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error: Change of guild notice. Error: Incorrect data length"));
           return;
         }
         if (数据[0] == 0)
@@ -16893,12 +16893,12 @@ namespace GameServer.Maps
             {
               if (this.Guild != null)
               {
-                SConnection 网络连接 = this.ActiveConnection;
+                客户网络 网络连接 = this.ActiveConnection;
                 if (网络连接 == null)
                 {
                   return;
                 }
-                网络连接.SendPacket(new GameErrorMessagePacket
+                网络连接.发送封包(new 游戏错误提示
                 {
                   错误代码 = 6707
                 });
@@ -16908,10 +16908,10 @@ namespace GameServer.Maps
               {
                 if (CharacterData.Guild.V.行会成员.Count < 100)
                 {
-                  SConnection 网络连接2 = CharacterData.ActiveConnection;
+                  客户网络 网络连接2 = CharacterData.ActiveConnection;
                   if (网络连接2 != null)
                   {
-                    网络连接2.SendPacket(new GuildInvitationAnswerPacket
+                    网络连接2.发送封包(new 行会邀请应答
                     {
                       对象名字 = this.ObjectName,
                       应答类型 = 1
@@ -16920,12 +16920,12 @@ namespace GameServer.Maps
                   CharacterData.CurrentGuild.添加成员(this.CharacterData, GuildJobs.会员);
                   return;
                 }
-                SConnection 网络连接3 = this.ActiveConnection;
+                客户网络 网络连接3 = this.ActiveConnection;
                 if (网络连接3 == null)
                 {
                   return;
                 }
-                网络连接3.SendPacket(new 社交错误提示
+                网络连接3.发送封包(new 社交错误提示
                 {
                   错误编号 = 6709
                 });
@@ -16934,12 +16934,12 @@ namespace GameServer.Maps
             }
             else
             {
-              SConnection 网络连接4 = CharacterData.ActiveConnection;
+              客户网络 网络连接4 = CharacterData.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new GuildInvitationAnswerPacket
+              网络连接4.发送封包(new 行会邀请应答
               {
                 对象名字 = this.ObjectName,
                 应答类型 = 2
@@ -16949,12 +16949,12 @@ namespace GameServer.Maps
           }
           else
           {
-            SConnection 网络连接5 = this.ActiveConnection;
+            客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 == null)
             {
               return;
             }
-            网络连接5.SendPacket(new 社交错误提示
+            网络连接5.发送封包(new 社交错误提示
             {
               错误编号 = 6731
             });
@@ -16962,12 +16962,12 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接6 = this.ActiveConnection;
+      客户网络 网络连接6 = this.ActiveConnection;
       if (网络连接6 == null)
       {
         return;
       }
-      网络连接6.SendPacket(new 社交错误提示
+      网络连接6.发送封包(new 社交错误提示
       {
         错误编号 = 6732
       });
@@ -16978,12 +16978,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -16991,12 +16991,12 @@ namespace GameServer.Maps
       }
       else if ((byte)this.Guild.行会成员[this.CharacterData] >= 6)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -17012,12 +17012,12 @@ namespace GameServer.Maps
           {
             if (!this.Guild.申请列表.Remove(CharacterData))
             {
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 6731
               });
@@ -17027,10 +17027,10 @@ namespace GameServer.Maps
             {
               if (处理类型 != 2)
               {
-                SConnection 网络连接4 = this.ActiveConnection;
+                客户网络 网络连接4 = this.ActiveConnection;
                 if (网络连接4 != null)
                 {
-                  网络连接4.SendPacket(new 入会申请应答
+                  网络连接4.发送封包(new 入会申请应答
                   {
                     对象编号 = CharacterData.CharId
                   });
@@ -17040,12 +17040,12 @@ namespace GameServer.Maps
               }
               if (CharacterData.CurrentGuild != null)
               {
-                SConnection 网络连接5 = this.ActiveConnection;
+                客户网络 网络连接5 = this.ActiveConnection;
                 if (网络连接5 == null)
                 {
                   return;
                 }
-                网络连接5.SendPacket(new GameErrorMessagePacket
+                网络连接5.发送封包(new 游戏错误提示
                 {
                   错误代码 = 6707
                 });
@@ -17054,12 +17054,12 @@ namespace GameServer.Maps
               else
               {
                 this.Guild.添加成员(CharacterData, GuildJobs.会员);
-                SConnection 网络连接6 = this.ActiveConnection;
+                客户网络 网络连接6 = this.ActiveConnection;
                 if (网络连接6 == null)
                 {
                   return;
                 }
-                网络连接6.SendPacket(new 入会申请应答
+                网络连接6.发送封包(new 入会申请应答
                 {
                   对象编号 = CharacterData.CharId
                 });
@@ -17068,12 +17068,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接7 = this.ActiveConnection;
+        客户网络 网络连接7 = this.ActiveConnection;
         if (网络连接7 == null)
         {
           return;
         }
-        网络连接7.SendPacket(new 社交错误提示
+        网络连接7.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -17092,12 +17092,12 @@ namespace GameServer.Maps
         {
           if (this.Guild != null)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new GameErrorMessagePacket
+            网络连接.发送封包(new 游戏错误提示
             {
               错误代码 = 6707
             });
@@ -17105,12 +17105,12 @@ namespace GameServer.Maps
           }
           else if (this.CurrentLevel < 8)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new GameErrorMessagePacket
+            网络连接2.发送封包(new 游戏错误提示
             {
               错误代码 = 6714
             });
@@ -17118,12 +17118,12 @@ namespace GameServer.Maps
           }
           else if (GuildData.行会成员.Count >= 100)
           {
-            SConnection 网络连接3 = this.ActiveConnection;
+            客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new GameErrorMessagePacket
+            网络连接3.发送封包(new 游戏错误提示
             {
               错误代码 = 6710
             });
@@ -17131,12 +17131,12 @@ namespace GameServer.Maps
           }
           else if (GuildData.申请列表.Count > 20)
           {
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
             {
               return;
             }
-            网络连接4.SendPacket(new GameErrorMessagePacket
+            网络连接4.发送封包(new 游戏错误提示
             {
               错误代码 = 6703
             });
@@ -17146,12 +17146,12 @@ namespace GameServer.Maps
           {
             GuildData.申请列表[this.CharacterData] = MainProcess.CurrentTime.AddHours(1.0);
             GuildData.行会提醒(GuildJobs.执事, 1);
-            SConnection 网络连接5 = this.ActiveConnection;
+            客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 == null)
             {
               return;
             }
-            网络连接5.SendPacket(new 加入行会应答
+            网络连接5.发送封包(new 加入行会应答
             {
               行会编号 = GuildData.行会编号
             });
@@ -17159,19 +17159,19 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接6 = this.ActiveConnection;
+      客户网络 网络连接6 = this.ActiveConnection;
       if (网络连接6 == null)
       {
         return;
       }
-      网络连接6.SendPacket(new GameErrorMessagePacket
+      网络连接6.发送封包(new 游戏错误提示
       {
         错误代码 = 6669
       });
     }
 
 
-    public void InviteToJoinGuildPacket(string 对象名字)
+    public void 邀请加入行会(string 对象名字)
     {
       if (this.Guild != null)
       {
@@ -17185,12 +17185,12 @@ namespace GameServer.Maps
       }
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -17198,12 +17198,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] == GuildJobs.会员)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -17211,12 +17211,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员.Count >= 100)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -17230,15 +17230,15 @@ namespace GameServer.Maps
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
           {
-            SConnection 客户网络;
+            客户网络 客户网络;
             if (!CharacterData.IsOnline(out 客户网络))
             {
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new GameErrorMessagePacket
+              网络连接4.发送封包(new 游戏错误提示
               {
                 错误代码 = 6711
               });
@@ -17246,12 +17246,12 @@ namespace GameServer.Maps
             }
             else if (CharacterData.CurrentGuild != null)
             {
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 == null)
               {
                 return;
               }
-              网络连接5.SendPacket(new GameErrorMessagePacket
+              网络连接5.发送封包(new 游戏错误提示
               {
                 错误代码 = 6707
               });
@@ -17259,12 +17259,12 @@ namespace GameServer.Maps
             }
             else if (CharacterData.CharLevel < 8)
             {
-              SConnection 网络连接6 = this.ActiveConnection;
+              客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 == null)
               {
                 return;
               }
-              网络连接6.SendPacket(new GameErrorMessagePacket
+              网络连接6.发送封包(new 游戏错误提示
               {
                 错误代码 = 6714
               });
@@ -17273,18 +17273,18 @@ namespace GameServer.Maps
             else
             {
               this.Guild.邀请列表[CharacterData] = MainProcess.CurrentTime.AddHours(1.0);
-              客户网络.SendPacket(new InviteJoinPacket
+              客户网络.发送封包(new 受邀加入行会
               {
                 对象编号 = this.ObjectId,
                 对象名字 = this.ObjectName,
                 GuildName = this.Guild.GuildName.V
               });
-              SConnection 网络连接7 = this.ActiveConnection;
+              客户网络 网络连接7 = this.ActiveConnection;
               if (网络连接7 == null)
               {
                 return;
               }
-              网络连接7.SendPacket(new 社交错误提示
+              网络连接7.发送封包(new 社交错误提示
               {
                 错误编号 = 6713
               });
@@ -17292,12 +17292,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接8 = this.ActiveConnection;
+        客户网络 网络连接8 = this.ActiveConnection;
         if (网络连接8 == null)
         {
           return;
         }
-        网络连接8.SendPacket(new 社交错误提示
+        网络连接8.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -17310,12 +17310,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -17323,12 +17323,12 @@ namespace GameServer.Maps
       }
       else
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 查看申请名单
+        网络连接2.发送封包(new 查看申请名单
         {
           字节描述 = this.Guild.入会申请描述()
         });
@@ -17341,12 +17341,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -17359,12 +17359,12 @@ namespace GameServer.Maps
           this.Guild.退出行会(this.CharacterData);
           return;
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6718
         });
@@ -17373,21 +17373,22 @@ namespace GameServer.Maps
     }
 
 
-    public void DistributeGuildBenefitsPacket()
+    public void 发送行会福利()
     {
+            //TODO 要做什么吗？
     }
 
 
-    public void ExpelMembersPacket(int 对象编号)
+    public void 逐出行会成员(int 对象编号)
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -17395,12 +17396,12 @@ namespace GameServer.Maps
       }
       else if (this.ObjectId == 对象编号)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -17429,12 +17430,12 @@ namespace GameServer.Maps
                 }), null));
                 return;
               }
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 6709
               });
@@ -17442,12 +17443,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 == null)
         {
           return;
         }
-        网络连接4.SendPacket(new 社交错误提示
+        网络连接4.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -17456,16 +17457,16 @@ namespace GameServer.Maps
     }
 
 
-    public void TransferPresidentPositionPacket(int 对象编号)
+    public void 转移会长职位(int 对象编号)
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -17473,12 +17474,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] != GuildJobs.会长)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6719
         });
@@ -17486,12 +17487,12 @@ namespace GameServer.Maps
       }
       else if (this.ObjectId == 对象编号)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6681
         });
@@ -17512,12 +17513,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 == null)
         {
           return;
         }
-        网络连接4.SendPacket(new 社交错误提示
+        网络连接4.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -17535,12 +17536,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -17548,12 +17549,12 @@ namespace GameServer.Maps
       }
       else if (this.ObjectId == 对象编号)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -17574,12 +17575,12 @@ namespace GameServer.Maps
                 this.Guild.成员禁言(this.CharacterData, CharacterData, 禁言状态);
                 return;
               }
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 6709
               });
@@ -17587,12 +17588,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 == null)
         {
           return;
         }
-        网络连接4.SendPacket(new 社交错误提示
+        网络连接4.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -17605,12 +17606,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -17618,12 +17619,12 @@ namespace GameServer.Maps
       }
       else if (this.ObjectId == 对象编号)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6681
         });
@@ -17651,12 +17652,12 @@ namespace GameServer.Maps
                            where O == GuildJobs.副长
                            select O).Count<GuildJobs>() >= 2)
                       {
-                        SConnection 网络连接3 = this.ActiveConnection;
+                        客户网络 网络连接3 = this.ActiveConnection;
                         if (网络连接3 == null)
                         {
                           return;
                         }
-                        网络连接3.SendPacket(new 社交错误提示
+                        网络连接3.发送封包(new 社交错误提示
                         {
                           错误编号 = 6717
                         });
@@ -17669,12 +17670,12 @@ namespace GameServer.Maps
                            where O == GuildJobs.长老
                            select O).Count<GuildJobs>() >= 4)
                       {
-                        SConnection 网络连接4 = this.ActiveConnection;
+                        客户网络 网络连接4 = this.ActiveConnection;
                         if (网络连接4 == null)
                         {
                           return;
                         }
-                        网络连接4.SendPacket(new 社交错误提示
+                        网络连接4.发送封包(new 社交错误提示
                         {
                           错误编号 = 6717
                         });
@@ -17687,12 +17688,12 @@ namespace GameServer.Maps
                            where O == GuildJobs.监事
                            select O).Count<GuildJobs>() >= 4)
                       {
-                        SConnection 网络连接5 = this.ActiveConnection;
+                        客户网络 网络连接5 = this.ActiveConnection;
                         if (网络连接5 == null)
                         {
                           return;
                         }
-                        网络连接5.SendPacket(new 社交错误提示
+                        网络连接5.发送封包(new 社交错误提示
                         {
                           错误编号 = 6717
                         });
@@ -17705,12 +17706,12 @@ namespace GameServer.Maps
                            where O == GuildJobs.理事
                            select O).Count<GuildJobs>() >= 4)
                       {
-                        SConnection 网络连接6 = this.ActiveConnection;
+                        客户网络 网络连接6 = this.ActiveConnection;
                         if (网络连接6 == null)
                         {
                           return;
                         }
-                        网络连接6.SendPacket(new 社交错误提示
+                        网络连接6.发送封包(new 社交错误提示
                         {
                           错误编号 = 6717
                         });
@@ -17723,12 +17724,12 @@ namespace GameServer.Maps
                            where O == GuildJobs.执事
                            select O).Count<GuildJobs>() >= 4)
                       {
-                        SConnection 网络连接7 = this.ActiveConnection;
+                        客户网络 网络连接7 = this.ActiveConnection;
                         if (网络连接7 == null)
                         {
                           return;
                         }
-                        网络连接7.SendPacket(new 社交错误提示
+                        网络连接7.发送封包(new 社交错误提示
                         {
                           错误编号 = 6717
                         });
@@ -17739,12 +17740,12 @@ namespace GameServer.Maps
                     return;
                   }
                 }
-                SConnection 网络连接8 = this.ActiveConnection;
+                客户网络 网络连接8 = this.ActiveConnection;
                 if (网络连接8 == null)
                 {
                   return;
                 }
-                网络连接8.SendPacket(new 社交错误提示
+                网络连接8.发送封包(new 社交错误提示
                 {
                   错误编号 = 6704
                 });
@@ -17752,12 +17753,12 @@ namespace GameServer.Maps
               }
               else
               {
-                SConnection 网络连接9 = this.ActiveConnection;
+                客户网络 网络连接9 = this.ActiveConnection;
                 if (网络连接9 == null)
                 {
                   return;
                 }
-                网络连接9.SendPacket(new 社交错误提示
+                网络连接9.发送封包(new 社交错误提示
                 {
                   错误编号 = 6709
                 });
@@ -17766,12 +17767,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接10 = this.ActiveConnection;
+        客户网络 网络连接10 = this.ActiveConnection;
         if (网络连接10 == null)
         {
           return;
         }
-        网络连接10.SendPacket(new 社交错误提示
+        网络连接10.发送封包(new 社交错误提示
         {
           错误编号 = 6732
         });
@@ -17784,12 +17785,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -17797,12 +17798,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.GuildName.V == GuildName)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6694
         });
@@ -17810,12 +17811,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] >= GuildJobs.长老)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -17831,12 +17832,12 @@ namespace GameServer.Maps
           {
             if (this.Guild.结盟行会.ContainsKey(GuildData))
             {
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new 社交错误提示
+              网络连接4.发送封包(new 社交错误提示
               {
                 错误编号 = 6727
               });
@@ -17844,12 +17845,12 @@ namespace GameServer.Maps
             }
             else if (this.Guild.Hostility行会.ContainsKey(GuildData))
             {
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 == null)
               {
                 return;
               }
-              网络连接5.SendPacket(new 社交错误提示
+              网络连接5.发送封包(new 社交错误提示
               {
                 错误编号 = 6726
               });
@@ -17859,19 +17860,19 @@ namespace GameServer.Maps
             {
               if (外交时间 < 1 || 外交时间 > 3)
               {
-                this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Application for Guild Diplomacy.  Error: Wrong time parameter"));
+                this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Application for Guild Diplomacy.  Error: Wrong time parameter"));
                 return;
               }
               if (外交类型 == 1)
               {
                 if (this.Guild.结盟行会.Count >= 10)
                 {
-                  SConnection 网络连接6 = this.ActiveConnection;
+                  客户网络 网络连接6 = this.ActiveConnection;
                   if (网络连接6 == null)
                   {
                     return;
                   }
-                  网络连接6.SendPacket(new 社交错误提示
+                  网络连接6.发送封包(new 社交错误提示
                   {
                     错误编号 = 6668
                   });
@@ -17884,12 +17885,12 @@ namespace GameServer.Maps
                     this.Guild.申请结盟(this.CharacterData, GuildData, 外交时间);
                     return;
                   }
-                  SConnection 网络连接7 = this.ActiveConnection;
+                  客户网络 网络连接7 = this.ActiveConnection;
                   if (网络连接7 == null)
                   {
                     return;
                   }
-                  网络连接7.SendPacket(new 社交错误提示
+                  网络连接7.发送封包(new 社交错误提示
                   {
                     错误编号 = 6668
                   });
@@ -17904,18 +17905,18 @@ namespace GameServer.Maps
                   NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]和[{1}]成为敌方公会。", this.Guild, GuildData), false);
                   return;
                 }
-                this.ActiveConnection.CallExceptionEventHandler(new Exception("错误动作:申请公会外交。错误:错误的类型参数"));
+                this.ActiveConnection.尝试断开连接(new Exception("错误动作:申请公会外交。错误:错误的类型参数"));
                 return;
               }
             }
           }
         }
-        SConnection 网络连接8 = this.ActiveConnection;
+        客户网络 网络连接8 = this.ActiveConnection;
         if (网络连接8 == null)
         {
           return;
         }
-        网络连接8.SendPacket(new GameErrorMessagePacket
+        网络连接8.发送封包(new 游戏错误提示
         {
           错误代码 = 6669
         });
@@ -17924,16 +17925,16 @@ namespace GameServer.Maps
     }
 
 
-    public void 申请行会Hostility(byte Hostility时间, string GuildName)
+    public void 申请行会敌对(byte Hostility时间, string GuildName)
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -17941,12 +17942,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.GuildName.V == GuildName)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6694
         });
@@ -17954,12 +17955,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] >= GuildJobs.长老)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -17975,12 +17976,12 @@ namespace GameServer.Maps
           {
             if (this.Guild.结盟行会.ContainsKey(GuildData))
             {
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new 社交错误提示
+              网络连接4.发送封包(new 社交错误提示
               {
                 错误编号 = 6727
               });
@@ -17988,12 +17989,12 @@ namespace GameServer.Maps
             }
             else if (this.Guild.Hostility行会.ContainsKey(GuildData))
             {
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 == null)
               {
                 return;
               }
-              网络连接5.SendPacket(new 社交错误提示
+              网络连接5.发送封包(new 社交错误提示
               {
                 错误编号 = 6726
               });
@@ -18007,17 +18008,17 @@ namespace GameServer.Maps
                 NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]和[{1}]已经成为相互竞争的公会。", this.Guild, GuildData), false);
                 return;
               }
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("错误行为:申请公会敌对。错误:错误的时间参数"));
+              this.ActiveConnection.尝试断开连接(new Exception("错误行为:申请公会敌对。错误:错误的时间参数"));
               return;
             }
           }
         }
-        SConnection 网络连接6 = this.ActiveConnection;
+        客户网络 网络连接6 = this.ActiveConnection;
         if (网络连接6 == null)
         {
           return;
         }
-        网络连接6.SendPacket(new GameErrorMessagePacket
+        网络连接6.发送封包(new 游戏错误提示
         {
           错误代码 = 6669
         });
@@ -18030,12 +18031,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -18043,12 +18044,12 @@ namespace GameServer.Maps
       }
       else
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 同步结盟申请
+        网络连接2.发送封包(new 同步结盟申请
         {
           字节描述 = this.Guild.结盟申请描述()
         });
@@ -18061,12 +18062,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -18074,12 +18075,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会编号 == 行会编号)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6694
         });
@@ -18087,12 +18088,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] >= GuildJobs.长老)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -18108,12 +18109,12 @@ namespace GameServer.Maps
           {
             if (this.Guild.结盟行会.ContainsKey(GuildData))
             {
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new GameErrorMessagePacket
+              网络连接4.发送封包(new 游戏错误提示
               {
                 错误代码 = 6727
               });
@@ -18121,12 +18122,12 @@ namespace GameServer.Maps
             }
             else if (this.Guild.Hostility行会.ContainsKey(GuildData))
             {
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 == null)
               {
                 return;
               }
-              网络连接5.SendPacket(new 社交错误提示
+              网络连接5.发送封包(new 社交错误提示
               {
                 错误编号 = 6726
               });
@@ -18134,12 +18135,12 @@ namespace GameServer.Maps
             }
             else if (!this.Guild.结盟申请.ContainsKey(GuildData))
             {
-              SConnection 网络连接6 = this.ActiveConnection;
+              客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 == null)
               {
                 return;
               }
-              网络连接6.SendPacket(new 社交错误提示
+              网络连接6.发送封包(new 社交错误提示
               {
                 错误编号 = 6695
               });
@@ -18149,10 +18150,10 @@ namespace GameServer.Maps
             {
               if (处理类型 == 1)
               {
-                SConnection 网络连接7 = this.ActiveConnection;
+                客户网络 网络连接7 = this.ActiveConnection;
                 if (网络连接7 != null)
                 {
-                  网络连接7.SendPacket(new AffiliateAppResponsePacket
+                  网络连接7.发送封包(new 处理结盟申请
                   {
                     行会编号 = GuildData.行会编号
                   });
@@ -18168,17 +18169,17 @@ namespace GameServer.Maps
                 this.Guild.结盟申请.Remove(GuildData);
                 return;
               }
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("错误动作:处理联盟请求。错误:错误的处理类型。"));
+              this.ActiveConnection.尝试断开连接(new Exception("错误动作:处理联盟请求。错误:错误的处理类型。"));
               return;
             }
           }
         }
-        SConnection 网络连接8 = this.ActiveConnection;
+        客户网络 网络连接8 = this.ActiveConnection;
         if (网络连接8 == null)
         {
           return;
         }
-        网络连接8.SendPacket(new GameErrorMessagePacket
+        网络连接8.发送封包(new 游戏错误提示
         {
           错误代码 = 6669
         });
@@ -18191,12 +18192,12 @@ namespace GameServer.Maps
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -18204,12 +18205,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会编号 == 行会编号)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6694
         });
@@ -18217,12 +18218,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] >= GuildJobs.长老)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -18242,24 +18243,24 @@ namespace GameServer.Maps
               NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]解散了与[{1}]的公会联盟。", this.Guild, GuildData), false);
               return;
             }
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
             {
               return;
             }
-            网络连接4.SendPacket(new GameErrorMessagePacket
+            网络连接4.发送封包(new 游戏错误提示
             {
               错误代码 = 6728
             });
             return;
           }
         }
-        SConnection 网络连接5 = this.ActiveConnection;
+        客户网络 网络连接5 = this.ActiveConnection;
         if (网络连接5 == null)
         {
           return;
         }
-        网络连接5.SendPacket(new GameErrorMessagePacket
+        网络连接5.发送封包(new 游戏错误提示
         {
           错误代码 = 6669
         });
@@ -18268,16 +18269,16 @@ namespace GameServer.Maps
     }
 
 
-    public void 申请解除Hostility(int 行会编号)
+    public void 申请解除敌对(int 行会编号)
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -18285,12 +18286,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会编号 == 行会编号)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6694
         });
@@ -18298,12 +18299,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] >= GuildJobs.长老)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -18319,12 +18320,12 @@ namespace GameServer.Maps
           {
             if (!this.Guild.Hostility行会.ContainsKey(GuildData))
             {
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new GameErrorMessagePacket
+              网络连接4.发送封包(new 游戏错误提示
               {
                 错误代码 = 6826
               });
@@ -18337,12 +18338,12 @@ namespace GameServer.Maps
                 this.Guild.申请解敌(this.CharacterData, GuildData);
                 return;
               }
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 == null)
               {
                 return;
               }
-              网络连接5.SendPacket(new GameErrorMessagePacket
+              网络连接5.发送封包(new 游戏错误提示
               {
                 错误代码 = 6708
               });
@@ -18350,12 +18351,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接6 = this.ActiveConnection;
+        客户网络 网络连接6 = this.ActiveConnection;
         if (网络连接6 == null)
         {
           return;
         }
-        网络连接6.SendPacket(new GameErrorMessagePacket
+        网络连接6.发送封包(new 游戏错误提示
         {
           错误代码 = 6669
         });
@@ -18364,16 +18365,16 @@ namespace GameServer.Maps
     }
 
 
-    public void 处理解除申请(int 行会编号, byte 应答类型)
+    public void 处理解除敌对申请(int 行会编号, byte 应答类型)
     {
       if (this.Guild == null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new 社交错误提示
+        网络连接.发送封包(new 社交错误提示
         {
           错误编号 = 6668
         });
@@ -18381,12 +18382,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会编号 == 行会编号)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new 社交错误提示
+        网络连接2.发送封包(new 社交错误提示
         {
           错误编号 = 6694
         });
@@ -18394,12 +18395,12 @@ namespace GameServer.Maps
       }
       else if (this.Guild.行会成员[this.CharacterData] >= GuildJobs.长老)
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new 社交错误提示
+        网络连接3.发送封包(new 社交错误提示
         {
           错误编号 = 6709
         });
@@ -18415,12 +18416,12 @@ namespace GameServer.Maps
           {
             if (!this.Guild.Hostility行会.ContainsKey(GuildData))
             {
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new GameErrorMessagePacket
+              网络连接4.发送封包(new 游戏错误提示
               {
                 错误代码 = 6826
               });
@@ -18428,12 +18429,12 @@ namespace GameServer.Maps
             }
             else if (!this.Guild.解除申请.ContainsKey(GuildData))
             {
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 == null)
               {
                 return;
               }
-              网络连接5.SendPacket(new GameErrorMessagePacket
+              网络连接5.发送封包(new 游戏错误提示
               {
                 错误代码 = 5899
               });
@@ -18443,7 +18444,7 @@ namespace GameServer.Maps
             {
               if (应答类型 != 2)
               {
-                this.Guild.发送封包(new DisarmHostileListPacket
+                this.Guild.发送封包(new 解除敌对列表
                 {
                   申请类型 = 2,
                   行会编号 = GuildData.行会编号
@@ -18458,12 +18459,12 @@ namespace GameServer.Maps
                 this.Guild.解除申请.Remove(GuildData);
                 return;
               }
-              SConnection 网络连接6 = this.ActiveConnection;
+              客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 == null)
               {
                 return;
               }
-              网络连接6.SendPacket(new GameErrorMessagePacket
+              网络连接6.发送封包(new 游戏错误提示
               {
                 错误代码 = 6800
               });
@@ -18471,12 +18472,12 @@ namespace GameServer.Maps
             }
           }
         }
-        SConnection 网络连接7 = this.ActiveConnection;
+        客户网络 网络连接7 = this.ActiveConnection;
         if (网络连接7 == null)
         {
           return;
         }
-        网络连接7.SendPacket(new GameErrorMessagePacket
+        网络连接7.发送封包(new 游戏错误提示
         {
           错误代码 = 6669
         });
@@ -18489,12 +18490,12 @@ namespace GameServer.Maps
     {
       if (this.所属师门 != null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new SyncGuildMemberPacket
+        网络连接.发送封包(new 查询师门成员
         {
           字节数据 = this.所属师门.成员数据()
         });
@@ -18506,12 +18507,12 @@ namespace GameServer.Maps
     {
       if (this.所属师门 != null)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new SyncMasterRewardPacket
+        网络连接.发送封包(new 同步师门奖励
         {
           字节数据 = this.所属师门.奖励数据(this.CharacterData)
         });
@@ -18539,12 +18540,12 @@ namespace GameServer.Maps
         {
           if (this.所属师门 != null)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 5895
             });
@@ -18552,12 +18553,12 @@ namespace GameServer.Maps
           }
           else if (this.CurrentLevel >= 30)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new 社交错误提示
+            网络连接2.发送封包(new 社交错误提示
             {
               错误编号 = 5915
             });
@@ -18565,12 +18566,12 @@ namespace GameServer.Maps
           }
           else if (CharacterData.CharLevel < 30)
           {
-            SConnection 网络连接3 = this.ActiveConnection;
+            客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new 社交错误提示
+            网络连接3.发送封包(new 社交错误提示
             {
               错误编号 = 5894
             });
@@ -18578,12 +18579,12 @@ namespace GameServer.Maps
           }
           else if (CharacterData.CurrentTeacher != null && CharacterData.CharId != CharacterData.CurrentTeacher.MasterId)
           {
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
             {
               return;
             }
-            网络连接4.SendPacket(new 社交错误提示
+            网络连接4.发送封包(new 社交错误提示
             {
               错误编号 = 5890
             });
@@ -18591,12 +18592,12 @@ namespace GameServer.Maps
           }
           else if (CharacterData.CurrentTeacher != null && CharacterData.CurrentTeacher.徒弟数量 >= 3)
           {
-            SConnection 网络连接5 = this.ActiveConnection;
+            客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 == null)
             {
               return;
             }
-            网络连接5.SendPacket(new 社交错误提示
+            网络连接5.发送封包(new 社交错误提示
             {
               错误编号 = 5891
             });
@@ -18604,7 +18605,7 @@ namespace GameServer.Maps
           }
           else
           {
-            SConnection 客户网络;
+            客户网络 客户网络;
             if (CharacterData.IsOnline(out 客户网络))
             {
               if (CharacterData.CurrentTeacher == null)
@@ -18612,26 +18613,26 @@ namespace GameServer.Maps
                 CharacterData.CurrentTeacher = new TeacherData(CharacterData);
               }
               CharacterData.CurrentTeacher.申请列表[this.ObjectId] = MainProcess.CurrentTime;
-              SConnection 网络连接6 = this.ActiveConnection;
+              客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 != null)
               {
-                网络连接6.SendPacket(new 申请拜师应答
+                网络连接6.发送封包(new 申请拜师应答
                 {
                   对象编号 = CharacterData.CharId
                 });
               }
-              客户网络.SendPacket(new 申请拜师提示
+              客户网络.发送封包(new 申请拜师提示
               {
                 对象编号 = this.ObjectId
               });
               return;
             }
-            SConnection 网络连接7 = this.ActiveConnection;
+            客户网络 网络连接7 = this.ActiveConnection;
             if (网络连接7 == null)
             {
               return;
             }
-            网络连接7.SendPacket(new 社交错误提示
+            网络连接7.发送封包(new 社交错误提示
             {
               错误编号 = 5892
             });
@@ -18639,12 +18640,12 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接8 = this.ActiveConnection;
+      客户网络 网络连接8 = this.ActiveConnection;
       if (网络连接8 == null)
       {
         return;
       }
-      网络连接8.SendPacket(new 社交错误提示
+      网络连接8.发送封包(new 社交错误提示
       {
         错误编号 = 5913
       });
@@ -18661,17 +18662,17 @@ namespace GameServer.Maps
         {
           if (this.CurrentLevel < 30)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Mistake: Agreeing to the application, Error: Insufficient level."));
+            this.ActiveConnection.尝试断开连接(new Exception("Mistake: Agreeing to the application, Error: Insufficient level."));
             return;
           }
           if (CharacterData.CharLevel >= 30)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 5894
             });
@@ -18679,12 +18680,12 @@ namespace GameServer.Maps
           }
           else if (CharacterData.CurrentTeacher != null)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new 社交错误提示
+            网络连接2.发送封包(new 社交错误提示
             {
               错误编号 = 5895
             });
@@ -18694,22 +18695,22 @@ namespace GameServer.Maps
           {
             if (this.所属师门 == null)
             {
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Agree to the application, Error: No master has been created."));
+              this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Agree to the application, Error: No master has been created."));
               return;
             }
             if (this.所属师门.MasterId != this.ObjectId)
             {
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Agree to apply for a teacher, Error: Not yet a teacher myself."));
+              this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Agree to apply for a teacher, Error: Not yet a teacher myself."));
               return;
             }
             if (!this.所属师门.申请列表.ContainsKey(CharacterData.CharId))
             {
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 5898
               });
@@ -18717,12 +18718,12 @@ namespace GameServer.Maps
             }
             else if (this.所属师门.徒弟数量 >= 3)
             {
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new 社交错误提示
+              网络连接4.发送封包(new 社交错误提示
               {
                 错误编号 = 5891
               });
@@ -18730,7 +18731,7 @@ namespace GameServer.Maps
             }
             else
             {
-              SConnection 客户网络;
+              客户网络 客户网络;
               if (CharacterData.IsOnline(out 客户网络))
               {
                 if (this.所属师门 == null)
@@ -18742,38 +18743,38 @@ namespace GameServer.Maps
                 {
                   对象编号 = CharacterData.CharId
                 });
-                SConnection 网络连接5 = this.ActiveConnection;
+                客户网络 网络连接5 = this.ActiveConnection;
                 if (网络连接5 != null)
                 {
-                  网络连接5.SendPacket(new 拜师申请通过
+                  网络连接5.发送封包(new 拜师申请通过
                   {
                     对象编号 = CharacterData.CharId
                   });
                 }
-                SConnection 网络连接6 = this.ActiveConnection;
+                客户网络 网络连接6 = this.ActiveConnection;
                 if (网络连接6 != null)
                 {
-                  网络连接6.SendPacket(new SyncGuildMemberPacket
+                  网络连接6.发送封包(new 查询师门成员
                   {
                     字节数据 = this.所属师门.成员数据()
                   });
                 }
-                客户网络.SendPacket(new SyncGuildMemberPacket
+                客户网络.发送封包(new 查询师门成员
                 {
                   字节数据 = this.所属师门.成员数据()
                 });
-                客户网络.SendPacket(new SyncTeacherInfoPacket
+                客户网络.发送封包(new 同步师门信息
                 {
                   师门参数 = 1
                 });
                 return;
               }
-              SConnection 网络连接7 = this.ActiveConnection;
+              客户网络 网络连接7 = this.ActiveConnection;
               if (网络连接7 == null)
               {
                 return;
               }
-              网络连接7.SendPacket(new 社交错误提示
+              网络连接7.发送封包(new 社交错误提示
               {
                 错误编号 = 5893
               });
@@ -18782,19 +18783,19 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接8 = this.ActiveConnection;
+      客户网络 网络连接8 = this.ActiveConnection;
       if (网络连接8 == null)
       {
         return;
       }
-      网络连接8.SendPacket(new 社交错误提示
+      网络连接8.发送封包(new 社交错误提示
       {
         错误编号 = 5913
       });
     }
 
 
-    public void RefusedApplyApprenticeshipPacket(int 对象编号)
+    public void 拒绝拜师申请(int 对象编号)
     {
       GameData GameData;
       if (GameDataGateway.角色数据表.DataSheet.TryGetValue(对象编号, out GameData))
@@ -18804,22 +18805,22 @@ namespace GameServer.Maps
         {
           if (this.所属师门 == null)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: RefusedApplyApprenticeshipPacket, Error: Division not yet created."));
+            this.ActiveConnection.尝试断开连接(new Exception("Wrong action: RefusedApplyApprenticeshipPacket, Error: Division not yet created."));
             return;
           }
           if (this.所属师门.MasterId != this.ObjectId)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong operation: RefusedApplyApprenticeshipPacket, Error: Self not yet mastered."));
+            this.ActiveConnection.尝试断开连接(new Exception("Wrong operation: RefusedApplyApprenticeshipPacket, Error: Self not yet mastered."));
             return;
           }
           if (!this.所属师门.申请列表.ContainsKey(CharacterData.CharId))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 5898
             });
@@ -18827,10 +18828,10 @@ namespace GameServer.Maps
           }
           else
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 != null)
             {
-              网络连接2.SendPacket(new 拜师申请拒绝
+              网络连接2.发送封包(new 拜师申请拒绝
               {
                 对象编号 = CharacterData.CharId
               });
@@ -18839,12 +18840,12 @@ namespace GameServer.Maps
             {
               return;
             }
-            SConnection 网络连接3 = CharacterData.ActiveConnection;
+            客户网络 网络连接3 = CharacterData.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new RefusalApprenticePacket
+            网络连接3.发送封包(new 拒绝拜师提示
             {
               对象编号 = this.ObjectId
             });
@@ -18852,12 +18853,12 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接4 = this.ActiveConnection;
+      客户网络 网络连接4 = this.ActiveConnection;
       if (网络连接4 == null)
       {
         return;
       }
-      网络连接4.SendPacket(new 社交错误提示
+      网络连接4.发送封包(new 社交错误提示
       {
         错误编号 = 5913
       });
@@ -18874,17 +18875,17 @@ namespace GameServer.Maps
         {
           if (this.CurrentLevel < 30)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player applied for an apprentice, Error: Insufficient level."));
+            this.ActiveConnection.尝试断开连接(new Exception("Error: Player applied for an apprentice, Error: Insufficient level."));
             return;
           }
           if (CharacterData.CharLevel >= 30)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 5894
             });
@@ -18892,12 +18893,12 @@ namespace GameServer.Maps
           }
           else if (CharacterData.CurrentTeacher != null)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new 社交错误提示
+            网络连接2.发送封包(new 社交错误提示
             {
               错误编号 = 5895
             });
@@ -18907,17 +18908,17 @@ namespace GameServer.Maps
           {
             if (this.所属师门 != null && this.所属师门.MasterId != this.ObjectId)
             {
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: The player has applied for an apprenticeship, Error: He is not yet a master."));
+              this.ActiveConnection.尝试断开连接(new Exception("Error: The player has applied for an apprenticeship, Error: He is not yet a master."));
               return;
             }
             if (this.所属师门 != null && this.所属师门.徒弟数量 >= 3)
             {
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 5891
               });
@@ -18925,7 +18926,7 @@ namespace GameServer.Maps
             }
             else
             {
-              SConnection 客户网络;
+              客户网络 客户网络;
               if (CharacterData.IsOnline(out 客户网络))
               {
                 if (this.所属师门 == null)
@@ -18933,15 +18934,15 @@ namespace GameServer.Maps
                   this.所属师门 = new TeacherData(this.CharacterData);
                 }
                 this.所属师门.邀请列表[CharacterData.CharId] = MainProcess.CurrentTime;
-                SConnection 网络连接4 = this.ActiveConnection;
+                客户网络 网络连接4 = this.ActiveConnection;
                 if (网络连接4 != null)
                 {
-                  网络连接4.SendPacket(new 申请收徒应答
+                  网络连接4.发送封包(new 申请收徒应答
                   {
                     对象编号 = CharacterData.CharId
                   });
                 }
-                客户网络.SendPacket(new 申请收徒提示
+                客户网络.发送封包(new 申请收徒提示
                 {
                   对象编号 = this.ObjectId,
                   对象等级 = this.CurrentLevel,
@@ -18949,12 +18950,12 @@ namespace GameServer.Maps
                 });
                 return;
               }
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 == null)
               {
                 return;
               }
-              网络连接5.SendPacket(new 社交错误提示
+              网络连接5.发送封包(new 社交错误提示
               {
                 错误编号 = 5893
               });
@@ -18963,12 +18964,12 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接6 = this.ActiveConnection;
+      客户网络 网络连接6 = this.ActiveConnection;
       if (网络连接6 == null)
       {
         return;
       }
-      网络连接6.SendPacket(new 社交错误提示
+      网络连接6.发送封包(new 社交错误提示
       {
         错误编号 = 5913
       });
@@ -18985,12 +18986,12 @@ namespace GameServer.Maps
         {
           if (this.CurrentLevel > 30)
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 5915
             });
@@ -18998,12 +18999,12 @@ namespace GameServer.Maps
           }
           else if (this.所属师门 != null)
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new 社交错误提示
+            网络连接2.发送封包(new 社交错误提示
             {
               错误编号 = 5895
             });
@@ -19013,28 +19014,28 @@ namespace GameServer.Maps
           {
             if (CharacterData.CharLevel < 30)
             {
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Incorrect action: Agree to apprentice application, Error: The other party is not of sufficient level."));
+              this.ActiveConnection.尝试断开连接(new Exception("Incorrect action: Agree to apprentice application, Error: The other party is not of sufficient level."));
               return;
             }
             if (CharacterData.CurrentTeacher == null)
             {
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Agree to apprentice application, Error: The other party does not have a master."));
+              this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Agree to apprentice application, Error: The other party does not have a master."));
               return;
             }
             if (CharacterData.CurrentTeacher.MasterId != CharacterData.CharId)
             {
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Agree to apprentice application, Error: The other party is not yet a student."));
+              this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Agree to apprentice application, Error: The other party is not yet a student."));
               return;
             }
-            SConnection 客户网络;
+            客户网络 客户网络;
             if (!CharacterData.CurrentTeacher.邀请列表.ContainsKey(this.ObjectId))
             {
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new 社交错误提示
+              网络连接3.发送封包(new 社交错误提示
               {
                 错误编号 = 5899
               });
@@ -19042,12 +19043,12 @@ namespace GameServer.Maps
             }
             else if (CharacterData.CurrentTeacher.徒弟数量 >= 3)
             {
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new 社交错误提示
+              网络连接4.发送封包(new 社交错误提示
               {
                 错误编号 = 5891
               });
@@ -19055,10 +19056,10 @@ namespace GameServer.Maps
             }
             else if (CharacterData.IsOnline(out 客户网络))
             {
-              SConnection 网络连接5 = this.ActiveConnection;
+              客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 != null)
               {
-                网络连接5.SendPacket(new 收徒申请同意
+                网络连接5.发送封包(new 收徒申请同意
                 {
                   对象编号 = CharacterData.CharId
                 });
@@ -19067,7 +19068,7 @@ namespace GameServer.Maps
               {
                 CharacterData.CurrentTeacher = new TeacherData(CharacterData);
               }
-              客户网络.SendPacket(new 收徒成功提示
+              客户网络.发送封包(new 收徒成功提示
               {
                 对象编号 = this.ObjectId
               });
@@ -19076,20 +19077,20 @@ namespace GameServer.Maps
                 对象编号 = this.ObjectId
               });
               CharacterData.CurrentTeacher.添加徒弟(this.CharacterData);
-              SConnection 网络连接6 = this.ActiveConnection;
+              客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 != null)
               {
-                网络连接6.SendPacket(new SyncGuildMemberPacket
+                网络连接6.发送封包(new 查询师门成员
                 {
                   字节数据 = CharacterData.CurrentTeacher.成员数据()
                 });
               }
-              SConnection 网络连接7 = this.ActiveConnection;
+              客户网络 网络连接7 = this.ActiveConnection;
               if (网络连接7 == null)
               {
                 return;
               }
-              网络连接7.SendPacket(new SyncTeacherInfoPacket
+              网络连接7.发送封包(new 同步师门信息
               {
                 师门参数 = 1
               });
@@ -19097,12 +19098,12 @@ namespace GameServer.Maps
             }
             else
             {
-              SConnection 网络连接8 = this.ActiveConnection;
+              客户网络 网络连接8 = this.ActiveConnection;
               if (网络连接8 == null)
               {
                 return;
               }
-              网络连接8.SendPacket(new 社交错误提示
+              网络连接8.发送封包(new 社交错误提示
               {
                 错误编号 = 5892
               });
@@ -19111,12 +19112,12 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接9 = this.ActiveConnection;
+      客户网络 网络连接9 = this.ActiveConnection;
       if (网络连接9 == null)
       {
         return;
       }
-      网络连接9.SendPacket(new 社交错误提示
+      网络连接9.发送封包(new 社交错误提示
       {
         错误编号 = 5913
       });
@@ -19133,22 +19134,22 @@ namespace GameServer.Maps
         {
           if (CharacterData.Teacher == null)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: RejectionApprenticeshipAppPacket, Error: Division not yet created."));
+            this.ActiveConnection.尝试断开连接(new Exception("Wrong action: RejectionApprenticeshipAppPacket, Error: Division not yet created."));
             return;
           }
           if (CharacterData.CurrentTeacher.MasterId != CharacterData.CharId)
           {
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong operation: RefusedApplyApprenticeshipPacket, Error: Self not yet mastered."));
+            this.ActiveConnection.尝试断开连接(new Exception("Wrong operation: RefusedApplyApprenticeshipPacket, Error: Self not yet mastered."));
             return;
           }
           if (!CharacterData.CurrentTeacher.邀请列表.ContainsKey(this.ObjectId))
           {
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new 社交错误提示
+            网络连接.发送封包(new 社交错误提示
             {
               错误编号 = 5899
             });
@@ -19156,10 +19157,10 @@ namespace GameServer.Maps
           }
           else
           {
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 != null)
             {
-              网络连接2.SendPacket(new 收徒申请拒绝
+              网络连接2.发送封包(new 收徒申请拒绝
               {
                 对象编号 = CharacterData.CharId
               });
@@ -19168,12 +19169,12 @@ namespace GameServer.Maps
             {
               return;
             }
-            SConnection 网络连接3 = CharacterData.ActiveConnection;
+            客户网络 网络连接3 = CharacterData.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new RejectionTipsPacket
+            网络连接3.发送封包(new 拒绝收徒提示
             {
               对象编号 = this.ObjectId
             });
@@ -19181,28 +19182,28 @@ namespace GameServer.Maps
           }
         }
       }
-      SConnection 网络连接4 = this.ActiveConnection;
+      客户网络 网络连接4 = this.ActiveConnection;
       if (网络连接4 == null)
       {
         return;
       }
-      网络连接4.SendPacket(new 社交错误提示
+      网络连接4.发送封包(new 社交错误提示
       {
         错误编号 = 5913
       });
     }
 
 
-    public void AppForExpulsionPacket(int 对象编号)
+    public void 逐出师门申请(int 对象编号)
     {
       if (this.所属师门 == null)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong operation: AppForExpulsionPacket, Error: Self does not have a division."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong operation: AppForExpulsionPacket, Error: Self does not have a division."));
         return;
       }
       if (this.所属师门.MasterId != this.ObjectId)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: AppForExpulsionPacket, Error: Not a Master."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: AppForExpulsionPacket, Error: Not a Master."));
         return;
       }
       GameData GameData;
@@ -19211,15 +19212,15 @@ namespace GameServer.Maps
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null && this.所属师门.师门成员.Contains(CharacterData))
         {
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 != null)
           {
-            网络连接.SendPacket(new ExpulsionDoorAnswerPacket
+            网络连接.发送封包(new 逐出师门应答
             {
               对象编号 = CharacterData.CharId
             });
           }
-          this.所属师门.发送封包(new ExpulsionDivisionDoorPacket
+          this.所属师门.发送封包(new 逐出师门提示
           {
             对象编号 = CharacterData.CharId
           });
@@ -19238,10 +19239,10 @@ namespace GameServer.Maps
           }
           this.所属师门.移除徒弟(CharacterData);
           CharacterData.CurrentTeacher = null;
-          SConnection 网络连接2 = CharacterData.ActiveConnection;
+          客户网络 网络连接2 = CharacterData.ActiveConnection;
           if (网络连接2 != null)
           {
-            网络连接2.SendPacket(new SyncTeacherInfoPacket
+            网络连接2.发送封包(new 同步师门信息
             {
               师门参数 = ((byte)((CharacterData.CharLevel < 30) ? 0 : 2))
             });
@@ -19250,12 +19251,12 @@ namespace GameServer.Maps
           return;
         }
       }
-      SConnection 网络连接3 = this.ActiveConnection;
+      客户网络 网络连接3 = this.ActiveConnection;
       if (网络连接3 == null)
       {
         return;
       }
-      网络连接3.SendPacket(new 社交错误提示
+      网络连接3.发送封包(new 社交错误提示
       {
         错误编号 = 5913
       });
@@ -19266,23 +19267,23 @@ namespace GameServer.Maps
     {
       if (this.所属师门 == null)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Request to leave a division, Error: No division."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Request to leave a division, Error: No division."));
         return;
       }
       if (!this.所属师门.师门成员.Contains(this.CharacterData))
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Incorrect action: Request to leave the division, Error: Self is not a disciple."));
+        this.ActiveConnection.尝试断开连接(new Exception("Incorrect action: Request to leave the division, Error: Self is not a disciple."));
         return;
       }
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 != null)
       {
-        网络连接.SendPacket(new 离开师门应答());
+        网络连接.发送封包(new 离开师门应答());
       }
-      SConnection 网络连接2 = this.所属师门.师父数据.ActiveConnection;
+      客户网络 网络连接2 = this.所属师门.师父数据.ActiveConnection;
       if (网络连接2 != null)
       {
-        网络连接2.SendPacket(new 离开师门提示
+        网络连接2.发送封包(new 离开师门提示
         {
           对象编号 = this.ObjectId
         });
@@ -19310,12 +19311,12 @@ namespace GameServer.Maps
       }
       this.所属师门.移除徒弟(this.CharacterData);
       this.CharacterData.CurrentTeacher = null;
-      SConnection 网络连接3 = this.ActiveConnection;
+      客户网络 网络连接3 = this.ActiveConnection;
       if (网络连接3 == null)
       {
         return;
       }
-      网络连接3.SendPacket(new SyncTeacherInfoPacket
+      网络连接3.发送封包(new 同步师门信息
       {
         师门参数 = this.师门参数
       });
@@ -19326,17 +19327,17 @@ namespace GameServer.Maps
     {
       if (this.所属师门 == null)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Submit a request to leave the division, Error: No division."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Submit a request to leave the division, Error: No division."));
         return;
       }
       if (this.CurrentLevel < 30)
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Submit a request to become a teacher, Error: Insufficient level."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Submit a request to become a teacher, Error: Insufficient level."));
         return;
       }
       if (!this.所属师门.师门成员.Contains(this.CharacterData))
       {
-        this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Submit a request to become a disciple, Error: You are not a disciple."));
+        this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Submit a request to become a disciple, Error: You are not a disciple."));
         return;
       }
       int num = this.所属师门.徒弟提供金币(this.CharacterData);
@@ -19357,35 +19358,35 @@ namespace GameServer.Maps
       }
       this.NumberGoldCoins += this.所属师门.徒弟出师金币(this.CharacterData);
       this.GainExperience(null, this.所属师门.徒弟出师经验(this.CharacterData));
-      SConnection 网络连接 = this.所属师门.师父数据.ActiveConnection;
+      客户网络 网络连接 = this.所属师门.师父数据.ActiveConnection;
       if (网络连接 != null)
       {
-        网络连接.SendPacket(new ApprenticeSuccessfullyPacket
+        网络连接.发送封包(new 徒弟成功出师
         {
           对象编号 = this.ObjectId
         });
       }
       this.所属师门.移除徒弟(this.CharacterData);
       this.CharacterData.CurrentTeacher = null;
-      SConnection 网络连接2 = this.ActiveConnection;
+      客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 != null)
       {
-        网络连接2.SendPacket(new ApprenticeSuccessfullyPacket
+        网络连接2.发送封包(new 徒弟成功出师
         {
           对象编号 = this.ObjectId
         });
       }
-      SConnection 网络连接3 = this.ActiveConnection;
+      客户网络 网络连接3 = this.ActiveConnection;
       if (网络连接3 != null)
       {
-        网络连接3.SendPacket(new ClearGuildInfoPacket());
+        网络连接3.发送封包(new 清空师门信息());
       }
-      SConnection 网络连接4 = this.ActiveConnection;
+      客户网络 网络连接4 = this.ActiveConnection;
       if (网络连接4 == null)
       {
         return;
       }
-      网络连接4.SendPacket(new SyncTeacherInfoPacket
+      网络连接4.发送封包(new 同步师门信息
       {
         师门参数 = this.师门参数
       });
@@ -19408,12 +19409,12 @@ namespace GameServer.Maps
           {
             PlayerDeals.结束交易();
           }
-          SConnection 网络连接 = this.ActiveConnection;
+          客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
             return;
           }
-          网络连接.SendPacket(new GameErrorMessagePacket
+          网络连接.发送封包(new 游戏错误提示
           {
             错误代码 = 65538
           });
@@ -19428,7 +19429,7 @@ namespace GameServer.Maps
             {
               PlayerDeals2.结束交易();
             }
-            this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player requested a trade. Error: Cannot trade myself"));
+            this.ActiveConnection.尝试断开连接(new Exception("Error: Player requested a trade. Error: Cannot trade myself"));
             return;
           }
           PlayerObject PlayerObject;
@@ -19439,12 +19440,12 @@ namespace GameServer.Maps
             {
               PlayerDeals3.结束交易();
             }
-            SConnection 网络连接2 = this.ActiveConnection;
+            客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
             {
               return;
             }
-            网络连接2.SendPacket(new GameErrorMessagePacket
+            网络连接2.发送封包(new 游戏错误提示
             {
               错误代码 = 5635
             });
@@ -19457,12 +19458,12 @@ namespace GameServer.Maps
             {
               PlayerDeals4.结束交易();
             }
-            SConnection 网络连接3 = this.ActiveConnection;
+            客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
             {
               return;
             }
-            网络连接3.SendPacket(new GameErrorMessagePacket
+            网络连接3.发送封包(new 游戏错误提示
             {
               错误代码 = 5636
             });
@@ -19475,12 +19476,12 @@ namespace GameServer.Maps
             {
               PlayerDeals5.结束交易();
             }
-            SConnection 网络连接4 = this.ActiveConnection;
+            客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
             {
               return;
             }
-            网络连接4.SendPacket(new GameErrorMessagePacket
+            网络连接4.发送封包(new 游戏错误提示
             {
               错误代码 = 5636
             });
@@ -19499,12 +19500,12 @@ namespace GameServer.Maps
               PlayerDeals7.结束交易();
             }
             this.当前交易 = (PlayerObject.当前交易 = new PlayerDeals(this, PlayerObject));
-            SConnection 网络连接5 = this.ActiveConnection;
+            客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 == null)
             {
               return;
             }
-            网络连接5.SendPacket(new GameErrorMessagePacket
+            网络连接5.发送封包(new 游戏错误提示
             {
               错误代码 = 5633
             });
@@ -19517,12 +19518,12 @@ namespace GameServer.Maps
             {
               PlayerDeals8.结束交易();
             }
-            SConnection 网络连接6 = this.ActiveConnection;
+            客户网络 网络连接6 = this.ActiveConnection;
             if (网络连接6 == null)
             {
               return;
             }
-            网络连接6.SendPacket(new GameErrorMessagePacket
+            网络连接6.发送封包(new 游戏错误提示
             {
               错误代码 = 5637
             });
@@ -19537,12 +19538,12 @@ namespace GameServer.Maps
         {
           PlayerDeals9.结束交易();
         }
-        SConnection 网络连接7 = this.ActiveConnection;
+        客户网络 网络连接7 = this.ActiveConnection;
         if (网络连接7 == null)
         {
           return;
         }
-        网络连接7.SendPacket(new GameErrorMessagePacket
+        网络连接7.发送封包(new 游戏错误提示
         {
           错误代码 = 5634
         });
@@ -19564,12 +19565,12 @@ namespace GameServer.Maps
             {
               PlayerDeals.结束交易();
             }
-            SConnection 网络连接 = this.ActiveConnection;
+            客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
               return;
             }
-            网络连接.SendPacket(new GameErrorMessagePacket
+            网络连接.发送封包(new 游戏错误提示
             {
               错误代码 = 65538
             });
@@ -19584,7 +19585,7 @@ namespace GameServer.Maps
               {
                 PlayerDeals2.结束交易();
               }
-              this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player requested a trade. Error: Cannot trade myself"));
+              this.ActiveConnection.尝试断开连接(new Exception("Error: Player requested a trade. Error: Cannot trade myself"));
               return;
             }
             PlayerObject PlayerObject;
@@ -19595,12 +19596,12 @@ namespace GameServer.Maps
               {
                 PlayerDeals3.结束交易();
               }
-              SConnection 网络连接2 = this.ActiveConnection;
+              客户网络 网络连接2 = this.ActiveConnection;
               if (网络连接2 == null)
               {
                 return;
               }
-              网络连接2.SendPacket(new GameErrorMessagePacket
+              网络连接2.发送封包(new 游戏错误提示
               {
                 错误代码 = 5635
               });
@@ -19613,12 +19614,12 @@ namespace GameServer.Maps
               {
                 PlayerDeals4.结束交易();
               }
-              SConnection 网络连接3 = this.ActiveConnection;
+              客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
               {
                 return;
               }
-              网络连接3.SendPacket(new GameErrorMessagePacket
+              网络连接3.发送封包(new 游戏错误提示
               {
                 错误代码 = 5636
               });
@@ -19631,12 +19632,12 @@ namespace GameServer.Maps
               {
                 PlayerDeals5.结束交易();
               }
-              SConnection 网络连接4 = this.ActiveConnection;
+              客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
                 return;
               }
-              网络连接4.SendPacket(new GameErrorMessagePacket
+              网络连接4.发送封包(new 游戏错误提示
               {
                 错误代码 = 5636
               });
@@ -19661,12 +19662,12 @@ namespace GameServer.Maps
                   {
                     PlayerDeals6.结束交易();
                   }
-                  SConnection 网络连接5 = this.ActiveConnection;
+                  客户网络 网络连接5 = this.ActiveConnection;
                   if (网络连接5 == null)
                   {
                     return;
                   }
-                  网络连接5.SendPacket(new GameErrorMessagePacket
+                  网络连接5.发送封包(new 游戏错误提示
                   {
                     错误代码 = 5634
                   });
@@ -19678,12 +19679,12 @@ namespace GameServer.Maps
               {
                 PlayerDeals7.结束交易();
               }
-              SConnection 网络连接6 = this.ActiveConnection;
+              客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 == null)
               {
                 return;
               }
-              网络连接6.SendPacket(new GameErrorMessagePacket
+              网络连接6.发送封包(new 游戏错误提示
               {
                 错误代码 = 5637
               });
@@ -19697,12 +19698,12 @@ namespace GameServer.Maps
       {
         PlayerDeals8.结束交易();
       }
-      SConnection 网络连接7 = this.ActiveConnection;
+      客户网络 网络连接7 = this.ActiveConnection;
       if (网络连接7 == null)
       {
         return;
       }
-      网络连接7.SendPacket(new GameErrorMessagePacket
+      网络连接7.发送封包(new 游戏错误提示
       {
         错误代码 = 5634
       });
@@ -19729,12 +19730,12 @@ namespace GameServer.Maps
         {
           PlayerDeals.结束交易();
         }
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 5634
         });
@@ -19747,12 +19748,12 @@ namespace GameServer.Maps
         {
           PlayerDeals2.结束交易();
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -19765,12 +19766,12 @@ namespace GameServer.Maps
         {
           PlayerDeals3.结束交易();
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -19785,7 +19786,7 @@ namespace GameServer.Maps
           {
             PlayerDeals4.结束交易();
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player put in gold coins. Error: Wrong number of coins"));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Player put in gold coins. Error: Wrong number of coins"));
           return;
         }
         if (this.当前交易.金币重复(this))
@@ -19795,7 +19796,7 @@ namespace GameServer.Maps
           {
             PlayerDeals5.结束交易();
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player inserted gold coins. Error: Repeated coin placement"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error: Player inserted gold coins. Error: Repeated coin placement"));
           return;
         }
         this.当前交易.放入金币(this, NumberGoldCoins);
@@ -19813,12 +19814,12 @@ namespace GameServer.Maps
         {
           PlayerDeals.结束交易();
         }
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 5634
         });
@@ -19831,12 +19832,12 @@ namespace GameServer.Maps
         {
           PlayerDeals2.结束交易();
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -19849,12 +19850,12 @@ namespace GameServer.Maps
         {
           PlayerDeals3.结束交易();
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -19869,7 +19870,7 @@ namespace GameServer.Maps
           {
             PlayerDeals4.结束交易();
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player placed an item. Error: Incorrectly placed"));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Player placed an item. Error: Incorrectly placed"));
           return;
         }
         if (this.当前交易.物品重复(this, 放入位置))
@@ -19879,7 +19880,7 @@ namespace GameServer.Maps
           {
             PlayerDeals5.结束交易();
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player placed an item. Error: Duplicate placements"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error: Player placed an item. Error: Duplicate placements"));
           return;
         }
         if (放入物品 != 1)
@@ -19889,7 +19890,7 @@ namespace GameServer.Maps
           {
             PlayerDeals6.结束交易();
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player put in an item. Error: Forbidden to retrieve items"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error: Player put in an item. Error: Forbidden to retrieve items"));
           return;
         }
         if (背包类型 != 1)
@@ -19899,7 +19900,7 @@ namespace GameServer.Maps
           {
             PlayerDeals7.结束交易();
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error: Player put in an item. Error: Wrong type of backpack"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error: Player put in an item. Error: Wrong type of backpack"));
           return;
         }
         ItemData ItemData;
@@ -19910,7 +19911,7 @@ namespace GameServer.Maps
           {
             PlayerDeals8.结束交易();
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player put in an item. Error: ItemData error"));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Player put in an item. Error: ItemData error"));
           return;
         }
         if (ItemData.IsBound)
@@ -19920,7 +19921,7 @@ namespace GameServer.Maps
           {
             PlayerDeals9.结束交易();
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Player puts in an item. Error: Binding item added"));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Player puts in an item. Error: Binding item added"));
           return;
         }
         if (this.当前交易.物品重复(this, ItemData))
@@ -19930,7 +19931,7 @@ namespace GameServer.Maps
           {
             PlayerDeals10.结束交易();
           }
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("MISTAKE: Player puts in an item. Error: Repeated item placement"));
+          this.ActiveConnection.尝试断开连接(new Exception("MISTAKE: Player puts in an item. Error: Repeated item placement"));
           return;
         }
         this.当前交易.放入物品(this, ItemData, 放入位置);
@@ -19948,12 +19949,12 @@ namespace GameServer.Maps
         {
           PlayerDeals.结束交易();
         }
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 5634
         });
@@ -19966,12 +19967,12 @@ namespace GameServer.Maps
         {
           PlayerDeals2.结束交易();
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -19989,12 +19990,12 @@ namespace GameServer.Maps
         {
           PlayerDeals3.结束交易();
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -20012,12 +20013,12 @@ namespace GameServer.Maps
         {
           PlayerDeals.结束交易();
         }
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 5634
         });
@@ -20030,12 +20031,12 @@ namespace GameServer.Maps
         {
           PlayerDeals2.结束交易();
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -20053,12 +20054,12 @@ namespace GameServer.Maps
         {
           PlayerDeals3.结束交易();
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -20076,12 +20077,12 @@ namespace GameServer.Maps
         {
           PlayerDeals.结束交易();
         }
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 5634
         });
@@ -20094,12 +20095,12 @@ namespace GameServer.Maps
         {
           PlayerDeals2.结束交易();
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -20112,12 +20113,12 @@ namespace GameServer.Maps
         {
           PlayerDeals3.结束交易();
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 5636
         });
@@ -20138,7 +20139,7 @@ namespace GameServer.Maps
           {
             PlayerDeals4.结束交易();
           }
-          this.当前交易.发送封包(new GameErrorMessagePacket
+          this.当前交易.发送封包(new 游戏错误提示
           {
             错误代码 = 5639,
             第一参数 = PlayerObject.ObjectId
@@ -20165,12 +20166,12 @@ namespace GameServer.Maps
         {
           PlayerDeals.结束交易();
         }
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 65538
         });
@@ -20178,12 +20179,12 @@ namespace GameServer.Maps
       }
       else if (this.当前摊位 != null)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 2825
         });
@@ -20191,12 +20192,12 @@ namespace GameServer.Maps
       }
       else if (!this.CurrentMap.摆摊区内(this.CurrentPosition))
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 2818
         });
@@ -20218,12 +20219,12 @@ namespace GameServer.Maps
           });
           return;
         }
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 == null)
         {
           return;
         }
-        网络连接4.SendPacket(new GameErrorMessagePacket
+        网络连接4.发送封包(new 游戏错误提示
         {
           错误代码 = 2819
         });
@@ -20244,12 +20245,12 @@ namespace GameServer.Maps
         });
         return;
       }
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new GameErrorMessagePacket
+      网络连接.发送封包(new 游戏错误提示
       {
         错误代码 = 2817
       });
@@ -20260,12 +20261,12 @@ namespace GameServer.Maps
     {
       if (this.ParalysisState != 1)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 2817
         });
@@ -20278,12 +20279,12 @@ namespace GameServer.Maps
         {
           PlayerDeals.结束交易();
         }
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 65538
         });
@@ -20301,12 +20302,12 @@ namespace GameServer.Maps
           });
           return;
         }
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 2827
         });
@@ -20327,28 +20328,28 @@ namespace GameServer.Maps
         });
         return;
       }
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new GameErrorMessagePacket
+      网络连接.发送封包(new 游戏错误提示
       {
         错误代码 = 2817
       });
     }
 
 
-    public void PutItemsInBoothPacket(byte 放入位置, byte 背包类型, byte 物品位置, ushort 物品数量, int 物品价格)
+    public void 物品放入摊位(byte 放入位置, byte 背包类型, byte 物品位置, ushort 物品数量, int 物品价格)
     {
       if (this.ParalysisState != 1)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 2817
         });
@@ -20358,54 +20359,54 @@ namespace GameServer.Maps
       {
         if (放入位置 >= 10)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error operation: PutItemsInBoothPacket, Error: Put in wrong position"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error operation: PutItemsInBoothPacket, Error: Put in wrong position"));
           return;
         }
         if (this.当前摊位.摊位物品.ContainsKey(放入位置))
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error operation: PutItemsInBoothPacket, Error: Repeat placement"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error operation: PutItemsInBoothPacket, Error: Repeat placement"));
           return;
         }
         if (背包类型 != 1)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: PutItemsInBoothPacket, Error: Wrong backpack type"));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: PutItemsInBoothPacket, Error: Wrong backpack type"));
           return;
         }
         if (物品价格 < 100)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error action: PutItemsInBoothPacket, Error: Item price error"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error action: PutItemsInBoothPacket, Error: Item price error"));
           return;
         }
         ItemData ItemData;
         if (!this.Backpack.TryGetValue(物品位置, out ItemData))
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Action: PutItemsInBoothPacket, Error: Selected item is empty"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Action: PutItemsInBoothPacket, Error: Selected item is empty"));
           return;
         }
         if (this.当前摊位.摊位物品.Values.FirstOrDefault((ItemData O) => O.物品位置.V == 物品位置) != null)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Action error: PutItemsInBoothPacket, Error: Repeated item placement"));
+          this.ActiveConnection.尝试断开连接(new Exception("Action error: PutItemsInBoothPacket, Error: Repeated item placement"));
           return;
         }
         if (ItemData.IsBound)
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Action: PutItemsInBoothPacket, Error: Putting in bound items"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Action: PutItemsInBoothPacket, Error: Putting in bound items"));
           return;
         }
         if ((int)物品数量 > (ItemData.能否堆叠 ? ItemData.当前持久.V : 1))
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Error Action: PutItemsInBoothPacket, Error: Wrong number of items"));
+          this.ActiveConnection.尝试断开连接(new Exception("Error Action: PutItemsInBoothPacket, Error: Wrong number of items"));
           return;
         }
         this.当前摊位.摊位物品.Add(放入位置, ItemData);
         this.当前摊位.物品数量.Add(ItemData, (int)物品数量);
         this.当前摊位.物品单价.Add(ItemData, 物品价格);
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new AddStallItemsPacket
+        网络连接2.发送封包(new 添加摆摊物品
         {
           放入位置 = 放入位置,
           背包类型 = 背包类型,
@@ -20422,12 +20423,12 @@ namespace GameServer.Maps
     {
       if (this.ParalysisState != 1)
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 2817
         });
@@ -20438,18 +20439,18 @@ namespace GameServer.Maps
         ItemData key;
         if (!this.当前摊位.摊位物品.TryGetValue(取回位置, out key))
         {
-          this.ActiveConnection.CallExceptionEventHandler(new Exception("Wrong action: Retrieve stall item, Error: Selected item is empty"));
+          this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Retrieve stall item, Error: Selected item is empty"));
           return;
         }
         this.当前摊位.物品单价.Remove(key);
         this.当前摊位.物品数量.Remove(key);
         this.当前摊位.摊位物品.Remove(取回位置);
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new RemoveStallItemsPacket
+        网络连接2.发送封包(new 移除摆摊物品
         {
           取回位置 = 取回位置
         });
@@ -20470,12 +20471,12 @@ namespace GameServer.Maps
         });
         return;
       }
-      SConnection 网络连接 = this.ActiveConnection;
+      客户网络 网络连接 = this.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new GameErrorMessagePacket
+      网络连接.发送封包(new 游戏错误提示
       {
         错误代码 = 2817
       });
@@ -20492,12 +20493,12 @@ namespace GameServer.Maps
       PlayerObject PlayerObject;
       if (!MapGatewayProcess.Players.TryGetValue(对象编号, out PlayerObject))
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 2828
         });
@@ -20505,12 +20506,12 @@ namespace GameServer.Maps
       }
       else if (PlayerObject.ParalysisState != 2)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 2828
         });
@@ -20518,12 +20519,12 @@ namespace GameServer.Maps
       }
       else
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new SyncBoothDataPacket
+        网络连接3.发送封包(new 同步摊位数据
         {
           对象编号 = PlayerObject.ObjectId,
           字节数据 = PlayerObject.当前摊位.摊位描述()
@@ -20539,12 +20540,12 @@ namespace GameServer.Maps
       ItemData ItemData;
       if (!MapGatewayProcess.Players.TryGetValue(对象编号, out PlayerObject))
       {
-        SConnection 网络连接 = this.ActiveConnection;
+        客户网络 网络连接 = this.ActiveConnection;
         if (网络连接 == null)
         {
           return;
         }
-        网络连接.SendPacket(new GameErrorMessagePacket
+        网络连接.发送封包(new 游戏错误提示
         {
           错误代码 = 2828
         });
@@ -20552,12 +20553,12 @@ namespace GameServer.Maps
       }
       else if (PlayerObject.ParalysisState != 2)
       {
-        SConnection 网络连接2 = this.ActiveConnection;
+        客户网络 网络连接2 = this.ActiveConnection;
         if (网络连接2 == null)
         {
           return;
         }
-        网络连接2.SendPacket(new GameErrorMessagePacket
+        网络连接2.发送封包(new 游戏错误提示
         {
           错误代码 = 2828
         });
@@ -20565,12 +20566,12 @@ namespace GameServer.Maps
       }
       else if (!PlayerObject.当前摊位.摊位物品.TryGetValue(物品位置, out ItemData))
       {
-        SConnection 网络连接3 = this.ActiveConnection;
+        客户网络 网络连接3 = this.ActiveConnection;
         if (网络连接3 == null)
         {
           return;
         }
-        网络连接3.SendPacket(new GameErrorMessagePacket
+        网络连接3.发送封包(new 游戏错误提示
         {
           错误代码 = 2824
         });
@@ -20578,12 +20579,12 @@ namespace GameServer.Maps
       }
       else if (PlayerObject.当前摊位.物品数量[ItemData] < (int)购买数量)
       {
-        SConnection 网络连接4 = this.ActiveConnection;
+        客户网络 网络连接4 = this.ActiveConnection;
         if (网络连接4 == null)
         {
           return;
         }
-        网络连接4.SendPacket(new GameErrorMessagePacket
+        网络连接4.发送封包(new 游戏错误提示
         {
           错误代码 = 2830
         });
@@ -20616,10 +20617,10 @@ namespace GameServer.Maps
                 if ((物品数量[key] -= (int)购买数量) <= 0)
                 {
                   PlayerObject.Backpack.Remove(ItemData.物品位置.V);
-                  SConnection 网络连接5 = PlayerObject.ActiveConnection;
+                  客户网络 网络连接5 = PlayerObject.ActiveConnection;
                   if (网络连接5 != null)
                   {
-                    网络连接5.SendPacket(new 删除玩家物品
+                    网络连接5.发送封包(new 删除玩家物品
                     {
                       背包类型 = 1,
                       物品位置 = ItemData.物品位置.V
@@ -20629,10 +20630,10 @@ namespace GameServer.Maps
                 else
                 {
                   ItemData.当前持久.V -= (int)购买数量;
-                  SConnection 网络连接6 = PlayerObject.ActiveConnection;
+                  客户网络 网络连接6 = PlayerObject.ActiveConnection;
                   if (网络连接6 != null)
                   {
-                    网络连接6.SendPacket(new 玩家物品变动
+                    网络连接6.发送封包(new 玩家物品变动
                     {
                       物品描述 = ItemData.字节描述()
                     });
@@ -20648,28 +20649,28 @@ namespace GameServer.Maps
                 {
                   this.Backpack[b] = new ItemData(ItemData.物品模板, ItemData.生成来源.V, 1, b, (int)购买数量);
                 }
-                SConnection 网络连接7 = this.ActiveConnection;
+                客户网络 网络连接7 = this.ActiveConnection;
                 if (网络连接7 != null)
                 {
-                  网络连接7.SendPacket(new 玩家物品变动
+                  网络连接7.发送封包(new 玩家物品变动
                   {
                     物品描述 = this.Backpack[b].字节描述()
                   });
                 }
-                SConnection 网络连接8 = this.ActiveConnection;
+                客户网络 网络连接8 = this.ActiveConnection;
                 if (网络连接8 != null)
                 {
-                  网络连接8.SendPacket(new 购入摊位物品
+                  网络连接8.发送封包(new 购入摊位物品
                   {
                     对象编号 = PlayerObject.ObjectId,
                     物品位置 = 物品位置,
                     剩余数量 = PlayerObject.当前摊位.物品数量[ItemData]
                   });
                 }
-                SConnection 网络连接9 = PlayerObject.ActiveConnection;
+                客户网络 网络连接9 = PlayerObject.ActiveConnection;
                 if (网络连接9 != null)
                 {
-                  网络连接9.SendPacket(new StallItemsSoldPacket
+                  网络连接9.发送封包(new 售出摊位物品
                   {
                     物品位置 = 物品位置,
                     售出数量 = (int)购买数量,
@@ -20698,12 +20699,12 @@ namespace GameServer.Maps
                 }
                 return;
               }
-              SConnection 网络连接10 = this.ActiveConnection;
+              客户网络 网络连接10 = this.ActiveConnection;
               if (网络连接10 == null)
               {
                 return;
               }
-              网络连接10.SendPacket(new GameErrorMessagePacket
+              网络连接10.发送封包(new 游戏错误提示
               {
                 错误代码 = 1793
               });
@@ -20712,12 +20713,12 @@ namespace GameServer.Maps
           }
           //goto IL_12B;
         }
-        SConnection 网络连接11 = this.ActiveConnection;
+        客户网络 网络连接11 = this.ActiveConnection;
         if (网络连接11 == null)
         {
           return;
         }
-        网络连接11.SendPacket(new GameErrorMessagePacket
+        网络连接11.发送封包(new 游戏错误提示
         {
           错误代码 = 2561
         });
@@ -21143,7 +21144,7 @@ namespace GameServer.Maps
           ShorcutField.Remove(data.Key);
       }
 
-      ActiveConnection?.SendPacket(new CharacterRemoveSkillPacket
+      ActiveConnection?.发送封包(new 角色移除技能
       {
         SkillId = skillId
       });
@@ -21151,10 +21152,10 @@ namespace GameServer.Maps
       return true;
     }
 
-    public void ToggleAwakeningExp(bool enabled)
+    public void 切换觉醒栏经验封包(bool enabled)
     {
       CharacterData.AwakeningExpEnabled.V = !CharacterData.AwakeningExpEnabled.V;
-      ActiveConnection?.SendPacket(new SyncSupplementaryVariablesPacket
+      ActiveConnection?.发送封包(new 同步补充变量
       {
         变量类型 = 1,
         变量索引 = 50,
@@ -21163,7 +21164,7 @@ namespace GameServer.Maps
       });
     }
 
-    public void UpgradeAwakeningSkill(ushort skillId)
+    public void 升级觉醒技能封包(ushort skillId)
     {
       if (!MainSkills表.TryGetValue(skillId, out SkillData skill) || this.CurrentLevel < skill.升级等级)
         return;
@@ -21175,7 +21176,7 @@ namespace GameServer.Maps
 
       CharacterData.AwakeningExp.V -= requiredExp;
 
-      ActiveConnection?.SendPacket(new CharacterExpChangesPacket
+      ActiveConnection?.发送封包(new 角色经验变动
       {
         经验增加 = 0,
         今日增加 = 0,
@@ -21198,11 +21199,11 @@ namespace GameServer.Maps
       StatsBonus[skill] = skill.Stat加成;
       RefreshStats();
 
-      ActiveConnection?.SendPacket(new SyncSkillLevelPacket
+      ActiveConnection?.发送封包(new 同步技能等级
       {
-        SkillId = skill.SkillId.V,
-        CurrentExp = skill.SkillExp.V,
-        CurrentRank = skill.SkillLevel.V
+        技能编号 = skill.SkillId.V,
+        当前经验 = skill.SkillExp.V,
+        当前等级 = skill.SkillLevel.V
       });
     }
 

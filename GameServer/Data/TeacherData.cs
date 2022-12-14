@@ -137,10 +137,10 @@ namespace GameServer.Data
 		{
 			foreach (CharacterData CharacterData in this.师门成员)
 			{
-				SConnection 网络连接 = CharacterData.ActiveConnection;
+				客户网络 网络连接 = CharacterData.ActiveConnection;
 				if (网络连接 != null)
 				{
-					网络连接.SendPacket(P);
+					网络连接.发送封包(P);
 				}
 			}
 		}
@@ -159,7 +159,7 @@ namespace GameServer.Data
 			{
 				if (CharacterData != null)
 				{
-					CharacterData.ActiveConnection.SendPacket(new SyncGuildMemberPacket
+					CharacterData.ActiveConnection.发送封包(new 查询师门成员
 					{
 						字节数据 = this.成员数据()
 					});
@@ -180,7 +180,7 @@ namespace GameServer.Data
 			{
 				if (CharacterData != null)
 				{
-					CharacterData.ActiveConnection.SendPacket(new SyncGuildMemberPacket
+					CharacterData.ActiveConnection.发送封包(new 查询师门成员
 					{
 						字节数据 = this.成员数据()
 					});

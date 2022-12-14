@@ -26,10 +26,10 @@ namespace GameServer
 				if (AccountData != null)
 				{
 					AccountData.封禁日期.V = DateTime.Now.AddDays((double)this.封禁天数);
-					SConnection 网络连接 = AccountData.网络连接;
+					客户网络 网络连接 = AccountData.网络连接;
 					if (网络连接 != null)
 					{
-						网络连接.CallExceptionEventHandler(new Exception("Account Banned, Forced to Offline"));
+						网络连接.尝试断开连接(new Exception("Account Banned, Forced to Offline"));
 					}
 					MainForm.AddCommandLog(string.Format("<= @{0} command executed, blocking expiry time: {1}", base.GetType().Name, AccountData.封禁日期));
 					return;

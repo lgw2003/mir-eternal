@@ -24,7 +24,7 @@ namespace GameServer
 
                 Config.SendPacketsAsync = Settings.Default.SendPacketsAsync;
                 Config.DebugPackets = Settings.Default.DebugPackets;
-                GamePacket.Config(typeof(SConnection));
+                GamePacket.Config(typeof(客户网络));
 
                 Application.Run(new MainForm());
                 return;

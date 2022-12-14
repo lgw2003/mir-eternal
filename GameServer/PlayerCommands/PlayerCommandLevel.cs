@@ -23,7 +23,7 @@ namespace GameServer.PlayerCommands
             Player.CurrentLevel = Level;
             Player.CurrentExp = 0;
             Player.玩家升级处理();
-            Player.SendPacket(new CharacterExpChangesPacket
+            Player.SendPacket(new 角色经验变动
             {
                 经验增加 = 0,
                 今日增加 = 0,

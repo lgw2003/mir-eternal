@@ -321,7 +321,7 @@ namespace GameServer.Maps
                         {
                             GuildData.Hostility行会.Add(v, MainProcess.CurrentTime.AddHours(1.0));
                             v.Hostility行会.Add(GuildData, MainProcess.CurrentTime.AddHours(1.0));
-                            GuildData.发送封包(new AddDiplomaticAnnouncementPacket
+                            GuildData.发送封包(new 添加外交公告
                             {
                                 外交类型 = 2,
                                 行会编号 = v.行会编号,
@@ -330,7 +330,7 @@ namespace GameServer.Maps
                                 行会人数 = (byte)v.行会成员.Count,
                                 外交时间 = (int)(GuildData.Hostility行会[v] - MainProcess.CurrentTime).TotalSeconds
                             });
-                            v.发送封包(new AddDiplomaticAnnouncementPacket
+                            v.发送封包(new 添加外交公告
                             {
                                 外交类型 = 2,
                                 行会编号 = GuildData.行会编号,
@@ -344,7 +344,7 @@ namespace GameServer.Maps
                         {
                             GuildData.Hostility行会[v] = MainProcess.CurrentTime.AddHours(1.0);
                             v.Hostility行会[GuildData] = MainProcess.CurrentTime.AddHours(1.0);
-                            GuildData.发送封包(new AddDiplomaticAnnouncementPacket
+                            GuildData.发送封包(new 添加外交公告
                             {
                                 外交类型 = 2,
                                 行会编号 = v.行会编号,
@@ -353,7 +353,7 @@ namespace GameServer.Maps
                                 行会人数 = (byte)v.行会成员.Count,
                                 外交时间 = (int)(GuildData.Hostility行会[v] - MainProcess.CurrentTime).TotalSeconds
                             });
-                            v.发送封包(new AddDiplomaticAnnouncementPacket
+                            v.发送封包(new 添加外交公告
                             {
                                 外交类型 = 2,
                                 行会编号 = GuildData.行会编号,

@@ -26,10 +26,10 @@ namespace GameServer
 				if (CharacterData != null)
 				{
 					CharacterData.Ingots = Math.Max(0, CharacterData.Ingots - this.Ingots);
-					SConnection 网络连接 = CharacterData.ActiveConnection;
+					客户网络 网络连接 = CharacterData.ActiveConnection;
 					if (网络连接 != null)
 					{
-						网络连接.SendPacket(new 同步Ingots
+						网络连接.发送封包(new 同步元宝数量
 						{
 							Ingots = CharacterData.Ingots
 						});

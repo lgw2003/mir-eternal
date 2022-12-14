@@ -18,9 +18,9 @@ namespace GameServer.PlayerCommands
         {
             Player.NumberGoldCoins += Amount;
 
-            Player.ActiveConnection?.SendPacket(new 货币数量变动
+            Player.ActiveConnection?.发送封包(new 货币数量变动
             {
-                CurrencyType = 1,
+                货币类型 = 1,
                 货币数量 = Player.NumberGoldCoins
             });
         }

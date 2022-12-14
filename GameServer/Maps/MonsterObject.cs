@@ -88,11 +88,11 @@ namespace GameServer.Maps
         if (base.CurrentHP != value)
         {
           base.CurrentHP = value;
-          base.SendPacket(new SyncObjectHP
+          base.SendPacket(new 同步对象体力
           {
-            ObjectId = this.ObjectId,
-            CurrentHP = this.CurrentHP,
-            MaxHP = this[GameObjectStats.最大体力]
+            对象编号 = this.ObjectId,
+            当前体力 = this.CurrentHP,
+            体力上限 = this[GameObjectStats.最大体力]
           });
         }
       }
@@ -132,7 +132,7 @@ namespace GameServer.Maps
         if (this.CurrentDirection != value)
         {
           base.CurrentDirection = value;
-          base.SendPacket(new ObjectRotationDirectionPacket
+          base.SendPacket(new 对象转动方向
           {
             转向耗时 = 100,
             对象编号 = this.ObjectId,
@@ -684,7 +684,7 @@ namespace GameServer.Maps
 
           foreach (var characterData in hashSet)
           {
-            if (characterData.ActiveConnection?.Player == null) continue;
+            if (characterData.ActiveConnection?.玩家实例 == null) continue;
             var quests = characterData.GetInProgressQuests();
             var updated = false;
 
@@ -699,7 +699,7 @@ namespace GameServer.Maps
                 var idx = Array.IndexOf(quest.Missions.ToArray(), mission);
                 mission.Count.V = (byte)(mission.Count.V + 1);
 
-                characterData.ActiveConnection.Player.SendPacket(new SyncSupplementaryVariablesPacket
+                characterData.ActiveConnection.玩家实例.SendPacket(new 同步补充变量
                 {
                   变量类型 = 6, // Quest Progress Update
                   变量索引 = (ushort)idx,
@@ -716,7 +716,7 @@ namespace GameServer.Maps
               // 5, 0 // progress count
               // });
 
-              if (updated) characterData.ActiveConnection.Player.UpdateQuestProgress(quest);
+              if (updated) characterData.ActiveConnection.玩家实例.UpdateQuestProgress(quest);
             }
           }
 
@@ -847,7 +847,7 @@ namespace GameServer.Maps
             base.ItSelf移动时处理(point);
             if (!this.Died)
             {
-              base.SendPacket(new ObjectCharacterWalkPacket
+              base.SendPacket(new 角色走动
               {
                 对象编号 = this.ObjectId,
                 移动坐标 = this.CurrentPosition,
@@ -895,7 +895,7 @@ namespace GameServer.Maps
               this.BusyTime = MainProcess.CurrentTime.AddMilliseconds((double)this.WalkInterval);
               this.WalkTime = MainProcess.CurrentTime.AddMilliseconds((double)(this.WalkInterval + this.MobInterval));
               this.CurrentDirection = ComputingClass.GetDirection(this.CurrentPosition, point);
-              base.SendPacket(new ObjectCharacterWalkPacket
+              base.SendPacket(new 角色走动
               {
                 对象编号 = this.ObjectId,
                 移动坐标 = point,
@@ -925,7 +925,7 @@ namespace GameServer.Maps
               base.ItSelf移动时处理(point2);
               if (!this.Died)
               {
-                base.SendPacket(new ObjectCharacterWalkPacket
+                base.SendPacket(new 角色走动
                 {
                   对象编号 = this.ObjectId,
                   移动坐标 = point2,

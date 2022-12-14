@@ -26,10 +26,10 @@ namespace GameServer
 				if (CharacterData != null)
 				{
 					CharacterData.封禁日期.V = DateTime.Now.AddDays((double)this.封禁天数);
-					SConnection 网络连接 = CharacterData.ActiveConnection;
+					客户网络 网络连接 = CharacterData.ActiveConnection;
 					if (网络连接 != null)
 					{
-						网络连接.CallExceptionEventHandler(new Exception("Character banned, forced offline"));
+						网络连接.尝试断开连接(new Exception("Character banned, forced offline"));
 					}
 					MainForm.AddCommandLog(string.Format("<= @{0} command executed, blocking expiry time: {1}", base.GetType().Name, CharacterData.封禁日期));
 					return;

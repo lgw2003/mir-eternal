@@ -361,10 +361,10 @@ namespace GameServer.Maps
                     byte[] 字节描述 = memoryStream.ToArray();
                     foreach (PlayerObject PlayerObject in this.NrPlayers)
                     {
-                        SConnection 网络连接 = PlayerObject.ActiveConnection;
+                        客户网络 网络连接 = PlayerObject.ActiveConnection;
                         if (网络连接 != null)
                         {
-                            网络连接.SendPacket(new ReceiveChatMessagesPacket
+                            网络连接.发送封包(new 接收聊天消息
                             {
                                 字节描述 = 字节描述
                             });

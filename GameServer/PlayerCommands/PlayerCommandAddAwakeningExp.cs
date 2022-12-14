@@ -19,7 +19,7 @@ namespace GameServer.PlayerCommands
             {
                 Amount = Config.MaxAwakeningExp - Player.CharacterData.AwakeningExp.V;
                 Player.CharacterData.AwakeningExpEnabled.V = false;
-                Player.ActiveConnection?.SendPacket(new SyncSupplementaryVariablesPacket
+                Player.ActiveConnection?.发送封包(new 同步补充变量
                 {
                     变量类型 = 1,
                     变量索引 = 50,
@@ -30,7 +30,7 @@ namespace GameServer.PlayerCommands
 
             Player.CharacterData.AwakeningExp.V += Amount;
 
-            Player.ActiveConnection?.SendPacket(new CharacterExpChangesPacket
+            Player.ActiveConnection?.发送封包(new 角色经验变动
             {
                 经验增加 = 0,
                 今日增加 = 0,

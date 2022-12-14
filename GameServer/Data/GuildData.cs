@@ -210,10 +210,10 @@ namespace GameServer.Data
       foreach (CharacterData CharacterData in this.行会成员.Keys)
       {
         CharacterData.CurrentGuild = null;
-        SConnection 网络连接 = CharacterData.ActiveConnection;
+        客户网络 网络连接 = CharacterData.ActiveConnection;
         if (网络连接 != null)
         {
-          网络连接.SendPacket(new 同步对象行会
+          网络连接.发送封包(new 同步对象行会
           {
             对象编号 = CharacterData.CharId
           });
@@ -237,10 +237,10 @@ namespace GameServer.Data
     {
       foreach (CharacterData CharacterData in this.行会成员.Keys)
       {
-        SConnection 网络连接 = CharacterData.ActiveConnection;
+        客户网络 网络连接 = CharacterData.ActiveConnection;
         if (网络连接 != null)
         {
-          网络连接.SendPacket(封包);
+          网络连接.发送封包(封包);
         }
       }
     }
@@ -250,7 +250,7 @@ namespace GameServer.Data
     {
       this.行会成员.Add(成员, 职位);
       成员.CurrentGuild = this;
-      this.发送封包(new GuildJoinMemberPacket
+      this.发送封包(new 行会加入成员
       {
         对象编号 = 成员.CharId,
         对象名字 = 成员.CharName.V,
@@ -261,16 +261,16 @@ namespace GameServer.Data
       });
       if (成员.ActiveConnection == null)
       {
-        this.发送封包(new SyncMemberInfoPacket
+        this.发送封包(new 同步会员信息
         {
           对象编号 = 成员.CharId,
           对象信息 = ComputingClass.TimeShift(成员.OfflineDate.V)
         });
       }
-      SConnection 网络连接 = 成员.ActiveConnection;
+      客户网络 网络连接 = 成员.ActiveConnection;
       if (网络连接 != null)
       {
-        网络连接.SendPacket(new GuildInfoAnnouncementPacket
+        网络连接.发送封包(new 行会信息公告
         {
           字节数据 = this.行会信息描述()
         });
@@ -299,10 +299,10 @@ namespace GameServer.Data
       this.行会成员.Remove(成员);
       this.行会禁言.Remove(成员);
       成员.CurrentGuild = null;
-      SConnection 网络连接 = 成员.ActiveConnection;
+      客户网络 网络连接 = 成员.ActiveConnection;
       if (网络连接 != null)
       {
-        网络连接.SendPacket(new 脱离行会应答
+        网络连接.发送封包(new 脱离行会应答
         {
           脱离方式 = 1
         });
@@ -335,10 +335,10 @@ namespace GameServer.Data
       {
         this.行会禁言.Remove(成员);
         成员.CurrentGuild = null;
-        SConnection 网络连接 = 成员.ActiveConnection;
+        客户网络 网络连接 = 成员.ActiveConnection;
         if (网络连接 != null)
         {
-          网络连接.SendPacket(new 脱离行会应答
+          网络连接.发送封包(new 脱离行会应答
           {
             脱离方式 = 2
           });
@@ -391,12 +391,12 @@ namespace GameServer.Data
     public void 更改宣言(CharacterData 主事, string 宣言)
     {
       this.行会宣言.V = 宣言;
-      SConnection 网络连接 = 主事.ActiveConnection;
+      客户网络 网络连接 = 主事.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new 社交错误提示
+      网络连接.发送封包(new 社交错误提示
       {
         错误编号 = 6747
       });
@@ -437,7 +437,7 @@ namespace GameServer.Data
     {
       if (禁言状态 == 2 && this.行会禁言.Remove(成员))
       {
-        this.发送封包(new GuildBanAnnouncementPacket
+        this.发送封包(new 行会禁言公告
         {
           对象编号 = 成员.CharId,
           禁言状态 = 2
@@ -447,19 +447,19 @@ namespace GameServer.Data
       if (禁言状态 == 1)
       {
         this.行会禁言[成员] = MainProcess.CurrentTime;
-        this.发送封包(new GuildBanAnnouncementPacket
+        this.发送封包(new 行会禁言公告
         {
           对象编号 = 成员.CharId,
           禁言状态 = 1
         });
         return;
       }
-      SConnection 网络连接 = 主事.ActiveConnection;
+      客户网络 网络连接 = 主事.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new 社交错误提示
+      网络连接.发送封包(new 社交错误提示
       {
         错误编号 = 6680
       });
@@ -468,7 +468,7 @@ namespace GameServer.Data
 
     public void 申请结盟(CharacterData 主事, GuildData 行会, byte 时间参数)
     {
-      主事.ActiveConnection.SendPacket(new 申请结盟应答
+      主事.ActiveConnection.发送封包(new 申请结盟应答
       {
         行会编号 = 行会.行会编号
       });
@@ -487,7 +487,7 @@ namespace GameServer.Data
     public void 行会Hostility(GuildData 行会, byte 时间参数)
     {
       this.Hostility行会[行会] = (行会.Hostility行会[this] = MainProcess.CurrentTime.AddDays((double)((时间参数 == 1) ? 1 : ((时间参数 == 2) ? 3 : 7))));
-      this.发送封包(new AddDiplomaticAnnouncementPacket
+      this.发送封包(new 添加外交公告
       {
         外交类型 = 2,
         行会编号 = 行会.行会编号,
@@ -496,7 +496,7 @@ namespace GameServer.Data
         行会人数 = (byte)行会.行会成员.Count,
         外交时间 = (int)(this.Hostility行会[行会] - MainProcess.CurrentTime).TotalSeconds
       });
-      行会.发送封包(new AddDiplomaticAnnouncementPacket
+      行会.发送封包(new 添加外交公告
       {
         外交类型 = 2,
         行会编号 = this.行会编号,
@@ -525,7 +525,7 @@ namespace GameServer.Data
     public void 行会结盟(GuildData 行会)
     {
       this.结盟行会[行会] = (行会.结盟行会[this] = MainProcess.CurrentTime.AddDays((double)((this.结盟申请[行会].外交时间 == 1) ? 1 : ((this.结盟申请[行会].外交时间 == 2) ? 3 : 7))));
-      this.发送封包(new AddDiplomaticAnnouncementPacket
+      this.发送封包(new 添加外交公告
       {
         外交类型 = 1,
         GuildName = 行会.GuildName.V,
@@ -534,7 +534,7 @@ namespace GameServer.Data
         行会人数 = (byte)行会.行会成员.Count,
         外交时间 = (int)(this.结盟行会[行会] - MainProcess.CurrentTime).TotalSeconds
       });
-      行会.发送封包(new AddDiplomaticAnnouncementPacket
+      行会.发送封包(new 添加外交公告
       {
         外交类型 = 1,
         GuildName = this.GuildName.V,
@@ -588,12 +588,12 @@ namespace GameServer.Data
         第二参数 = this.行会编号,
         事记时间 = ComputingClass.TimeShift(MainProcess.CurrentTime)
       });
-      SConnection 网络连接 = 主事.ActiveConnection;
+      客户网络 网络连接 = 主事.ActiveConnection;
       if (网络连接 == null)
       {
         return;
       }
-      网络连接.SendPacket(new 社交错误提示
+      网络连接.发送封包(new 社交错误提示
       {
         错误编号 = 6812
       });
@@ -602,7 +602,7 @@ namespace GameServer.Data
 
     public void 申请解敌(CharacterData 主事, GuildData Hostility行会)
     {
-      主事.ActiveConnection.SendPacket(new 社交错误提示
+      主事.ActiveConnection.发送封包(new 社交错误提示
       {
         错误编号 = 6829
       });
@@ -610,10 +610,10 @@ namespace GameServer.Data
       {
         if (keyValuePair.Value <= GuildJobs.副长)
         {
-          SConnection 网络连接 = keyValuePair.Key.ActiveConnection;
+          客户网络 网络连接 = keyValuePair.Key.ActiveConnection;
           if (网络连接 != null)
           {
-            网络连接.SendPacket(new DisarmHostileListPacket
+            网络连接.发送封包(new 解除敌对列表
             {
               申请类型 = 1,
               行会编号 = this.行会编号
@@ -629,7 +629,7 @@ namespace GameServer.Data
     {
       this.Hostility行会.Remove(行会);
       行会.Hostility行会.Remove(this);
-      this.发送封包(new DisarmHostileListPacket
+      this.发送封包(new 解除敌对列表
       {
         申请类型 = 2,
         行会编号 = 行会.行会编号
@@ -676,9 +676,9 @@ namespace GameServer.Data
     public void 添加事记(GuildEvents 事记)
     {
       this.GuildEvents.Insert(0, 事记);
-      this.发送封包(new AddGuildMemoPacket
+      this.发送封包(new 添加公会事记
       {
-        MemorandumType = (byte)事记.MemorandumType,
+        事记类型 = (byte)事记.MemorandumType,
         第一参数 = 事记.第一参数,
         第二参数 = 事记.第二参数,
         第三参数 = 事记.第三参数,
@@ -696,10 +696,10 @@ namespace GameServer.Data
     {
       foreach (KeyValuePair<CharacterData, GuildJobs> keyValuePair in this.行会成员)
       {
-        SConnection 客户网络;
+        客户网络 客户网络;
         if (keyValuePair.Value <= 职位 && keyValuePair.Key.IsOnline(out 客户网络))
         {
-          客户网络.SendPacket(new SendGuildNoticePacket
+          客户网络.发送封包(new 发送行会通知
           {
             提醒类型 = 提醒类型
           });
@@ -778,7 +778,7 @@ namespace GameServer.Data
             binaryWriter.Write(keyValuePair.Key.CharLevel);
             binaryWriter.Write((byte)keyValuePair.Key.CharRace.V);
             binaryWriter.Write(keyValuePair.Key.CurrentMap.V);
-            SConnection 客户网络;
+            客户网络 客户网络;
             binaryWriter.Write(keyValuePair.Key.IsOnline(out 客户网络) ? 0 : ComputingClass.TimeShift(keyValuePair.Key.OfflineDate.V));
             binaryWriter.Write(0);
             binaryWriter.Write(this.行会禁言.ContainsKey(keyValuePair.Key));
@@ -845,7 +845,7 @@ namespace GameServer.Data
             binaryWriter.Write(array);
             binaryWriter.Write(CharacterData.CharLevel);
             binaryWriter.Write(CharacterData.CharLevel);
-            SConnection 客户网络;
+            客户网络 客户网络;
             binaryWriter.Write(CharacterData.IsOnline(out 客户网络) ? ComputingClass.TimeShift(MainProcess.CurrentTime) : ComputingClass.TimeShift(CharacterData.OfflineDate.V));
           }
           result = memoryStream.ToArray();

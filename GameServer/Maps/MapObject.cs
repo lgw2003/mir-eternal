@@ -175,7 +175,7 @@ namespace GameServer.Maps
 
         public virtual void Dies(MapObject obj, bool skillKill)
         {
-            SendPacket(new ObjectDiesPacket
+            SendPacket(new 对象死亡
             {
                 ObjectId = ObjectId
             });
@@ -231,11 +231,11 @@ namespace GameServer.Maps
 
         public void SendPacket(GamePacket packet)
         {
-            if (packet.PacketInfo.Broadcast)
+            if (packet.封包属性.Broadcast)
                 BroadcastPacket(packet);
 
             if (this is PlayerObject playerObj)
-                playerObj.ActiveConnection?.SendPacket(packet);
+                playerObj.ActiveConnection?.发送封包(packet);
         }
 
         private void BroadcastPacket(GamePacket packet)
@@ -245,7 +245,7 @@ namespace GameServer.Maps
                 PlayerObject PlayerObject = obj as PlayerObject;
                 if (PlayerObject != null && !PlayerObject.NeighborsSneak.Contains(this) && PlayerObject != null)
                 {
-                    PlayerObject.ActiveConnection.SendPacket(packet);
+                    PlayerObject.ActiveConnection.发送封包(packet);
                 }
             }
         }
@@ -334,13 +334,13 @@ namespace GameServer.Maps
                 if (obj is MonsterObject)
                     return GameObjectRelationship.敌对;
                 else if (obj is GuardObject)
-                    return playerObject.AttackMode == AttackMode.全体 && CurrentMap.MapId != 80
+                    return playerObject.AttackMode == 攻击模式.全体 && CurrentMap.MapId != 80
                         ? GameObjectRelationship.敌对
                         : GameObjectRelationship.友方;
                 else if (obj is PlayerObject neightborPlayerObject)
-                    return playerObject.AttackMode == AttackMode.和平
+                    return playerObject.AttackMode == 攻击模式.和平
                         || (
-                            playerObject.AttackMode == AttackMode.行会
+                            playerObject.AttackMode == 攻击模式.行会
                             && playerObject.Guild != null
                             && neightborPlayerObject.Guild != null
                             && (
@@ -349,18 +349,18 @@ namespace GameServer.Maps
                             )
                         )
                         || (
-                            playerObject.AttackMode == AttackMode.组队 && (
+                            playerObject.AttackMode == 攻击模式.组队 && (
                                 playerObject.Team != null && neightborPlayerObject.Team != null
                                 && playerObject.Team == neightborPlayerObject.Team
                             )
                         )
                         || (
-                            playerObject.AttackMode == AttackMode.善恶 && (
+                            playerObject.AttackMode == 攻击模式.善恶 && (
                                 !playerObject.红名玩家 && !neightborPlayerObject.红名玩家
                             )
                         )
                         || (
-                            playerObject.AttackMode == AttackMode.Hostility && (
+                            playerObject.AttackMode == 攻击模式.敌对 && (
                                 playerObject.Guild == null
                                 || neightborPlayerObject == null
                                 || !playerObject.Guild.Hostility行会.ContainsKey(neightborPlayerObject.Guild)
@@ -369,12 +369,12 @@ namespace GameServer.Maps
                         ? GameObjectRelationship.友方
                         : GameObjectRelationship.敌对;
                 else if (obj is PetObject petObject)
-                    return (petObject.PlayerOwner == this && playerObject.AttackMode != AttackMode.全体)
-                        || (playerObject.AttackMode == AttackMode.和平)
-                        || (playerObject.AttackMode == AttackMode.行会 && playerObject.Guild != null && petObject.PlayerOwner.Guild != null && (playerObject.Guild == petObject.PlayerOwner.Guild || playerObject.Guild.结盟行会.ContainsKey(petObject.PlayerOwner.Guild)))
-                        || (playerObject.AttackMode == AttackMode.组队 && playerObject.Team != null && petObject.PlayerOwner.Team != null && playerObject.Team == petObject.PlayerOwner.Team)
-                        || (playerObject.AttackMode == AttackMode.善恶 && !petObject.PlayerOwner.红名玩家 && !petObject.PlayerOwner.灰名玩家)
-                        || (playerObject.AttackMode != AttackMode.Hostility && (
+                    return (petObject.PlayerOwner == this && playerObject.AttackMode != 攻击模式.全体)
+                        || (playerObject.AttackMode == 攻击模式.和平)
+                        || (playerObject.AttackMode == 攻击模式.行会 && playerObject.Guild != null && petObject.PlayerOwner.Guild != null && (playerObject.Guild == petObject.PlayerOwner.Guild || playerObject.Guild.结盟行会.ContainsKey(petObject.PlayerOwner.Guild)))
+                        || (playerObject.AttackMode == 攻击模式.组队 && playerObject.Team != null && petObject.PlayerOwner.Team != null && playerObject.Team == petObject.PlayerOwner.Team)
+                        || (playerObject.AttackMode == 攻击模式.善恶 && !petObject.PlayerOwner.红名玩家 && !petObject.PlayerOwner.灰名玩家)
+                        || (playerObject.AttackMode != 攻击模式.敌对 && (
                             playerObject.Guild == null
                             || petObject.PlayerOwner.Guild == null
                             || !playerObject.Guild.Hostility行会.ContainsKey(petObject.PlayerOwner.Guild)
@@ -650,7 +650,7 @@ namespace GameServer.Maps
                         BuffData4.剩余时间.V = BuffData4.持续时间.V;
                         if (BuffData4.Buff同步)
                         {
-                            SendPacket(new ObjectStateChangePacket
+                            SendPacket(new 对象状态变动
                             {
                                 对象编号 = this.ObjectId,
                                 Id = BuffData4.Id.V,
@@ -669,7 +669,7 @@ namespace GameServer.Maps
                             BuffData5.剩余时间.V += BuffData5.持续时间.V;
                             if (BuffData5.Buff同步)
                             {
-                                SendPacket(new ObjectStateChangePacket
+                                SendPacket(new 对象状态变动
                                 {
                                     对象编号 = this.ObjectId,
                                     Id = BuffData5.Id.V,
@@ -694,7 +694,7 @@ namespace GameServer.Maps
 
             if (BuffData2.Buff同步)
             {
-                SendPacket(new ObjectAddStatePacket
+                SendPacket(new 对象添加状态
                 {
                     SourceObjectId = this.ObjectId,
                     TargetObjectId = obj.ObjectId,
@@ -722,10 +722,10 @@ namespace GameServer.Maps
                         playerObject.OnAddBuff(mount.Buff编号, this);
                 }
 
-                SendPacket(new SyncObjectMountPacket
+                SendPacket(new 同步对象坐骑
                 {
-                    ObjectId = ObjectId,
-                    MountId = (byte)playerObject.CharacterData.CurrentMount.V
+                    对象编号 = ObjectId,
+                    坐骑编号 = (byte)playerObject.CharacterData.CurrentMount.V
                 });
             }
 
@@ -780,7 +780,7 @@ namespace GameServer.Maps
                         if (dateTime > t)
                         {
                             this.Coolings[(int)BuffData.绑定技能 | 16777216] = dateTime;
-                            this.SendPacket(new AddedSkillCooldownPacket
+                            this.SendPacket(new 添加技能冷却
                             {
                                 CoolingId = ((int)BuffData.绑定技能 | 16777216),
                                 Cooldown = (int)BuffData.Cooldown
@@ -792,7 +792,7 @@ namespace GameServer.Maps
                 BuffData.Delete();
                 if (BuffData.Buff同步)
                 {
-                    this.SendPacket(new ObjectRemovalStatusPacket
+                    this.SendPacket(new 对象移除状态
                     {
                         对象编号 = this.ObjectId,
                         Buff索引 = (int)编号
@@ -850,7 +850,7 @@ namespace GameServer.Maps
                 BuffData.Delete();
                 if (BuffData.Buff同步)
                 {
-                    this.SendPacket(new ObjectRemovalStatusPacket
+                    this.SendPacket(new 对象移除状态
                     {
                         对象编号 = this.ObjectId,
                         Buff索引 = (int)编号
@@ -1956,13 +1956,13 @@ namespace GameServer.Maps
                             case GameObjectType.怪物:
                                 break;
                             case GameObjectType.宠物:
-                                PlayerObject.ActiveConnection.SendPacket(new ObjectCharacterStopPacket
+                                PlayerObject.ActiveConnection.发送封包(new 角色停止
                                 {
                                     对象编号 = 对象.ObjectId,
                                     对象坐标 = 对象.CurrentPosition,
                                     对象高度 = 对象.CurrentAltitude
                                 });
-                                PlayerObject.ActiveConnection.SendPacket(new ObjectComesIntoViewPacket
+                                PlayerObject.ActiveConnection.发送封包(new 对象进入视野
                                 {
                                     出现方式 = 1,
                                     对象编号 = 对象.ObjectId,
@@ -1972,13 +1972,13 @@ namespace GameServer.Maps
                                     现身姿态 = ((byte)(对象.Died ? 13 : 1)),
                                     体力比例 = (byte)(对象.CurrentHP * 100 / 对象[GameObjectStats.最大体力])
                                 });
-                                PlayerObject.ActiveConnection.SendPacket(new SyncObjectHP
+                                PlayerObject.ActiveConnection.发送封包(new 同步对象体力
                                 {
-                                    ObjectId = 对象.ObjectId,
-                                    CurrentHP = 对象.CurrentHP,
-                                    MaxHP = 对象[GameObjectStats.最大体力]
+                                    对象编号 = 对象.ObjectId,
+                                    当前体力 = 对象.CurrentHP,
+                                    体力上限 = 对象[GameObjectStats.最大体力]
                                 });
-                                PlayerObject.ActiveConnection.SendPacket(new ObjectTransformTypePacket
+                                PlayerObject.ActiveConnection.发送封包(new 对象变换类型
                                 {
                                     改变类型 = 2,
                                     对象编号 = 对象.ObjectId
@@ -1993,14 +1993,14 @@ namespace GameServer.Maps
                                 }
                                 break;
                         }
-                        PlayerObject.ActiveConnection.SendPacket(new ObjectCharacterStopPacket
+                        PlayerObject.ActiveConnection.发送封包(new 角色停止
                         {
                             对象编号 = 对象.ObjectId,
                             对象坐标 = 对象.CurrentPosition,
                             对象高度 = 对象.CurrentAltitude
                         });
-                        SConnection 网络连接 = PlayerObject.ActiveConnection;
-                        ObjectComesIntoViewPacket ObjectComesIntoViewPacket = new ObjectComesIntoViewPacket();
+                        客户网络 网络连接 = PlayerObject.ActiveConnection;
+                        对象进入视野 ObjectComesIntoViewPacket = new 对象进入视野();
                         ObjectComesIntoViewPacket.出现方式 = 1;
                         ObjectComesIntoViewPacket.对象编号 = 对象.ObjectId;
                         ObjectComesIntoViewPacket.现身坐标 = 对象.CurrentPosition;
@@ -2014,19 +2014,19 @@ namespace GameServer.Maps
                             ObjectComesIntoViewPacket.AdditionalParam = (byte)(!PlayerObject2.灰名玩家 ? 0 : 2);
                             ObjectComesIntoViewPacket.ActiveMount = PlayerObject2.Riding ? (byte)PlayerObject2.CharacterData.CurrentMount.V : (byte)0;
                         }
-                        网络连接.SendPacket(ObjectComesIntoViewPacket);
-                        PlayerObject.ActiveConnection.SendPacket(new SyncObjectHP
+                        网络连接.发送封包(ObjectComesIntoViewPacket);
+                        PlayerObject.ActiveConnection.发送封包(new 同步对象体力
                         {
-                            ObjectId = 对象.ObjectId,
-                            CurrentHP = 对象.CurrentHP,
-                            MaxHP = 对象[GameObjectStats.最大体力]
+                            对象编号 = 对象.ObjectId,
+                            当前体力 = 对象.CurrentHP,
+                            体力上限 = 对象[GameObjectStats.最大体力]
                         });
                     }
                     else if (对象类型 != GameObjectType.物品)
                     {
                         if (对象类型 == GameObjectType.陷阱)
                         {
-                            PlayerObject.ActiveConnection.SendPacket(new TrapComesIntoViewPacket
+                            PlayerObject.ActiveConnection.发送封包(new 陷阱出现
                             {
                                 MapId = 对象.ObjectId,
                                 陷阱坐标 = 对象.CurrentPosition,
@@ -2039,7 +2039,7 @@ namespace GameServer.Maps
                     }
                     else if (对象 is ItemObject dropObject)
                     {
-                        PlayerObject.ActiveConnection.SendPacket(new ObjectDropItemsPacket
+                        PlayerObject.ActiveConnection.发送封包(new 对象掉落物品
                         {
                             DropperObjectId = dropObject.DropperObjectId,
                             ItemObjectId = dropObject.ObjectId,
@@ -2053,7 +2053,7 @@ namespace GameServer.Maps
                 IL_356:
                     if (对象.Buffs.Count > 0)
                     {
-                        PlayerObject.ActiveConnection.SendPacket(new 同步对象Buff
+                        PlayerObject.ActiveConnection.发送封包(new 同步对象Buff
                         {
                             字节描述 = 对象.对象Buff简述()
                         });
@@ -2113,13 +2113,13 @@ namespace GameServer.Maps
                             case GameObjectType.怪物:
                                 break;
                             case GameObjectType.宠物:
-                                PlayerObject3.ActiveConnection.SendPacket(new ObjectCharacterStopPacket
+                                PlayerObject3.ActiveConnection.发送封包(new 角色停止
                                 {
                                     对象编号 = 对象.ObjectId,
                                     对象坐标 = 对象.CurrentPosition,
                                     对象高度 = 对象.CurrentAltitude
                                 });
-                                PlayerObject3.ActiveConnection.SendPacket(new ObjectComesIntoViewPacket
+                                PlayerObject3.ActiveConnection.发送封包(new 对象进入视野
                                 {
                                     出现方式 = 1,
                                     对象编号 = 对象.ObjectId,
@@ -2129,13 +2129,13 @@ namespace GameServer.Maps
                                     现身姿态 = ((byte)(对象.Died ? 13 : 1)),
                                     体力比例 = (byte)(对象.CurrentHP * 100 / 对象[GameObjectStats.最大体力])
                                 });
-                                PlayerObject3.ActiveConnection.SendPacket(new SyncObjectHP
+                                PlayerObject3.ActiveConnection.发送封包(new 同步对象体力
                                 {
-                                    ObjectId = 对象.ObjectId,
-                                    CurrentHP = 对象.CurrentHP,
-                                    MaxHP = 对象[GameObjectStats.最大体力]
+                                    对象编号 = 对象.ObjectId,
+                                    当前体力 = 对象.CurrentHP,
+                                    体力上限 = 对象[GameObjectStats.最大体力]
                                 });
-                                PlayerObject3.ActiveConnection.SendPacket(new ObjectTransformTypePacket
+                                PlayerObject3.ActiveConnection.发送封包(new 对象变换类型
                                 {
                                     改变类型 = 2,
                                     对象编号 = 对象.ObjectId
@@ -2150,14 +2150,14 @@ namespace GameServer.Maps
                                 }
                                 break;
                         }
-                        PlayerObject3.ActiveConnection.SendPacket(new ObjectCharacterStopPacket
+                        PlayerObject3.ActiveConnection.发送封包(new 角色停止
                         {
                             对象编号 = 对象.ObjectId,
                             对象坐标 = 对象.CurrentPosition,
                             对象高度 = 对象.CurrentAltitude
                         });
-                        SConnection 网络连接2 = PlayerObject3.ActiveConnection;
-                        ObjectComesIntoViewPacket ObjectComesIntoViewPacket2 = new ObjectComesIntoViewPacket
+                        客户网络 网络连接2 = PlayerObject3.ActiveConnection;
+                        对象进入视野 ObjectComesIntoViewPacket2 = new 对象进入视野
                         {
                             出现方式 = 1,
                             对象编号 = 对象.ObjectId,
@@ -2173,20 +2173,20 @@ namespace GameServer.Maps
                             ObjectComesIntoViewPacket2.AdditionalParam = (byte)(!PlayerObject4.灰名玩家 ? 0 : 2);
                             ObjectComesIntoViewPacket2.ActiveMount = (byte)(PlayerObject4.Riding ? PlayerObject4.CharacterData.CurrentMount.V : 0);
                         }
-                        网络连接2.SendPacket(ObjectComesIntoViewPacket2);
+                        网络连接2.发送封包(ObjectComesIntoViewPacket2);
 
-                        PlayerObject3.ActiveConnection.SendPacket(new SyncObjectHP
+                        PlayerObject3.ActiveConnection.发送封包(new 同步对象体力
                         {
-                            ObjectId = 对象.ObjectId,
-                            CurrentHP = 对象.CurrentHP,
-                            MaxHP = 对象[GameObjectStats.最大体力]
+                            对象编号 = 对象.ObjectId,
+                            当前体力 = 对象.CurrentHP,
+                            体力上限 = 对象[GameObjectStats.最大体力]
                         });
                     }
                     else if (对象类型 != GameObjectType.物品)
                     {
                         if (对象类型 == GameObjectType.陷阱)
                         {
-                            PlayerObject3.ActiveConnection.SendPacket(new TrapComesIntoViewPacket
+                            PlayerObject3.ActiveConnection.发送封包(new 陷阱出现
                             {
                                 MapId = 对象.ObjectId,
                                 陷阱坐标 = 对象.CurrentPosition,
@@ -2198,7 +2198,7 @@ namespace GameServer.Maps
                         }
                         else if (对象 is ChestObject chestObject && chestObject.IsAlredyOpened(PlayerObject3))
                         {
-                            PlayerObject3.ActiveConnection.SendPacket(new ChestComesIntoViewPacket
+                            PlayerObject3.ActiveConnection.发送封包(new 宝箱进入视野
                             {
                                 ObjectId = 对象.ObjectId,
                                 Direction = (ushort)对象.CurrentDirection,
@@ -2211,7 +2211,7 @@ namespace GameServer.Maps
                     }
                     else if (对象 is ItemObject dropObject)
                     {
-                        PlayerObject3.ActiveConnection.SendPacket(new ObjectDropItemsPacket
+                        PlayerObject3.ActiveConnection.发送封包(new 对象掉落物品
                         {
                             DropperObjectId = dropObject.DropperObjectId,
                             ItemObjectId = dropObject.ObjectId,
@@ -2225,7 +2225,7 @@ namespace GameServer.Maps
                 IL_866:
                     if (对象.Buffs.Count > 0)
                     {
-                        PlayerObject3.ActiveConnection.SendPacket(new 同步对象Buff
+                        PlayerObject3.ActiveConnection.发送封包(new 同步对象Buff
                         {
                             字节描述 = 对象.对象Buff简述()
                         });
@@ -2310,7 +2310,7 @@ namespace GameServer.Maps
                     PlayerObject PlayerObject = this as PlayerObject;
                     if (PlayerObject != null)
                     {
-                        PlayerObject.ActiveConnection.SendPacket(new ObjectOutOfViewPacket
+                        PlayerObject.ActiveConnection.发送封包(new 对象离开视野
                         {
                             对象编号 = 对象.ObjectId
                         });
@@ -2414,7 +2414,7 @@ namespace GameServer.Maps
             if (PlayerObject != null && (this.GetRelationship(对象) == GameObjectRelationship.敌对 || 对象.GetRelationship(this) == GameObjectRelationship.敌对))
             {
                 this.NeighborsSneak.Add(对象);
-                PlayerObject.ActiveConnection.SendPacket(new ObjectOutOfViewPacket
+                PlayerObject.ActiveConnection.发送封包(new 对象离开视野
                 {
                     对象编号 = 对象.ObjectId
                 });

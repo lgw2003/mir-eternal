@@ -12,8 +12,8 @@ namespace GameServer.Networking
     {
         public static void Config(Type connectionType)
         {
-            GamePacket.EncryptionKey = 129;
-            GamePacket.PacketMethods = new Dictionary<Type, MethodInfo>();
+            GamePacket.加密字节 = 129;
+            GamePacket.封包处理方法 = new Dictionary<Type, MethodInfo>();
 
             #region Reader
 
@@ -97,7 +97,7 @@ namespace GameServer.Networking
                 Point point = new Point((int)br.ReadUInt16(), (int)br.ReadUInt16());
                 return ComputingClass.协议坐标转点阵坐标(wfa.Reverse ? new Point(point.Y, point.X) : point);
             };
-            GamePacket.TypeRead = ReaderDictionary;
+            GamePacket.封包字段读取表 = ReaderDictionary;
             #endregion
 
             #region Writer
@@ -193,110 +193,110 @@ namespace GameServer.Networking
                 bw.BaseStream.Seek((long)((ulong)wfa.SubScript), SeekOrigin.Begin);
                 bw.Write(ComputingClass.TimeShift((DateTime)obj));
             };
-            GamePacket.TypeWrite = WriterDictionary;
+            GamePacket.封包字段写入表 = WriterDictionary;
             #endregion
 
-            GamePacket.ServerPackets = new Dictionary<ushort, Type>();
-            GamePacket.ServerPacketNumberTable = new Dictionary<Type, ushort>();
-            GamePacket.ServerPacketLengthTable = new Dictionary<ushort, ushort>();
-            GamePacket.ClientPackets = new Dictionary<ushort, Type>();
-            GamePacket.ClientPacketNumberTable = new Dictionary<Type, ushort>();
-            GamePacket.ClientPacketLengthTable = new Dictionary<ushort, ushort>();
+            GamePacket.服务器封包类型表 = new Dictionary<ushort, Type>();
+            GamePacket.服务器封包编号表 = new Dictionary<Type, ushort>();
+            GamePacket.服务器封包长度表 = new Dictionary<ushort, ushort>();
+            GamePacket.客户端封包类型表 = new Dictionary<ushort, Type>();
+            GamePacket.客户端封包编号表 = new Dictionary<Type, ushort>();
+            GamePacket.客户端封包长度表 = new Dictionary<ushort, ushort>();
 
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
                 if (type.IsSubclassOf(typeof(GamePacket)))
                 {
-                    PacketInfoAttribute customAttribute = type.GetCustomAttribute<PacketInfoAttribute>();
-                    if (customAttribute != null)
+                    PacketInfoAttribute 封包描述 = type.GetCustomAttribute<PacketInfoAttribute>();
+                    if (封包描述 != null)
                     {
-                        if (customAttribute.Source == PacketSource.Client)
+                        if (封包描述.Source == PacketSource.Client)
                         {
-                            GamePacket.ClientPackets[customAttribute.Id] = type;
-                            GamePacket.ClientPacketNumberTable[type] = customAttribute.Id;
-                            GamePacket.ClientPacketLengthTable[customAttribute.Id] = customAttribute.Length;
-                            GamePacket.PacketMethods[type] = connectionType.GetMethod("处理封包", new Type[]
+                            GamePacket.客户端封包类型表[封包描述.Id] = type;
+                            GamePacket.客户端封包编号表[type] = 封包描述.Id;
+                            GamePacket.客户端封包长度表[封包描述.Id] = 封包描述.Length;
+                            GamePacket.封包处理方法[type] = connectionType.GetMethod("处理封包", new Type[]
                             {
                                 type
                             });
                         }
                         else
                         {
-                            GamePacket.ServerPackets[customAttribute.Id] = type;
-                            GamePacket.ServerPacketNumberTable[type] = customAttribute.Id;
-                            GamePacket.ServerPacketLengthTable[customAttribute.Id] = customAttribute.Length;
+                            GamePacket.服务器封包类型表[封包描述.Id] = type;
+                            GamePacket.服务器封包编号表[type] = 封包描述.Id;
+                            GamePacket.服务器封包长度表[封包描述.Id] = 封包描述.Length;
                         }
                     }
                 }
             }
             string text = "";
-            foreach (KeyValuePair<ushort, Type> keyValuePair in GamePacket.ServerPackets)
+            foreach (KeyValuePair<ushort, Type> keyValuePair in GamePacket.服务器封包类型表)
             {
-                text += string.Format("{0}\t{1}\t{2}\r\n", keyValuePair.Value.Name, keyValuePair.Key, GamePacket.ServerPacketLengthTable[keyValuePair.Key]);
+                text += string.Format("{0}\t{1}\t{2}\r\n", keyValuePair.Value.Name, keyValuePair.Key, GamePacket.服务器封包长度表[keyValuePair.Key]);
             }
             string text2 = "";
-            foreach (KeyValuePair<ushort, Type> keyValuePair2 in GamePacket.ClientPackets)
+            foreach (KeyValuePair<ushort, Type> keyValuePair2 in GamePacket.客户端封包类型表)
             {
-                text2 += string.Format("{0}\t{1}\t{2}\r\n", keyValuePair2.Value.Name, keyValuePair2.Key, GamePacket.ClientPacketLengthTable[keyValuePair2.Key]);
+                text2 += string.Format("{0}\t{1}\t{2}\r\n", keyValuePair2.Value.Name, keyValuePair2.Key, GamePacket.客户端封包长度表[keyValuePair2.Key]);
             }
             File.WriteAllText("./ServerPackRule.txt", text);
             File.WriteAllText("./ClientPackRule.txt", text2);
         }
 
 
-        public virtual bool Encrypted { get; set; }
+        public virtual bool 是否加密 { get; set; }
 
 
         public GamePacket()
         {
 
-            this.Encrypted = true;
+            this.是否加密 = true;
 
-            this.PacketType = base.GetType();
-            this.PacketInfo = this.PacketType.GetCustomAttribute<PacketInfoAttribute>();
+            this.封包类型 = base.GetType();
+            this.封包属性 = this.封包类型.GetCustomAttribute<PacketInfoAttribute>();
 
-            if (this.PacketInfo.Source == PacketSource.Server)
+            if (this.封包属性.Source == PacketSource.Server)
             {
-                this.PacketID = GamePacket.ServerPacketNumberTable[this.PacketType];
-                this.PacketLength = GamePacket.ServerPacketLengthTable[this.PacketID];
+                this.封包编号 = GamePacket.服务器封包编号表[this.封包类型];
+                this.封包长度 = GamePacket.服务器封包长度表[this.封包编号];
                 return;
             }
-            this.PacketID = GamePacket.ClientPacketNumberTable[this.PacketType];
-            this.PacketLength = GamePacket.ClientPacketLengthTable[this.PacketID];
+            this.封包编号 = GamePacket.客户端封包编号表[this.封包类型];
+            this.封包长度 = GamePacket.客户端封包长度表[this.封包编号];
         }
 
 
         public byte[] 取字节(bool forceNoEncrypt = false)
         {
             byte[] result;
-            using (MemoryStream memoryStream = (this.PacketLength == 0) ? new MemoryStream() : new MemoryStream(new byte[(int)this.PacketLength]))
+            using (MemoryStream memoryStream = (this.封包长度 == 0) ? new MemoryStream() : new MemoryStream(new byte[(int)this.封包长度]))
             {
                 using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
                 {
-                    foreach (FieldInfo fieldInfo in this.PacketType.GetFields())
+                    foreach (FieldInfo fieldInfo in this.封包类型.GetFields())
                     {
-                        WrappingFieldAttribute customAttribute = fieldInfo.GetCustomAttribute<WrappingFieldAttribute>();
-                        if (customAttribute != null)
+                        WrappingFieldAttribute 字段描述 = fieldInfo.GetCustomAttribute<WrappingFieldAttribute>();
+                        if (字段描述 != null)
                         {
                             Type fieldType = fieldInfo.FieldType;
                             object value = fieldInfo.GetValue(this);
                             Action<BinaryWriter, WrappingFieldAttribute, object> action;
-                            if (GamePacket.TypeWrite.TryGetValue(fieldType, out action))
+                            if (GamePacket.封包字段写入表.TryGetValue(fieldType, out action))
                             {
-                                action(binaryWriter, customAttribute, value);
+                                action(binaryWriter, 字段描述, value);
                             }
                         }
                     }
                     binaryWriter.Seek(0, SeekOrigin.Begin);
-                    binaryWriter.Write(this.PacketID);
-                    if (this.PacketLength == 0)
+                    binaryWriter.Write(this.封包编号);
+                    if (this.封包长度 == 0)
                     {
                         binaryWriter.Write((ushort)memoryStream.Length);
                     }
                     byte[] array = memoryStream.ToArray();
-                    if (this.Encrypted && !forceNoEncrypt)
+                    if (this.是否加密 && !forceNoEncrypt)
                     {
-                        result = GamePacket.EncodeData(array);
+                        result = GamePacket.加解密(array);
                     }
                     else
                     {
@@ -314,16 +314,16 @@ namespace GameServer.Networking
             {
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream))
                 {
-                    foreach (FieldInfo fieldInfo in this.PacketType.GetFields())
+                    foreach (FieldInfo fieldInfo in this.封包类型.GetFields())
                     {
-                        WrappingFieldAttribute customAttribute = fieldInfo.GetCustomAttribute<WrappingFieldAttribute>();
-                        if (customAttribute != null)
+                        WrappingFieldAttribute 字段描述 = fieldInfo.GetCustomAttribute<WrappingFieldAttribute>();
+                        if (字段描述 != null)
                         {
                             Type fieldType = fieldInfo.FieldType;
                             Func<BinaryReader, WrappingFieldAttribute, object> func;
-                            if (GamePacket.TypeRead.TryGetValue(fieldType, out func))
+                            if (GamePacket.封包字段读取表.TryGetValue(fieldType, out func))
                             {
-                                fieldInfo.SetValue(this, func(binaryReader, customAttribute));
+                                fieldInfo.SetValue(this, func(binaryReader, 字段描述));
                             }
                         }
                     }
@@ -342,13 +342,13 @@ namespace GameServer.Networking
             ushort packetID = BitConverter.ToUInt16(inData, 0);
             Type type;
 
-            if (!ClientPackets.TryGetValue(packetID, out type))
+            if (!客户端封包类型表.TryGetValue(packetID, out type))
             {
                 throw new Exception(string.Format("封包组包失败! 封包编号:{0:X4}", packetID));
                 return null;
             }
             ushort num2;
-            if (!ClientPacketLengthTable.TryGetValue(packetID, out num2))
+            if (!客户端封包长度表.TryGetValue(packetID, out num2))
             {
                 throw new Exception(string.Format("获取封包长度失败! 封包编号:{0:X4}", packetID));
                 return null;
@@ -364,9 +364,9 @@ namespace GameServer.Networking
             }
             GamePacket GamePacket = (GamePacket)Activator.CreateInstance(type);
             byte[] dataPacket = inData.Take((int)num2).ToArray<byte>();
-            if (GamePacket.Encrypted)
+            if (GamePacket.是否加密)
             {
-                GamePacket.EncodeData(dataPacket);
+                GamePacket.加解密(dataPacket);
             }
             GamePacket.填封包(dataPacket);
             restOfBytes = inData.Skip((int)num2).ToArray<byte>();
@@ -374,63 +374,63 @@ namespace GameServer.Networking
         }
 
 
-        public static byte[] EncodeData(byte[] data)
+        public static byte[] 加解密(byte[] data)
         {
             for (int i = 4; i < data.Length; i++)
             {
-                data[i] ^= GamePacket.EncryptionKey;
+                data[i] ^= GamePacket.加密字节;
             }
             return (byte[])data;
         }
 
 
-        public static byte EncryptionKey;
+        public static byte 加密字节;
 
 
-        public static Dictionary<Type, MethodInfo> PacketMethods;
+        public static Dictionary<Type, MethodInfo> 封包处理方法;
 
 
-        public static Dictionary<ushort, Type> ServerPackets;
+        public static Dictionary<ushort, Type> 服务器封包类型表;
 
 
-        public static Dictionary<ushort, Type> ClientPackets;
+        public static Dictionary<ushort, Type> 客户端封包类型表;
 
 
-        public static Dictionary<Type, ushort> ServerPacketNumberTable;
+        public static Dictionary<Type, ushort> 服务器封包编号表;
 
 
-        public static Dictionary<Type, ushort> ClientPacketNumberTable;
+        public static Dictionary<Type, ushort> 客户端封包编号表;
 
 
-        public static Dictionary<ushort, ushort> ServerPacketLengthTable;
+        public static Dictionary<ushort, ushort> 服务器封包长度表;
 
 
-        public static Dictionary<ushort, ushort> ClientPacketLengthTable;
+        public static Dictionary<ushort, ushort> 客户端封包长度表;
 
 
-        public static Dictionary<Type, Func<BinaryReader, WrappingFieldAttribute, object>> TypeRead;
+        public static Dictionary<Type, Func<BinaryReader, WrappingFieldAttribute, object>> 封包字段读取表;
 
 
-        public static Dictionary<Type, Action<BinaryWriter, WrappingFieldAttribute, object>> TypeWrite;
+        public static Dictionary<Type, Action<BinaryWriter, WrappingFieldAttribute, object>> 封包字段写入表;
 
 
-        public readonly Type PacketType;
+        public readonly Type 封包类型;
 
-        public readonly PacketInfoAttribute PacketInfo;
+        public readonly PacketInfoAttribute 封包属性;
 
-        private readonly ushort PacketID;
+        private readonly ushort 封包编号;
 
 
-        private readonly ushort PacketLength;
+        private readonly ushort 封包长度;
 
         public override string ToString()
         {
-            var fields = PacketType.GetFields(BindingFlags.Public);
+            var fields = 封包类型.GetFields(BindingFlags.Public);
             var validFieldTypes = new string[] { "string", "int", "uint", "ushort", "short" };
 
             var sb = new StringBuilder();
 
-            sb.Append($"[{PacketType.Name}] {{");
+            sb.Append($"[{封包类型.Name}] {{");
 
             foreach (var field in fields)
             {

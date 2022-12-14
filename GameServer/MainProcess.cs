@@ -78,7 +78,7 @@ namespace GameServer
       {
         if (!Running)
         {
-          if (NetworkServiceGateway.Connections.Count == 0)
+          if (NetworkServiceGateway.网络连接表.Count == 0)
             break;
         }
         try
@@ -89,7 +89,7 @@ namespace GameServer
           自动保存数据();
           ProcessServerStats();
           ProcessGMCommands();
-          NetworkServiceGateway.Process();
+          NetworkServiceGateway.处理数据();
           MapGatewayProcess.Process();
           ProcessReloadTasks();
           sw.Stop();
@@ -139,11 +139,11 @@ namespace GameServer
 
     private static void ClearConnections()
     {
-      foreach (SConnection connection in NetworkServiceGateway.Connections)
+      foreach (客户网络 connection in NetworkServiceGateway.网络连接表)
       {
         try
         {
-          TcpClient tcpClient = connection.Connection;
+          TcpClient tcpClient = connection.当前连接;
           if (tcpClient != null)
           {
             Socket client = tcpClient.Client;
@@ -170,7 +170,7 @@ namespace GameServer
     {
       if (CurrentTime > NextUpdateLoopCountsTime)
       {
-        MainForm.UpdateTotalConnections((uint)NetworkServiceGateway.Connections.Count);
+        MainForm.UpdateTotalConnections((uint)NetworkServiceGateway.网络连接表.Count);
         MainForm.UpdateAlreadyLogged(NetworkServiceGateway.ActiveConnections);
         MainForm.UpdateConnectionsOnline(NetworkServiceGateway.ConnectionsOnline);
         MainForm.UpdateSendedBytes(NetworkServiceGateway.SendedBytes);

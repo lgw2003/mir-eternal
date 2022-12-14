@@ -490,7 +490,7 @@ namespace GameServer.Data
                     mission.Count.V = (byte)(mission.Count.V + 1);
                     updated = true;
                 }
-                if (updated) character.ActiveConnection?.Player.UpdateQuestProgress(quest);
+                if (updated) character.ActiveConnection?.玩家实例.UpdateQuestProgress(quest);
             }
 
             GameDataGateway.物品数据表.AddData(this, true);

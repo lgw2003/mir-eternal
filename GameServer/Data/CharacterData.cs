@@ -191,7 +191,7 @@ namespace GameServer.Data
             }
         }
 
-        public SConnection ActiveConnection { get; set; }
+        public 客户网络 ActiveConnection { get; set; }
 
 
         public void GetExperience(int experience)
@@ -213,7 +213,7 @@ namespace GameServer.Data
 
         public void OnCharacterDisconnect()
         {
-            this.ActiveConnection.Player = null;
+            this.ActiveConnection.玩家实例 = null;
             this.ActiveConnection = null;
             NetworkServiceGateway.ConnectionsOnline -= 1U;
             this.OfflineDate.V = MainProcess.CurrentTime;
@@ -221,12 +221,12 @@ namespace GameServer.Data
         }
 
 
-        public void OnCharacterConnect(SConnection connection)
+        public void OnCharacterConnect(客户网络 connection)
         {
             this.ActiveConnection = connection;
             NetworkServiceGateway.ConnectionsOnline += 1U;
             this.MacAddress.V = connection.MacAddress;
-            this.NetAddress.V = connection.NetAddress;
+            this.NetAddress.V = connection.网络地址;
             MainForm.UpdatedCharacterData(this, "OfflineDate", null);
             MainForm.AddSystemLog(string.Format("Player [{0}] [Level {1}] has entered the game", this.CharName, this.Level));
         }
@@ -237,14 +237,14 @@ namespace GameServer.Data
             mail.ShippingAddress.V = this;
             Mails.Add(mail);
             UnreadMails.Add(mail);
-            ActiveConnection?.SendPacket(new 未读邮件提醒
+            ActiveConnection?.发送封包(new 未读邮件提醒
             {
                 邮件数量 = this.UnreadMails.Count
             });
         }
 
 
-        public bool IsOnline(out SConnection connection)
+        public bool IsOnline(out 客户网络 connection)
         {
             connection = ActiveConnection;
             return connection != null;
@@ -823,7 +823,7 @@ namespace GameServer.Data
         public readonly DataMonitor<GameDirection> CurrentDir;
 
 
-        public readonly DataMonitor<AttackMode> AttackMode;
+        public readonly DataMonitor<攻击模式> AttackMode;
 
 
         public readonly DataMonitor<PetMode> PetMode;

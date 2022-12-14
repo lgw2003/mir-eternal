@@ -78,11 +78,11 @@ namespace GameServer.Maps
                 if (base.CurrentHP != value)
                 {
                     base.CurrentHP = value;
-                    base.SendPacket(new SyncObjectHP
+                    base.SendPacket(new 同步对象体力
                     {
-                        ObjectId = this.ObjectId,
-                        CurrentHP = this.CurrentHP,
-                        MaxHP = this[GameObjectStats.最大体力]
+                        对象编号 = this.ObjectId,
+                        当前体力 = this.CurrentHP,
+                        体力上限 = this[GameObjectStats.最大体力]
                     });
                 }
             }
@@ -122,7 +122,7 @@ namespace GameServer.Maps
                 if (this.CurrentDirection != value)
                 {
                     base.CurrentDirection = value;
-                    base.SendPacket(new ObjectRotationDirectionPacket
+                    base.SendPacket(new 对象转动方向
                     {
                         转向耗时 = 100,
                         对象编号 = this.ObjectId,

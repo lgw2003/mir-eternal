@@ -147,11 +147,11 @@ namespace GameServer.Data
                 DataMonitor.QuietlySetValue((PetMode)r.ReadInt32());
                 return DataMonitor;
             };
-            Type typeFromHandle16 = typeof(DataMonitor<AttackMode>);
+            Type typeFromHandle16 = typeof(DataMonitor<攻击模式>);
             dictionary[typeFromHandle16] = delegate (BinaryReader r, GameData o, DataField f)
             {
-                DataMonitor<AttackMode> DataMonitor = new DataMonitor<AttackMode>(o);
-                DataMonitor.QuietlySetValue((AttackMode)r.ReadInt32());
+                DataMonitor<攻击模式> DataMonitor = new DataMonitor<攻击模式>(o);
+                DataMonitor.QuietlySetValue((攻击模式)r.ReadInt32());
                 return DataMonitor;
             };
             Type typeFromHandle17 = typeof(DataMonitor<GameDirection>);
@@ -850,10 +850,10 @@ namespace GameServer.Data
             {
                 b.Write((int)((DataMonitor<PetMode>)o).V);
             };
-            typeFromHandle48 = typeof(DataMonitor<AttackMode>);
+            typeFromHandle48 = typeof(DataMonitor<攻击模式>);
             dictionary2[typeFromHandle48] = delegate (BinaryWriter b, object o)
             {
-                b.Write((int)((DataMonitor<AttackMode>)o).V);
+                b.Write((int)((DataMonitor<攻击模式>)o).V);
             };
             typeFromHandle47 = typeof(DataMonitor<GameDirection>);
             dictionary2[typeFromHandle47] = delegate (BinaryWriter b, object o)

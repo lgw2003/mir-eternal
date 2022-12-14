@@ -161,11 +161,11 @@ namespace GameServer.Maps
 				if (this.PetData.CurrentHP.V != value)
 				{
 					this.PetData.CurrentHP.V = value;
-					base.SendPacket(new SyncObjectHP
+					base.SendPacket(new 同步对象体力
 					{
-						ObjectId = this.ObjectId,
-						CurrentHP = this.CurrentHP,
-						MaxHP = this[GameObjectStats.最大体力]
+						对象编号 = this.ObjectId,
+						当前体力 = this.CurrentHP,
+						体力上限 = this[GameObjectStats.最大体力]
 					});
 				}
 			}
@@ -205,7 +205,7 @@ namespace GameServer.Maps
 				if (this.CurrentDirection != value)
 				{
 					base.CurrentDirection = value;
-					base.SendPacket(new ObjectRotationDirectionPacket
+					base.SendPacket(new 对象转动方向
 					{
 						转向耗时 = 100,
 						对象编号 = this.ObjectId,
@@ -766,7 +766,7 @@ namespace GameServer.Maps
 				PlayerObject PlayerObject5 = this.PlayerOwner;
 				if (PlayerObject5 != null)
 				{
-					PlayerObject5.ActiveConnection.SendPacket(new GameErrorMessagePacket
+					PlayerObject5.ActiveConnection.发送封包(new 游戏错误提示
 					{
 						错误代码 = 9473
 					});
@@ -806,7 +806,7 @@ namespace GameServer.Maps
 							this.WalkTime = MainProcess.CurrentTime.AddMilliseconds((double)(this.WalkInterval + this.MobInterval));
 							this.CurrentDirection = ComputingClass.GetDirection(this.CurrentPosition, point2);
 							base.ItSelf移动时处理(point2);
-							base.SendPacket(new ObjectCharacterWalkPacket
+							base.SendPacket(new 角色走动
 							{
 								对象编号 = this.ObjectId,
 								移动坐标 = this.CurrentPosition,
@@ -828,7 +828,7 @@ namespace GameServer.Maps
 						this.WalkTime = MainProcess.CurrentTime.AddMilliseconds((double)(this.WalkInterval + this.MobInterval));
 						this.CurrentDirection = ComputingClass.GetDirection(this.CurrentPosition, point3);
 						base.ItSelf移动时处理(point3);
-						base.SendPacket(new ObjectCharacterWalkPacket
+						base.SendPacket(new 角色走动
 						{
 							对象编号 = this.ObjectId,
 							移动坐标 = this.CurrentPosition,
@@ -885,7 +885,7 @@ namespace GameServer.Maps
 							this.WalkTime = MainProcess.CurrentTime.AddMilliseconds((double)(this.WalkInterval + this.MobInterval));
 							this.CurrentDirection = ComputingClass.GetDirection(this.CurrentPosition, point);
 							base.ItSelf移动时处理(point);
-							base.SendPacket(new ObjectCharacterWalkPacket
+							base.SendPacket(new 角色走动
 							{
 								对象编号 = this.ObjectId,
 								移动坐标 = point,
@@ -933,12 +933,12 @@ namespace GameServer.Maps
 				this.StatsBonus[this] = this.基础Stat;
 				this.RefreshStats();
 				this.CurrentHP = this[GameObjectStats.最大体力];
-				base.SendPacket(new ObjectTransformTypePacket
+				base.SendPacket(new 对象变换类型
 				{
 					改变类型 = 2,
 					对象编号 = this.ObjectId
 				});
-				base.SendPacket(new SyncPetLevelPacket
+				base.SendPacket(new 同步宠物等级
 				{
 					宠物编号 = this.ObjectId,
 					宠物等级 = this.宠物等级

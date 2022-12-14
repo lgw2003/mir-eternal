@@ -53,9 +53,9 @@ namespace GameServer.GMCommands
             bw.Write(data);
 
             for (var i = 4; i < buffer.Length; i++)
-                buffer[i] ^= GamePacket.EncryptionKey;
+                buffer[i] ^= GamePacket.加密字节;
 
-            characterData.ActiveConnection.Connection.Client.Send(buffer);
+            characterData.ActiveConnection.当前连接.Client.Send(buffer);
         }
     }
 }

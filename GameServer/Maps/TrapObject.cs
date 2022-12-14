@@ -223,7 +223,7 @@ namespace GameServer.Maps
 					if (this.陷阱模板.当前方向移动)
 					{
 						base.ItSelf移动时处理(ComputingClass.前方坐标(this.CurrentPosition, this.CurrentDirection, 1));
-						base.SendPacket(new TrapMoveLocationPacket
+						base.SendPacket(new 陷阱移动
 						{
 							Id = this.ObjectId,
 							移动坐标 = this.CurrentPosition,

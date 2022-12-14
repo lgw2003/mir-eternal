@@ -31,7 +31,7 @@ namespace GameServer.GMCommands
 
             var characterData = gd as CharacterData;
 
-            var player = characterData?.ActiveConnection?.Player;
+            var player = characterData?.ActiveConnection?.玩家实例;
 
             if (player == null)
             {

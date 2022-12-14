@@ -122,10 +122,10 @@ namespace GameServer.Data
 		{
 			foreach (CharacterData CharacterData in this.Members)
 			{
-				SConnection 网络连接 = CharacterData.ActiveConnection;
+				客户网络 网络连接 = CharacterData.ActiveConnection;
 				if (网络连接 != null)
 				{
-					网络连接.SendPacket(P);
+					网络连接.发送封包(P);
 				}
 			}
 		}

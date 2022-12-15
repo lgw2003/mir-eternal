@@ -97,33 +97,33 @@ namespace GameServer.Templates
             }
             else
             {
-                MainForm.AddSystemLog(type.Name + " Failed to find 'LoadData' method, Failed to load");
+                MainForm.添加系统日志(type.Name + " Failed to find 'LoadData' method, Failed to load");
                 return;
             }
 
             FieldInfo field = type.GetField("DataSheet", BindingFlags.Static | BindingFlags.Public);
             if (field == null)
             {
-                MainForm.AddSystemLog(type.Name + " Failed to find 'DataSheet' property, Failed to load");
+                MainForm.添加系统日志(type.Name + " Failed to find 'DataSheet' property, Failed to load");
                 return;
             }
 
             object obj = field.GetValue(null);
             if (obj == null)
             {
-                MainForm.AddSystemLog(type.Name + " Failed to load content, Check data directory");
+                MainForm.添加系统日志(type.Name + " Failed to load content, Check data directory");
                 return;
             }
 
             PropertyInfo property = obj.GetType().GetProperty("Count", BindingFlags.Instance | BindingFlags.Public);
             if (property == null)
             {
-                MainForm.AddSystemLog(type.Name + " Failed to find 'Count' property, Failed to load");
+                MainForm.添加系统日志(type.Name + " Failed to find 'Count' property, Failed to load");
                 return;
             }
 
             int num = (int)property.GetValue(obj);
-            MainForm.AddSystemLog(string.Format("{0} 数据加载完成, 总计: {1}条, 用时: {2}毫秒", type.Name, num, watcher.ElapsedMilliseconds));
+            MainForm.添加系统日志(string.Format("{0} 数据加载完成, 总计: {1}条, 用时: {2}毫秒", type.Name, num, watcher.ElapsedMilliseconds));
         }
     }
 }

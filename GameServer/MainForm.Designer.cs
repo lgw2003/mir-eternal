@@ -101,12 +101,6 @@
             this.删除公告按钮 = new System.Windows.Forms.Button();
             this.添加公告按钮 = new System.Windows.Forms.Button();
             this.公告浏览表 = new System.Windows.Forms.DataGridView();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Interval = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Count = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RemainingTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Content = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabConfig = new System.Windows.Forms.TabPage();
             this.S_软件授权分组 = new System.Windows.Forms.GroupBox();
             this.S_软件注册代码 = new System.Windows.Forms.TextBox();
@@ -165,6 +159,12 @@
             this.停止按钮 = new System.Windows.Forms.Button();
             this.保存数据提醒 = new System.Windows.Forms.Timer(this.components);
             this.定时发送公告 = new System.Windows.Forms.Timer(this.components);
+            this.状态 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.间隔分钟 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.公告次数 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.剩余次数 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.公告计时 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.公告内容 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.主选项卡.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.MainTabs.SuspendLayout();
@@ -574,7 +574,7 @@
             this.CharacterData_技能.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CharacterData_技能.Size = new System.Drawing.Size(394, 587);
             this.CharacterData_技能.TabIndex = 0;
-            this.CharacterData_技能.Text = "Skills";
+            this.CharacterData_技能.Text = "技能";
             // 
             // 技能浏览表
             // 
@@ -629,7 +629,7 @@
             this.CharacterData_装备.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CharacterData_装备.Size = new System.Drawing.Size(394, 587);
             this.CharacterData_装备.TabIndex = 1;
-            this.CharacterData_装备.Text = "Equipment";
+            this.CharacterData_装备.Text = "装备";
             // 
             // 装备浏览表
             // 
@@ -683,7 +683,7 @@
             this.CharacterData_背包.Name = "CharacterData_背包";
             this.CharacterData_背包.Size = new System.Drawing.Size(394, 587);
             this.CharacterData_背包.TabIndex = 2;
-            this.CharacterData_背包.Text = "Bag";
+            this.CharacterData_背包.Text = "背包";
             // 
             // 背包浏览表
             // 
@@ -737,7 +737,7 @@
             this.CharacterData_仓库.Name = "CharacterData_仓库";
             this.CharacterData_仓库.Size = new System.Drawing.Size(394, 587);
             this.CharacterData_仓库.TabIndex = 3;
-            this.CharacterData_仓库.Text = "Store";
+            this.CharacterData_仓库.Text = "仓库";
             // 
             // 仓库浏览表
             // 
@@ -834,34 +834,34 @@
             this.右键菜单_复制网络地址,
             this.右键菜单_复制物理地址});
             this.角色右键菜单.Name = "角色右键菜单";
-            this.角色右键菜单.Size = new System.Drawing.Size(192, 92);
+            this.角色右键菜单.Size = new System.Drawing.Size(181, 114);
             // 
             // 右键菜单_复制CharName
             // 
             this.右键菜单_复制CharName.Name = "右键菜单_复制CharName";
-            this.右键菜单_复制CharName.Size = new System.Drawing.Size(191, 22);
-            this.右键菜单_复制CharName.Text = "Copy char name";
+            this.右键菜单_复制CharName.Size = new System.Drawing.Size(180, 22);
+            this.右键菜单_复制CharName.Text = "复制角色名字";
             this.右键菜单_复制CharName.Click += new System.EventHandler(this.角色右键菜单_Click);
             // 
             // 右键菜单_复制Account
             // 
             this.右键菜单_复制Account.Name = "右键菜单_复制Account";
-            this.右键菜单_复制Account.Size = new System.Drawing.Size(191, 22);
-            this.右键菜单_复制Account.Text = "Copy account name";
+            this.右键菜单_复制Account.Size = new System.Drawing.Size(180, 22);
+            this.右键菜单_复制Account.Text = "复制账号名字";
             this.右键菜单_复制Account.Click += new System.EventHandler(this.角色右键菜单_Click);
             // 
             // 右键菜单_复制网络地址
             // 
             this.右键菜单_复制网络地址.Name = "右键菜单_复制网络地址";
-            this.右键菜单_复制网络地址.Size = new System.Drawing.Size(191, 22);
-            this.右键菜单_复制网络地址.Text = "Copy IP";
+            this.右键菜单_复制网络地址.Size = new System.Drawing.Size(180, 22);
+            this.右键菜单_复制网络地址.Text = "复制IP地址";
             this.右键菜单_复制网络地址.Click += new System.EventHandler(this.角色右键菜单_Click);
             // 
             // 右键菜单_复制物理地址
             // 
             this.右键菜单_复制物理地址.Name = "右键菜单_复制物理地址";
-            this.右键菜单_复制物理地址.Size = new System.Drawing.Size(191, 22);
-            this.右键菜单_复制物理地址.Text = "Copy MAC Addr";
+            this.右键菜单_复制物理地址.Size = new System.Drawing.Size(180, 22);
+            this.右键菜单_复制物理地址.Text = "复制物理地址";
             this.右键菜单_复制物理地址.Click += new System.EventHandler(this.角色右键菜单_Click);
             // 
             // tabMaps
@@ -1101,9 +1101,9 @@
             this.开始公告按钮.Name = "开始公告按钮";
             this.开始公告按钮.Size = new System.Drawing.Size(343, 43);
             this.开始公告按钮.TabIndex = 7;
-            this.开始公告按钮.Text = "Start selected announces";
+            this.开始公告按钮.Text = "开始选中公告";
             this.开始公告按钮.UseVisualStyleBackColor = true;
-            this.开始公告按钮.Click += new System.EventHandler(this.StartAnnouncement_Click);
+            this.开始公告按钮.Click += new System.EventHandler(this.开始公告按钮_Click);
             // 
             // 停止公告按钮
             // 
@@ -1114,7 +1114,7 @@
             this.停止公告按钮.Name = "停止公告按钮";
             this.停止公告按钮.Size = new System.Drawing.Size(343, 43);
             this.停止公告按钮.TabIndex = 6;
-            this.停止公告按钮.Text = "Stop announcements";
+            this.停止公告按钮.Text = "停止公告发送";
             this.停止公告按钮.UseVisualStyleBackColor = true;
             this.停止公告按钮.Click += new System.EventHandler(this.停止公告按钮_Click);
             // 
@@ -1126,7 +1126,7 @@
             this.删除公告按钮.Name = "删除公告按钮";
             this.删除公告按钮.Size = new System.Drawing.Size(343, 43);
             this.删除公告按钮.TabIndex = 5;
-            this.删除公告按钮.Text = "Delete selected announcement";
+            this.删除公告按钮.Text = "删除选中公告";
             this.删除公告按钮.UseVisualStyleBackColor = true;
             this.删除公告按钮.Click += new System.EventHandler(this.删除公告按钮_Click);
             // 
@@ -1138,7 +1138,7 @@
             this.添加公告按钮.Name = "添加公告按钮";
             this.添加公告按钮.Size = new System.Drawing.Size(343, 43);
             this.添加公告按钮.TabIndex = 4;
-            this.添加公告按钮.Text = "Add new announcement";
+            this.添加公告按钮.Text = "添加系统公告";
             this.添加公告按钮.UseVisualStyleBackColor = true;
             this.添加公告按钮.Click += new System.EventHandler(this.添加公告按钮_Click);
             // 
@@ -1160,12 +1160,12 @@
             this.公告浏览表.ColumnHeadersHeight = 29;
             this.公告浏览表.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.公告浏览表.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Status,
-            this.Interval,
-            this.Count,
-            this.RemainingTime,
-            this.Time,
-            this.Content});
+            this.状态,
+            this.间隔分钟,
+            this.公告次数,
+            this.剩余次数,
+            this.公告计时,
+            this.公告内容});
             dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle29.BackColor = System.Drawing.Color.LightGray;
             dataGridViewCellStyle29.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -1198,60 +1198,6 @@
             this.公告浏览表.TabStop = false;
             this.公告浏览表.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.公告浏览表_CellEndEdit);
             this.公告浏览表.SelectionChanged += new System.EventHandler(this.公告浏览表_SelectionChanged);
-            // 
-            // Status
-            // 
-            this.Status.Frozen = true;
-            this.Status.HeaderText = "Status";
-            this.Status.MinimumWidth = 6;
-            this.Status.Name = "Status";
-            this.Status.ReadOnly = true;
-            this.Status.Width = 60;
-            // 
-            // Interval
-            // 
-            this.Interval.DataPropertyName = "Interval";
-            this.Interval.Frozen = true;
-            this.Interval.HeaderText = "Interval";
-            this.Interval.MinimumWidth = 6;
-            this.Interval.Name = "Interval";
-            this.Interval.Width = 80;
-            // 
-            // Count
-            // 
-            this.Count.DataPropertyName = "Count";
-            this.Count.Frozen = true;
-            this.Count.HeaderText = "Count";
-            this.Count.MinimumWidth = 6;
-            this.Count.Name = "Count";
-            this.Count.Width = 80;
-            // 
-            // RemainingTime
-            // 
-            this.RemainingTime.Frozen = true;
-            this.RemainingTime.HeaderText = "Remaining Time";
-            this.RemainingTime.MinimumWidth = 6;
-            this.RemainingTime.Name = "RemainingTime";
-            this.RemainingTime.ReadOnly = true;
-            this.RemainingTime.Width = 80;
-            // 
-            // Time
-            // 
-            this.Time.Frozen = true;
-            this.Time.HeaderText = "Time";
-            this.Time.MinimumWidth = 6;
-            this.Time.Name = "Time";
-            this.Time.ReadOnly = true;
-            this.Time.Width = 90;
-            // 
-            // Content
-            // 
-            this.Content.DataPropertyName = "Content";
-            this.Content.Frozen = true;
-            this.Content.HeaderText = "Content";
-            this.Content.MinimumWidth = 6;
-            this.Content.Name = "Content";
-            this.Content.Width = 884;
             // 
             // tabConfig
             // 
@@ -1507,7 +1453,7 @@
             0,
             0,
             0});
-            this.S_NoobLevel.Name = "S_NoobLevel";
+            this.S_NoobLevel.Name = "S_新手扶持等级";
             this.S_NoobLevel.Size = new System.Drawing.Size(127, 24);
             this.S_NoobLevel.TabIndex = 20;
             this.S_NoobLevel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1532,7 +1478,7 @@
             0,
             0,
             0});
-            this.S_ItemOwnershipTime.Name = "S_ItemOwnershipTime";
+            this.S_ItemOwnershipTime.Name = "S_物品归属时间";
             this.S_ItemOwnershipTime.Size = new System.Drawing.Size(127, 24);
             this.S_ItemOwnershipTime.TabIndex = 18;
             this.S_ItemOwnershipTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1568,7 +1514,7 @@
             0,
             0,
             0});
-            this.S_ItemCleaningTime.Name = "S_ItemCleaningTime";
+            this.S_ItemCleaningTime.Name = "S_物品清理时间";
             this.S_ItemCleaningTime.Size = new System.Drawing.Size(127, 24);
             this.S_ItemCleaningTime.TabIndex = 16;
             this.S_ItemCleaningTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1594,7 +1540,7 @@
             0,
             0,
             0});
-            this.S_TemptationTime.Name = "S_TemptationTime";
+            this.S_TemptationTime.Name = "S_怪物诱惑时长";
             this.S_TemptationTime.Size = new System.Drawing.Size(127, 24);
             this.S_TemptationTime.TabIndex = 14;
             this.S_TemptationTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1611,7 +1557,7 @@
             0,
             0,
             0});
-            this.S_LessExpGradeRate.Name = "S_LessExpGradeRate";
+            this.S_LessExpGradeRate.Name = "S_收益减少比率";
             this.S_LessExpGradeRate.Size = new System.Drawing.Size(127, 24);
             this.S_LessExpGradeRate.TabIndex = 12;
             this.S_LessExpGradeRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1642,7 +1588,7 @@
             0,
             0,
             0});
-            this.S_LessExpGrade.Name = "S_LessExpGrade";
+            this.S_LessExpGrade.Name = "S_减收益等级差";
             this.S_LessExpGrade.Size = new System.Drawing.Size(127, 24);
             this.S_LessExpGrade.TabIndex = 10;
             this.S_LessExpGrade.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1674,7 +1620,7 @@
             0,
             0,
             0});
-            this.S_ExpRate.Name = "S_ExpRate";
+            this.S_ExpRate.Name = "S_怪物经验倍率";
             this.S_ExpRate.Size = new System.Drawing.Size(127, 24);
             this.S_ExpRate.TabIndex = 8;
             this.S_ExpRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1706,7 +1652,7 @@
             0,
             0,
             0});
-            this.S_EquipRepairDto.Name = "S_EquipRepairDto";
+            this.S_EquipRepairDto.Name = "S_装备特修折扣";
             this.S_EquipRepairDto.Size = new System.Drawing.Size(127, 24);
             this.S_EquipRepairDto.TabIndex = 6;
             this.S_EquipRepairDto.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1738,7 +1684,7 @@
             0,
             0,
             0});
-            this.S_ExtraDropRate.Name = "S_ExtraDropRate";
+            this.S_ExtraDropRate.Name = "S_物品额外爆率";
             this.S_ExtraDropRate.Size = new System.Drawing.Size(127, 24);
             this.S_ExtraDropRate.TabIndex = 4;
             this.S_ExtraDropRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1764,7 +1710,7 @@
             0,
             0,
             0});
-            this.S_MaxLevel.Name = "S_MaxLevel";
+            this.S_MaxLevel.Name = "S_游戏开放等级";
             this.S_MaxLevel.Size = new System.Drawing.Size(127, 24);
             this.S_MaxLevel.TabIndex = 2;
             this.S_MaxLevel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1812,7 +1758,7 @@
             0,
             0,
             0});
-            this.S_DisconnectTime.Name = "S_DisconnectTime";
+            this.S_DisconnectTime.Name = "S_判定掉线时间";
             this.S_DisconnectTime.Size = new System.Drawing.Size(127, 24);
             this.S_DisconnectTime.TabIndex = 8;
             this.S_DisconnectTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1838,7 +1784,7 @@
             0,
             0,
             0});
-            this.S_PacketLimit.Name = "S_PacketLimit";
+            this.S_PacketLimit.Name = "S_封包限定数量";
             this.S_PacketLimit.Size = new System.Drawing.Size(127, 24);
             this.S_PacketLimit.TabIndex = 6;
             this.S_PacketLimit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1864,7 +1810,7 @@
             0,
             0,
             0});
-            this.S_AbnormalBlockTime.Name = "S_AbnormalBlockTime";
+            this.S_AbnormalBlockTime.Name = "S_异常屏蔽时间";
             this.S_AbnormalBlockTime.Size = new System.Drawing.Size(127, 24);
             this.S_AbnormalBlockTime.TabIndex = 4;
             this.S_AbnormalBlockTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1890,7 +1836,7 @@
             0,
             0,
             0});
-            this.S_TSPort.Name = "S_TSPort";
+            this.S_TSPort.Name = "S_门票接收端口";
             this.S_TSPort.Size = new System.Drawing.Size(127, 24);
             this.S_TSPort.TabIndex = 2;
             this.S_TSPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1916,7 +1862,7 @@
             0,
             0,
             0});
-            this.S_GSPort.Name = "S_GSPort";
+            this.S_GSPort.Name = "S_客户端连接端口";
             this.S_GSPort.Size = new System.Drawing.Size(127, 24);
             this.S_GSPort.TabIndex = 0;
             this.S_GSPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -2025,6 +1971,60 @@
             // 定时发送公告
             // 
             this.定时发送公告.Tick += new System.EventHandler(this.定时发送公告_Tick);
+            // 
+            // 状态
+            // 
+            this.状态.Frozen = true;
+            this.状态.HeaderText = "状态";
+            this.状态.MinimumWidth = 6;
+            this.状态.Name = "状态";
+            this.状态.ReadOnly = true;
+            this.状态.Width = 60;
+            // 
+            // 间隔分钟
+            // 
+            this.间隔分钟.DataPropertyName = "间隔分钟";
+            this.间隔分钟.Frozen = true;
+            this.间隔分钟.HeaderText = "间隔分钟";
+            this.间隔分钟.MinimumWidth = 6;
+            this.间隔分钟.Name = "间隔分钟";
+            this.间隔分钟.Width = 80;
+            // 
+            // 公告次数
+            // 
+            this.公告次数.DataPropertyName = "公告次数";
+            this.公告次数.Frozen = true;
+            this.公告次数.HeaderText = "公告次数";
+            this.公告次数.MinimumWidth = 6;
+            this.公告次数.Name = "公告次数";
+            this.公告次数.Width = 80;
+            // 
+            // 剩余次数
+            // 
+            this.剩余次数.Frozen = true;
+            this.剩余次数.HeaderText = "剩余次数";
+            this.剩余次数.MinimumWidth = 6;
+            this.剩余次数.Name = "剩余次数";
+            this.剩余次数.ReadOnly = true;
+            this.剩余次数.Width = 80;
+            // 
+            // 公告计时
+            // 
+            this.公告计时.Frozen = true;
+            this.公告计时.HeaderText = "公告计时";
+            this.公告计时.MinimumWidth = 6;
+            this.公告计时.Name = "公告计时";
+            this.公告计时.ReadOnly = true;
+            this.公告计时.Width = 90;
+            // 
+            // 公告内容
+            // 
+            this.公告内容.DataPropertyName = "公告内容";
+            this.公告内容.Frozen = true;
+            this.公告内容.HeaderText = "公告内容";
+            this.公告内容.MinimumWidth = 6;
+            this.公告内容.Name = "公告内容";
+            this.公告内容.Width = 884;
             // 
             // MainForm
             // 
@@ -2414,12 +2414,6 @@
     private global::System.Windows.Forms.TextBox S_软件注册代码;
     private System.Windows.Forms.TabPage tabPackets;
     private System.Windows.Forms.RichTextBox rtbPacketsLogs;
-    private System.Windows.Forms.DataGridViewTextBoxColumn Status;
-    private System.Windows.Forms.DataGridViewTextBoxColumn Interval;
-    private System.Windows.Forms.DataGridViewTextBoxColumn Count;
-    private System.Windows.Forms.DataGridViewTextBoxColumn RemainingTime;
-    private System.Windows.Forms.DataGridViewTextBoxColumn Time;
-    private System.Windows.Forms.DataGridViewTextBoxColumn Content;
     private System.Windows.Forms.Button 重载数据;
         private System.Windows.Forms.GroupBox S_GameData分组;
         private System.Windows.Forms.Label S_注意事项标签1;
@@ -2435,5 +2429,11 @@
         private System.Windows.Forms.TextBox S_GameData目录;
         private System.Windows.Forms.Label S_备份目录标签;
         private System.Windows.Forms.Label S_数据目录标签;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 状态;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 间隔分钟;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 公告次数;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 剩余次数;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 公告计时;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 公告内容;
     }
 }

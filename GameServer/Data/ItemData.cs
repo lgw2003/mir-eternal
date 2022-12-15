@@ -478,19 +478,19 @@ namespace GameServer.Data
             最大持久.V = 物品模板.物品持久;
             当前持久.V = Math.Min(durability, 最大持久.V);
 
-            var activeQuests = character.GetInProgressQuests();
+            var activeQuests = character.获取正在进行的任务();
             foreach (var quest in activeQuests)
             {
-                var missions = quest.GetMissionsOfType(Models.Enums.QuestMissionType.获取物品);
+                var missions = quest.根据类型获取任务要求(Models.Enums.QuestMissionType.获取物品);
                 var updated = false;
                 foreach (var mission in missions)
                 {
-                    if (mission.CompletedDate.V != DateTime.MinValue) continue;
-                    if (mission.Info.V.编号 != item.物品编号) continue;
-                    mission.Count.V = (byte)(mission.Count.V + 1);
+                    if (mission.完成日期.V != DateTime.MinValue) continue;
+                    if (mission.完成条件.V.编号 != item.物品编号) continue;
+                    mission.数量.V = (byte)(mission.数量.V + 1);
                     updated = true;
                 }
-                if (updated) character.ActiveConnection?.玩家实例.UpdateQuestProgress(quest);
+                if (updated) character.网络连接?.玩家实例.UpdateQuestProgress(quest);
             }
 
             GameDataGateway.物品数据表.AddData(this, true);
@@ -513,7 +513,7 @@ namespace GameServer.Data
                     binaryWriter.Write(数据版本);
                     BinaryWriter binaryWriter2 = binaryWriter;
                     CharacterData v = 生成来源.V;
-                    binaryWriter2.Write((v != null) ? v.Index.V : 0);
+                    binaryWriter2.Write((v != null) ? v.数据索引.V : 0);
                     binaryWriter.Write(ComputingClass.TimeShift(生成时间.V));
                     binaryWriter.Write(对应模板.V.物品编号);
                     binaryWriter.Write(物品容器.V);
@@ -540,7 +540,7 @@ namespace GameServer.Data
                     binaryWriter.Write(数据版本);
                     BinaryWriter binaryWriter2 = binaryWriter;
                     CharacterData v = 生成来源.V;
-                    binaryWriter2.Write((v != null) ? v.Index.V : 0);
+                    binaryWriter2.Write((v != null) ? v.数据索引.V : 0);
                     binaryWriter.Write(ComputingClass.TimeShift(生成时间.V));
                     binaryWriter.Write(对应模板.V.物品编号);
                     binaryWriter.Write(物品容器.V);

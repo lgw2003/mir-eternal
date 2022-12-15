@@ -446,7 +446,7 @@ namespace GameServer.Maps
 
         public bool CellBlocked(Point 坐标)
         {
-            if (this.IsSafeZone(坐标))
+            if (this.安全区内(坐标))
             {
                 return false;
             }
@@ -522,7 +522,7 @@ namespace GameServer.Maps
         }
 
 
-        public bool IsSafeZone(Point 坐标)
+        public bool 安全区内(Point 坐标)
         {
             return !this.坐标越界(坐标) && ((this.地形数据[坐标] & 262144U) == 262144U || (this.地形数据[坐标] & 1048576U) == 1048576U);
         }

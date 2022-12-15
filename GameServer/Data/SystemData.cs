@@ -19,7 +19,7 @@ namespace GameServer.Data
 		{
 			
 			
-			this.Index.V = 索引;
+			this.数据索引.V = 索引;
 			GameDataGateway.数据类型表[typeof(SystemData)].AddData(this, false);
 		}
 
@@ -36,7 +36,7 @@ namespace GameServer.Data
 		public void UpdatedPowerCombat(CharacterData 角色)
 		{
 			SystemData.更新榜单(this.个人战力排名, 6, 角色, SystemData.战力计算器);
-			switch (角色.CharRace.V)
+			switch (角色.角色职业.V)
 			{
 			case GameObjectRace.战士:
 				SystemData.更新榜单(this.战士战力排名, 7, 角色, SystemData.战力计算器);
@@ -65,7 +65,7 @@ namespace GameServer.Data
 		public void 更新等级(CharacterData 角色)
 		{
 			SystemData.更新榜单(this.个人等级排名, 0, 角色, SystemData.等级计算器);
-			switch (角色.CharRace.V)
+			switch (角色.角色职业.V)
 			{
 			case GameObjectRace.战士:
 				SystemData.更新榜单(this.战士等级排名, 1, 角色, SystemData.等级计算器);
@@ -220,7 +220,7 @@ namespace GameServer.Data
 		}
 
 		
-		public override void OnLoadCompleted()
+		public override void 加载完成()
 		{
 			foreach (KeyValuePair<string, DateTime> keyValuePair in this.网络封禁)
 			{
@@ -491,11 +491,11 @@ namespace GameServer.Data
 			
 			public int Compare(CharacterData x, CharacterData y)
 			{
-				if (x.CharLevel == y.CharLevel)
+				if (x.角色等级 == y.角色等级)
 				{
-					return (int)(uint)(x.CharExp - y.CharExp);
+					return (int)(uint)(x.角色经验 - y.角色经验);
 				}
-				return (int)(x.CharLevel - y.CharLevel);
+				return (int)(x.角色等级 - y.角色等级);
 			}
 
 			
@@ -512,7 +512,7 @@ namespace GameServer.Data
 			
 			public int Compare(CharacterData x, CharacterData y)
 			{
-				return x.CharPowerCombat - y.CharPowerCombat;
+				return x.角色战力 - y.角色战力;
 			}
 
 			
@@ -529,7 +529,7 @@ namespace GameServer.Data
 			
 			public int Compare(CharacterData x, CharacterData y)
 			{
-				return x.MasterRep - y.MasterRep;
+				return x.师门声望 - y.师门声望;
 			}
 
 			
@@ -546,7 +546,7 @@ namespace GameServer.Data
 			
 			public int Compare(CharacterData x, CharacterData y)
 			{
-				return x.CharPKLevel - y.CharPKLevel;
+				return x.角色PK值 - y.角色PK值;
 			}
 
 			

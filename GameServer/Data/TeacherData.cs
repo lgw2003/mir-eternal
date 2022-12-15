@@ -5,7 +5,9 @@ using GameServer.Networking;
 
 namespace GameServer.Data
 {
-	
+	/// <summary>
+	/// 师门数据
+	/// </summary>
 	public sealed class TeacherData : GameData
 	{
 		
@@ -13,7 +15,7 @@ namespace GameServer.Data
 		{
 			get
 			{
-				return this.师父数据.CharId;
+				return this.师父数据.角色编号;
 			}
 		}
 
@@ -67,14 +69,14 @@ namespace GameServer.Data
 		}
 
 		
-		public override void Delete()
+		public override void 删除数据()
 		{
-			this.师父数据.Teacher.V = null;
+			this.师父数据.所属师门.V = null;
 			foreach (CharacterData CharacterData in this.师门成员)
 			{
-				CharacterData.Teacher.V = null;
+				CharacterData.所属师门.V = null;
 			}
-			base.Delete();
+			base.删除数据();
 		}
 
 		
@@ -137,7 +139,7 @@ namespace GameServer.Data
 		{
 			foreach (CharacterData CharacterData in this.师门成员)
 			{
-				客户网络 网络连接 = CharacterData.ActiveConnection;
+				客户网络 网络连接 = CharacterData.网络连接;
 				if (网络连接 != null)
 				{
 					网络连接.发送封包(P);
@@ -154,12 +156,12 @@ namespace GameServer.Data
 			this.师父经验.Add(角色, 0);
 			this.师父金币.Add(角色, 0);
 			this.师父声望.Add(角色, 0);
-			角色.CurrentTeacher = this;
+			角色.当前师门 = this;
 			foreach (CharacterData CharacterData in this.师门成员)
 			{
 				if (CharacterData != null)
 				{
-					CharacterData.ActiveConnection.发送封包(new 查询师门成员
+					CharacterData.网络连接.发送封包(new 查询师门成员
 					{
 						字节数据 = this.成员数据()
 					});
@@ -180,7 +182,7 @@ namespace GameServer.Data
 			{
 				if (CharacterData != null)
 				{
-					CharacterData.ActiveConnection.发送封包(new 查询师门成员
+					CharacterData.网络连接.发送封包(new 查询师门成员
 					{
 						字节数据 = this.成员数据()
 					});
@@ -204,7 +206,7 @@ namespace GameServer.Data
 							while (enumerator.MoveNext())
 							{
 								CharacterData CharacterData = enumerator.Current;
-								binaryWriter.Write(CharacterData.CharId);
+								binaryWriter.Write(CharacterData.角色编号);
 								binaryWriter.Write(this.徒弟提供经验(CharacterData));
 								binaryWriter.Write(this.徒弟提供声望(CharacterData));
 								binaryWriter.Write(this.徒弟提供金币(CharacterData));
@@ -231,13 +233,13 @@ namespace GameServer.Data
 				using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
 				{
 					binaryWriter.Write(this.MasterId);
-					binaryWriter.Write(this.师父数据.CharLevel);
+					binaryWriter.Write(this.师父数据.角色等级);
 					binaryWriter.Write((byte)this.师门成员.Count);
 					foreach (CharacterData CharacterData in this.师门成员)
 					{
-						binaryWriter.Write(CharacterData.CharId);
-						binaryWriter.Write(CharacterData.CharLevel);
-						binaryWriter.Write(CharacterData.CharLevel);
+						binaryWriter.Write(CharacterData.角色编号);
+						binaryWriter.Write(CharacterData.角色等级);
+						binaryWriter.Write(CharacterData.角色等级);
 					}
 					result = memoryStream.ToArray();
 				}

@@ -201,8 +201,8 @@ namespace GameServer.Maps
                         CurrentPosition = point;
                     IL_111:
                         this.CurrentPosition = CurrentPosition;
-                        this.消失时间 = MainProcess.CurrentTime.AddMinutes((double)Config.ItemCleaningTime);
-                        this.归属时间 = MainProcess.CurrentTime.AddMinutes((double)Config.ItemOwnershipTime);
+                        this.消失时间 = MainProcess.CurrentTime.AddMinutes((double)Config.物品清理时间);
+                        this.归属时间 = MainProcess.CurrentTime.AddMinutes((double)Config.物品归属时间);
                         this.ObjectId = ++MapGatewayProcess.MapInstanceId;
                         base.BindGrid();
                         base.更新邻居时处理();
@@ -224,8 +224,8 @@ namespace GameServer.Maps
         public int GetOwnerPlayerIdForDrop(PlayerObject playerAppearing)
         {
             return 物品归属 == null || 物品归属.Contains(playerAppearing.CharacterData)
-                ? playerAppearing.CharacterData.CharId
-                : 物品归属?.FirstOrDefault()?.CharId ?? 0;
+                ? playerAppearing.CharacterData.角色编号
+                : 物品归属?.FirstOrDefault()?.角色编号 ?? 0;
 
         }
 
@@ -243,7 +243,7 @@ namespace GameServer.Maps
             ItemData ItemData = this.ItemData;
             if (ItemData != null)
             {
-                ItemData.Delete();
+                ItemData.删除数据();
             }
             base.Delete();
         }

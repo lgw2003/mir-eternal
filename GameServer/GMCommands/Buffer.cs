@@ -35,7 +35,7 @@ namespace GameServer.GMCommands
             if (characterData == null)
                 return;
 
-            if (characterData.ActiveConnection == null)
+            if (characterData.网络连接 == null)
                 return;
 
             var data = Enumerable.Range(0, Hex.Length)
@@ -55,7 +55,7 @@ namespace GameServer.GMCommands
             for (var i = 4; i < buffer.Length; i++)
                 buffer[i] ^= GamePacket.加密字节;
 
-            characterData.ActiveConnection.当前连接.Client.Send(buffer);
+            characterData.网络连接.当前连接.Client.Send(buffer);
         }
     }
 }

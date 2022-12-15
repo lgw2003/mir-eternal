@@ -18,10 +18,10 @@ namespace GameServer
 		
 		public override void Execute()
 		{
-			MainForm.AddCommandLog("All available GM Commands are listed below:");
+			MainForm.添加命令日志("All available GM Commands are listed below:");
 			foreach (KeyValuePair<string, string> keyValuePair in GMCommand.命令格式)
 			{
-				MainForm.AddCommandLog(keyValuePair.Value);
+				MainForm.添加命令日志(keyValuePair.Value);
 			}
 		}
 

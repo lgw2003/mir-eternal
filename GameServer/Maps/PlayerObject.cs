@@ -25,7 +25,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.ActiveConnection;
+        return this.CharacterData.网络连接;
       }
     }
 
@@ -91,7 +91,7 @@ namespace GameServer.Maps
     public PlayerObject(CharacterData CharacterData, 客户网络 网络连接)
     {
       this.CharacterData = CharacterData;
-      this.ObjectId = CharacterData.CharId;
+      this.ObjectId = CharacterData.角色编号;
 
       this.Pets = new List<PetObject>();
       this.PassiveSkill = new Dictionary<ushort, SkillData>();
@@ -132,11 +132,11 @@ namespace GameServer.Maps
       }
       foreach (BuffData BuffData in this.Buffs.Values)
       {
-        if ((BuffData.Effect & BuffEffectType.属性增减) != BuffEffectType.技能标志)
+        if ((BuffData.Buff效果 & BuffEffectType.属性增减) != BuffEffectType.技能标志)
         {
           this.StatsBonus.Add(BuffData, BuffData.Stat加成);
         }
-        if ((BuffData.Effect & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && 游戏坐骑.DataSheet.TryGetValue(CharacterData.CurrentMount.V, out 游戏坐骑 mount))
+        if ((BuffData.Buff效果 & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && 游戏坐骑.DataSheet.TryGetValue(CharacterData.当前坐骑.V, out 游戏坐骑 mount))
         {
           this.Riding = true;
           this.StatsBonus.Add(BuffData, mount.Stats);
@@ -170,9 +170,9 @@ namespace GameServer.Maps
         CurrentHP = (int)((float)this[GameObjectStats.最大体力] * 0.3f);
         CurrentMP = (int)((float)this[GameObjectStats.最大魔力] * 0.3f);
       }
-      else if (游戏地图.DataSheet[(byte)CharacterData.CurrentMap.V].下线传送)
+      else if (游戏地图.DataSheet[(byte)CharacterData.当前地图.V].下线传送)
       {
-        if (CharacterData.CurrentMap.V == 152)
+        if (CharacterData.当前地图.V == 152)
         {
           this.CurrentMap = MapGatewayProcess.沙城地图;
           if (this.Guild != null && this.Guild == SystemData.Data.OccupyGuild.V)
@@ -184,21 +184,21 @@ namespace GameServer.Maps
             this.CurrentPosition = MapGatewayProcess.外城复活区域.RandomCoords;
           }
         }
-        else if (游戏地图.DataSheet[(byte)CharacterData.CurrentMap.V].传送地图 == 0)
+        else if (游戏地图.DataSheet[(byte)CharacterData.当前地图.V].传送地图 == 0)
         {
           this.CurrentMap = MapGatewayProcess.GetMapInstance(this.重生地图);
           this.CurrentPosition = this.CurrentMap.ResurrectionArea.RandomCoords;
         }
         else
         {
-          this.CurrentMap = MapGatewayProcess.GetMapInstance((int)游戏地图.DataSheet[(byte)CharacterData.CurrentMap.V].传送地图);
+          this.CurrentMap = MapGatewayProcess.GetMapInstance((int)游戏地图.DataSheet[(byte)CharacterData.当前地图.V].传送地图);
           地图区域 传送区域 = this.CurrentMap.传送区域;
           this.CurrentPosition = ((传送区域 != null) ? 传送区域.RandomCoords : this.CurrentMap.地图区域.First<地图区域>().RandomCoords);
         }
       }
       else
       {
-        this.CurrentMap = MapGatewayProcess.GetMapInstance(CharacterData.CurrentMap.V);
+        this.CurrentMap = MapGatewayProcess.GetMapInstance(CharacterData.当前地图.V);
       }
 
       this.更新玩家战力();
@@ -210,8 +210,8 @@ namespace GameServer.Maps
       MapGatewayProcess.AddObject(this);
       this.ActiveObject = true;
       MapGatewayProcess.ActivateObject(this);
-      CharacterData.LoginDate.V = MainProcess.CurrentTime;
-      CharacterData.OnCharacterConnect(网络连接);
+      CharacterData.登陆日期.V = MainProcess.CurrentTime;
+      CharacterData.角色上线(网络连接);
 
       ActiveConnection.发送封包(new 同步补充变量
       {
@@ -265,7 +265,7 @@ namespace GameServer.Maps
         变量类型 = 1,
         对象编号 = this.ObjectId,
         变量索引 = 50, // unlock awekening skills tab
-        变量内容 = CharacterData.AwakeningExpEnabled.V ? 3680 : 3616,
+        变量内容 = CharacterData.觉醒经验启用.V ? 3680 : 3616,
       });
 
       // unknown
@@ -432,9 +432,9 @@ namespace GameServer.Maps
         CurrentLevel = this.CurrentLevel,
         AttackMode = (byte)this.AttackMode,
         CurrentTime = ComputingClass.TimeShift(MainProcess.CurrentTime),
-        MaxLevel = (ushort)Config.MaxLevel,
-        EquipRepairDto = (ushort)(Config.EquipRepairDto * 10000m),
-        AwakeningExp = CharacterData.AwakeningExp.V,
+        MaxLevel = (ushort)Config.游戏开放等级,
+        EquipRepairDto = (ushort)(Config.装备特修折扣 * 10000m),
+        AwakeningExp = CharacterData.觉醒经验.V,
         MaxAwakeningExp = Config.MaxAwakeningExp
       });
 
@@ -509,7 +509,7 @@ namespace GameServer.Maps
 
       foreach (CharacterData fanPlayer in this.粉丝列表)
       {
-        fanPlayer.ActiveConnection?.发送封包(new 好友上线下线
+        fanPlayer.网络连接?.发送封包(new 好友上线下线
         {
           对象编号 = this.ObjectId,
           对象名字 = this.ObjectName,
@@ -521,7 +521,7 @@ namespace GameServer.Maps
 
       foreach (CharacterData hatePlayer in this.仇恨列表)
       {
-        hatePlayer.ActiveConnection?.发送封包(new 好友上线下线
+        hatePlayer.网络连接?.发送封包(new 好友上线下线
         {
           对象编号 = this.ObjectId,
           对象名字 = this.ObjectName,
@@ -610,7 +610,7 @@ namespace GameServer.Maps
 
       if (this.Guild != null && this.Guild == SystemData.Data.OccupyGuild.V && this.Guild.行会成员[CharacterData] == GuildJobs.会长)
       {
-        NetworkServiceGateway.SendAnnouncement("沙巴克城主 [" + this.ObjectName + "] 已经加入游戏", false);
+        网络服务网关.发送公告("沙巴克城主 [" + this.ObjectName + "] 已经加入游戏", false);
       }
 
       if (Team != null)
@@ -630,11 +630,11 @@ namespace GameServer.Maps
       if (!questInfo.可否传送 && questInfo.传送花费物品编号 == 0)
         return;
 
-      var charQuest = CharacterData.Quests
-          .Where(x => x.Info.V.编号 == questInfo.编号)
+      var charQuest = CharacterData.玩家任务
+          .Where(x => x.任务信息.V.编号 == questInfo.编号)
           .FirstOrDefault();
 
-      if (charQuest == null || charQuest.CompleteDate.V != DateTime.MinValue)
+      if (charQuest == null || charQuest.完成时间.V != DateTime.MinValue)
         return;
 
       var map = MapGatewayProcess.GetMapInstance(questInfo.开始NPC地图编号);
@@ -682,22 +682,22 @@ namespace GameServer.Maps
 
     public void 请求仓库锁定(bool enabled)
     {
-      if (enabled == CharacterData.WarehouseLocked.V)
+      if (enabled == CharacterData.仓库锁.V)
       {
         ActiveConnection?.发送封包(new 同步仓库锁封包
         {
-          Enabled = CharacterData.WarehouseLocked.V
+          Enabled = CharacterData.仓库锁.V
         });
         return;
       }
 
       RequestVerificationCode("wareshouse_lock", () =>
       {
-        CharacterData.WarehouseLocked.V = enabled;
+        CharacterData.仓库锁.V = enabled;
 
         ActiveConnection?.发送封包(new 同步仓库锁封包
         {
-          Enabled = CharacterData.WarehouseLocked.V
+          Enabled = CharacterData.仓库锁.V
         });
       });
     }
@@ -769,22 +769,22 @@ namespace GameServer.Maps
 
     public void 完成任务(int questId)
     {
-      var questToComplete = CharacterData.Quests.FirstOrDefault(x => x.Info.V.编号 == questId);
-      if (questToComplete == null || questToComplete.CompleteDate.V != DateTime.MinValue) return;
+      var questToComplete = CharacterData.玩家任务.FirstOrDefault(x => x.任务信息.V.编号 == questId);
+      if (questToComplete == null || questToComplete.完成时间.V != DateTime.MinValue) return;
 
-      var isCompleted = questToComplete.Missions.All(x => x.CompletedDate.V != DateTime.MinValue);
+      var isCompleted = questToComplete.玩家任务要求.All(x => x.完成日期.V != DateTime.MinValue);
       if (!isCompleted) return;
 
-      var requireInventorySpaceCount = (byte)questToComplete.Info.V.固定奖励.Sum(x => x.类型 == QuestRewardType.物品 ? 1 : 0);
+      var requireInventorySpaceCount = (byte)questToComplete.任务信息.V.固定奖励.Sum(x => x.类型 == QuestRewardType.物品 ? 1 : 0);
 
       byte[] locations = Array.Empty<byte>();
 
-      if (requireInventorySpaceCount > 0 && !CharacterData.TryGetFreeSpacesAtInventory(requireInventorySpaceCount, out locations))
+      if (requireInventorySpaceCount > 0 && !CharacterData.查找背包空位(requireInventorySpaceCount, out locations))
         return;
 
       byte itemSpacePos = 0;
 
-      foreach (var reward in questToComplete.Info.V.固定奖励)
+      foreach (var reward in questToComplete.任务信息.V.固定奖励)
       {
         switch (reward.类型)
         {
@@ -804,7 +804,7 @@ namespace GameServer.Maps
         }
       }
 
-      questToComplete.CompleteDate.V = MainProcess.CurrentTime;
+      questToComplete.完成时间.V = MainProcess.CurrentTime;
 
       ActiveConnection.发送封包(new 完成任务
       {
@@ -816,26 +816,26 @@ namespace GameServer.Maps
     {
       if (item is 装备物品 equipItem)
       {
-        CharacterData.Backpack[position] = new EquipmentData(equipItem, CharacterData, 1, position, true);
+        CharacterData.角色背包[position] = new EquipmentData(equipItem, CharacterData, 1, position, true);
       }
       else if (item.持久类型 == PersistentItemType.容器)
       {
-        CharacterData.Backpack[position] = new ItemData(item, CharacterData, 1, position, 0);
+        CharacterData.角色背包[position] = new ItemData(item, CharacterData, 1, position, 0);
       }
       else if (item.持久类型 == PersistentItemType.堆叠)
       {
-        CharacterData.Backpack[position] = new ItemData(item, CharacterData, 1, position, 1);
+        CharacterData.角色背包[position] = new ItemData(item, CharacterData, 1, position, 1);
       }
       else
       {
-        CharacterData.Backpack[position] = new ItemData(item, CharacterData, 1, position, item.物品持久);
+        CharacterData.角色背包[position] = new ItemData(item, CharacterData, 1, position, item.物品持久);
       }
 
-      if (qty > 1) CharacterData.Backpack[position].当前持久.V = qty;
+      if (qty > 1) CharacterData.角色背包[position].当前持久.V = qty;
 
       ActiveConnection?.发送封包(new 玩家物品变动
       {
-        物品描述 = CharacterData.Backpack[position].字节描述()
+        物品描述 = CharacterData.角色背包[position].字节描述()
       });
     }
 
@@ -846,13 +846,13 @@ namespace GameServer.Maps
 
     public void 玩家选中坐骑(ushort selectedMountId)
     {
-      if (CharacterData.Mounts.Contains(selectedMountId) && 游戏坐骑.DataSheet.TryGetValue(selectedMountId, out var mount))
+      if (CharacterData.拥有坐骑.Contains(selectedMountId) && 游戏坐骑.DataSheet.TryGetValue(selectedMountId, out var mount))
       {
         // Remove old aura
-        if (Riding && 游戏坐骑.DataSheet.TryGetValue(CharacterData.CurrentMount.V, out var previousMount))
+        if (Riding && 游戏坐骑.DataSheet.TryGetValue(CharacterData.当前坐骑.V, out var previousMount))
           if (previousMount.Buff编号 > 0) 移除Buff时处理(previousMount.Buff编号);
 
-        CharacterData.CurrentMount.V = selectedMountId;
+        CharacterData.当前坐骑.V = selectedMountId;
 
         // Add new Aura
         if (Riding && mount.Buff编号 > 0)
@@ -867,7 +867,7 @@ namespace GameServer.Maps
       using var ms = new MemoryStream();
       using var bw = new BinaryWriter(ms);
 
-      foreach (var mount in CharacterData.Mounts)
+      foreach (var mount in CharacterData.拥有坐骑)
         bw.Write(mount);
 
       return ms.ToArray();
@@ -877,7 +877,7 @@ namespace GameServer.Maps
     {
       foreach (var achievement in 游戏成就.DataSheet.Values)
       {
-        if (CharacterData.Achievements.ContainsKey(achievement.编号))
+        if (CharacterData.角色成就.ContainsKey(achievement.编号))
           continue;
 
         var completed = true;
@@ -886,13 +886,13 @@ namespace GameServer.Maps
         {
           switch (condition.类型)
           {
-            case "Level":
-              if (CurrentLevel < (long)condition.道具["Level"])
+            case "怪物等级":
+              if (CurrentLevel < (long)condition.道具["怪物等级"])
                 completed = false;
               break;
             case "Variable":
               var varId = Enum.Parse<AchievementVariables>((string)condition.道具["Name"]);
-              if (!CharacterData.AchievementVariables.ContainsKey((byte)varId) || CharacterData.AchievementVariables[(byte)varId] < (long)condition.道具["Value"])
+              if (!CharacterData.成就变量.ContainsKey((byte)varId) || CharacterData.成就变量[(byte)varId] < (long)condition.道具["Value"])
                 completed = false;
               break;
             case "SpellCount":
@@ -900,7 +900,7 @@ namespace GameServer.Maps
                 completed = false;
               break;
             case "SpellLevelSpecified":
-              if (!MainSkills表.TryGetValue((ushort)(long)condition.道具["SpellId"], out var skill) || skill.SkillLevel.V < (long)condition.道具["Level"])
+              if (!MainSkills表.TryGetValue((ushort)(long)condition.道具["SpellId"], out var skill) || skill.SkillLevel.V < (long)condition.道具["怪物等级"])
                 completed = false;
               break;
             case "BagSlotCount":
@@ -912,11 +912,11 @@ namespace GameServer.Maps
                 completed = false;
               break;
             case "TotalMoneyType":
-              if (CharacterData.Currencies[(GameCurrency)(long)condition.道具["MoneyTypeId"]] < (long)condition.道具["Total"])
+              if (CharacterData.角色货币[(GameCurrency)(long)condition.道具["MoneyTypeId"]] < (long)condition.道具["Total"])
                 completed = false;
               break;
             case "CompleteStoryQuestCount":
-              if (CharacterData.Quests.Count(x => x.CompleteDate.V != DateTime.MinValue) < (long)condition.道具["Value"])
+              if (CharacterData.玩家任务.Count(x => x.完成时间.V != DateTime.MinValue) < (long)condition.道具["Value"])
                 completed = false;
               break;
             //case "ForceReputation":
@@ -933,11 +933,11 @@ namespace GameServer.Maps
         if (completed)
         {
           var data = new AchievementData();
-          data.AchievementId.V = achievement.编号;
+          data.成就编号.V = achievement.编号;
           data.Character.V = CharacterData;
           data.CompletedAt.V = MainProcess.CurrentTime;
           data.ReceivedAt.V = DateTime.MinValue;
-          CharacterData.Achievements.Add(achievement.编号, data);
+          CharacterData.角色成就.Add(achievement.编号, data);
         }
       }
     }
@@ -953,8 +953,8 @@ namespace GameServer.Maps
       if (questInfo.开始NPC编号 > 0 && 对话守卫.MobId != questInfo.开始NPC编号)
         return false;
 
-      var completedQuests = CharacterData.Quests
-          .Where(x => x.Info.V.编号 == questId)
+      var completedQuests = CharacterData.玩家任务
+          .Where(x => x.任务信息.V.编号 == questId)
           .ToArray();
 
       if (questInfo.最大完成数量 > 0 && completedQuests.Length >= questInfo.最大完成数量)
@@ -965,8 +965,8 @@ namespace GameServer.Maps
         switch (x.类型)
         {
           case QuestAcceptConstraint.任务完成:
-            var quest = CharacterData.Quests.FirstOrDefault(y => y.Info.V.编号 == x.数值);
-            return quest != null && quest.CompleteDate.V != DateTime.MinValue;
+            var quest = CharacterData.玩家任务.FirstOrDefault(y => y.任务信息.V.编号 == x.数值);
+            return quest != null && quest.完成时间.V != DateTime.MinValue;
           case QuestAcceptConstraint.最小等级:
             return CurrentLevel >= x.数值;
           case QuestAcceptConstraint.最大等级:
@@ -993,9 +993,9 @@ namespace GameServer.Maps
       if (!CanAcceptQuest(questId))
         return;
 
-      var quest = CharacterQuest.Create(CharacterData, questInfo);
+      var quest = CharacterQuest.创建(CharacterData, questInfo);
 
-      CharacterData.Quests.Add(quest);
+      CharacterData.玩家任务.Add(quest);
 
       ActiveConnection?.发送封包(new 接受任务
       {
@@ -1007,29 +1007,29 @@ namespace GameServer.Maps
 
     public void UpdateQuestsProgress()
     {
-      foreach (var quest in CharacterData.Quests)
+      foreach (var quest in CharacterData.玩家任务)
         UpdateQuestProgress(quest);
     }
 
     public void UpdateQuestProgress(CharacterQuest quest)
     {
-      if (quest.CompleteDate.V != DateTime.MinValue)
+      if (quest.完成时间.V != DateTime.MinValue)
         return;
 
-      foreach (var mission in quest.Missions)
+      foreach (var mission in quest.玩家任务要求)
       {
-        if (mission.CompletedDate.V != DateTime.MinValue) continue;
+        if (mission.完成日期.V != DateTime.MinValue) continue;
 
-        switch (mission.Info.V.类型)
+        switch (mission.完成条件.V.类型)
         {
           case QuestMissionType.装备物品:
             if (Equipment[(byte)EquipmentWearingParts.武器] != null)
-              mission.CompletedDate.V = MainProcess.CurrentTime;
+              mission.完成日期.V = MainProcess.CurrentTime;
             break;
           case QuestMissionType.杀死怪物:
           case QuestMissionType.获取物品:
-            if (mission.Count.V >= mission.Info.V.数量)
-              mission.CompletedDate.V = MainProcess.CurrentTime;
+            if (mission.数量.V >= mission.完成条件.V.数量)
+              mission.完成日期.V = MainProcess.CurrentTime;
             break;
         }
       }
@@ -1047,14 +1047,14 @@ namespace GameServer.Maps
 
     public void 接受奖励(int rewardId)
     {
-      if (!CharacterData.Achievements.TryGetValue((ushort)rewardId, out var data))
+      if (!CharacterData.角色成就.TryGetValue((ushort)rewardId, out var data))
         return;
 
       if (data.ReceivedAt.V != DateTime.MinValue)
         return;
 
       if (data.Info.成就点数 > 0)
-        GainCurrency(GameCurrency.AchievementPoints, data.Info.成就点数);
+        GainCurrency(GameCurrency.成就点数, data.Info.成就点数);
 
       foreach (var reward in data.Info.奖励)
       {
@@ -1081,12 +1081,12 @@ namespace GameServer.Maps
 
     public void GainCurrency(GameCurrency currency, int value)
     {
-      CharacterData.Currencies[currency] += value;
+      CharacterData.角色货币[currency] += value;
 
       ActiveConnection?.发送封包(new 货币数量变动
       {
         货币类型 = (byte)currency,
-        货币数量 = CharacterData.Currencies[currency]
+        货币数量 = CharacterData.角色货币[currency]
       });
     }
 
@@ -1156,14 +1156,14 @@ namespace GameServer.Maps
         var maxId = 游戏成就.DataSheet.Values.Max(x => x.编号);
 
         for (ushort i = 0; i < maxId; i++)
-          bw.Write(CharacterData.Achievements.TryGetValue(i, out var data) ? ComputingClass.DateShift(data.CompletedAt.V) : (ushort)0);
+          bw.Write(CharacterData.角色成就.TryGetValue(i, out var data) ? ComputingClass.DateShift(data.CompletedAt.V) : (ushort)0);
 
         // Indicamos si el reward se ha aceptado
         ms.Seek(1032, SeekOrigin.Begin);
         var bitArray = new BitArray(maxId);
 
         for (ushort i = 0; i < maxId; i++)
-          bitArray.Set(i, CharacterData.Achievements.TryGetValue(i, out var data) && data.ReceivedAt.V != DateTime.MinValue);
+          bitArray.Set(i, CharacterData.角色成就.TryGetValue(i, out var data) && data.ReceivedAt.V != DateTime.MinValue);
 
         var receivedRewards = new byte[(int)Math.Ceiling((decimal)maxId / 8)];
         bitArray.CopyTo(receivedRewards, 0);
@@ -1179,12 +1179,12 @@ namespace GameServer.Maps
       using (var ms = new MemoryStream())
       using (var bw = new BinaryWriter(ms))
       {
-        var characterQuests = CharacterData.Quests
-            .Where(x => x.CompleteDate.V != DateTime.MinValue)
-            .ToDictionary(x => x.Info.V.编号);
+        var characterQuests = CharacterData.玩家任务
+            .Where(x => x.完成时间.V != DateTime.MinValue)
+            .ToDictionary(x => x.任务信息.V.编号);
 
-        var questActive = CharacterData.Quests
-            .Where(x => x.CompleteDate.V == DateTime.MinValue)
+        var questActive = CharacterData.玩家任务
+            .Where(x => x.完成时间.V == DateTime.MinValue)
             .FirstOrDefault();
 
         var totalQuests = 6176;
@@ -1229,13 +1229,13 @@ namespace GameServer.Maps
 
         if (questActive != null)
         {
-          bw.Write(questActive.Info.V.编号); // active main quest id
-          bw.Write(ComputingClass.TimeShift(questActive.StartDate.V));
+          bw.Write(questActive.任务信息.V.编号); // active main quest id
+          bw.Write(ComputingClass.TimeShift(questActive.开始时间.V));
           bw.Write(0);
 
-          var missions = questActive.Missions.ToArray();
+          var missions = questActive.玩家任务要求.ToArray();
           for (var i = 0; i < 4; i++)
-            bw.Write(missions.Length > i ? missions[i].Count.V : (byte)0);
+            bw.Write(missions.Length > i ? missions[i].数量.V : (byte)0);
 
           bw.Write(new byte[48]); // ???
         }
@@ -1250,7 +1250,7 @@ namespace GameServer.Maps
       using (var ms = new MemoryStream())
       using (var bw = new BinaryWriter(ms))
       {
-        var key = CharacterData.Account.V.GenerateLoginAgreementDescription();
+        var key = CharacterData.所属账号.V.生成登陆协议();
         ms.Write(key, 0, 37);
         ms.Seek(0, SeekOrigin.Begin);
         bw.Write(ObjectId);
@@ -1476,7 +1476,7 @@ namespace GameServer.Maps
           ProcessMySkills();
 
           foreach (SkillInstance 技能实例 in SkillTasks.ToArray())
-            技能实例.Process();
+            技能实例.任务处理();
 
           foreach (BuffData buff in Buffs.Values)
             轮询Buff时处理(buff);
@@ -1540,7 +1540,7 @@ namespace GameServer.Maps
       {
         if (BuffData.死亡消失)
         {
-          base.删除Buff时处理(BuffData.Id.V);
+          base.删除Buff时处理(BuffData.Buff编号.V);
         }
       }
       this.回魔次数 = 0;
@@ -1626,7 +1626,7 @@ namespace GameServer.Maps
         }
         string text = (this.Guild != null) ? string.Format("[{0}]公会成员", this.Guild) : "";
         string text2 = (PlayerObject.Guild != null) ? string.Format("[{0}]公会成员", PlayerObject.Guild) : "";
-        NetworkServiceGateway.SendAnnouncement(string.Format("{2}中的{3}[{4}]杀死了{0}[{1}]", new object[]
+        网络服务网关.发送公告(string.Format("{2}中的{3}[{4}]杀死了{0}[{1}]", new object[]
         {
                     text,
                     this,
@@ -1720,7 +1720,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CharName.V;
+        return this.CharacterData.角色名字.V;
       }
     }
 
@@ -1729,7 +1729,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.Index.V;
+        return this.CharacterData.数据索引.V;
       }
     }
 
@@ -1738,14 +1738,14 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CurrentHP.V;
+        return this.CharacterData.当前血量.V;
       }
       set
       {
         value = Math.Min(this[GameObjectStats.最大体力], Math.Max(0, value));
         if (CurrentHP != value)
         {
-          CharacterData.CurrentHP.V = value;
+          CharacterData.当前血量.V = value;
           SendPacket(new 同步对象体力
           {
             对象编号 = ObjectId,
@@ -1761,14 +1761,14 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CurrentMP.V;
+        return this.CharacterData.当前蓝量.V;
       }
       set
       {
         value = Math.Min(this[GameObjectStats.最大魔力], Math.Max(0, value));
         if (this.CurrentMP != value)
         {
-          this.CharacterData.CurrentMP.V = Math.Max(0, value);
+          this.CharacterData.当前蓝量.V = Math.Max(0, value);
           客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
@@ -1787,11 +1787,11 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CharLevel;
+        return this.CharacterData.角色等级;
       }
       set
       {
-        this.CharacterData.CharLevel = value;
+        this.CharacterData.角色等级 = value;
       }
     }
 
@@ -1800,13 +1800,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CurrentCoords.V;
+        return this.CharacterData.当前坐标.V;
       }
       set
       {
-        if (this.CharacterData.CurrentCoords.V != value)
+        if (this.CharacterData.当前坐标.V != value)
         {
-          this.CharacterData.CurrentCoords.V = value;
+          this.CharacterData.当前坐标.V = value;
           MapInstance CurrentMap = this.CurrentMap;
           bool? flag;
           if (CurrentMap == null)
@@ -1850,9 +1850,9 @@ namespace GameServer.Maps
             CurrentMap2.添加对象(this);
           }
         }
-        if (this.CharacterData.CurrentMap.V != (int)value.地图模板.地图编号)
+        if (this.CharacterData.当前地图.V != (int)value.地图模板.地图编号)
         {
-          this.CharacterData.CurrentMap.V = (int)value.地图模板.地图编号;
+          this.CharacterData.当前地图.V = (int)value.地图模板.地图编号;
           GuildData Affiliation = this.Guild;
           if (Affiliation == null)
           {
@@ -1861,7 +1861,7 @@ namespace GameServer.Maps
           Affiliation.发送封包(new 同步会员信息
           {
             对象编号 = this.ObjectId,
-            对象信息 = this.CharacterData.CurrentMap.V,
+            对象信息 = this.CharacterData.当前地图.V,
             当前等级 = this.CurrentLevel
           });
         }
@@ -1873,13 +1873,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CurrentDir.V;
+        return this.CharacterData.当前朝向.V;
       }
       set
       {
-        if (this.CharacterData.CurrentDir.V != value)
+        if (this.CharacterData.当前朝向.V != value)
         {
-          this.CharacterData.CurrentDir.V = value;
+          this.CharacterData.当前朝向.V = value;
           base.SendPacket(new 对象转动方向
           {
             对象编号 = this.ObjectId,
@@ -2025,7 +2025,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.BuffData;
+        return this.CharacterData.Buff数据;
       }
     }
 
@@ -2043,7 +2043,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.SkillData;
+        return this.CharacterData.技能数据;
       }
     }
 
@@ -2107,11 +2107,11 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CharPowerCombat;
+        return this.CharacterData.角色战力;
       }
       set
       {
-        this.CharacterData.CharPowerCombat = value;
+        this.CharacterData.角色战力 = value;
       }
     }
 
@@ -2120,11 +2120,11 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CharExp;
+        return this.CharacterData.角色经验;
       }
       set
       {
-        this.CharacterData.CharExp = value;
+        this.CharacterData.角色经验 = value;
       }
     }
 
@@ -2133,13 +2133,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.DoubleExp.V;
+        return this.CharacterData.双倍经验.V;
       }
       set
       {
-        if (this.CharacterData.DoubleExp.V != value)
+        if (this.CharacterData.双倍经验.V != value)
         {
-          if (value > this.CharacterData.DoubleExp.V)
+          if (value > this.CharacterData.双倍经验.V)
           {
             客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 != null)
@@ -2150,7 +2150,7 @@ namespace GameServer.Maps
               });
             }
           }
-          this.CharacterData.DoubleExp.V = value;
+          this.CharacterData.双倍经验.V = value;
         }
       }
     }
@@ -2160,7 +2160,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return CharacterProgression.MaxExpTable[this.CurrentLevel];
+        return CharacterProgression.升级所需经验[this.CurrentLevel];
       }
     }
 
@@ -2169,13 +2169,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.NumberGoldCoins;
+        return this.CharacterData.金币数量;
       }
       set
       {
-        if (this.CharacterData.NumberGoldCoins != value)
+        if (this.CharacterData.金币数量 != value)
         {
-          this.CharacterData.NumberGoldCoins = value;
+          this.CharacterData.金币数量 = value;
           客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
@@ -2195,13 +2195,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.Ingots;
+        return this.CharacterData.元宝数量;
       }
       set
       {
-        if (this.CharacterData.Ingots != value)
+        if (this.CharacterData.元宝数量 != value)
         {
-          this.CharacterData.Ingots = value;
+          this.CharacterData.元宝数量 = value;
           客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
@@ -2220,13 +2220,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.MasterRep;
+        return this.CharacterData.师门声望;
       }
       set
       {
-        if (this.CharacterData.MasterRep != value)
+        if (this.CharacterData.师门声望 != value)
         {
-          this.CharacterData.MasterRep = value;
+          this.CharacterData.师门声望 = value;
           客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
@@ -2246,25 +2246,25 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CharPKLevel;
+        return this.CharacterData.角色PK值;
       }
       set
       {
         value = Math.Max(0, value);
-        if (this.CharacterData.CharPKLevel == 0 && value > 0)
+        if (this.CharacterData.角色PK值 == 0 && value > 0)
         {
           this.减PK时间 = TimeSpan.FromMinutes(1.0);
         }
-        if (this.CharacterData.CharPKLevel != value)
+        if (this.CharacterData.角色PK值 != value)
         {
-          if (this.CharacterData.CharPKLevel < 300 && value >= 300)
+          if (this.CharacterData.角色PK值 < 300 && value >= 300)
           {
             this.灰名时间 = TimeSpan.Zero;
           }
           base.SendPacket(new 同步对象惩罚
           {
             对象编号 = this.ObjectId,
-            PK值惩罚 = (this.CharacterData.CharPKLevel = value)
+            PK值惩罚 = (this.CharacterData.角色PK值 = value)
           });
         }
       }
@@ -2289,13 +2289,13 @@ namespace GameServer.Maps
         {
           return 147;
         }
-        return this.CharacterData.RebirthMap.V;
+        return this.CharacterData.重生地图.V;
       }
       set
       {
-        if (this.CharacterData.RebirthMap.V != value)
+        if (this.CharacterData.重生地图.V != value)
         {
-          this.CharacterData.RebirthMap.V = value;
+          this.CharacterData.重生地图.V = value;
         }
       }
     }
@@ -2333,11 +2333,11 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.BackpackSize.V;
+        return this.CharacterData.背包大小.V;
       }
       set
       {
-        this.CharacterData.BackpackSize.V = value;
+        this.CharacterData.背包大小.V = value;
       }
     }
 
@@ -2355,11 +2355,11 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.WarehouseSize.V;
+        return this.CharacterData.仓库大小.V;
       }
       set
       {
-        this.CharacterData.WarehouseSize.V = value;
+        this.CharacterData.仓库大小.V = value;
       }
     }
 
@@ -2368,11 +2368,11 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.ExtraBackpackSize.V;
+        return this.CharacterData.扩展背包大小.V;
       }
       set
       {
-        this.CharacterData.ExtraBackpackSize.V = value;
+        this.CharacterData.扩展背包大小.V = value;
       }
     }
 
@@ -2416,13 +2416,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return CharacterData.CurrentTitle.V;
+        return CharacterData.当前称号.V;
       }
       set
       {
-        if (CharacterData.CurrentTitle.V != value)
+        if (CharacterData.当前称号.V != value)
         {
-          CharacterData.CurrentTitle.V = value;
+          CharacterData.当前称号.V = value;
         }
       }
     }
@@ -2432,13 +2432,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CurrentPrivileges.V;
+        return this.CharacterData.本期特权.V;
       }
       set
       {
-        if (this.CharacterData.CurrentPrivileges.V != value)
+        if (this.CharacterData.本期特权.V != value)
         {
-          this.CharacterData.CurrentPrivileges.V = value;
+          this.CharacterData.本期特权.V = value;
         }
       }
     }
@@ -2448,13 +2448,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.PreviousPrivilege.V;
+        return this.CharacterData.上期特权.V;
       }
       set
       {
-        if (this.CharacterData.PreviousPrivilege.V != value)
+        if (this.CharacterData.上期特权.V != value)
         {
-          this.CharacterData.PreviousPrivilege.V = value;
+          this.CharacterData.上期特权.V = value;
         }
       }
     }
@@ -2512,13 +2512,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CurrentIssueDate.V;
+        return this.CharacterData.本期日期.V;
       }
       set
       {
-        if (this.CharacterData.CurrentIssueDate.V != value)
+        if (this.CharacterData.本期日期.V != value)
         {
-          this.CharacterData.CurrentIssueDate.V = value;
+          this.CharacterData.本期日期.V = value;
         }
       }
     }
@@ -2528,13 +2528,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.DateLastIssue.V;
+        return this.CharacterData.上期日期.V;
       }
       set
       {
-        if (this.CharacterData.DateLastIssue.V != value)
+        if (this.CharacterData.上期日期.V != value)
         {
-          this.CharacterData.DateLastIssue.V = value;
+          this.CharacterData.上期日期.V = value;
         }
       }
     }
@@ -2598,7 +2598,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.Account.V;
+        return this.CharacterData.所属账号.V;
       }
     }
 
@@ -2607,13 +2607,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.Guild.V;
+        return this.CharacterData.所属行会.V;
       }
       set
       {
-        if (this.CharacterData.Guild.V != value)
+        if (this.CharacterData.所属行会.V != value)
         {
-          this.CharacterData.Guild.V = value;
+          this.CharacterData.所属行会.V = value;
         }
       }
     }
@@ -2623,13 +2623,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.Team.V;
+        return this.CharacterData.所属队伍.V;
       }
       set
       {
-        if (this.CharacterData.Team.V != value)
+        if (this.CharacterData.所属队伍.V != value)
         {
-          this.CharacterData.Team.V = value;
+          this.CharacterData.所属队伍.V = value;
         }
       }
     }
@@ -2639,13 +2639,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.Teacher.V;
+        return this.CharacterData.所属师门.V;
       }
       set
       {
-        if (this.CharacterData.Teacher.V != value)
+        if (this.CharacterData.所属师门.V != value)
         {
-          this.CharacterData.Teacher.V = value;
+          this.CharacterData.所属师门.V = value;
         }
       }
     }
@@ -2655,13 +2655,13 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.AttackMode.V;
+        return this.CharacterData.攻击模式.V;
       }
       set
       {
-        if (this.CharacterData.AttackMode.V != value)
+        if (this.CharacterData.攻击模式.V != value)
         {
-          this.CharacterData.AttackMode.V = value;
+          this.CharacterData.攻击模式.V = value;
           客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
@@ -2681,18 +2681,18 @@ namespace GameServer.Maps
     {
       get
       {
-        if (this.CharacterData.PetMode.V == PetMode.自动)
+        if (this.CharacterData.宠物模式.V == PetMode.自动)
         {
-          this.CharacterData.PetMode.V = PetMode.Attack;
+          this.CharacterData.宠物模式.V = PetMode.Attack;
           return PetMode.Attack;
         }
-        return this.CharacterData.PetMode.V;
+        return this.CharacterData.宠物模式.V;
       }
       set
       {
-        if (this.CharacterData.PetMode.V != value)
+        if (this.CharacterData.宠物模式.V != value)
         {
-          this.CharacterData.PetMode.V = value;
+          this.CharacterData.宠物模式.V = value;
           客户网络 网络连接 = this.ActiveConnection;
           if (网络连接 == null)
           {
@@ -2736,11 +2736,11 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.HairType.V;
+        return this.CharacterData.角色发型.V;
       }
       set
       {
-        this.CharacterData.HairType.V = value;
+        this.CharacterData.角色发型.V = value;
       }
     }
 
@@ -2749,11 +2749,11 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.HairColor.V;
+        return this.CharacterData.角色发色.V;
       }
       set
       {
-        this.CharacterData.HairColor.V = value;
+        this.CharacterData.角色发色.V = value;
       }
     }
 
@@ -2762,11 +2762,11 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.FaceType.V;
+        return this.CharacterData.角色脸型.V;
       }
       set
       {
-        this.CharacterData.FaceType.V = value;
+        this.CharacterData.角色脸型.V = value;
       }
     }
 
@@ -2775,7 +2775,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CharGender.V;
+        return this.CharacterData.角色性别.V;
       }
     }
 
@@ -2784,7 +2784,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.CharRace.V;
+        return this.CharacterData.角色职业.V;
       }
     }
 
@@ -2797,15 +2797,15 @@ namespace GameServer.Maps
         {
           return ObjectNameColor.灰名;
         }
-        if (this.CharacterData.CharPKLevel >= 800)
+        if (this.CharacterData.角色PK值 >= 800)
         {
           return ObjectNameColor.深红;
         }
-        if (this.CharacterData.CharPKLevel >= 300)
+        if (this.CharacterData.角色PK值 >= 300)
         {
           return ObjectNameColor.红名;
         }
-        if (this.CharacterData.CharPKLevel >= 99)
+        if (this.CharacterData.角色PK值 >= 99)
         {
           return ObjectNameColor.黄名;
         }
@@ -2818,7 +2818,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.PetData;
+        return this.CharacterData.宠物数据;
       }
     }
 
@@ -2827,7 +2827,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.UnreadMails;
+        return this.CharacterData.未读邮件;
       }
     }
 
@@ -2836,7 +2836,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.Mails;
+        return this.CharacterData.角色邮件;
       }
     }
 
@@ -2899,7 +2899,7 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.RemainingPrivileges;
+        return this.CharacterData.剩余特权;
       }
     }
 
@@ -2908,16 +2908,16 @@ namespace GameServer.Maps
     {
       get
       {
-        return this.CharacterData.ShorcutField;
+        return this.CharacterData.快捷栏位;
       }
     }
 
 
-    public MonitorDictionary<byte, ItemData> Backpack => CharacterData.Backpack;
-    public MonitorDictionary<byte, ItemData> Warehouse => CharacterData.Warehouse;
-    public DataMonitor<bool> WarehouseLocked => CharacterData.WarehouseLocked;
-    public MonitorDictionary<byte, ItemData> ExtraBackpack => CharacterData.ExtraBackPack;
-    public MonitorDictionary<byte, EquipmentData> Equipment => CharacterData.Equipment;
+    public MonitorDictionary<byte, ItemData> Backpack => CharacterData.角色背包;
+    public MonitorDictionary<byte, ItemData> Warehouse => CharacterData.角色仓库;
+    public DataMonitor<bool> WarehouseLocked => CharacterData.仓库锁;
+    public MonitorDictionary<byte, ItemData> ExtraBackpack => CharacterData.扩展背包;
+    public MonitorDictionary<byte, EquipmentData> Equipment => CharacterData.角色装备;
 
 
     public MonitorDictionary<byte, DateTime> AvailableTitles
@@ -2993,21 +2993,21 @@ namespace GameServer.Maps
       {
         MonitorDictionary<CharacterData, int> MonitorDictionary = this.所属师门.徒弟经验;
         CharacterData key = this.CharacterData;
-        MonitorDictionary[key] += (int)((float)CharacterProgression.MaxExpTable[this.CurrentLevel] * 0.05f);
+        MonitorDictionary[key] += (int)((float)CharacterProgression.升级所需经验[this.CurrentLevel] * 0.05f);
         MonitorDictionary = this.所属师门.师父经验;
         key = this.CharacterData;
-        MonitorDictionary[key] += (int)((float)CharacterProgression.MaxExpTable[this.CurrentLevel] * 0.05f);
+        MonitorDictionary[key] += (int)((float)CharacterProgression.升级所需经验[this.CurrentLevel] * 0.05f);
         if (this.CurrentPrivileges != 0)
         {
           MonitorDictionary = this.所属师门.徒弟金币;
           key = this.CharacterData;
-          MonitorDictionary[key] += (int)((float)CharacterProgression.MaxExpTable[this.CurrentLevel] * 0.01f);
+          MonitorDictionary[key] += (int)((float)CharacterProgression.升级所需经验[this.CurrentLevel] * 0.01f);
           MonitorDictionary = this.所属师门.师父金币;
           key = this.CharacterData;
-          MonitorDictionary[key] += (int)((float)CharacterProgression.MaxExpTable[this.CurrentLevel] * 0.02f);
+          MonitorDictionary[key] += (int)((float)CharacterProgression.升级所需经验[this.CurrentLevel] * 0.02f);
           MonitorDictionary = this.所属师门.师父声望;
           key = this.CharacterData;
-          MonitorDictionary[key] += (int)((float)CharacterProgression.MaxExpTable[this.CurrentLevel] * 0.03f);
+          MonitorDictionary[key] += (int)((float)CharacterProgression.升级所需经验[this.CurrentLevel] * 0.03f);
         }
       }
       if (this.CurrentLevel == 30 && this.所属师门 == null)
@@ -3096,15 +3096,15 @@ namespace GameServer.Maps
 
     public void GainExperience(MonsterObject monsterObject, int experience)
     {
-      if (experience > 0 && (CurrentLevel < Config.MaxLevel || CurrentExp < MaxExperience))
+      if (experience > 0 && (CurrentLevel < Config.游戏开放等级 || CurrentExp < MaxExperience))
       {
         int num = (int)experience;
         int num2 = 0;
         if (monsterObject != null)
         {
           num = (int)Math.Max(0.0, num - Math.Round((double)(num * ComputingClass.CalculateExpRatio((int)CurrentLevel, (int)monsterObject.CurrentLevel))));
-          num = (int)(num * Config.ExpRate);
-          if (CurrentLevel <= Config.NoobLevel)
+          num = (int)(num * Config.怪物经验倍率);
+          if (CurrentLevel <= Config.新手扶持等级)
           {
             num *= 2;
           }
@@ -3116,14 +3116,14 @@ namespace GameServer.Maps
         {
           var increaseAwakeningExp = 0;
 
-          if (CharacterData.AwakeningExpEnabled.V)
+          if (CharacterData.觉醒经验启用.V)
           {
             increaseAwakeningExp = (int)(increaseExp * 0.5);
 
-            if (Config.MaxAwakeningExp - CharacterData.AwakeningExp.V < increaseAwakeningExp)
+            if (Config.MaxAwakeningExp - CharacterData.觉醒经验.V < increaseAwakeningExp)
             {
-              increaseAwakeningExp = Config.MaxAwakeningExp - CharacterData.AwakeningExp.V;
-              CharacterData.AwakeningExpEnabled.V = false;
+              increaseAwakeningExp = Config.MaxAwakeningExp - CharacterData.觉醒经验.V;
+              CharacterData.觉醒经验启用.V = false;
               ActiveConnection?.发送封包(new 同步补充变量
               {
                 变量类型 = 1,
@@ -3134,10 +3134,10 @@ namespace GameServer.Maps
             }
 
             increaseExp -= increaseAwakeningExp;
-            CharacterData.AwakeningExp.V = CharacterData.AwakeningExp.V + increaseAwakeningExp;
+            CharacterData.觉醒经验.V = CharacterData.觉醒经验.V + increaseAwakeningExp;
           }
 
-          if ((this.CurrentExp += increaseExp) >= this.MaxExperience && this.CurrentLevel < Config.MaxLevel)
+          if ((this.CurrentExp += increaseExp) >= this.MaxExperience && this.CurrentLevel < Config.游戏开放等级)
           {
             while (this.CurrentExp >= this.MaxExperience)
             {
@@ -3161,12 +3161,12 @@ namespace GameServer.Maps
         }
         return;
       }
-      else if (CharacterData.AwakeningExpEnabled.V)
+      else if (CharacterData.觉醒经验启用.V)
       {
-        if (Config.MaxAwakeningExp - CharacterData.AwakeningExp.V < experience)
+        if (Config.MaxAwakeningExp - CharacterData.觉醒经验.V < experience)
         {
-          experience = Config.MaxAwakeningExp - CharacterData.AwakeningExp.V;
-          CharacterData.AwakeningExpEnabled.V = false;
+          experience = Config.MaxAwakeningExp - CharacterData.觉醒经验.V;
+          CharacterData.觉醒经验启用.V = false;
           ActiveConnection?.发送封包(new 同步补充变量
           {
             变量类型 = 1,
@@ -3176,7 +3176,7 @@ namespace GameServer.Maps
           });
         }
 
-        CharacterData.AwakeningExp.V = CharacterData.AwakeningExp.V + experience;
+        CharacterData.觉醒经验.V = CharacterData.觉醒经验.V + experience;
 
         ActiveConnection?.发送封包(new 角色经验变动
         {
@@ -3257,13 +3257,13 @@ namespace GameServer.Maps
         byte b = 0;
         while (b < 8)
         {
-          if (CharacterData.ShorcutField.ContainsKey(b))
+          if (CharacterData.快捷栏位.ContainsKey(b))
           {
             b += 1;
           }
           else
           {
-            CharacterData.ShorcutField[b] = newSkill;
+            CharacterData.快捷栏位[b] = newSkill;
             ActiveConnection?.发送封包(new 玩家拖动技能
             {
               技能栏位 = b,
@@ -3417,9 +3417,9 @@ namespace GameServer.Maps
         {
           foreach (BuffData BuffData in this.Buffs.Values.ToList<BuffData>())
           {
-            if (BuffData.BoundWeapons && (BuffData.Buff来源 == null || BuffData.Buff来源.ObjectId == this.ObjectId))
+            if (BuffData.绑定武器 && (BuffData.Buff来源 == null || BuffData.Buff来源.ObjectId == this.ObjectId))
             {
-              base.删除Buff时处理(BuffData.Id.V);
+              base.删除Buff时处理(BuffData.Buff编号.V);
             }
           }
         }
@@ -3479,7 +3479,7 @@ namespace GameServer.Maps
       {
         return;
       }
-      if (诱惑目标 is PetObject && (技能.SkillLevel < 3 || this == (诱惑目标 as PetObject).PlayerOwner))
+      if (诱惑目标 is PetObject && (技能.技能等级 < 3 || this == (诱惑目标 as PetObject).PlayerOwner))
       {
         return;
       }
@@ -3498,12 +3498,12 @@ namespace GameServer.Maps
       }
       byte[] 基础诱惑数量 = 参数.基础诱惑数量;
       int? num3 = (基础诱惑数量 != null) ? new int?(基础诱惑数量.Length) : null;
-      int SkillLevel = (int)技能.SkillLevel;
-      int num4 = (int)((num3.GetValueOrDefault() > SkillLevel & num3 != null) ? 参数.基础诱惑数量[(int)技能.SkillLevel] : 0);
+      int SkillLevel = (int)技能.技能等级;
+      int num4 = (int)((num3.GetValueOrDefault() > SkillLevel & num3 != null) ? 参数.基础诱惑数量[(int)技能.技能等级] : 0);
       byte[] 初始宠物等级 = 参数.初始宠物等级;
       num3 = ((初始宠物等级 != null) ? new int?(初始宠物等级.Length) : null);
-      SkillLevel = (int)技能.SkillLevel;
-      int num5 = (int)((num3.GetValueOrDefault() > SkillLevel & num3 != null) ? 参数.初始宠物等级[(int)技能.SkillLevel] : 0);
+      SkillLevel = (int)技能.技能等级;
+      int num5 = (int)((num3.GetValueOrDefault() > SkillLevel & num3 != null) ? 参数.初始宠物等级[(int)技能.技能等级] : 0);
       byte 额外诱惑数量 = 参数.额外诱惑数量;
       float 额外诱惑概率 = 参数.额外诱惑概率;
       int 额外诱惑时长 = 参数.额外诱惑时长;
@@ -3512,11 +3512,11 @@ namespace GameServer.Maps
       int num8 = 0;
       foreach (BuffData BuffData in this.Buffs.Values)
       {
-        if ((BuffData.Effect & BuffEffectType.诱惑提升) != BuffEffectType.技能标志)
+        if ((BuffData.Buff效果 & BuffEffectType.诱惑提升) != BuffEffectType.技能标志)
         {
-          num6 += BuffData.Template.诱惑概率增加;
-          num7 += BuffData.Template.诱惑时长增加;
-          num8 += (int)BuffData.Template.诱惑等级增加;
+          num6 += BuffData.Buff模板.诱惑概率增加;
+          num7 += BuffData.Buff模板.诱惑时长增加;
+          num8 += (int)BuffData.Buff模板.诱惑等级增加;
         }
       }
       float num9 = (float)Math.Pow((this.CurrentLevel >= 诱惑目标.CurrentLevel) ? 1.2 : 0.8, (double)ComputingClass.ValueLimit(0, Math.Abs((int)(诱惑目标.CurrentLevel - this.CurrentLevel)), 2));
@@ -3564,7 +3564,7 @@ namespace GameServer.Maps
 
     public void 玩家瞬间移动(SkillInstance 技能, C_07_计算目标瞬移 参数)
     {
-      if (ComputingClass.CheckProbability(参数.每级成功概率[(int)技能.SkillLevel]) && !(this.CurrentMap.随机传送(this.CurrentPosition) == default(Point)))
+      if (ComputingClass.CheckProbability(参数.每级成功概率[(int)技能.技能等级]) && !(this.CurrentMap.随机传送(this.CurrentPosition) == default(Point)))
       {
         this.玩家切换地图(this.复活地图, AreaType.随机区域, default(Point));
       }
@@ -3588,15 +3588,15 @@ namespace GameServer.Maps
         {
           if ((BuffData.剩余时间.V -= TimeSpan.FromSeconds((double)Math.Min(15f, (float)技能伤害 * 15f / 50f))) < TimeSpan.Zero)
           {
-            base.删除Buff时处理(BuffData.Id.V);
+            base.删除Buff时处理(BuffData.Buff编号.V);
           }
           else
           {
             base.SendPacket(new 对象状态变动
             {
               对象编号 = this.ObjectId,
-              Id = BuffData.Id.V,
-              Buff索引 = (int)BuffData.Id.V,
+              Id = BuffData.Buff编号.V,
+              Buff索引 = (int)BuffData.Buff编号.V,
               当前层数 = BuffData.当前层数.V,
               剩余时间 = (int)BuffData.剩余时间.V.TotalMilliseconds,
               持续时间 = (int)BuffData.持续时间.V.TotalMilliseconds
@@ -3676,7 +3676,7 @@ namespace GameServer.Maps
           }
           this.玩家穿卸装备(EquipmentWearingParts.战具, EquipmentData, null);
           this.Equipment.Remove(EquipmentData.物品位置.V);
-          EquipmentData.Delete();
+          EquipmentData.删除数据();
           return;
         }
         客户网络 网络连接2 = this.ActiveConnection;
@@ -3890,7 +3890,7 @@ namespace GameServer.Maps
           });
         }
         this.Backpack.Remove(当前物品.物品位置.V);
-        当前物品.Delete();
+        当前物品.删除数据();
         return;
       }
       客户网络 网络连接2 = this.ActiveConnection;
@@ -3949,7 +3949,7 @@ namespace GameServer.Maps
       }
       foreach (CharacterData CharacterData in this.粉丝列表)
       {
-        客户网络 网络连接 = CharacterData.ActiveConnection;
+        客户网络 网络连接 = CharacterData.网络连接;
         if (网络连接 != null)
         {
           网络连接.发送封包(new 好友上线下线
@@ -3964,7 +3964,7 @@ namespace GameServer.Maps
       }
       foreach (CharacterData CharacterData2 in this.仇恨列表)
       {
-        客户网络 网络连接2 = CharacterData2.ActiveConnection;
+        客户网络 网络连接2 = CharacterData2.网络连接;
         if (网络连接2 != null)
         {
           网络连接2.发送封包(new 好友上线下线
@@ -3985,10 +3985,10 @@ namespace GameServer.Maps
       {
         if (BuffData.下线消失)
         {
-          base.删除Buff时处理(BuffData.Id.V);
+          base.删除Buff时处理(BuffData.Buff编号.V);
         }
       }
-      this.CharacterData.OnCharacterDisconnect();
+      this.CharacterData.角色下线();
       base.Delete();
       this.CurrentMap.NrPlayers.Remove(this);
     }
@@ -4084,13 +4084,13 @@ namespace GameServer.Maps
           }
           else
           {
-            PetData.Delete();
+            PetData.删除数据();
             this.PetData.Remove(PetData);
           }
         }
       }
 
-      ActiveConnection.发送封包(new 同步选中坐骑 { SelectedMountId = (byte)CharacterData.CurrentMount.V });
+      ActiveConnection.发送封包(new 同步选中坐骑 { SelectedMountId = (byte)CharacterData.当前坐骑.V });
     }
 
 
@@ -4270,7 +4270,7 @@ namespace GameServer.Maps
         {
           if (this.CurrentDirection != (GameDirection = ComputingClass.GetDirection(this.CurrentPosition, point)))
           {
-            this.CharacterData.CurrentDir.V = GameDirection;
+            this.CharacterData.当前朝向.V = GameDirection;
             base.SendPacket(new 对象转动方向
             {
               对象编号 = this.ObjectId,
@@ -4290,7 +4290,7 @@ namespace GameServer.Maps
         this.BusyTime = MainProcess.CurrentTime.AddMilliseconds((double)this.WalkInterval);
         if (this.CurrentDirection != (GameDirection = ComputingClass.GetDirection(this.CurrentPosition, point)))
         {
-          this.CharacterData.CurrentDir.V = GameDirection;
+          this.CharacterData.当前朝向.V = GameDirection;
           base.SendPacket(new 对象转动方向
           {
             对象编号 = this.ObjectId,
@@ -4340,7 +4340,7 @@ namespace GameServer.Maps
         {
           if (this.CurrentDirection != (GameDirection = ComputingClass.GetDirection(this.CurrentPosition, point)))
           {
-            this.CharacterData.CurrentDir.V = GameDirection;
+            this.CharacterData.当前朝向.V = GameDirection;
             base.SendPacket(new 对象转动方向
             {
               对象编号 = this.ObjectId,
@@ -4365,7 +4365,7 @@ namespace GameServer.Maps
         this.BusyTime = MainProcess.CurrentTime.AddMilliseconds((double)this.RunInterval);
         if (this.CurrentDirection != (GameDirection = ComputingClass.GetDirection(this.CurrentPosition, point2)))
         {
-          this.CharacterData.CurrentDir.V = GameDirection;
+          this.CharacterData.当前朝向.V = GameDirection;
           base.SendPacket(new 对象转动方向
           {
             对象编号 = this.ObjectId,
@@ -4497,13 +4497,13 @@ namespace GameServer.Maps
 
       foreach (BuffData BuffData in this.Buffs.Values.ToList<BuffData>())
       {
-        if (CharRole == GameObjectRace.刺客 && (BuffData.Effect & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData.Template.角色所处状态 & GameObjectState.潜行状态) != GameObjectState.正常状态)
+        if (CharRole == GameObjectRace.刺客 && (BuffData.Buff效果 & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData.Buff模板.角色所处状态 & GameObjectState.潜行状态) != GameObjectState.正常状态)
         {
-          base.删除Buff时处理(BuffData.Id.V);
+          base.删除Buff时处理(BuffData.Buff编号.V);
         }
-        else if (Riding && (BuffData.Effect & BuffEffectType.坐骑状态) != BuffEffectType.技能标志)
+        else if (Riding && (BuffData.Buff效果 & BuffEffectType.坐骑状态) != BuffEffectType.技能标志)
         {
-          删除Buff时处理(BuffData.Id.V);
+          删除Buff时处理(BuffData.Buff编号.V);
           ActiveConnection?.发送封包(new 添加技能冷却
           {
             CoolingId = (skillId | 0x1000000),
@@ -7208,7 +7208,7 @@ namespace GameServer.Maps
                 else if (this.Team.Members.FirstOrDefault(delegate (CharacterData O)
                 {
                   MapObject item;
-                  return O.ActiveConnection == null || !MapGatewayProcess.Objects.TryGetValue(O.CharId, out item) || !this.对话守卫.Neighbors.Contains(item);
+                  return O.网络连接 == null || !MapGatewayProcess.Objects.TryGetValue(O.角色编号, out item) || !this.对话守卫.Neighbors.Contains(item);
                 }) != null)
                 {
                   this.对话页面 = 624203000;
@@ -7224,7 +7224,7 @@ namespace GameServer.Maps
                   });
                   return;
                 }
-                else if (this.Team.Members.FirstOrDefault((CharacterData O) => O.NumberGoldCoins < DeductCoinsCommand) != null)
+                else if (this.Team.Members.FirstOrDefault((CharacterData O) => O.金币数量 < DeductCoinsCommand) != null)
                 {
                   this.对话页面 = 624204000;
                   客户网络 网络连接118 = this.ActiveConnection;
@@ -7254,7 +7254,7 @@ namespace GameServer.Maps
                   });
                   return;
                 }
-                else if (this.Team.Members.FirstOrDefault((CharacterData O) => (int)O.Level.V < NeedLevel) != null)
+                else if (this.Team.Members.FirstOrDefault((CharacterData O) => (int)O.当前等级.V < NeedLevel) != null)
                 {
                   this.对话页面 = 624206000;
                   客户网络 网络连接120 = this.ActiveConnection;
@@ -7269,7 +7269,7 @@ namespace GameServer.Maps
                   });
                   return;
                 }
-                else if (this.Team.Members.FirstOrDefault((CharacterData O) => MapGatewayProcess.ActiveObjects[O.CharId].Died) != null)
+                else if (this.Team.Members.FirstOrDefault((CharacterData O) => MapGatewayProcess.ActiveObjects[O.角色编号].Died) != null)
                 {
                   this.对话页面 = 624208000;
                   客户网络 网络连接121 = this.ActiveConnection;
@@ -7310,7 +7310,7 @@ namespace GameServer.Maps
                     while (enumerator.MoveNext())
                     {
                       CharacterData CharacterData = enumerator.Current;
-                      PlayerObject PlayerObject = MapGatewayProcess.ActiveObjects[CharacterData.CharId] as PlayerObject;
+                      PlayerObject PlayerObject = MapGatewayProcess.ActiveObjects[CharacterData.角色编号] as PlayerObject;
                       PlayerDeals PlayerDeals = PlayerObject.当前交易;
                       if (PlayerDeals != null)
                       {
@@ -7997,7 +7997,7 @@ namespace GameServer.Maps
                 this.NumberGoldCoins -= 1000000;
                 this.ConsumeBackpackItem(1, 当前物品);
                 SystemData.Data.申请行会.Add(MainProcess.CurrentTime.Date.AddDays(1.0).AddHours(20.0), this.Guild);
-                NetworkServiceGateway.SendAnnouncement(string.Format("公会[{0}]已经签约参加第二天的沙巴克战役", this.Guild), true);
+                网络服务网关.发送公告(string.Format("公会[{0}]已经签约参加第二天的沙巴克战役", this.Guild), true);
                 return;
               }
               客户网络 网络连接157 = this.ActiveConnection;
@@ -8516,7 +8516,7 @@ namespace GameServer.Maps
           {
             byte 索引 = binaryReader.ReadByte();
             uint value = binaryReader.ReadUInt32();
-            this.CharacterData.Settings[(int)索引] = value;
+            this.CharacterData.玩家设置[(int)索引] = value;
           }
         }
       }
@@ -9252,7 +9252,7 @@ namespace GameServer.Maps
                 this.Ingots -= num3;
                 if (Id <= 1501000 || Id >= 1501005)
                 {
-                  this.CharacterData.DollarConsumption.V += (long)num3;
+                  this.CharacterData.消耗元宝.V += (long)num3;
                 }
                 ItemData ItemData2;
                 if (this.Backpack.TryGetValue((byte)num4, out ItemData2))
@@ -9382,7 +9382,7 @@ namespace GameServer.Maps
               this.Ingots -= 600;
               this.NumberGoldCoins += 165000;
               this.DoubleExp += 500000;
-              this.CharacterData.DollarConsumption.V += 600L;
+              this.CharacterData.消耗元宝.V += 600L;
               this.Backpack[b] = new ItemData(模板, this.CharacterData, 1, b, 1);
               客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 != null)
@@ -9462,7 +9462,7 @@ namespace GameServer.Maps
                   this.Ingots -= 3000;
                   this.NumberGoldCoins += 875000;
                   this.DoubleExp += 2750000;
-                  this.CharacterData.DollarConsumption.V += 3000L;
+                  this.CharacterData.消耗元宝.V += 3000L;
                   this.Backpack[b2] = new ItemData(模板2, this.CharacterData, 1, b2, 1);
                   客户网络 网络连接8 = this.ActiveConnection;
                   if (网络连接8 != null)
@@ -9526,7 +9526,7 @@ namespace GameServer.Maps
             this.Ingots -= 3000;
             this.NumberGoldCoins += 875000;
             this.DoubleExp += 2750000;
-            this.CharacterData.DollarConsumption.V += 3000L;
+            this.CharacterData.消耗元宝.V += 3000L;
             this.Backpack[b4] = new ItemData(模板2, this.CharacterData, 1, b4, 1);
             ActiveConnection?.发送封包(new 玩家物品变动
             {
@@ -9611,7 +9611,7 @@ namespace GameServer.Maps
       else
       {
         this.Ingots -= num;
-        this.CharacterData.DollarConsumption.V += (long)num;
+        this.CharacterData.消耗元宝.V += (long)num;
         if (this.CurrentPrivileges != 0)
         {
           MonitorDictionary<byte, int> RemainingPrivileges = this.RemainingPrivileges;
@@ -10651,7 +10651,7 @@ namespace GameServer.Maps
                   list[(int)b5].当前持久.V += (num = Math.Min(list[(int)b5].最大持久.V - list[(int)b5].当前持久.V, list[i].当前持久.V));
                   if ((list[i].当前持久.V -= num) <= 0)
                   {
-                    list[i].Delete();
+                    list[i].删除数据();
                     list.RemoveAt(i);
                     i--;
                   }
@@ -10698,7 +10698,7 @@ namespace GameServer.Maps
                   list2[(int)b3].当前持久.V += (num2 = Math.Min(list2[(int)b3].最大持久.V - list2[(int)b3].当前持久.V, list2[j].当前持久.V));
                   if ((list2[j].当前持久.V -= num2) <= 0)
                   {
-                    list2[j].Delete();
+                    list2[j].删除数据();
                     list2.RemoveAt(j);
                     j--;
                   }
@@ -10963,7 +10963,7 @@ namespace GameServer.Maps
             this.DoubleExp += num;
             this.CharacterData.分解经验.V += num;
             this.Backpack.Remove(EquipmentData.当前位置);
-            EquipmentData.Delete();
+            EquipmentData.删除数据();
             客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
             {
@@ -11267,7 +11267,7 @@ namespace GameServer.Maps
 
         if (sourceItem.当前持久.V <= 0)
         {
-          sourceItem.Delete();
+          sourceItem.删除数据();
           switch (fromStorageType)
           {
             case 1:
@@ -11472,7 +11472,7 @@ namespace GameServer.Maps
 
     private bool ProcessConsumableTreasure(ItemData item)
     {
-      if (!CharacterData.TryGetFreeSpaceAtInventory(out byte inventoryLocation))
+      if (!CharacterData.查找背包空位(out byte inventoryLocation))
       {
         ActiveConnection?.发送封包(new 游戏错误提示
         {
@@ -11618,7 +11618,7 @@ namespace GameServer.Maps
         RefreshStats();
         if (v5.Luck.V >= 5)
         {
-          NetworkServiceGateway.SendAnnouncement($"[{ObjectName}] 就在 [{v5.Name}] 幸运: {v5.Luck.V} .");
+          网络服务网关.发送公告($"[{ObjectName}] 就在 [{v5.Name}] 幸运: {v5.Luck.V} .");
         }
       }
       else if (num3 >= 95 && v5.Luck.V > -9)
@@ -11694,7 +11694,7 @@ namespace GameServer.Maps
         RefreshStats();
         if (v5.Luck.V >= 5)
         {
-          NetworkServiceGateway.SendAnnouncement($"[{ObjectName}] 就在 [{v5.Name}] 幸运: {v5.Luck.V} .");
+          网络服务网关.发送公告($"[{ObjectName}] 就在 [{v5.Name}] 幸运: {v5.Luck.V} .");
         }
       }
       else if (num3 >= 95 && v5.Luck.V > -9)
@@ -11775,13 +11775,13 @@ namespace GameServer.Maps
 
     public void AdquireMount(ushort mountId)
     {
-      if (CharacterData.Mounts.Contains(mountId))
+      if (CharacterData.拥有坐骑.Contains(mountId))
         return;
 
       if (!游戏坐骑.DataSheet.ContainsKey(mountId))
         return;
 
-      CharacterData.Mounts.Add(mountId);
+      CharacterData.拥有坐骑.Add(mountId);
 
       ActiveConnection.发送封包(new 同步坐骑数据 { MountData = GetMountData() });
 
@@ -12174,11 +12174,11 @@ namespace GameServer.Maps
                   {
                     return;
                   }
-                  if (GameCurrency == GameCurrency.FamousTeacherReputation || GameCurrency == GameCurrency.MoralPoints)
+                  if (GameCurrency == GameCurrency.名师声望 || GameCurrency == GameCurrency.道义点数)
                   {
                     num4 *= 1000;
                   }
-                  if (GameCurrency == GameCurrency.Gold)
+                  if (GameCurrency == GameCurrency.金币)
                   {
                     if (this.NumberGoldCoins < num4)
                     {
@@ -12198,7 +12198,7 @@ namespace GameServer.Maps
                       this.NumberGoldCoins -= num4;
                     }
                   }
-                  else if (GameCurrency == GameCurrency.Ingots)
+                  else if (GameCurrency == GameCurrency.元宝)
                   {
                     if (this.Ingots < num4)
                     {
@@ -12218,7 +12218,7 @@ namespace GameServer.Maps
                       this.Ingots -= num4;
                     }
                   }
-                  else if (GameCurrency == GameCurrency.FamousTeacherReputation)
+                  else if (GameCurrency == GameCurrency.名师声望)
                   {
                     if (this.MasterRep < num4)
                     {
@@ -12257,7 +12257,7 @@ namespace GameServer.Maps
                     网络连接6.发送封包(new 货币数量变动
                     {
                       货币类型 = (byte)游戏商品.货币类型,
-                      货币数量 = this.CharacterData.Currencies[GameCurrency]
+                      货币数量 = this.CharacterData.角色货币[GameCurrency]
                     });
                   }
                 }
@@ -12388,7 +12388,7 @@ namespace GameServer.Maps
               {
                 ItemData3.当前持久.V += ItemData.当前持久.V;
                 游戏商店.BuyItem(ItemData);
-                ItemData.Delete();
+                ItemData.删除数据();
                 客户网络 网络连接3 = this.ActiveConnection;
                 if (网络连接3 == null)
                 {
@@ -12807,7 +12807,7 @@ namespace GameServer.Maps
             this.玩家装卸铭文(EquipmentData.第一铭文.技能编号, EquipmentData.第一铭文.铭文编号);
             if (EquipmentData.第一铭文.广播通知)
             {
-              NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
+              网络服务网关.发送公告(string.Concat(new string[]
               {
                                 "恭喜 [",
                                 this.ObjectName,
@@ -12835,7 +12835,7 @@ namespace GameServer.Maps
             this.玩家装卸铭文(EquipmentData.第二铭文.技能编号, EquipmentData.第二铭文.铭文编号);
             if (EquipmentData.第二铭文.广播通知)
             {
-              NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
+              网络服务网关.发送公告(string.Concat(new string[]
               {
                                 "恭喜 [",
                                 this.ObjectName,
@@ -12870,7 +12870,7 @@ namespace GameServer.Maps
             }
             if (EquipmentData.第一铭文.广播通知)
             {
-              NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
+              网络服务网关.发送公告(string.Concat(new string[]
               {
                                 "恭喜 [",
                                 this.ObjectName,
@@ -13053,7 +13053,7 @@ namespace GameServer.Maps
           }
           if (this.InscriptionSkill.广播通知)
           {
-            NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
+            网络服务网关.发送公告(string.Concat(new string[]
             {
                             "恭喜 [",
                             this.ObjectName,
@@ -13201,7 +13201,7 @@ namespace GameServer.Maps
           }
           if (this.InscriptionSkill.广播通知)
           {
-            NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
+            网络服务网关.发送公告(string.Concat(new string[]
             {
                             "恭喜 [",
                             this.ObjectName,
@@ -13905,7 +13905,7 @@ namespace GameServer.Maps
           {
             if (b3 != 255)
             {
-              this.Backpack[b3].Delete();
+              this.Backpack[b3].删除数据();
               this.Backpack.Remove(b3);
               客户网络 网络连接11 = this.ActiveConnection;
               if (网络连接11 != null)
@@ -13922,7 +13922,7 @@ namespace GameServer.Maps
           {
             if (b4 != 255)
             {
-              this.Backpack[b4].Delete();
+              this.Backpack[b4].删除数据();
               this.Backpack.Remove(b4);
               客户网络 网络连接12 = this.ActiveConnection;
               if (网络连接12 != null)
@@ -14108,7 +14108,7 @@ namespace GameServer.Maps
             }
             if (this.CharacterData.升级装备.V.升级次数.V >= 5)
             {
-              NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]成功升级[{1}]到{2}级。", this.ObjectName, this.CharacterData.升级装备.V.Name, this.CharacterData.升级装备.V.升级次数.V), false);
+              网络服务网关.发送公告(string.Format("[{0}]成功升级[{1}]到{2}级。", this.ObjectName, this.CharacterData.升级装备.V.Name, this.CharacterData.升级装备.V.升级次数.V), false);
             }
             this.CharacterData.升级装备.V = null;
             return this.CharacterData.升级成功.V;
@@ -14125,7 +14125,7 @@ namespace GameServer.Maps
       EquipmentData v = this.CharacterData.升级装备.V;
       if (v != null)
       {
-        v.Delete();
+        v.删除数据();
       }
       this.CharacterData.升级装备.V = null;
       客户网络 网络连接 = this.ActiveConnection;
@@ -14237,7 +14237,7 @@ namespace GameServer.Maps
             字节描述2 = memoryStream2.ToArray();
           }
         }
-        NetworkServiceGateway.发送封包(new 接收聊天消息
+        网络服务网关.发送封包(new 接收聊天消息
         {
           字节描述 = 字节描述2
         });
@@ -14378,7 +14378,7 @@ namespace GameServer.Maps
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
         {
-          if (this.ObjectId == CharacterData.CharId)
+          if (this.ObjectId == CharacterData.角色编号)
           {
             return;
           }
@@ -14386,7 +14386,7 @@ namespace GameServer.Maps
           {
             return;
           }
-          if (CharacterData.ActiveConnection == null)
+          if (CharacterData.网络连接 == null)
           {
             return;
           }
@@ -14395,7 +14395,7 @@ namespace GameServer.Maps
           {
             using (BinaryWriter binaryWriter3 = new BinaryWriter(memoryStream3))
             {
-              binaryWriter3.Write(CharacterData.CharId);
+              binaryWriter3.Write(CharacterData.角色编号);
               binaryWriter3.Write(this.ObjectId);
               binaryWriter3.Write(1);
               binaryWriter3.Write((int)this.CurrentLevel);
@@ -14419,7 +14419,7 @@ namespace GameServer.Maps
             using (BinaryWriter binaryWriter4 = new BinaryWriter(memoryStream4))
             {
               binaryWriter4.Write(this.ObjectId);
-              binaryWriter4.Write(CharacterData.CharId);
+              binaryWriter4.Write(CharacterData.角色编号);
               binaryWriter4.Write(1);
               binaryWriter4.Write((int)this.CurrentLevel);
               binaryWriter4.Write(array);
@@ -14428,11 +14428,11 @@ namespace GameServer.Maps
               字节描述2 = memoryStream4.ToArray();
             }
           }
-          CharacterData.ActiveConnection.发送封包(new 接收聊天消息
+          CharacterData.网络连接.发送封包(new 接收聊天消息
           {
             字节描述 = 字节描述2
           });
-          MainProcess.AddChatLog(string.Format("[Whisper][{0}]=>[{1}]: ", this.ObjectName, CharacterData.CharName), array);
+          MainProcess.AddChatLog(string.Format("[Whisper][{0}]=>[{1}]: ", this.ObjectName, CharacterData.角色名字), array);
           return;
         }
       }
@@ -14458,7 +14458,7 @@ namespace GameServer.Maps
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null && this.好友列表.Contains(CharacterData))
         {
-          if (CharacterData.ActiveConnection != null)
+          if (CharacterData.网络连接 != null)
           {
             byte[] 字节数据 = null;
             using (MemoryStream memoryStream = new MemoryStream())
@@ -14471,7 +14471,7 @@ namespace GameServer.Maps
                 字节数据 = memoryStream.ToArray();
               }
             }
-            CharacterData.ActiveConnection.发送封包(new 发送好友消息
+            CharacterData.网络连接.发送封包(new 发送好友消息
             {
               字节数据 = 字节数据
             });
@@ -14544,11 +14544,11 @@ namespace GameServer.Maps
               {
                 if (this.黑名单表.Contains(CharacterData))
                 {
-                  this.玩家解除屏蔽(CharacterData.CharId);
+                  this.玩家解除屏蔽(CharacterData.角色编号);
                 }
                 if (this.仇人列表.Contains(CharacterData))
                 {
-                  this.玩家删除仇人(CharacterData.CharId);
+                  this.玩家删除仇人(CharacterData.角色编号);
                 }
                 this.偶像列表.Add(CharacterData);
                 CharacterData.粉丝列表.Add(this.CharacterData);
@@ -14557,8 +14557,8 @@ namespace GameServer.Maps
                 {
                   网络连接3.发送封包(new 玩家添加关注
                   {
-                    对象编号 = CharacterData.Index.V,
-                    对象名字 = CharacterData.CharName.V,
+                    对象编号 = CharacterData.数据索引.V,
+                    对象名字 = CharacterData.角色名字.V,
                     是否好友 = (this.粉丝列表.Contains(CharacterData) || CharacterData.偶像列表.Contains(this.CharacterData))
                   });
                 }
@@ -14567,11 +14567,11 @@ namespace GameServer.Maps
                 {
                   网络连接4.发送封包(new 好友上线下线
                   {
-                    对象编号 = CharacterData.Index.V,
-                    对象名字 = CharacterData.CharName.V,
-                    对象职业 = (byte)CharacterData.CharRace.V,
-                    对象性别 = (byte)CharacterData.CharGender.V,
-                    上线下线 = ((byte)((CharacterData.ActiveConnection != null) ? 0 : 3))
+                    对象编号 = CharacterData.数据索引.V,
+                    对象名字 = CharacterData.角色名字.V,
+                    对象职业 = (byte)CharacterData.角色职业.V,
+                    对象性别 = (byte)CharacterData.角色性别.V,
+                    上线下线 = ((byte)((CharacterData.网络连接 != null) ? 0 : 3))
                   });
                 }
                 if (this.粉丝列表.Contains(CharacterData) || CharacterData.偶像列表.Contains(this.CharacterData))
@@ -14579,7 +14579,7 @@ namespace GameServer.Maps
                   this.好友列表.Add(CharacterData);
                   CharacterData.好友列表.Add(this.CharacterData);
                 }
-                客户网络 网络连接5 = CharacterData.ActiveConnection;
+                客户网络 网络连接5 = CharacterData.网络连接;
                 if (网络连接5 == null)
                 {
                   return;
@@ -14622,11 +14622,11 @@ namespace GameServer.Maps
             {
               if (this.黑名单表.Contains(CharacterData2))
               {
-                this.玩家解除屏蔽(CharacterData2.CharId);
+                this.玩家解除屏蔽(CharacterData2.角色编号);
               }
               if (this.仇人列表.Contains(CharacterData2))
               {
-                this.玩家删除仇人(CharacterData2.CharId);
+                this.玩家删除仇人(CharacterData2.角色编号);
               }
               this.偶像列表.Add(CharacterData2);
               CharacterData2.粉丝列表.Add(this.CharacterData);
@@ -14635,8 +14635,8 @@ namespace GameServer.Maps
               {
                 网络连接7.发送封包(new 玩家添加关注
                 {
-                  对象编号 = CharacterData2.Index.V,
-                  对象名字 = CharacterData2.CharName.V,
+                  对象编号 = CharacterData2.数据索引.V,
+                  对象名字 = CharacterData2.角色名字.V,
                   是否好友 = (this.粉丝列表.Contains(CharacterData2) || CharacterData2.偶像列表.Contains(this.CharacterData))
                 });
               }
@@ -14645,11 +14645,11 @@ namespace GameServer.Maps
               {
                 网络连接8.发送封包(new 好友上线下线
                 {
-                  对象编号 = CharacterData2.Index.V,
-                  对象名字 = CharacterData2.CharName.V,
-                  对象职业 = (byte)CharacterData2.CharRace.V,
-                  对象性别 = (byte)CharacterData2.CharGender.V,
-                  上线下线 = ((byte)((CharacterData2.ActiveConnection != null) ? 0 : 3))
+                  对象编号 = CharacterData2.数据索引.V,
+                  对象名字 = CharacterData2.角色名字.V,
+                  对象职业 = (byte)CharacterData2.角色职业.V,
+                  对象性别 = (byte)CharacterData2.角色性别.V,
+                  上线下线 = ((byte)((CharacterData2.网络连接 != null) ? 0 : 3))
                 });
               }
               if (this.粉丝列表.Contains(CharacterData2) || CharacterData2.偶像列表.Contains(this.CharacterData))
@@ -14657,7 +14657,7 @@ namespace GameServer.Maps
                 this.好友列表.Add(CharacterData2);
                 CharacterData2.好友列表.Add(this.CharacterData);
               }
-              客户网络 网络连接9 = CharacterData2.ActiveConnection;
+              客户网络 网络连接9 = CharacterData2.网络连接;
               if (网络连接9 == null)
               {
                 return;
@@ -14710,7 +14710,7 @@ namespace GameServer.Maps
             {
               网络连接2.发送封包(new 玩家取消关注
               {
-                对象编号 = CharacterData.CharId
+                对象编号 = CharacterData.角色编号
               });
             }
             if (this.好友列表.Contains(CharacterData) || CharacterData.好友列表.Contains(this.CharacterData))
@@ -14718,7 +14718,7 @@ namespace GameServer.Maps
               this.好友列表.Remove(CharacterData);
               CharacterData.好友列表.Remove(this.CharacterData);
             }
-            客户网络 网络连接3 = CharacterData.ActiveConnection;
+            客户网络 网络连接3 = CharacterData.网络连接;
             if (网络连接3 == null)
             {
               return;
@@ -14782,7 +14782,7 @@ namespace GameServer.Maps
             {
               网络连接3.发送封包(new 玩家标记仇人
               {
-                对象编号 = CharacterData.Index.V
+                对象编号 = CharacterData.数据索引.V
               });
             }
             客户网络 网络连接4 = this.ActiveConnection;
@@ -14792,11 +14792,11 @@ namespace GameServer.Maps
             }
             网络连接4.发送封包(new 好友上线下线
             {
-              对象编号 = CharacterData.Index.V,
-              对象名字 = CharacterData.CharName.V,
-              对象职业 = (byte)CharacterData.CharRace.V,
-              对象性别 = (byte)CharacterData.CharGender.V,
-              上线下线 = ((byte)((CharacterData.ActiveConnection != null) ? 0 : 3))
+              对象编号 = CharacterData.数据索引.V,
+              对象名字 = CharacterData.角色名字.V,
+              对象职业 = (byte)CharacterData.角色职业.V,
+              对象性别 = (byte)CharacterData.角色性别.V,
+              上线下线 = ((byte)((CharacterData.网络连接 != null) ? 0 : 3))
             });
             return;
           }
@@ -14841,7 +14841,7 @@ namespace GameServer.Maps
             }
             网络连接2.发送封包(new 玩家移除仇人
             {
-              对象编号 = CharacterData.Index.V
+              对象编号 = CharacterData.数据索引.V
             });
             return;
           }
@@ -14905,7 +14905,7 @@ namespace GameServer.Maps
           {
             if (this.偶像列表.Contains(CharacterData))
             {
-              this.玩家取消关注(CharacterData.CharId);
+              this.玩家取消关注(CharacterData.角色编号);
             }
             this.黑名单表.Add(CharacterData);
             客户网络 网络连接4 = this.ActiveConnection;
@@ -14915,8 +14915,8 @@ namespace GameServer.Maps
             }
             网络连接4.发送封包(new 玩家屏蔽目标
             {
-              对象编号 = CharacterData.Index.V,
-              对象名字 = CharacterData.CharName.V
+              对象编号 = CharacterData.数据索引.V,
+              对象名字 = CharacterData.角色名字.V
             });
             return;
           }
@@ -14960,7 +14960,7 @@ namespace GameServer.Maps
             }
             网络连接2.发送封包(new 解除玩家屏蔽
             {
-              对象编号 = CharacterData.Index.V
+              对象编号 = CharacterData.数据索引.V
             });
             return;
           }
@@ -15004,7 +15004,7 @@ namespace GameServer.Maps
             当前体力 = playerObj[GameObjectStats.最大体力],
             当前魔力 = playerObj[GameObjectStats.最大魔力],
             对象名字 = playerObj.ObjectName,
-            行会编号 = playerObj.Guild?.Index.V ?? 0,
+            行会编号 = playerObj.Guild?.数据索引.V ?? 0,
 
           });
 
@@ -15013,7 +15013,7 @@ namespace GameServer.Maps
             ActiveConnection.发送封包(new 同步对象坐骑
             {
               对象编号 = ObjectId,
-              坐骑编号 = (byte)playerObj.CharacterData.CurrentMount.V
+              坐骑编号 = (byte)playerObj.CharacterData.当前坐骑.V
             });
           }
         }
@@ -15090,12 +15090,12 @@ namespace GameServer.Maps
             return;
           }
           同步角色信息 同步角色信息 = new 同步角色信息();
-          同步角色信息.对象编号 = CharacterData.Index.V;
-          同步角色信息.对象名字 = CharacterData.CharName.V;
-          同步角色信息.会员等级 = CharacterData.CurrentPrivileges.V;
-          同步角色信息.对象职业 = (byte)CharacterData.CharRace.V;
-          同步角色信息.对象性别 = (byte)CharacterData.CharGender.V;
-          GuildData v = CharacterData.Guild.V;
+          同步角色信息.对象编号 = CharacterData.数据索引.V;
+          同步角色信息.对象名字 = CharacterData.角色名字.V;
+          同步角色信息.会员等级 = CharacterData.本期特权.V;
+          同步角色信息.对象职业 = (byte)CharacterData.角色职业.V;
+          同步角色信息.对象性别 = (byte)CharacterData.角色性别.V;
+          GuildData v = CharacterData.所属行会.V;
           string GuildName;
           if (v != null)
           {
@@ -15274,23 +15274,23 @@ namespace GameServer.Maps
       binaryWriter.Write(characters.Count);
 
       for (int i = num2; i < num3; i++)
-        binaryWriter.Write((long)(characters[i]?.CharId ?? 0));
+        binaryWriter.Write((long)(characters[i]?.角色编号 ?? 0));
 
       for (int j = num2; j < num3; j++)
       {
         switch (num)
         {
           case 0:
-            binaryWriter.Write((long)((ulong)(characters[j]?.CharLevel ?? 0) << 56));
+            binaryWriter.Write((long)((ulong)(characters[j]?.角色等级 ?? 0) << 56));
             break;
           case 1:
-            binaryWriter.Write((long)(characters[j]?.CharPowerCombat ?? 0));
+            binaryWriter.Write((long)(characters[j]?.角色战力 ?? 0));
             break;
           case 2:
-            binaryWriter.Write((long)(characters[j]?.MasterRep ?? 0));
+            binaryWriter.Write((long)(characters[j]?.师门声望 ?? 0));
             break;
           case 3:
-            binaryWriter.Write((long)(characters[j]?.CharPKLevel ?? 0));
+            binaryWriter.Write((long)(characters[j]?.角色PK值 ?? 0));
             break;
           default:
             binaryWriter.Write(0);
@@ -15342,11 +15342,11 @@ namespace GameServer.Maps
               return;
             }
             查询队伍应答 查询队伍应答 = new 查询队伍应答();
-            TeamData 当前队伍 = CharacterData.CurrentTeam;
+            TeamData 当前队伍 = CharacterData.当前队伍;
             查询队伍应答.队伍编号 = ((当前队伍 != null) ? 当前队伍.队伍编号 : 0);
-            TeamData 当前队伍2 = CharacterData.CurrentTeam;
+            TeamData 当前队伍2 = CharacterData.当前队伍;
             查询队伍应答.队长编号 = ((当前队伍2 != null) ? 当前队伍2.队长编号 : 0);
-            TeamData 当前队伍3 = CharacterData.CurrentTeam;
+            TeamData 当前队伍3 = CharacterData.当前队伍;
             string 队伍名字;
             if (当前队伍3 != null)
             {
@@ -15413,7 +15413,7 @@ namespace GameServer.Maps
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
           {
-            if (CharacterData.CurrentTeam != null)
+            if (CharacterData.当前队伍 != null)
             {
               客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
@@ -15429,7 +15429,7 @@ namespace GameServer.Maps
             else
             {
               客户网络 客户网络;
-              if (CharacterData.IsOnline(out 客户网络))
+              if (CharacterData.角色在线(out 客户网络))
               {
                 this.Team = new TeamData(this.CharacterData, 1);
                 客户网络 网络连接4 = this.ActiveConnection;
@@ -15511,7 +15511,7 @@ namespace GameServer.Maps
             if (this.Team == null)
             {
               客户网络 客户网络;
-              if (CharacterData.CurrentTeam == null)
+              if (CharacterData.当前队伍 == null)
               {
                 客户网络 网络连接2 = this.ActiveConnection;
                 if (网络连接2 == null)
@@ -15524,7 +15524,7 @@ namespace GameServer.Maps
                 });
                 return;
               }
-              else if (CharacterData.CurrentTeam.队员数量 >= 11)
+              else if (CharacterData.当前队伍.队员数量 >= 11)
               {
                 客户网络 网络连接3 = this.ActiveConnection;
                 if (网络连接3 == null)
@@ -15537,9 +15537,9 @@ namespace GameServer.Maps
                 });
                 return;
               }
-              else if (CharacterData.CurrentTeam.队长数据.IsOnline(out 客户网络))
+              else if (CharacterData.当前队伍.队长数据.角色在线(out 客户网络))
               {
-                CharacterData.CurrentTeam.申请列表[this.CharacterData] = MainProcess.CurrentTime.AddMinutes(5.0);
+                CharacterData.当前队伍.申请列表[this.CharacterData] = MainProcess.CurrentTime.AddMinutes(5.0);
                 客户网络.发送封包(new 发送组队申请
                 {
                   组队方式 = 1,
@@ -15585,7 +15585,7 @@ namespace GameServer.Maps
               });
               return;
             }
-            else if (CharacterData.CurrentTeam != null)
+            else if (CharacterData.当前队伍 != null)
             {
               客户网络 网络连接7 = this.ActiveConnection;
               if (网络连接7 == null)
@@ -15614,7 +15614,7 @@ namespace GameServer.Maps
             else
             {
               客户网络 客户网络2;
-              if (CharacterData.IsOnline(out 客户网络2))
+              if (CharacterData.角色在线(out 客户网络2))
               {
                 this.Team.邀请列表[CharacterData] = MainProcess.CurrentTime.AddMinutes(5.0);
                 客户网络 网络连接9 = this.ActiveConnection;
@@ -15675,7 +15675,7 @@ namespace GameServer.Maps
             {
               if (回应方式 == 0)
               {
-                if (CharacterData.CurrentTeam == null)
+                if (CharacterData.当前队伍 == null)
                 {
                   客户网络 网络连接 = this.ActiveConnection;
                   if (网络连接 == null)
@@ -15701,7 +15701,7 @@ namespace GameServer.Maps
                   });
                   return;
                 }
-                else if (CharacterData.CurrentTeam.队员数量 >= 11)
+                else if (CharacterData.当前队伍.队员数量 >= 11)
                 {
                   客户网络 网络连接3 = this.ActiveConnection;
                   if (网络连接3 == null)
@@ -15714,7 +15714,7 @@ namespace GameServer.Maps
                   });
                   return;
                 }
-                else if (!CharacterData.CurrentTeam.邀请列表.ContainsKey(this.CharacterData))
+                else if (!CharacterData.当前队伍.邀请列表.ContainsKey(this.CharacterData))
                 {
                   客户网络 网络连接4 = this.ActiveConnection;
                   if (网络连接4 == null)
@@ -15727,7 +15727,7 @@ namespace GameServer.Maps
                   });
                   return;
                 }
-                else if (CharacterData.CurrentTeam.邀请列表[this.CharacterData] < MainProcess.CurrentTime)
+                else if (CharacterData.当前队伍.邀请列表[this.CharacterData] < MainProcess.CurrentTime)
                 {
                   客户网络 网络连接5 = this.ActiveConnection;
                   if (网络连接5 == null)
@@ -15742,17 +15742,17 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  CharacterData.CurrentTeam.发送封包(new 队伍增加成员
+                  CharacterData.当前队伍.发送封包(new 队伍增加成员
                   {
-                    队伍编号 = CharacterData.CurrentTeam.队伍编号,
+                    队伍编号 = CharacterData.当前队伍.队伍编号,
                     对象编号 = this.ObjectId,
                     对象名字 = this.ObjectName,
                     对象性别 = (byte)this.CharGender,
                     对象职业 = (byte)this.CharRole,
                     在线离线 = 0
                   });
-                  this.Team = CharacterData.CurrentTeam;
-                  CharacterData.CurrentTeam.Members.Add(this.CharacterData);
+                  this.Team = CharacterData.当前队伍;
+                  CharacterData.当前队伍.Members.Add(this.CharacterData);
                   客户网络 网络连接6 = this.ActiveConnection;
                   if (网络连接6 == null)
                   {
@@ -15767,9 +15767,9 @@ namespace GameServer.Maps
               }
               else
               {
-                TeamData 当前队伍 = CharacterData.CurrentTeam;
+                TeamData 当前队伍 = CharacterData.当前队伍;
                 客户网络 客户网络;
-                if (当前队伍 != null && 当前队伍.邀请列表.Remove(this.CharacterData) && CharacterData.IsOnline(out 客户网络))
+                if (当前队伍 != null && 当前队伍.邀请列表.Remove(this.CharacterData) && CharacterData.角色在线(out 客户网络))
                 {
                   客户网络.发送封包(new 社交错误提示
                   {
@@ -15855,7 +15855,7 @@ namespace GameServer.Maps
                 });
                 return;
               }
-              else if (CharacterData.CurrentTeam != null)
+              else if (CharacterData.当前队伍 != null)
               {
                 客户网络 网络连接13 = this.ActiveConnection;
                 if (网络连接13 == null)
@@ -15871,18 +15871,18 @@ namespace GameServer.Maps
               else
               {
                 客户网络 客户网络2;
-                if (CharacterData.IsOnline(out 客户网络2))
+                if (CharacterData.角色在线(out 客户网络2))
                 {
                   this.Team.发送封包(new 队伍增加成员
                   {
                     队伍编号 = this.Team.队伍编号,
-                    对象编号 = CharacterData.CharId,
-                    对象名字 = CharacterData.CharName.V,
-                    对象性别 = (byte)CharacterData.CharGender.V,
-                    对象职业 = (byte)CharacterData.CharRace.V,
+                    对象编号 = CharacterData.角色编号,
+                    对象名字 = CharacterData.角色名字.V,
+                    对象性别 = (byte)CharacterData.角色性别.V,
+                    对象职业 = (byte)CharacterData.角色职业.V,
                     在线离线 = 0
                   });
-                  CharacterData.CurrentTeam = this.Team;
+                  CharacterData.当前队伍 = this.Team;
                   this.Team.Members.Add(CharacterData);
                   客户网络2.发送封包(new 玩家加入队伍
                   {
@@ -15897,7 +15897,7 @@ namespace GameServer.Maps
             {
               TeamData 所属队伍 = this.Team;
               客户网络 客户网络3;
-              if (所属队伍 != null && 所属队伍.申请列表.Remove(CharacterData) && CharacterData.IsOnline(out 客户网络3))
+              if (所属队伍 != null && 所属队伍.申请列表.Remove(CharacterData) && CharacterData.角色在线(out 客户网络3))
               {
                 客户网络3.发送封包(new 社交错误提示
                 {
@@ -15969,19 +15969,19 @@ namespace GameServer.Maps
               this.Team.发送封包(new 队伍成员离开
               {
                 对象编号 = this.ObjectId,
-                队伍编号 = this.Team.Index.V
+                队伍编号 = this.Team.数据索引.V
               });
               客户网络 网络连接2 = this.ActiveConnection;
               if (网络连接2 != null)
               {
                 网络连接2.发送封包(new 玩家离开队伍
                 {
-                  队伍编号 = this.Team.Index.V
+                  队伍编号 = this.Team.数据索引.V
                 });
               }
               if (this.CharacterData == this.Team.队长数据)
               {
-                CharacterData CharacterData2 = this.Team.Members.FirstOrDefault((CharacterData O) => O.ActiveConnection != null);
+                CharacterData CharacterData2 = this.Team.Members.FirstOrDefault((CharacterData O) => O.网络连接 != null);
                 if (CharacterData2 != null)
                 {
                   this.Team.队长数据 = CharacterData2;
@@ -15996,10 +15996,10 @@ namespace GameServer.Maps
                 }
                 else
                 {
-                  this.Team.Delete();
+                  this.Team.删除数据();
                 }
               }
-              this.CharacterData.CurrentTeam = null;
+              this.CharacterData.当前队伍 = null;
               return;
             }
             if (!this.Team.Members.Contains(CharacterData))
@@ -16031,20 +16031,20 @@ namespace GameServer.Maps
             else
             {
               this.Team.Members.Remove(CharacterData);
-              CharacterData.CurrentTeam = null;
+              CharacterData.当前队伍 = null;
               this.Team.发送封包(new 队伍成员离开
               {
-                队伍编号 = this.Team.Index.V,
-                对象编号 = CharacterData.CharId
+                队伍编号 = this.Team.数据索引.V,
+                对象编号 = CharacterData.角色编号
               });
-              客户网络 网络连接5 = CharacterData.ActiveConnection;
+              客户网络 网络连接5 = CharacterData.网络连接;
               if (网络连接5 == null)
               {
                 return;
               }
               网络连接5.发送封包(new 玩家离开队伍
               {
-                队伍编号 = this.Team.Index.V
+                队伍编号 = this.Team.数据索引.V
               });
               return;
             }
@@ -16222,7 +16222,7 @@ namespace GameServer.Maps
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
           {
-            if (CharacterData.Mails.Count >= 100)
+            if (CharacterData.角色邮件.Count >= 100)
             {
               客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
@@ -16238,7 +16238,7 @@ namespace GameServer.Maps
             else
             {
               this.NumberGoldCoins -= 1000;
-              CharacterData.SendEmail(new MailData(this.CharacterData, 标题, 正文, null));
+              CharacterData.发送邮件(new MailData(this.CharacterData, 标题, 正文, null));
               客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
               {
@@ -16336,9 +16336,9 @@ namespace GameServer.Maps
             ItemData v = MailData.邮件附件.V;
             if (v != null)
             {
-              v.Delete();
+              v.删除数据();
             }
-            MailData.Delete();
+            MailData.删除数据();
             return;
           }
           客户网络 网络连接2 = this.ActiveConnection;
@@ -16485,10 +16485,10 @@ namespace GameServer.Maps
           }
           网络连接.发送封包(new 行会名字应答
           {
-            行会编号 = GuildData.Index.V,
+            行会编号 = GuildData.数据索引.V,
             行会名字 = GuildData.GuildName.V,
             创建时间 = GuildData.CreatedDate.V,
-            会长编号 = GuildData.行会会长.V.Index.V,
+            会长编号 = GuildData.行会会长.V.数据索引.V,
             行会人数 = (byte)GuildData.行会成员.Count,
             行会等级 = GuildData.行会等级.V
           });
@@ -16770,7 +16770,7 @@ namespace GameServer.Maps
             对象编号 = this.ObjectId,
             行会编号 = this.Guild.行会编号
           });
-          NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]创建公会[{1}]", this.ObjectName, this.Guild), false);
+          网络服务网关.发送公告(string.Format("[{0}]创建公会[{1}]", this.ObjectName, this.Guild), false);
           return;
         }
         客户网络 网络连接7 = this.ActiveConnection;
@@ -16887,7 +16887,7 @@ namespace GameServer.Maps
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
         {
-          if (CharacterData.CurrentGuild != null && CharacterData.CurrentGuild.邀请列表.Remove(this.CharacterData))
+          if (CharacterData.当前行会 != null && CharacterData.当前行会.邀请列表.Remove(this.CharacterData))
           {
             if (处理类型 == 2)
             {
@@ -16906,9 +16906,9 @@ namespace GameServer.Maps
               }
               else
               {
-                if (CharacterData.Guild.V.行会成员.Count < 100)
+                if (CharacterData.所属行会.V.行会成员.Count < 100)
                 {
-                  客户网络 网络连接2 = CharacterData.ActiveConnection;
+                  客户网络 网络连接2 = CharacterData.网络连接;
                   if (网络连接2 != null)
                   {
                     网络连接2.发送封包(new 行会邀请应答
@@ -16917,7 +16917,7 @@ namespace GameServer.Maps
                       应答类型 = 1
                     });
                   }
-                  CharacterData.CurrentGuild.添加成员(this.CharacterData, GuildJobs.会员);
+                  CharacterData.当前行会.添加成员(this.CharacterData, GuildJobs.会员);
                   return;
                 }
                 客户网络 网络连接3 = this.ActiveConnection;
@@ -16934,7 +16934,7 @@ namespace GameServer.Maps
             }
             else
             {
-              客户网络 网络连接4 = CharacterData.ActiveConnection;
+              客户网络 网络连接4 = CharacterData.网络连接;
               if (网络连接4 == null)
               {
                 return;
@@ -17032,13 +17032,13 @@ namespace GameServer.Maps
                 {
                   网络连接4.发送封包(new 入会申请应答
                   {
-                    对象编号 = CharacterData.CharId
+                    对象编号 = CharacterData.角色编号
                   });
                 }
-                CharacterData.SendEmail(new MailData(null, "Membership application rejected", "Guild [" + this.Guild.GuildName.V + "] has rejected your membership application.", null));
+                CharacterData.发送邮件(new MailData(null, "Membership application rejected", "Guild [" + this.Guild.GuildName.V + "] has rejected your membership application.", null));
                 return;
               }
-              if (CharacterData.CurrentGuild != null)
+              if (CharacterData.当前行会 != null)
               {
                 客户网络 网络连接5 = this.ActiveConnection;
                 if (网络连接5 == null)
@@ -17061,7 +17061,7 @@ namespace GameServer.Maps
                 }
                 网络连接6.发送封包(new 入会申请应答
                 {
-                  对象编号 = CharacterData.CharId
+                  对象编号 = CharacterData.角色编号
                 });
                 return;
               }
@@ -17231,7 +17231,7 @@ namespace GameServer.Maps
           if (CharacterData != null)
           {
             客户网络 客户网络;
-            if (!CharacterData.IsOnline(out 客户网络))
+            if (!CharacterData.角色在线(out 客户网络))
             {
               客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
@@ -17244,7 +17244,7 @@ namespace GameServer.Maps
               });
               return;
             }
-            else if (CharacterData.CurrentGuild != null)
+            else if (CharacterData.当前行会 != null)
             {
               客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 == null)
@@ -17257,7 +17257,7 @@ namespace GameServer.Maps
               });
               return;
             }
-            else if (CharacterData.CharLevel < 8)
+            else if (CharacterData.角色等级 < 8)
             {
               客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 == null)
@@ -17415,12 +17415,12 @@ namespace GameServer.Maps
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
           {
-            if (this.Guild == CharacterData.CurrentGuild)
+            if (this.Guild == CharacterData.当前行会)
             {
               if (this.Guild.行会成员[this.CharacterData] < GuildJobs.长老 && this.Guild.行会成员[this.CharacterData] < this.Guild.行会成员[CharacterData])
               {
                 this.Guild.逐出成员(this.CharacterData, CharacterData);
-                CharacterData.SendEmail(new MailData(null, "You are kicked from the Guild", string.Concat(new string[]
+                CharacterData.发送邮件(new MailData(null, "You are kicked from the Guild", string.Concat(new string[]
                 {
                                     "You have been [",
                                     this.Guild.GuildName.V,
@@ -17506,7 +17506,7 @@ namespace GameServer.Maps
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
           {
-            if (CharacterData.CurrentGuild == this.Guild)
+            if (CharacterData.当前行会 == this.Guild)
             {
               this.Guild.转移会长(this.CharacterData, CharacterData);
               return;
@@ -17568,7 +17568,7 @@ namespace GameServer.Maps
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
           {
-            if (CharacterData.CurrentGuild == this.Guild)
+            if (CharacterData.当前行会 == this.Guild)
             {
               if (this.Guild.行会成员[this.CharacterData] < GuildJobs.理事 && this.Guild.行会成员[this.CharacterData] < this.Guild.行会成员[CharacterData])
               {
@@ -17638,7 +17638,7 @@ namespace GameServer.Maps
           CharacterData CharacterData = GameData as CharacterData;
           if (CharacterData != null)
           {
-            if (CharacterData.CurrentGuild == this.Guild)
+            if (CharacterData.当前行会 == this.Guild)
             {
               if (this.Guild.行会成员[this.CharacterData] < GuildJobs.理事 && this.Guild.行会成员[this.CharacterData] < this.Guild.行会成员[CharacterData])
               {
@@ -17902,7 +17902,7 @@ namespace GameServer.Maps
                 if (外交类型 == 2)
                 {
                   this.Guild.行会Hostility(GuildData, 外交时间);
-                  NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]和[{1}]成为敌方公会。", this.Guild, GuildData), false);
+                  网络服务网关.发送公告(string.Format("[{0}]和[{1}]成为敌方公会。", this.Guild, GuildData), false);
                   return;
                 }
                 this.ActiveConnection.尝试断开连接(new Exception("错误动作:申请公会外交。错误:错误的类型参数"));
@@ -18005,7 +18005,7 @@ namespace GameServer.Maps
               if (Hostility时间 >= 1 && Hostility时间 <= 3)
               {
                 this.Guild.行会Hostility(GuildData, Hostility时间);
-                NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]和[{1}]已经成为相互竞争的公会。", this.Guild, GuildData), false);
+                网络服务网关.发送公告(string.Format("[{0}]和[{1}]已经成为相互竞争的公会。", this.Guild, GuildData), false);
                 return;
               }
               this.ActiveConnection.尝试断开连接(new Exception("错误行为:申请公会敌对。错误:错误的时间参数"));
@@ -18165,7 +18165,7 @@ namespace GameServer.Maps
               if (处理类型 == 2)
               {
                 this.Guild.行会结盟(GuildData);
-                NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]和[{1}]成为联盟公会。", this.Guild, GuildData), false);
+                网络服务网关.发送公告(string.Format("[{0}]和[{1}]成为联盟公会。", this.Guild, GuildData), false);
                 this.Guild.结盟申请.Remove(GuildData);
                 return;
               }
@@ -18240,7 +18240,7 @@ namespace GameServer.Maps
             if (this.Guild.结盟行会.ContainsKey(GuildData))
             {
               this.Guild.解除结盟(this.CharacterData, GuildData);
-              NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]解散了与[{1}]的公会联盟。", this.Guild, GuildData), false);
+              网络服务网关.发送公告(string.Format("[{0}]解散了与[{1}]的公会联盟。", this.Guild, GuildData), false);
               return;
             }
             客户网络 网络连接4 = this.ActiveConnection;
@@ -18455,7 +18455,7 @@ namespace GameServer.Maps
               if (MapGatewayProcess.SabakStage < 2 || ((this.Guild != SystemData.Data.OccupyGuild.V || !MapGatewayProcess.攻城行会.Contains(GuildData)) && (GuildData != SystemData.Data.OccupyGuild.V || !MapGatewayProcess.攻城行会.Contains(this.Guild))))
               {
                 this.Guild.解除Hostility(GuildData);
-                NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]解除了公会与[{1}]的敌对状态。", this.Guild, GuildData), false);
+                网络服务网关.发送公告(string.Format("[{0}]解除了公会与[{1}]的敌对状态。", this.Guild, GuildData), false);
                 this.Guild.解除申请.Remove(GuildData);
                 return;
               }
@@ -18564,7 +18564,7 @@ namespace GameServer.Maps
             });
             return;
           }
-          else if (CharacterData.CharLevel < 30)
+          else if (CharacterData.角色等级 < 30)
           {
             客户网络 网络连接3 = this.ActiveConnection;
             if (网络连接3 == null)
@@ -18577,7 +18577,7 @@ namespace GameServer.Maps
             });
             return;
           }
-          else if (CharacterData.CurrentTeacher != null && CharacterData.CharId != CharacterData.CurrentTeacher.MasterId)
+          else if (CharacterData.当前师门 != null && CharacterData.角色编号 != CharacterData.当前师门.MasterId)
           {
             客户网络 网络连接4 = this.ActiveConnection;
             if (网络连接4 == null)
@@ -18590,7 +18590,7 @@ namespace GameServer.Maps
             });
             return;
           }
-          else if (CharacterData.CurrentTeacher != null && CharacterData.CurrentTeacher.徒弟数量 >= 3)
+          else if (CharacterData.当前师门 != null && CharacterData.当前师门.徒弟数量 >= 3)
           {
             客户网络 网络连接5 = this.ActiveConnection;
             if (网络连接5 == null)
@@ -18606,19 +18606,19 @@ namespace GameServer.Maps
           else
           {
             客户网络 客户网络;
-            if (CharacterData.IsOnline(out 客户网络))
+            if (CharacterData.角色在线(out 客户网络))
             {
-              if (CharacterData.CurrentTeacher == null)
+              if (CharacterData.当前师门 == null)
               {
-                CharacterData.CurrentTeacher = new TeacherData(CharacterData);
+                CharacterData.当前师门 = new TeacherData(CharacterData);
               }
-              CharacterData.CurrentTeacher.申请列表[this.ObjectId] = MainProcess.CurrentTime;
+              CharacterData.当前师门.申请列表[this.ObjectId] = MainProcess.CurrentTime;
               客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 != null)
               {
                 网络连接6.发送封包(new 申请拜师应答
                 {
-                  对象编号 = CharacterData.CharId
+                  对象编号 = CharacterData.角色编号
                 });
               }
               客户网络.发送封包(new 申请拜师提示
@@ -18665,7 +18665,7 @@ namespace GameServer.Maps
             this.ActiveConnection.尝试断开连接(new Exception("Mistake: Agreeing to the application, Error: Insufficient level."));
             return;
           }
-          if (CharacterData.CharLevel >= 30)
+          if (CharacterData.角色等级 >= 30)
           {
             客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
@@ -18678,7 +18678,7 @@ namespace GameServer.Maps
             });
             return;
           }
-          else if (CharacterData.CurrentTeacher != null)
+          else if (CharacterData.当前师门 != null)
           {
             客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
@@ -18703,7 +18703,7 @@ namespace GameServer.Maps
               this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Agree to apply for a teacher, Error: Not yet a teacher myself."));
               return;
             }
-            if (!this.所属师门.申请列表.ContainsKey(CharacterData.CharId))
+            if (!this.所属师门.申请列表.ContainsKey(CharacterData.角色编号))
             {
               客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
@@ -18732,7 +18732,7 @@ namespace GameServer.Maps
             else
             {
               客户网络 客户网络;
-              if (CharacterData.IsOnline(out 客户网络))
+              if (CharacterData.角色在线(out 客户网络))
               {
                 if (this.所属师门 == null)
                 {
@@ -18741,14 +18741,14 @@ namespace GameServer.Maps
                 this.所属师门.添加徒弟(CharacterData);
                 this.所属师门.发送封包(new 收徒成功提示
                 {
-                  对象编号 = CharacterData.CharId
+                  对象编号 = CharacterData.角色编号
                 });
                 客户网络 网络连接5 = this.ActiveConnection;
                 if (网络连接5 != null)
                 {
                   网络连接5.发送封包(new 拜师申请通过
                   {
-                    对象编号 = CharacterData.CharId
+                    对象编号 = CharacterData.角色编号
                   });
                 }
                 客户网络 网络连接6 = this.ActiveConnection;
@@ -18813,7 +18813,7 @@ namespace GameServer.Maps
             this.ActiveConnection.尝试断开连接(new Exception("Wrong operation: RefusedApplyApprenticeshipPacket, Error: Self not yet mastered."));
             return;
           }
-          if (!this.所属师门.申请列表.ContainsKey(CharacterData.CharId))
+          if (!this.所属师门.申请列表.ContainsKey(CharacterData.角色编号))
           {
             客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
@@ -18833,14 +18833,14 @@ namespace GameServer.Maps
             {
               网络连接2.发送封包(new 拜师申请拒绝
               {
-                对象编号 = CharacterData.CharId
+                对象编号 = CharacterData.角色编号
               });
             }
-            if (!this.所属师门.申请列表.Remove(CharacterData.CharId))
+            if (!this.所属师门.申请列表.Remove(CharacterData.角色编号))
             {
               return;
             }
-            客户网络 网络连接3 = CharacterData.ActiveConnection;
+            客户网络 网络连接3 = CharacterData.网络连接;
             if (网络连接3 == null)
             {
               return;
@@ -18878,7 +18878,7 @@ namespace GameServer.Maps
             this.ActiveConnection.尝试断开连接(new Exception("Error: Player applied for an apprentice, Error: Insufficient level."));
             return;
           }
-          if (CharacterData.CharLevel >= 30)
+          if (CharacterData.角色等级 >= 30)
           {
             客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
@@ -18891,7 +18891,7 @@ namespace GameServer.Maps
             });
             return;
           }
-          else if (CharacterData.CurrentTeacher != null)
+          else if (CharacterData.当前师门 != null)
           {
             客户网络 网络连接2 = this.ActiveConnection;
             if (网络连接2 == null)
@@ -18927,19 +18927,19 @@ namespace GameServer.Maps
             else
             {
               客户网络 客户网络;
-              if (CharacterData.IsOnline(out 客户网络))
+              if (CharacterData.角色在线(out 客户网络))
               {
                 if (this.所属师门 == null)
                 {
                   this.所属师门 = new TeacherData(this.CharacterData);
                 }
-                this.所属师门.邀请列表[CharacterData.CharId] = MainProcess.CurrentTime;
+                this.所属师门.邀请列表[CharacterData.角色编号] = MainProcess.CurrentTime;
                 客户网络 网络连接4 = this.ActiveConnection;
                 if (网络连接4 != null)
                 {
                   网络连接4.发送封包(new 申请收徒应答
                   {
-                    对象编号 = CharacterData.CharId
+                    对象编号 = CharacterData.角色编号
                   });
                 }
                 客户网络.发送封包(new 申请收徒提示
@@ -19012,23 +19012,23 @@ namespace GameServer.Maps
           }
           else
           {
-            if (CharacterData.CharLevel < 30)
+            if (CharacterData.角色等级 < 30)
             {
               this.ActiveConnection.尝试断开连接(new Exception("Incorrect action: Agree to apprentice application, Error: The other party is not of sufficient level."));
               return;
             }
-            if (CharacterData.CurrentTeacher == null)
+            if (CharacterData.当前师门 == null)
             {
               this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Agree to apprentice application, Error: The other party does not have a master."));
               return;
             }
-            if (CharacterData.CurrentTeacher.MasterId != CharacterData.CharId)
+            if (CharacterData.当前师门.MasterId != CharacterData.角色编号)
             {
               this.ActiveConnection.尝试断开连接(new Exception("Wrong action: Agree to apprentice application, Error: The other party is not yet a student."));
               return;
             }
             客户网络 客户网络;
-            if (!CharacterData.CurrentTeacher.邀请列表.ContainsKey(this.ObjectId))
+            if (!CharacterData.当前师门.邀请列表.ContainsKey(this.ObjectId))
             {
               客户网络 网络连接3 = this.ActiveConnection;
               if (网络连接3 == null)
@@ -19041,7 +19041,7 @@ namespace GameServer.Maps
               });
               return;
             }
-            else if (CharacterData.CurrentTeacher.徒弟数量 >= 3)
+            else if (CharacterData.当前师门.徒弟数量 >= 3)
             {
               客户网络 网络连接4 = this.ActiveConnection;
               if (网络连接4 == null)
@@ -19054,35 +19054,35 @@ namespace GameServer.Maps
               });
               return;
             }
-            else if (CharacterData.IsOnline(out 客户网络))
+            else if (CharacterData.角色在线(out 客户网络))
             {
               客户网络 网络连接5 = this.ActiveConnection;
               if (网络连接5 != null)
               {
                 网络连接5.发送封包(new 收徒申请同意
                 {
-                  对象编号 = CharacterData.CharId
+                  对象编号 = CharacterData.角色编号
                 });
               }
-              if (CharacterData.CurrentTeacher == null)
+              if (CharacterData.当前师门 == null)
               {
-                CharacterData.CurrentTeacher = new TeacherData(CharacterData);
+                CharacterData.当前师门 = new TeacherData(CharacterData);
               }
               客户网络.发送封包(new 收徒成功提示
               {
                 对象编号 = this.ObjectId
               });
-              CharacterData.CurrentTeacher.发送封包(new 收徒成功提示
+              CharacterData.当前师门.发送封包(new 收徒成功提示
               {
                 对象编号 = this.ObjectId
               });
-              CharacterData.CurrentTeacher.添加徒弟(this.CharacterData);
+              CharacterData.当前师门.添加徒弟(this.CharacterData);
               客户网络 网络连接6 = this.ActiveConnection;
               if (网络连接6 != null)
               {
                 网络连接6.发送封包(new 查询师门成员
                 {
-                  字节数据 = CharacterData.CurrentTeacher.成员数据()
+                  字节数据 = CharacterData.当前师门.成员数据()
                 });
               }
               客户网络 网络连接7 = this.ActiveConnection;
@@ -19132,17 +19132,17 @@ namespace GameServer.Maps
         CharacterData CharacterData = GameData as CharacterData;
         if (CharacterData != null)
         {
-          if (CharacterData.Teacher == null)
+          if (CharacterData.所属师门 == null)
           {
             this.ActiveConnection.尝试断开连接(new Exception("Wrong action: RejectionApprenticeshipAppPacket, Error: Division not yet created."));
             return;
           }
-          if (CharacterData.CurrentTeacher.MasterId != CharacterData.CharId)
+          if (CharacterData.当前师门.MasterId != CharacterData.角色编号)
           {
             this.ActiveConnection.尝试断开连接(new Exception("Wrong operation: RefusedApplyApprenticeshipPacket, Error: Self not yet mastered."));
             return;
           }
-          if (!CharacterData.CurrentTeacher.邀请列表.ContainsKey(this.ObjectId))
+          if (!CharacterData.当前师门.邀请列表.ContainsKey(this.ObjectId))
           {
             客户网络 网络连接 = this.ActiveConnection;
             if (网络连接 == null)
@@ -19162,14 +19162,14 @@ namespace GameServer.Maps
             {
               网络连接2.发送封包(new 收徒申请拒绝
               {
-                对象编号 = CharacterData.CharId
+                对象编号 = CharacterData.角色编号
               });
             }
-            if (!CharacterData.CurrentTeacher.邀请列表.Remove(this.ObjectId))
+            if (!CharacterData.当前师门.邀请列表.Remove(this.ObjectId))
             {
               return;
             }
-            客户网络 网络连接3 = CharacterData.ActiveConnection;
+            客户网络 网络连接3 = CharacterData.网络连接;
             if (网络连接3 == null)
             {
               return;
@@ -19217,37 +19217,37 @@ namespace GameServer.Maps
           {
             网络连接.发送封包(new 逐出师门应答
             {
-              对象编号 = CharacterData.CharId
+              对象编号 = CharacterData.角色编号
             });
           }
           this.所属师门.发送封包(new 逐出师门提示
           {
-            对象编号 = CharacterData.CharId
+            对象编号 = CharacterData.角色编号
           });
           int num = this.所属师门.徒弟出师金币(CharacterData);
           int num2 = this.所属师门.徒弟出师经验(CharacterData);
           PlayerObject PlayerObject;
-          if (MapGatewayProcess.Players.TryGetValue(CharacterData.CharId, out PlayerObject))
+          if (MapGatewayProcess.Players.TryGetValue(CharacterData.角色编号, out PlayerObject))
           {
             PlayerObject.NumberGoldCoins += num;
             PlayerObject.GainExperience(null, num2);
           }
           else
           {
-            CharacterData.GetExperience(num2);
-            CharacterData.NumberGoldCoins += num;
+            CharacterData.获得经验(num2);
+            CharacterData.金币数量 += num;
           }
           this.所属师门.移除徒弟(CharacterData);
-          CharacterData.CurrentTeacher = null;
-          客户网络 网络连接2 = CharacterData.ActiveConnection;
+          CharacterData.当前师门 = null;
+          客户网络 网络连接2 = CharacterData.网络连接;
           if (网络连接2 != null)
           {
             网络连接2.发送封包(new 同步师门信息
             {
-              师门参数 = ((byte)((CharacterData.CharLevel < 30) ? 0 : 2))
+              师门参数 = ((byte)((CharacterData.角色等级 < 30) ? 0 : 2))
             });
           }
-          CharacterData.SendEmail(new MailData(null, "You have been kicked from the school", "You have been[" + this.ObjectName + "]Expelled from the division.", null));
+          CharacterData.发送邮件(new MailData(null, "You have been kicked from the school", "You have been[" + this.ObjectName + "]Expelled from the division.", null));
           return;
         }
       }
@@ -19280,7 +19280,7 @@ namespace GameServer.Maps
       {
         网络连接.发送封包(new 离开师门应答());
       }
-      客户网络 网络连接2 = this.所属师门.师父数据.ActiveConnection;
+      客户网络 网络连接2 = this.所属师门.师父数据.网络连接;
       if (网络连接2 != null)
       {
         网络连接2.发送封包(new 离开师门提示
@@ -19292,12 +19292,12 @@ namespace GameServer.Maps
       {
         对象编号 = this.ObjectId
       });
-      this.所属师门.师父数据.SendEmail(new MailData(null, "The disciple's rebellion against his master", "Your apprentice[" + this.ObjectName + "]Has defected from the school.", null));
+      this.所属师门.师父数据.发送邮件(new MailData(null, "The disciple's rebellion against his master", "Your apprentice[" + this.ObjectName + "]Has defected from the school.", null));
       int num = this.所属师门.徒弟提供金币(this.CharacterData);
       int num2 = this.所属师门.徒弟提供声望(this.CharacterData);
       int num3 = this.所属师门.徒弟提供金币(this.CharacterData);
       PlayerObject PlayerObject;
-      if (MapGatewayProcess.Players.TryGetValue(this.所属师门.师父数据.CharId, out PlayerObject))
+      if (MapGatewayProcess.Players.TryGetValue(this.所属师门.师父数据.角色编号, out PlayerObject))
       {
         PlayerObject.NumberGoldCoins += num;
         PlayerObject.MasterRep += num2;
@@ -19305,12 +19305,12 @@ namespace GameServer.Maps
       }
       else
       {
-        this.所属师门.师父数据.GetExperience(num3);
-        this.所属师门.师父数据.NumberGoldCoins += num;
-        this.所属师门.师父数据.MasterRep += num2;
+        this.所属师门.师父数据.获得经验(num3);
+        this.所属师门.师父数据.金币数量 += num;
+        this.所属师门.师父数据.师门声望 += num2;
       }
       this.所属师门.移除徒弟(this.CharacterData);
-      this.CharacterData.CurrentTeacher = null;
+      this.CharacterData.当前师门 = null;
       客户网络 网络连接3 = this.ActiveConnection;
       if (网络连接3 == null)
       {
@@ -19344,7 +19344,7 @@ namespace GameServer.Maps
       int num2 = this.所属师门.徒弟提供声望(this.CharacterData);
       int num3 = this.所属师门.徒弟提供金币(this.CharacterData);
       PlayerObject PlayerObject;
-      if (MapGatewayProcess.Players.TryGetValue(this.所属师门.师父数据.CharId, out PlayerObject))
+      if (MapGatewayProcess.Players.TryGetValue(this.所属师门.师父数据.角色编号, out PlayerObject))
       {
         PlayerObject.NumberGoldCoins += num;
         PlayerObject.MasterRep += num2;
@@ -19352,13 +19352,13 @@ namespace GameServer.Maps
       }
       else
       {
-        this.所属师门.师父数据.GetExperience(num3);
-        this.所属师门.师父数据.NumberGoldCoins += num;
-        this.所属师门.师父数据.MasterRep += num2;
+        this.所属师门.师父数据.获得经验(num3);
+        this.所属师门.师父数据.金币数量 += num;
+        this.所属师门.师父数据.师门声望 += num2;
       }
       this.NumberGoldCoins += this.所属师门.徒弟出师金币(this.CharacterData);
       this.GainExperience(null, this.所属师门.徒弟出师经验(this.CharacterData));
-      客户网络 网络连接 = this.所属师门.师父数据.ActiveConnection;
+      客户网络 网络连接 = this.所属师门.师父数据.网络连接;
       if (网络连接 != null)
       {
         网络连接.发送封包(new 徒弟成功出师
@@ -19367,7 +19367,7 @@ namespace GameServer.Maps
         });
       }
       this.所属师门.移除徒弟(this.CharacterData);
-      this.CharacterData.CurrentTeacher = null;
+      this.CharacterData.当前师门 = null;
       客户网络 网络连接2 = this.ActiveConnection;
       if (网络连接2 != null)
       {
@@ -20610,7 +20610,7 @@ namespace GameServer.Maps
               {
                 int num = PlayerObject.当前摊位.物品单价[ItemData] * (int)购买数量;
                 this.NumberGoldCoins -= num;
-                this.CharacterData.TransferOutGoldCoins.V += (long)num;
+                this.CharacterData.转出金币.V += (long)num;
                 PlayerObject.NumberGoldCoins += (int)((float)num * 0.95f);
                 Dictionary<ItemData, int> 物品数量 = PlayerObject.当前摊位.物品数量;
                 ItemData key = ItemData;
@@ -20808,8 +20808,8 @@ namespace GameServer.Maps
         {
           foreach (BuffData BuffData in this.Buffs.Values)
           {
-            binaryWriter.Write(BuffData.Id.V);
-            binaryWriter.Write((int)BuffData.Id.V);
+            binaryWriter.Write(BuffData.Buff编号.V);
+            binaryWriter.Write((int)BuffData.Buff编号.V);
             binaryWriter.Write(BuffData.当前层数.V);
             binaryWriter.Write((int)BuffData.剩余时间.V.TotalMilliseconds);
             binaryWriter.Write((int)BuffData.持续时间.V.TotalMilliseconds);
@@ -20876,7 +20876,7 @@ namespace GameServer.Maps
           for (int i = 0; i <= 19; i++)
           {
             binaryWriter.Seek(i * 48, SeekOrigin.Begin);
-            binaryWriter.Write(CharacterData.Currencies[(GameCurrency)i]);
+            binaryWriter.Write(CharacterData.角色货币[(GameCurrency)i]);
             for (var c = 0; c < data[c].Length; c++)
               binaryWriter.Write(data[i][c]);
           }
@@ -21068,28 +21068,28 @@ namespace GameServer.Maps
           binaryWriter.Write((byte)(this.偶像列表.Count + this.仇人列表.Count));
           foreach (CharacterData CharacterData in this.偶像列表)
           {
-            binaryWriter.Write(CharacterData.Index.V);
+            binaryWriter.Write(CharacterData.数据索引.V);
             byte[] array = new byte[69];
             byte[] array2 = CharacterData.名字描述();
             Buffer.BlockCopy(array2, 0, array, 0, array2.Length);
             binaryWriter.Write(array);
-            binaryWriter.Write((byte)CharacterData.CharRace.V);
-            binaryWriter.Write((byte)CharacterData.CharGender.V);
-            binaryWriter.Write((CharacterData.ActiveConnection != null) ? 0 : 3);
+            binaryWriter.Write((byte)CharacterData.角色职业.V);
+            binaryWriter.Write((byte)CharacterData.角色性别.V);
+            binaryWriter.Write((CharacterData.网络连接 != null) ? 0 : 3);
             binaryWriter.Write(0U);
             binaryWriter.Write((byte)0);
             binaryWriter.Write((byte)(this.好友列表.Contains(CharacterData) ? 1 : 0));
           }
           foreach (CharacterData CharacterData2 in this.仇人列表)
           {
-            binaryWriter.Write(CharacterData2.Index.V);
+            binaryWriter.Write(CharacterData2.数据索引.V);
             byte[] array3 = new byte[69];
             byte[] array4 = CharacterData2.名字描述();
             Buffer.BlockCopy(array4, 0, array3, 0, array4.Length);
             binaryWriter.Write(array3);
-            binaryWriter.Write((byte)CharacterData2.CharRace.V);
-            binaryWriter.Write((byte)CharacterData2.CharGender.V);
-            binaryWriter.Write((CharacterData2.ActiveConnection != null) ? 0 : 3);
+            binaryWriter.Write((byte)CharacterData2.角色职业.V);
+            binaryWriter.Write((byte)CharacterData2.角色性别.V);
+            binaryWriter.Write((CharacterData2.网络连接 != null) ? 0 : 3);
             binaryWriter.Write(0U);
             binaryWriter.Write((byte)21);
             binaryWriter.Write((byte)0);
@@ -21111,7 +21111,7 @@ namespace GameServer.Maps
           binaryWriter.Write((byte)this.黑名单表.Count);
           foreach (CharacterData CharacterData in this.黑名单表)
           {
-            binaryWriter.Write(CharacterData.Index.V);
+            binaryWriter.Write(CharacterData.数据索引.V);
           }
           result = memoryStream.ToArray();
         }
@@ -21154,13 +21154,13 @@ namespace GameServer.Maps
 
     public void 切换觉醒栏经验封包(bool enabled)
     {
-      CharacterData.AwakeningExpEnabled.V = !CharacterData.AwakeningExpEnabled.V;
+      CharacterData.觉醒经验启用.V = !CharacterData.觉醒经验启用.V;
       ActiveConnection?.发送封包(new 同步补充变量
       {
         变量类型 = 1,
         变量索引 = 50,
         对象编号 = ObjectId,
-        变量内容 = CharacterData.AwakeningExpEnabled.V ? 3680 : 3616
+        变量内容 = CharacterData.觉醒经验启用.V ? 3680 : 3616
       });
     }
 
@@ -21171,10 +21171,10 @@ namespace GameServer.Maps
 
       var requiredExp = skill.升级经验;
 
-      if (CharacterData.AwakeningExp.V < requiredExp)
+      if (CharacterData.觉醒经验.V < requiredExp)
         return;
 
-      CharacterData.AwakeningExp.V -= requiredExp;
+      CharacterData.觉醒经验.V -= requiredExp;
 
       ActiveConnection?.发送封包(new 角色经验变动
       {

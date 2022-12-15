@@ -41,7 +41,7 @@ namespace GameServer.Networking
             当前连接.NoDelay = true;
             接入时间 = MainProcess.CurrentTime;
             掉线判定时间 = MainProcess.CurrentTime.AddMinutes(Config.掉线判定时间);
-            断网事件 = (EventHandler<Exception>)Delegate.Combine(断网事件, new EventHandler<Exception>(NetworkServiceGateway.断网回调));
+            断网事件 = (EventHandler<Exception>)Delegate.Combine(断网事件, new EventHandler<Exception>(网络服务网关.断网回调));
             网络地址 = 当前连接.Client.RemoteEndPoint.ToString().Split(':')[0];
             开始异步接收();
         }
@@ -50,7 +50,7 @@ namespace GameServer.Networking
         {
             try
             {
-                if (!正在断开 && !NetworkServiceGateway.网络服务停止)
+                if (!正在断开 && !网络服务网关.网络服务停止)
                 {
                     if (MainProcess.CurrentTime > 掉线判定时间)
                     {
@@ -66,7 +66,7 @@ namespace GameServer.Networking
                 {
                     玩家实例?.Disconnect();
                     账号数据?.Disconnect();
-                    NetworkServiceGateway.Disconnected(this);
+                    网络服务网关.移除网络(this);
                     当前连接.Client.Shutdown(SocketShutdown.Both);
                     当前连接.Close();
                     接收列表 = null;
@@ -85,7 +85,7 @@ namespace GameServer.Networking
                 {
                     var sb = new StringBuilder();
                     sb.AppendLine("处理网络数据时出现异常, 已断开对应连接");
-                    sb.AppendLine($"账号:[{账号数据?.Account.V ?? "None"}]");
+                    sb.AppendLine($"账号:[{账号数据?.账号名字.V ?? "None"}]");
                     sb.AppendLine($"角色:[{玩家实例?.ObjectName ?? "None"}]");
                     sb.AppendLine($"IP:[{网络地址}]");
                     sb.AppendLine($"MAC:[{MacAddress}]");
@@ -95,7 +95,7 @@ namespace GameServer.Networking
 
                 玩家实例?.Disconnect();
                 账号数据?.Disconnect();
-                NetworkServiceGateway.Disconnected(this);
+                网络服务网关.移除网络(this);
                 当前连接.Client?.Shutdown(SocketShutdown.Both);
                 当前连接?.Close();
 
@@ -106,7 +106,7 @@ namespace GameServer.Networking
         }
         public void 发送封包(GamePacket packet)
         {
-            if (!正在断开 && !NetworkServiceGateway.网络服务停止 && packet != null)
+            if (!正在断开 && !网络服务网关.网络服务停止 && packet != null)
             {
                 if (Config.SendPacketsAsync)
                 {
@@ -114,7 +114,7 @@ namespace GameServer.Networking
                 }
                 else
                 {
-                    MainForm.AddPacketLog(packet, false);
+                    MainForm.添加封包日志(packet, false);
                     当前连接.Client.Send(packet.取字节());
                 }
             }
@@ -159,10 +159,10 @@ namespace GameServer.Networking
         {
             while (!接收列表.IsEmpty)
             {
-                if (接收列表.Count > Config.PacketLimit)
+                if (接收列表.Count > Config.封包限定数量)
                 {
                     接收列表.Clear();
-                    NetworkServiceGateway.屏蔽网络(this.网络地址);
+                    网络服务网关.屏蔽网络(this.网络地址);
                     尝试断开连接(new Exception("封包超出总数限制，断开连接并限制登陆."));
                     return;
                 }
@@ -170,7 +170,7 @@ namespace GameServer.Networking
                 if (接收列表.TryDequeue(out GamePacket packet))
                 {
                     //接收封包发送到封包调试界面
-                    MainForm.AddPacketLog(packet, true);
+                    MainForm.添加封包日志(packet, true);
                     if (!GamePacket.封包处理方法.TryGetValue(packet.封包类型, out MethodInfo methodInfo))
                     {
                         尝试断开连接(new Exception("没有找到封包处理方法, 断开连接. 封包类型: " + packet.封包类型.FullName));
@@ -187,7 +187,7 @@ namespace GameServer.Networking
             while (发送列表.TryDequeue(out GamePacket packet))
             {
                 //将发送封包输出到封包调试界面
-                MainForm.AddPacketLog(packet, false);
+                MainForm.添加封包日志(packet, false);
                 list.AddRange(packet.取字节());
             }
 
@@ -204,7 +204,7 @@ namespace GameServer.Networking
         {
             try
             {
-                if (!this.正在断开 && !NetworkServiceGateway.网络服务停止)
+                if (!this.正在断开 && !网络服务网关.网络服务停止)
                 {
                     byte[] array = new byte[8192];
                     this.当前连接.Client.BeginReceive(array, 0, array.Length, SocketFlags.None, new AsyncCallback(this.接收完成回调), array);
@@ -219,14 +219,14 @@ namespace GameServer.Networking
         {
             try
             {
-                if (!this.正在断开 && !NetworkServiceGateway.网络服务停止 && this.当前连接.Client != null)
+                if (!this.正在断开 && !网络服务网关.网络服务停止 && this.当前连接.Client != null)
                 {
                     Socket client = this.当前连接.Client;
                     int num = (client != null) ? client.EndReceive(result) : 0;
                     if (num > 0)
                     {
                         this.TotalReceived += num;
-                        NetworkServiceGateway.ReceivedBytes += (long)num;
+                        网络服务网关.已接收字节数 += (long)num;
                         Array src = result.AsyncState as byte[];
                         byte[] dst = new byte[this.剩余数据.Length + num];
                         Buffer.BlockCopy(this.剩余数据, 0, dst, 0, this.剩余数据.Length);
@@ -283,7 +283,7 @@ namespace GameServer.Networking
             {
                 int num = this.当前连接.Client.EndSend(异步参数);
                 this.TotalSended += num;
-                NetworkServiceGateway.SendedBytes += (long)num;
+                网络服务网关.已发送字节数 += (long)num;
                 if (num == 0)
                 {
                     this.发送列表 = new ConcurrentQueue<GamePacket>();
@@ -2122,7 +2122,7 @@ namespace GameServer.Networking
             {
                 this.尝试断开连接(new Exception("网卡封禁，限制登陆。"));
             }
-            else if (!NetworkServiceGateway.门票DataSheet.TryGetValue(P.登陆门票, out 门票信息 TicketInformation))
+            else if (!网络服务网关.门票DataSheet.TryGetValue(P.登陆门票, out 门票信息 TicketInformation))
             {
                 this.尝试断开连接(new Exception("登录的门票不存在."));
             }
@@ -2159,7 +2159,7 @@ namespace GameServer.Networking
                     AccountData3.账号登录(this, P.MacAddress);
                 }
             }
-            NetworkServiceGateway.门票DataSheet.Remove(P.登陆门票);
+            网络服务网关.门票DataSheet.Remove(P.登陆门票);
         }
         public void 处理封包(玩家创建角色封包 P)
         {

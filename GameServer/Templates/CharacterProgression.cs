@@ -80,7 +80,7 @@ namespace GameServer.Templates
             for (byte i = 60; i <= 105; i++)
                 dictionary[i] = 800000000;
 
-            CharacterProgression.MaxExpTable = dictionary;
+            CharacterProgression.升级所需经验 = dictionary;
             CharacterProgression.宠物升级经验 = new ushort[]
             {
                 5,
@@ -156,7 +156,7 @@ namespace GameServer.Templates
         public static Dictionary<int, Dictionary<GameObjectStats, int>> DataSheet;
 
 
-        public static readonly Dictionary<byte, long> MaxExpTable;
+        public static readonly Dictionary<byte, long> 升级所需经验;
 
 
         public static readonly ushort[] 宠物升级经验;

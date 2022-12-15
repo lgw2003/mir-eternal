@@ -43,7 +43,7 @@ namespace GameServer.Data
 
         public override string ToString()
         {
-            Type type = this.Data型;
+            Type type = this.数据类型;
             if (type == null)
             {
                 return null;
@@ -54,7 +54,7 @@ namespace GameServer.Data
 
         public GameData()
         {
-            this.Data型 = base.GetType();
+            this.数据类型 = base.GetType();
             this.内存流 = new MemoryStream();
             this.写入流 = new BinaryWriter(this.内存流);
             this.创建字段();
@@ -92,7 +92,7 @@ namespace GameServer.Data
         }
 
 
-        public virtual void Delete()
+        public virtual void 删除数据()
         {
             DataTableBase 数据存表 = this.StorageDataTable;
             if (数据存表 == null)
@@ -103,15 +103,15 @@ namespace GameServer.Data
         }
 
 
-        public virtual void OnLoadCompleted()
+        public virtual void 加载完成()
         {
         }
 
 
-        public readonly DataMonitor<int> Index;
+        public readonly DataMonitor<int> 数据索引;
 
 
-        public readonly Type Data型;
+        public readonly Type 数据类型;
 
 
         public readonly MemoryStream 内存流;

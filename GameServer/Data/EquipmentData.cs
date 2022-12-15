@@ -321,7 +321,7 @@ namespace GameServer.Data
         decimal d = 最大持久.V - 当前持久.V;
         decimal d2 = ((装备物品)对应模板.V).特修花费;
         decimal d3 = ((装备物品)对应模板.V).物品持久 * 1000m;
-        return (int)(d2 / d3 * d * Config.EquipRepairDto * 1.15m);
+        return (int)(d2 / d3 * d * Config.装备特修折扣 * 1.15m);
       }
     }
 
@@ -1063,19 +1063,19 @@ namespace GameServer.Data
       if (randomGenerated && item.持久类型 == PersistentItemType.装备)
         随机Stat.SetValue(装备属性.GenerateStats(base.物品类型, false));
 
-      var activeQuests = character.GetInProgressQuests();
+      var activeQuests = character.获取正在进行的任务();
       foreach (var quest in activeQuests)
       {
-        var missions = quest.GetMissionsOfType(Models.Enums.QuestMissionType.获取物品);
+        var missions = quest.根据类型获取任务要求(Models.Enums.QuestMissionType.获取物品);
         var updated = false;
         foreach (var mission in missions)
         {
-          if (mission.CompletedDate.V != DateTime.MinValue) continue;
-          if (mission.Info.V.编号 != item.物品编号) continue;
-          mission.Count.V = (byte)(mission.Count.V + 1);
+          if (mission.完成日期.V != DateTime.MinValue) continue;
+          if (mission.完成条件.V.编号 != item.物品编号) continue;
+          mission.数量.V = (byte)(mission.数量.V + 1);
           updated = true;
         }
-        if (updated) character.ActiveConnection?.玩家实例.UpdateQuestProgress(quest);
+        if (updated) character.网络连接?.玩家实例.UpdateQuestProgress(quest);
       }
 
       GameDataGateway.装备数据表.AddData(this, true);
@@ -1119,7 +1119,7 @@ namespace GameServer.Data
         {
           binaryWriter.Write(ItemData.数据版本);
           BinaryWriter binaryWriter2 = binaryWriter;
-          binaryWriter2.Write(生成来源.V?.Index.V ?? 0);
+          binaryWriter2.Write(生成来源.V?.数据索引.V ?? 0);
           binaryWriter.Write(ComputingClass.TimeShift(生成时间.V));
           binaryWriter.Write(对应模板.V.物品编号);
           binaryWriter.Write(物品容器.V);

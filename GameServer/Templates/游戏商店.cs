@@ -93,7 +93,7 @@ namespace GameServer.Templates
             {
                 ItemData ItemData = this.回购列表.Last<ItemData>();
                 this.回购列表.Remove(ItemData);
-                ItemData.Delete();
+                ItemData.删除数据();
             }
         }
     }

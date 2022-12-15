@@ -889,49 +889,49 @@ namespace GameServer.Data
             dictionary2[typeFromHandle41] = delegate (BinaryWriter b, object o)
             {
                 TeacherData v = ((DataMonitor<TeacherData>)o).V;
-                b.Write((v != null) ? v.Index.V : 0);
+                b.Write((v != null) ? v.数据索引.V : 0);
             };
             typeFromHandle40 = typeof(DataMonitor<GuildData>);
             dictionary2[typeFromHandle40] = delegate (BinaryWriter b, object o)
             {
                 GuildData v = ((DataMonitor<GuildData>)o).V;
-                b.Write((v != null) ? v.Index.V : 0);
+                b.Write((v != null) ? v.数据索引.V : 0);
             };
             typeFromHandle39 = typeof(DataMonitor<TeamData>);
             dictionary2[typeFromHandle39] = delegate (BinaryWriter b, object o)
             {
                 TeamData v = ((DataMonitor<TeamData>)o).V;
-                b.Write((v != null) ? v.Index.V : 0);
+                b.Write((v != null) ? v.数据索引.V : 0);
             };
             typeFromHandle38 = typeof(DataMonitor<BuffData>);
             dictionary2[typeFromHandle38] = delegate (BinaryWriter b, object o)
             {
                 BuffData v = ((DataMonitor<BuffData>)o).V;
-                b.Write((v != null) ? v.Index.V : 0);
+                b.Write((v != null) ? v.数据索引.V : 0);
             };
             typeFromHandle37 = typeof(DataMonitor<MailData>);
             dictionary2[typeFromHandle37] = delegate (BinaryWriter b, object o)
             {
                 MailData v = ((DataMonitor<MailData>)o).V;
-                b.Write((v != null) ? v.Index.V : 0);
+                b.Write((v != null) ? v.数据索引.V : 0);
             };
             typeFromHandle36 = typeof(DataMonitor<AccountData>);
             dictionary2[typeFromHandle36] = delegate (BinaryWriter b, object o)
             {
                 AccountData v = ((DataMonitor<AccountData>)o).V;
-                b.Write((v != null) ? v.Index.V : 0);
+                b.Write((v != null) ? v.数据索引.V : 0);
             };
             typeFromHandle35 = typeof(DataMonitor<CharacterData>);
             dictionary2[typeFromHandle35] = delegate (BinaryWriter b, object o)
             {
                 CharacterData v = ((DataMonitor<CharacterData>)o).V;
-                b.Write((v != null) ? v.Index.V : 0);
+                b.Write((v != null) ? v.数据索引.V : 0);
             };
             typeFromHandle34 = typeof(DataMonitor<EquipmentData>);
             dictionary2[typeFromHandle34] = delegate (BinaryWriter b, object o)
             {
                 EquipmentData v = ((DataMonitor<EquipmentData>)o).V;
-                b.Write((v != null) ? v.Index.V : 0);
+                b.Write((v != null) ? v.数据索引.V : 0);
             };
             typeFromHandle33 = typeof(DataMonitor<ItemData>);
             dictionary2[typeFromHandle33] = delegate (BinaryWriter b, object o)
@@ -939,29 +939,29 @@ namespace GameServer.Data
                 DataMonitor<ItemData> DataMonitor = (DataMonitor<ItemData>)o;
                 b.Write(DataMonitor.V is EquipmentData);
                 ItemData v = DataMonitor.V;
-                b.Write((v != null) ? v.Index.V : 0);
+                b.Write((v != null) ? v.数据索引.V : 0);
             };
             dictionary2[typeof(DataMonitor<CharacterQuest>)] = delegate (BinaryWriter b, object o)
             {
-                b.Write(((DataMonitor<CharacterQuest>)o)?.V?.Index.V ?? 0);
+                b.Write(((DataMonitor<CharacterQuest>)o)?.V?.数据索引.V ?? 0);
             };
             dictionary2[typeof(HashMonitor<CharacterQuest>)] = delegate (BinaryWriter b, object o)
             {
                 var HashMonitor = (HashMonitor<CharacterQuest>)o;
                 b.Write((HashMonitor != null) ? HashMonitor.Count : 0);
                 foreach (var item in HashMonitor)
-                    b.Write(item.Index.V);
+                    b.Write(item.数据索引.V);
             };
             dictionary2[typeof(DataMonitor<CharacterQuestMission>)] = delegate (BinaryWriter b, object o)
             {
-                b.Write(((DataMonitor<CharacterQuestMission>)o)?.V?.Index.V ?? 0);
+                b.Write(((DataMonitor<CharacterQuestMission>)o)?.V?.数据索引.V ?? 0);
             };
             dictionary2[typeof(HashMonitor<CharacterQuestMission>)] = delegate (BinaryWriter b, object o)
             {
                 var HashMonitor = (HashMonitor<CharacterQuestMission>)o;
                 b.Write((HashMonitor != null) ? HashMonitor.Count : 0);
                 foreach (var item in HashMonitor)
-                    b.Write(item.Index.V);
+                    b.Write(item.数据索引.V);
             };
             dictionary2[typeof(ListMonitor<short>)] = delegate (BinaryWriter b, object o)
             {
@@ -1024,7 +1024,7 @@ namespace GameServer.Data
                 b.Write((ListMonitor != null) ? ListMonitor.Count : 0);
                 foreach (CharacterData CharacterData in ListMonitor)
                 {
-                    b.Write(CharacterData.Index.V);
+                    b.Write(CharacterData.数据索引.V);
                 }
             };
             typeFromHandle27 = typeof(ListMonitor<PetData>);
@@ -1034,7 +1034,7 @@ namespace GameServer.Data
                 b.Write((ListMonitor != null) ? ListMonitor.Count : 0);
                 foreach (PetData PetData in ListMonitor)
                 {
-                    b.Write(PetData.Index.V);
+                    b.Write(PetData.数据索引.V);
                 }
             };
             typeFromHandle26 = typeof(ListMonitor<GuildData>);
@@ -1044,7 +1044,7 @@ namespace GameServer.Data
                 b.Write((ListMonitor != null) ? ListMonitor.Count : 0);
                 foreach (GuildData GuildData in ListMonitor)
                 {
-                    b.Write(GuildData.Index.V);
+                    b.Write(GuildData.数据索引.V);
                 }
             };
             typeFromHandle25 = typeof(ListMonitor<GuildEvents>);
@@ -1089,7 +1089,7 @@ namespace GameServer.Data
                 b.Write((HashMonitor != null) ? HashMonitor.Count : 0);
                 foreach (PetData PetData in HashMonitor)
                 {
-                    b.Write(PetData.Index.V);
+                    b.Write(PetData.数据索引.V);
                 }
             };
             typeFromHandle21 = typeof(HashMonitor<CharacterData>);
@@ -1099,7 +1099,7 @@ namespace GameServer.Data
                 b.Write((HashMonitor != null) ? HashMonitor.Count : 0);
                 foreach (CharacterData CharacterData in HashMonitor)
                 {
-                    b.Write(CharacterData.Index.V);
+                    b.Write(CharacterData.数据索引.V);
                 }
             };
             typeFromHandle20 = typeof(HashMonitor<MailData>);
@@ -1109,7 +1109,7 @@ namespace GameServer.Data
                 b.Write((HashMonitor != null) ? HashMonitor.Count : 0);
                 foreach (MailData MailData in HashMonitor)
                 {
-                    b.Write(MailData.Index.V);
+                    b.Write(MailData.数据索引.V);
                 }
             };
             typeFromHandle19 = typeof(MonitorDictionary<byte, int>);
@@ -1197,7 +1197,7 @@ namespace GameServer.Data
                 foreach (KeyValuePair<ushort, BuffData> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
-                    b.Write(keyValuePair.Value.Index.V);
+                    b.Write(keyValuePair.Value.数据索引.V);
                 }
             };
             typeFromHandle11 = typeof(MonitorDictionary<ushort, SkillData>);
@@ -1208,7 +1208,7 @@ namespace GameServer.Data
                 foreach (KeyValuePair<ushort, SkillData> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
-                    b.Write(keyValuePair.Value.Index.V);
+                    b.Write(keyValuePair.Value.数据索引.V);
                 }
             };
             typeFromHandle10 = typeof(MonitorDictionary<byte, SkillData>);
@@ -1219,7 +1219,7 @@ namespace GameServer.Data
                 foreach (KeyValuePair<byte, SkillData> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
-                    b.Write(keyValuePair.Value.Index.V);
+                    b.Write(keyValuePair.Value.数据索引.V);
                 }
             };
             typeFromHandle9 = typeof(MonitorDictionary<byte, EquipmentData>);
@@ -1230,7 +1230,7 @@ namespace GameServer.Data
                 foreach (KeyValuePair<byte, EquipmentData> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
-                    b.Write(keyValuePair.Value.Index.V);
+                    b.Write(keyValuePair.Value.数据索引.V);
                 }
             };
             dictionary2[typeof(MonitorDictionary<byte, ItemData>)] = delegate (BinaryWriter b, object o)
@@ -1241,7 +1241,7 @@ namespace GameServer.Data
                 {
                     b.Write(keyValuePair.Key);
                     b.Write(keyValuePair.Value is EquipmentData);
-                    b.Write(keyValuePair.Value.Index.V);
+                    b.Write(keyValuePair.Value.数据索引.V);
                 }
             };
             dictionary2[typeof(MonitorDictionary<ushort, AchievementData>)] = delegate (BinaryWriter b, object o)
@@ -1251,7 +1251,7 @@ namespace GameServer.Data
                 foreach (KeyValuePair<ushort, AchievementData> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
-                    b.Write(keyValuePair.Value.Index.V);
+                    b.Write(keyValuePair.Value.数据索引.V);
                 }
             };
             typeFromHandle7 = typeof(MonitorDictionary<int, CharacterData>);
@@ -1262,7 +1262,7 @@ namespace GameServer.Data
                 foreach (KeyValuePair<int, CharacterData> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
-                    b.Write(keyValuePair.Value.Index.V);
+                    b.Write(keyValuePair.Value.数据索引.V);
                 }
             };
             typeFromHandle6 = typeof(MonitorDictionary<int, MailData>);
@@ -1273,7 +1273,7 @@ namespace GameServer.Data
                 foreach (KeyValuePair<int, MailData> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key);
-                    b.Write(keyValuePair.Value.Index.V);
+                    b.Write(keyValuePair.Value.数据索引.V);
                 }
             };
             typeFromHandle5 = typeof(MonitorDictionary<GameCurrency, int>);
@@ -1294,7 +1294,7 @@ namespace GameServer.Data
                 b.Write((MonitorDictionary != null) ? MonitorDictionary.Count : 0);
                 foreach (KeyValuePair<GuildData, DateTime> keyValuePair in MonitorDictionary)
                 {
-                    b.Write(keyValuePair.Key.Index.V);
+                    b.Write(keyValuePair.Key.数据索引.V);
                     b.Write(keyValuePair.Value.ToBinary());
                 }
             };
@@ -1305,7 +1305,7 @@ namespace GameServer.Data
                 b.Write((MonitorDictionary != null) ? MonitorDictionary.Count : 0);
                 foreach (KeyValuePair<CharacterData, DateTime> keyValuePair in MonitorDictionary)
                 {
-                    b.Write(keyValuePair.Key.Index.V);
+                    b.Write(keyValuePair.Key.数据索引.V);
                     b.Write(keyValuePair.Value.ToBinary());
                 }
             };
@@ -1316,7 +1316,7 @@ namespace GameServer.Data
                 b.Write((MonitorDictionary != null) ? MonitorDictionary.Count : 0);
                 foreach (KeyValuePair<CharacterData, GuildJobs> keyValuePair in MonitorDictionary)
                 {
-                    b.Write(keyValuePair.Key.Index.V);
+                    b.Write(keyValuePair.Key.数据索引.V);
                     b.Write((int)keyValuePair.Value);
                 }
             };
@@ -1327,7 +1327,7 @@ namespace GameServer.Data
                 b.Write((MonitorDictionary != null) ? MonitorDictionary.Count : 0);
                 foreach (var keyValuePair in MonitorDictionary)
                 {
-                    b.Write(keyValuePair.Key.Index.V);
+                    b.Write(keyValuePair.Key.数据索引.V);
                     b.Write(keyValuePair.Value);
                 }
             };
@@ -1339,7 +1339,7 @@ namespace GameServer.Data
                 foreach (KeyValuePair<DateTime, GuildData> keyValuePair in MonitorDictionary)
                 {
                     b.Write(keyValuePair.Key.ToBinary());
-                    b.Write(keyValuePair.Value.Index.V);
+                    b.Write(keyValuePair.Value.数据索引.V);
                 }
             };
             DataField.字段写入方法表 = dictionary2;
@@ -1386,7 +1386,7 @@ namespace GameServer.Data
         }
 
 
-        public void SaveFieldAttribute(BinaryWriter 写入流)
+        public void 保存字段属性(BinaryWriter 写入流)
         {
             写入流.Write(this.字段名字);
             写入流.Write(this.字段类型.FullName);

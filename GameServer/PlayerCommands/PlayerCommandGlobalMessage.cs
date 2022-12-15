@@ -19,7 +19,7 @@ namespace GameServer.PlayerCommands
 
     public override void Execute()
     {
-      NetworkServiceGateway.SendAnnouncement($"{Player.ObjectName}: {GlobalMessageText}");
+      网络服务网关.发送公告($"{Player.ObjectName}: {GlobalMessageText}");
       Player.SendMessage("发送给所有玩家的信息:");
     }
   }

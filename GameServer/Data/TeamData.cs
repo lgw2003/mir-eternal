@@ -13,7 +13,7 @@ namespace GameServer.Data
 		{
 			get
 			{
-				return this.Index.V;
+				return this.数据索引.V;
 			}
 		}
 
@@ -22,7 +22,7 @@ namespace GameServer.Data
 		{
 			get
 			{
-				return this.队伍队长.V.Index.V;
+				return this.队伍队长.V.数据索引.V;
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace GameServer.Data
 		{
 			get
 			{
-				return this.队长数据.CharName.V;
+				return this.队长数据.角色名字.V;
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace GameServer.Data
 			}
 			set
 			{
-				if (this.队伍队长.V.Index.V != value.Index.V)
+				if (this.队伍队长.V.数据索引.V != value.数据索引.V)
 				{
 					this.队伍队长.V = value;
 				}
@@ -77,7 +77,7 @@ namespace GameServer.Data
 			{
 				return null;
 			}
-			DataMonitor<string> CharName = 队长数据.CharName;
+			DataMonitor<string> CharName = 队长数据.角色名字;
 			if (CharName == null)
 			{
 				return null;
@@ -108,13 +108,13 @@ namespace GameServer.Data
 		}
 
 		
-		public override void Delete()
+		public override void 删除数据()
 		{
 			foreach (CharacterData CharacterData in this.Members)
 			{
-				CharacterData.CurrentTeam = null;
+				CharacterData.当前队伍 = null;
 			}
-			base.Delete();
+			base.删除数据();
 		}
 
 		
@@ -122,7 +122,7 @@ namespace GameServer.Data
 		{
 			foreach (CharacterData CharacterData in this.Members)
 			{
-				客户网络 网络连接 = CharacterData.ActiveConnection;
+				客户网络 网络连接 = CharacterData.网络连接;
 				if (网络连接 != null)
 				{
 					网络连接.发送封包(P);
@@ -138,7 +138,7 @@ namespace GameServer.Data
 			{
 				using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
 				{
-					binaryWriter.Write(this.Index.V);
+					binaryWriter.Write(this.数据索引.V);
 					binaryWriter.Write(this.队长数据.名字描述());
 					binaryWriter.Seek(36, SeekOrigin.Begin);
 					binaryWriter.Write(this.拾取方式);
@@ -164,12 +164,12 @@ namespace GameServer.Data
 			{
 				using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
 				{
-					binaryWriter.Write(队友.Index.V);
+					binaryWriter.Write(队友.数据索引.V);
 					binaryWriter.Write(队友.名字描述());
 					binaryWriter.Seek(36, SeekOrigin.Begin);
-					binaryWriter.Write((byte)队友.CharGender.V);
-					binaryWriter.Write((byte)队友.CharRace.V);
-					binaryWriter.Write((队友.ActiveConnection != null) ? (byte)0 : (byte)3);
+					binaryWriter.Write((byte)队友.角色性别.V);
+					binaryWriter.Write((byte)队友.角色职业.V);
+					binaryWriter.Write((队友.网络连接 != null) ? (byte)0 : (byte)3);
 					result = memoryStream.ToArray();
 				}
 			}

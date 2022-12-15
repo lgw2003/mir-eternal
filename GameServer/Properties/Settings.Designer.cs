@@ -229,25 +229,25 @@ namespace GameServer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SoftwareRegistrationCode {
+        [global::System.Configuration.DefaultSettingValueAttribute("123456789")]
+        public string 软件注册码 {
             get {
-                return ((string)(this["SoftwareRegistrationCode"]));
+                return ((string)(this["软件注册码"]));
             }
             set {
-                this["SoftwareRegistrationCode"] = value;
+                this["软件注册码"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1\t1\t欢迎来到《永恒传奇》的世界，有了你，《永恒传奇》更精彩!")]
-        public string SystemAnnounceText {
+        public string 系统公告文本 {
             get {
-                return ((string)(this["SystemAnnounceText"]));
+                return ((string)(this["系统公告文本"]));
             }
             set {
-                this["SystemAnnounceText"] = value;
+                this["系统公告文本"] = value;
             }
         }
         

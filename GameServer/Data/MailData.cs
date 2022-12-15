@@ -4,7 +4,9 @@ using System.Text;
 
 namespace GameServer.Data
 {
-	
+	/// <summary>
+	/// 邮件数据
+	/// </summary>
 	public sealed class MailData : GameData
 	{
 		
@@ -34,7 +36,7 @@ namespace GameServer.Data
 		{
 			get
 			{
-				return this.Index.V;
+				return this.数据索引.V;
 			}
 		}
 
@@ -76,14 +78,14 @@ namespace GameServer.Data
 		}
 
 		
-		public override void Delete()
+		public override void 删除数据()
 		{
 			ItemData v = this.邮件附件.V;
 			if (v != null)
 			{
-				v.Delete();
+				v.删除数据();
 			}
-			base.Delete();
+			base.删除数据();
 		}
 
 		
@@ -103,7 +105,7 @@ namespace GameServer.Data
 					byte[] array = new byte[32];
 					if (!this.系统邮件.V)
 					{
-						Encoding.UTF8.GetBytes(this.邮件作者.V.CharName.V + "\0").CopyTo(array, 0);
+						Encoding.UTF8.GetBytes(this.邮件作者.V.角色名字.V + "\0").CopyTo(array, 0);
 					}
 					binaryWriter.Write(array);
 					byte[] array2 = new byte[61];
@@ -130,7 +132,7 @@ namespace GameServer.Data
 					binaryWriter.Write(物品数量);
 					byte[] array = new byte[32];
 					if (!this.系统邮件.V)
-						Encoding.UTF8.GetBytes(邮件作者.V.CharName.V + "\0").CopyTo(array, 0);
+						Encoding.UTF8.GetBytes(邮件作者.V.角色名字.V + "\0").CopyTo(array, 0);
 					binaryWriter.Write(array);
 					byte[] array2 = new byte[61];
 					Encoding.UTF8.GetBytes(this.邮件标题.V + "\0").CopyTo(array2, 0);

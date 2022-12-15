@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Models
 {
+    /// <summary>
+    /// 任务奖励类
+    /// </summary>
     public class GameQuestReward
     {
         public QuestRewardType 类型 { get; set; }

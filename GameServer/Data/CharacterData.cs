@@ -10,88 +10,90 @@ using GameServer.Networking;
 
 namespace GameServer.Data
 {
-
-    [FastDataReturn(SearchFilder = "CharName")]
+    /// <summary>
+    /// 角色数据
+    /// </summary>
+    [FastDataReturn(SearchFilder = "角色名字")]
     public sealed class CharacterData : GameData
     {
 
-        public int CharId => Index.V;
+        public int 角色编号 => 数据索引.V;
 
 
-        public long CharExp
+        public long 角色经验
         {
-            get => CurrentExp.V;
-            set => CurrentExp.V = value;
+            get => 当前经验.V;
+            set => 当前经验.V = value;
         }
 
 
-        public byte CharLevel
+        public byte 角色等级
         {
             get
             {
-                return this.Level.V;
+                return this.当前等级.V;
             }
             set
             {
-                if (this.Level.V == value)
+                if (this.当前等级.V == value)
                 {
                     return;
                 }
-                this.Level.V = value;
+                this.当前等级.V = value;
                 SystemData.Data.更新等级(this);
             }
         }
 
 
-        public int CharPowerCombat
+        public int 角色战力
         {
-            get => PowerCombat.V;
+            get => 当前战力.V;
             set
             {
-                if (PowerCombat.V == value)
+                if (当前战力.V == value)
                     return;
-                PowerCombat.V = value;
+                当前战力.V = value;
                 SystemData.Data.UpdatedPowerCombat(this);
             }
         }
 
 
-        public int CharPKLevel
+        public int 角色PK值
         {
-            get => PkLevel.V;
+            get => 当前PK值.V;
             set
             {
-                if (PkLevel.V == value)
+                if (当前PK值.V == value)
                     return;
-                PkLevel.V = value;
+                当前PK值.V = value;
                 SystemData.Data.UpdatedPKLevel(this);
             }
         }
 
-        public long CharMaxExp => CharacterProgression.MaxExpTable[CharLevel];
+        public long 升级经验 => CharacterProgression.升级所需经验[角色等级];
 
-        public int Ingots
+        public int 元宝数量
         {
             get
             {
-                if (!Currencies.TryGetValue(GameCurrency.Ingots, out int result))
+                if (!角色货币.TryGetValue(GameCurrency.元宝, out int result))
                     return 0;
                 return result;
             }
             set
             {
-                Currencies[GameCurrency.Ingots] = value;
-                MainForm.UpdatedCharacterData(this, nameof(Ingots), value);
+                角色货币[GameCurrency.元宝] = value;
+                MainForm.更新角色属性(this, nameof(元宝数量), value);
             }
         }
 
 
-        public int NumberGoldCoins
+        public int 金币数量
         {
             get
             {
                 int result;
-                if (!this.Currencies.TryGetValue(GameCurrency.Gold, out result))
+                if (!this.角色货币.TryGetValue(GameCurrency.金币, out result))
                 {
                     return 0;
                 }
@@ -99,18 +101,18 @@ namespace GameServer.Data
             }
             set
             {
-                this.Currencies[GameCurrency.Gold] = value;
-                MainForm.UpdatedCharacterData(this, nameof(NumberGoldCoins), value);
+                this.角色货币[GameCurrency.金币] = value;
+                MainForm.更新角色属性(this, nameof(金币数量), value);
             }
         }
 
 
-        public int MasterRep
+        public int 师门声望
         {
             get
             {
                 int result;
-                if (!this.Currencies.TryGetValue(GameCurrency.FamousTeacherReputation, out result))
+                if (!this.角色货币.TryGetValue(GameCurrency.名师声望, out result))
                 {
                     return 0;
                 }
@@ -118,25 +120,25 @@ namespace GameServer.Data
             }
             set
             {
-                this.Currencies[GameCurrency.FamousTeacherReputation] = value;
-                MainForm.UpdatedCharacterData(this, "MasterRep", value);
+                this.角色货币[GameCurrency.名师声望] = value;
+                MainForm.更新角色属性(this, nameof(师门声望), value);
             }
         }
 
 
-        public byte CharTeacherParam
+        public byte 师门参数
         {
             get
             {
-                if (CurrentTeacher != null)
+                if (当前师门 != null)
                 {
-                    if (CurrentTeacher.MasterId == CharId)
+                    if (当前师门.MasterId == 角色编号)
                         return 2;
                     return 1;
                 }
                 else
                 {
-                    if (CharLevel < 30)
+                    if (角色等级 < 30)
                         return 0;
                     return 2;
                 }
@@ -144,186 +146,187 @@ namespace GameServer.Data
         }
 
 
-        public TeamData CurrentTeam
+        public TeamData 当前队伍
         {
             get
             {
-                return this.Team.V;
+                return this.所属队伍.V;
             }
             set
             {
-                if (this.Team.V != value)
+                if (this.所属队伍.V != value)
                 {
-                    this.Team.V = value;
+                    this.所属队伍.V = value;
                 }
             }
         }
 
 
-        public TeacherData CurrentTeacher
+        public TeacherData 当前师门
         {
             get
             {
-                return this.Teacher.V;
+                return this.所属师门.V;
             }
             set
             {
-                if (this.Teacher.V != value)
+                if (this.所属师门.V != value)
                 {
-                    this.Teacher.V = value;
+                    this.所属师门.V = value;
                 }
             }
         }
 
 
-        public GuildData CurrentGuild
+        public GuildData 当前行会
         {
             get
             {
-                return this.Guild.V;
+                return this.所属行会.V;
             }
             set
             {
-                if (this.Guild.V != value)
+                if (this.所属行会.V != value)
                 {
-                    this.Guild.V = value;
+                    this.所属行会.V = value;
                 }
             }
         }
 
-        public 客户网络 ActiveConnection { get; set; }
+        public 客户网络 网络连接 { get; set; }
 
 
-        public void GetExperience(int experience)
+        public void 获得经验(int 经验值)
         {
-            if (this.CharLevel >= Config.MaxLevel && this.CharExp >= this.CharMaxExp)
+            if (this.角色等级 >= Config.游戏开放等级 && this.角色经验 >= this.升级经验)
             {
                 return;
             }
-            if ((this.CharExp += experience) > this.CharMaxExp && this.CharLevel < Config.MaxLevel)
+            if ((this.角色经验 += 经验值) > this.升级经验 && this.角色等级 < Config.游戏开放等级)
             {
-                while (this.CharExp >= this.CharMaxExp)
+                while (this.角色经验 >= this.升级经验)
                 {
-                    this.CharExp -= this.CharMaxExp;
-                    this.CharLevel += 1;
+                    this.角色经验 -= this.升级经验;
+                    this.角色等级 += 1;
                 }
             }
         }
 
 
-        public void OnCharacterDisconnect()
+        public void 角色下线()
         {
-            this.ActiveConnection.玩家实例 = null;
-            this.ActiveConnection = null;
-            NetworkServiceGateway.ConnectionsOnline -= 1U;
-            this.OfflineDate.V = MainProcess.CurrentTime;
-            MainForm.UpdatedCharacterData(this, "OfflineDate", this.OfflineDate);
+            this.网络连接.玩家实例 = null;
+            this.网络连接 = null;
+            网络服务网关.已上线连接数 -= 1U;
+            this.离线日期.V = MainProcess.CurrentTime;
+            MainForm.更新角色属性(this, nameof(离线日期), this.离线日期);
         }
 
 
-        public void OnCharacterConnect(客户网络 connection)
+        public void 角色上线(客户网络 connection)
         {
-            this.ActiveConnection = connection;
-            NetworkServiceGateway.ConnectionsOnline += 1U;
-            this.MacAddress.V = connection.MacAddress;
-            this.NetAddress.V = connection.网络地址;
-            MainForm.UpdatedCharacterData(this, "OfflineDate", null);
-            MainForm.AddSystemLog(string.Format("Player [{0}] [Level {1}] has entered the game", this.CharName, this.Level));
+            this.网络连接 = connection;
+            网络服务网关.已上线连接数 += 1U;
+            this.物理地址.V = connection.MacAddress;
+            this.网络地址.V = connection.网络地址;
+            MainForm.更新角色属性(this, nameof(离线日期), null);
+            MainForm.添加系统日志(string.Format("玩家 [{0}] [等级 {1}] 已经进入游戏", this.角色名字, this.当前等级));
         }
 
 
-        public void SendEmail(MailData mail)
+        public void 发送邮件(MailData mail)
         {
             mail.ShippingAddress.V = this;
-            Mails.Add(mail);
-            UnreadMails.Add(mail);
-            ActiveConnection?.发送封包(new 未读邮件提醒
+            角色邮件.Add(mail);
+            未读邮件.Add(mail);
+            网络连接?.发送封包(new 未读邮件提醒
             {
-                邮件数量 = this.UnreadMails.Count
+                邮件数量 = this.未读邮件.Count
             });
         }
 
 
-        public bool IsOnline(out 客户网络 connection)
+        public bool 角色在线(out 客户网络 网络)
         {
-            connection = ActiveConnection;
-            return connection != null;
+            网络 = 网络连接;
+            return 网络 != null;
         }
 
-        public bool TryGetFreeSpaceAtInventory(out byte location)
+        public bool 查找背包空位(out byte 空位)
         {
-            for (byte b = 0; b < BackpackSize.V; b += 1)
+            for (byte b = 0; b < 背包大小.V; b += 1)
             {
-                if (!Backpack.ContainsKey(b))
+                //判断角色背包表中是否包含位置b，如果不包含说明此位置为空
+                if (!角色背包.ContainsKey(b))
                 {
-                    location = b;
+                    空位 = b;
                     return true;
                 }
             }
-            location = byte.MaxValue;
+            空位 = byte.MaxValue;
             return false;
         }
 
-        public bool TryGetFreeSpacesAtInventory(byte count, out byte[] locations)
+        public bool 查找背包空位(byte 数量, out byte[] 空位)
         {
             var tmp = new List<byte>();
 
-            for (byte b = 0; b < BackpackSize.V && count > tmp.Count; b += 1)
+            for (byte b = 0; b < 背包大小.V && 数量 > tmp.Count; b += 1)
             {
-                if (!Backpack.ContainsKey(b))
+                if (!角色背包.ContainsKey(b))
                     tmp.Add(b);
             }
 
-            locations = tmp.ToArray();
+            空位 = tmp.ToArray();
 
-            return tmp.Count == count;
+            return tmp.Count == 数量;
         }
 
-        public CharacterQuest[] GetInProgressQuests()
+        public CharacterQuest[] 获取正在进行的任务()
         {
-            return Quests.Where(x => x.CompleteDate.V == DateTime.MinValue).ToArray();
+            return 玩家任务.Where(x => x.完成时间.V == DateTime.MinValue).ToArray();
         }
 
         public CharacterData()
         {
         }
 
-        public CharacterData(AccountData data, string name, GameObjectRace race, GameObjectGender gender, ObjectHairType hairType, ObjectHairColorType hairColor, ObjectFaceType faceType)
+        public CharacterData(AccountData 账号, string 名字, GameObjectRace 职业, GameObjectGender 性别, ObjectHairType 发型, ObjectHairColorType 发色, ObjectFaceType 脸型)
         {
-            this.Level.V = 1;
-            this.BackpackSize.V = 32;
-            this.WarehouseSize.V = 16;
-            this.ExtraBackpackSize.V = 32;
+            this.当前等级.V = 1;
+            this.背包大小.V = 32;
+            this.仓库大小.V = 16;
+            this.扩展背包大小.V = 32;
 
-            this.Account.V = data;
-            this.CharName.V = name;
-            this.CharRace.V = race;
-            this.CharGender.V = gender;
-            this.HairType.V = hairType;
-            this.HairColor.V = hairColor;
-            this.FaceType.V = faceType;
-            this.CreatedDate.V = MainProcess.CurrentTime;
-            this.CurrentHP.V = CharacterProgression.GetData(race, 1)[GameObjectStats.最大体力];
-            this.CurrentMP.V = CharacterProgression.GetData(race, 1)[GameObjectStats.最大魔力];
-            this.CurrentDir.V = ComputingClass.随机方向();
-            this.CurrentMap.V = 142;
-            this.RebirthMap.V = 142;
-            this.CurrentCoords.V = MapGatewayProcess.GetMapInstance(142).ResurrectionArea.RandomCoords;
-            this.Settings.SetValue(new uint[128].ToList<uint>());
+            this.所属账号.V = 账号;
+            this.角色名字.V = 名字;
+            this.角色职业.V = 职业;
+            this.角色性别.V = 性别;
+            this.角色发型.V = 发型;
+            this.角色发色.V = 发色;
+            this.角色脸型.V = 脸型;
+            this.创建日期.V = MainProcess.CurrentTime;
+            this.当前血量.V = CharacterProgression.GetData(职业, 1)[GameObjectStats.最大体力];
+            this.当前蓝量.V = CharacterProgression.GetData(职业, 1)[GameObjectStats.最大魔力];
+            this.当前朝向.V = ComputingClass.随机方向();
+            this.当前地图.V = 142;
+            this.重生地图.V = 142;
+            this.当前坐标.V = MapGatewayProcess.GetMapInstance(142).ResurrectionArea.RandomCoords;
+            this.玩家设置.SetValue(new uint[128].ToList<uint>());
 
-            AddStarterCurrency();
-            AddStarterItems();
-            AddStarterSkills();
+            添加初始货币();
+            添加出生物品();
+            添加初始技能();
 
             GameDataGateway.角色数据表.AddData(this, true);
-            data.Characters.Add(this);
-            this.OnLoadCompleted();
+            账号.角色列表.Add(this);
+            this.加载完成();
         }
 
 
         public override string ToString()
         {
-            DataMonitor<string> DataMonitor = this.CharName;
+            DataMonitor<string> DataMonitor = this.角色名字;
             if (DataMonitor == null)
             {
                 return null;
@@ -331,28 +334,28 @@ namespace GameServer.Data
             return DataMonitor.V;
         }
 
-        private void AddStarterCurrency()
+        private void 添加初始货币()
         {
             for (int i = 0; i <= 19; i++)
             {
                 var currencyType = (GameCurrency)i;
                 switch (currencyType)
                 {
-                    case GameCurrency.Gold:
-                        Currencies[(GameCurrency)i] = 0;
+                    case GameCurrency.金币:
+                        角色货币[(GameCurrency)i] = 0;
                         break;
                     default:
-                        Currencies[(GameCurrency)i] = 0;
+                        角色货币[(GameCurrency)i] = 0;
                         break;
                 }
             }
         }
 
-        public void AddStarterSkills()
+        public void 添加初始技能()
         {
             var basicInscriptionSkills = new List<ushort>();
 
-            switch (CharRace.V)
+            switch (角色职业.V)
             {
                 case GameObjectRace.战士:
                     basicInscriptionSkills.Add(10300);
@@ -382,21 +385,21 @@ namespace GameServer.Data
                 if (铭文技能.DataSheet.TryGetValue(skill, out 铭文技能 inscriptionSkill))
                 {
                     SkillData SkillData = new SkillData(inscriptionSkill.技能编号);
-                    this.SkillData.Add(SkillData.SkillId.V, SkillData);
-                    this.ShorcutField[0] = SkillData;
+                    this.技能数据.Add(SkillData.SkillId.V, SkillData);
+                    this.快捷栏位[0] = SkillData;
                     SkillData.ShorcutField.V = 0;
                 }
             }
         }
 
-        private void AddStarterItems()
+        private void 添加出生物品()
         {
             foreach (var inscriptionItem in 出生物品.所有出生物品)
             {
-                if (inscriptionItem.需要性别 != null && inscriptionItem.需要性别 != CharGender.V)
+                if (inscriptionItem.需要性别 != null && inscriptionItem.需要性别 != 角色性别.V)
                     continue;
 
-                if (inscriptionItem.需要职业?.Length > 0 && !inscriptionItem.需要职业.Contains(CharRace.V))
+                if (inscriptionItem.需要职业?.Length > 0 && !inscriptionItem.需要职业.Contains(角色职业.V))
                     continue;
 
                 if (!游戏物品.DataSheet.TryGetValue(inscriptionItem.物品编号, out 游戏物品 item))
@@ -409,219 +412,219 @@ namespace GameServer.Data
                 {
                     case ItemBackPack.人物背包:
                         for (var i = 0; i < (inscriptionItem.数量 ?? 1); i++)
-                            if (TryGetFreeSpaceAtInventory(out byte inventoryPosition))
-                                Backpack[inventoryPosition] = item is 装备物品
-                                    ? new EquipmentData((装备物品)item, this, 1, inventoryPosition, false)
-                                    : new ItemData(item, this, 1, inventoryPosition, 1);
+                            if (查找背包空位(out byte 空闲位置))
+                                角色背包[空闲位置] = item is 装备物品
+                                    ? new EquipmentData((装备物品)item, this, 1, 空闲位置, false)
+                                    : new ItemData(item, this, 1, 空闲位置, 1);
                         break;
                     case ItemBackPack.人物穿戴:
                         var equipment = (装备物品)item;
-                        Equipment[equipment.Location] = new EquipmentData(equipment, this, 0, equipment.Location, false);
+                        角色装备[equipment.Location] = new EquipmentData(equipment, this, 0, equipment.Location, false);
                         break;
                 }
             }
         }
 
-        public void AttachToEvents()
+        public void 订阅事件()
         {
-            this.Account.更改事件 += delegate (AccountData O)
+            this.所属账号.更改事件 += delegate (AccountData O)
             {
-                MainForm.UpdatedCharacterData(this, "AccNumber", O);
-                MainForm.UpdatedCharacterData(this, "AccBlocking", (O.封禁日期.V != default(DateTime)) ? O.封禁日期 : null);
+                MainForm.更新角色属性(this, "所属账号", O);
+                MainForm.更新角色属性(this, "账号封禁", (O.封禁日期.V != default(DateTime)) ? O.封禁日期 : null);
             };
-            this.Account.V.封禁日期.更改事件 += delegate (DateTime O)
+            this.所属账号.V.封禁日期.更改事件 += delegate (DateTime O)
             {
-                MainForm.UpdatedCharacterData(this, "AccBlocking", (O != default(DateTime)) ? O : null);
+                MainForm.更新角色属性(this, "账号封禁", (O != default(DateTime)) ? O : null);
             };
-            this.CharName.更改事件 += delegate (string O)
+            this.角色名字.更改事件 += delegate (string O)
             {
-                MainForm.UpdatedCharacterData(this, "CharName", O);
+                MainForm.更新角色属性(this, "角色名字", O);
             };
             this.封禁日期.更改事件 += delegate (DateTime O)
             {
-                MainForm.UpdatedCharacterData(this, "CharacterBlock", (O != default(DateTime)) ? O : null);
+                MainForm.更新角色属性(this, "角色封禁", (O != default(DateTime)) ? O : null);
             };
-            this.FreezeDate.更改事件 += delegate (DateTime O)
+            this.冻结日期.更改事件 += delegate (DateTime O)
             {
-                MainForm.UpdatedCharacterData(this, "FreezeDate", (O != default(DateTime)) ? O : null);
+                MainForm.更新角色属性(this, "冻结日期", (O != default(DateTime)) ? O : null);
             };
-            this.DateDelete.更改事件 += delegate (DateTime O)
+            this.删除日期.更改事件 += delegate (DateTime O)
             {
-                MainForm.UpdatedCharacterData(this, "DateDelete", (O != default(DateTime)) ? O : null);
+                MainForm.更新角色属性(this, "删除日期", (O != default(DateTime)) ? O : null);
             };
-            this.LoginDate.更改事件 += delegate (DateTime O)
+            this.登陆日期.更改事件 += delegate (DateTime O)
             {
-                MainForm.UpdatedCharacterData(this, "LoginDate", (O != default(DateTime)) ? O : null);
+                MainForm.更新角色属性(this, "登陆日期", (O != default(DateTime)) ? O : null);
             };
-            this.OfflineDate.更改事件 += delegate (DateTime O)
+            this.离线日期.更改事件 += delegate (DateTime O)
             {
-                MainForm.UpdatedCharacterData(this, "OfflineDate", (this.ActiveConnection == null) ? O : null);
+                MainForm.更新角色属性(this, "离线日期", (this.网络连接 == null) ? O : null);
             };
-            this.NetAddress.更改事件 += delegate (string O)
+            this.网络地址.更改事件 += delegate (string O)
             {
-                MainForm.UpdatedCharacterData(this, "NetAddress", O);
+                MainForm.更新角色属性(this, "网络地址", O);
             };
-            this.MacAddress.更改事件 += delegate (string O)
+            this.物理地址.更改事件 += delegate (string O)
             {
-                MainForm.UpdatedCharacterData(this, "MacAddress", O);
+                MainForm.更新角色属性(this, "物理地址", O);
             };
-            this.CharRace.更改事件 += delegate (GameObjectRace O)
+            this.角色职业.更改事件 += delegate (GameObjectRace O)
             {
-                MainForm.UpdatedCharacterData(this, "CharRole", O);
+                MainForm.更新角色属性(this, "角色职业", O);
             };
-            this.CharGender.更改事件 += delegate (GameObjectGender O)
+            this.角色性别.更改事件 += delegate (GameObjectGender O)
             {
-                MainForm.UpdatedCharacterData(this, "CharGender", O);
+                MainForm.更新角色属性(this, "角色性别", O);
             };
-            this.Guild.更改事件 += delegate (GuildData O)
+            this.所属行会.更改事件 += delegate (GuildData O)
             {
-                MainForm.UpdatedCharacterData(this, "Affiliation", O);
+                MainForm.更新角色属性(this, "所属行会", O);
             };
-            this.DollarConsumption.更改事件 += delegate (long O)
+            this.消耗元宝.更改事件 += delegate (long O)
             {
-                MainForm.UpdatedCharacterData(this, "DollarConsumption", O);
+                MainForm.更新角色属性(this, "消耗元宝", O);
             };
-            this.TransferOutGoldCoins.更改事件 += delegate (long O)
+            this.转出金币.更改事件 += delegate (long O)
             {
-                MainForm.UpdatedCharacterData(this, "TransferOutGoldCoins", O);
+                MainForm.更新角色属性(this, "转出金币", O);
             };
-            this.BackpackSize.更改事件 += delegate (byte O)
+            this.背包大小.更改事件 += delegate (byte O)
             {
-                MainForm.UpdatedCharacterData(this, "BackpackSize", O);
+                MainForm.更新角色属性(this, "背包大小", O);
             };
-            this.WarehouseSize.更改事件 += delegate (byte O)
+            this.仓库大小.更改事件 += delegate (byte O)
             {
-                MainForm.UpdatedCharacterData(this, "WarehouseSize", O);
+                MainForm.更新角色属性(this, "仓库大小", O);
             };
-            this.CurrentPrivileges.更改事件 += delegate (byte O)
+            this.本期特权.更改事件 += delegate (byte O)
             {
-                MainForm.UpdatedCharacterData(this, "CurrentPrivileges", O);
+                MainForm.更新角色属性(this, "本期特权", O);
             };
-            this.CurrentIssueDate.更改事件 += delegate (DateTime O)
+            this.本期日期.更改事件 += delegate (DateTime O)
             {
-                MainForm.UpdatedCharacterData(this, "CurrentIssueDate", O);
+                MainForm.更新角色属性(this, "本期日期", O);
             };
-            this.PreviousPrivilege.更改事件 += delegate (byte O)
+            this.上期特权.更改事件 += delegate (byte O)
             {
-                MainForm.UpdatedCharacterData(this, "PreviousPrivilege", O);
+                MainForm.更新角色属性(this, "上期特权", O);
             };
-            this.DateLastIssue.更改事件 += delegate (DateTime O)
+            this.上期日期.更改事件 += delegate (DateTime O)
             {
-                MainForm.UpdatedCharacterData(this, "DateLastIssue", O);
+                MainForm.更新角色属性(this, "上期日期", O);
             };
-            this.RemainingPrivileges.更改事件 += delegate (List<KeyValuePair<byte, int>> O)
+            this.剩余特权.更改事件 += delegate (List<KeyValuePair<byte, int>> O)
             {
-                MainForm.UpdatedCharacterData(this, "RemainingPrivileges", O.Sum((KeyValuePair<byte, int> X) => X.Value));
+                MainForm.更新角色属性(this, "剩余特权", O.Sum((KeyValuePair<byte, int> X) => X.Value));
             };
-            this.Level.更改事件 += delegate (byte O)
+            this.当前等级.更改事件 += delegate (byte O)
             {
-                MainForm.UpdatedCharacterData(this, "CurrentRank", O);
+                MainForm.更新角色属性(this, "当前等级", O);
             };
-            this.CurrentExp.更改事件 += delegate (long O)
+            this.当前经验.更改事件 += delegate (long O)
             {
-                MainForm.UpdatedCharacterData(this, "CurrentExp", O);
+                MainForm.更新角色属性(this, "当前经验", O);
             };
-            this.DoubleExp.更改事件 += delegate (int O)
+            this.双倍经验.更改事件 += delegate (int O)
             {
-                MainForm.UpdatedCharacterData(this, "DoubleExp", O);
+                MainForm.更新角色属性(this, "双倍经验", O);
             };
-            this.PowerCombat.更改事件 += delegate (int O)
+            this.当前战力.更改事件 += delegate (int O)
             {
-                MainForm.UpdatedCharacterData(this, "CurrentBattlePower", O);
+                MainForm.更新角色属性(this, "当前战力", O);
             };
-            this.CurrentMap.更改事件 += delegate (int O)
+            this.当前地图.更改事件 += delegate (int O)
             {
                 游戏地图 游戏地图;
-                MainForm.UpdatedCharacterData(this, "CurrentMap", 游戏地图.DataSheet.TryGetValue((byte)O, out 游戏地图) ? 游戏地图 : O);
+                MainForm.更新角色属性(this, "当前地图", 游戏地图.DataSheet.TryGetValue((byte)O, out 游戏地图) ? 游戏地图 : O);
             };
-            this.CurrentCoords.更改事件 += delegate (Point O)
+            this.当前坐标.更改事件 += delegate (Point O)
             {
-                MainForm.UpdatedCharacterData(this, "CurrentCoords", string.Format("{0}, {1}", O.X, O.Y));
+                MainForm.更新角色属性(this, "当前坐标", string.Format("{0}, {1}", O.X, O.Y));
             };
-            this.PkLevel.更改事件 += delegate (int O)
+            this.当前PK值.更改事件 += delegate (int O)
             {
-                MainForm.UpdatedCharacterData(this, "PkLevel", O);
+                MainForm.更新角色属性(this, "当前PK值", O);
             };
-            this.SkillData.更改事件 += delegate (List<KeyValuePair<ushort, SkillData>> O)
+            this.技能数据.更改事件 += delegate (List<KeyValuePair<ushort, SkillData>> O)
             {
-                MainForm.UpdateCharactersSkills(this, O);
+                MainForm.更新角色技能(this, O);
             };
-            this.Equipment.更改事件 += delegate (List<KeyValuePair<byte, EquipmentData>> O)
+            this.角色装备.更改事件 += delegate (List<KeyValuePair<byte, EquipmentData>> O)
             {
-                MainForm.UpdateCharactersEquipment(this, O);
+                MainForm.更新角色装备(this, O);
             };
-            this.Backpack.更改事件 += delegate (List<KeyValuePair<byte, ItemData>> O)
+            this.角色背包.更改事件 += delegate (List<KeyValuePair<byte, ItemData>> O)
             {
-                MainForm.UpdateCharactersBackpack(this, O);
+                MainForm.更新角色背包(this, O);
             };
-            this.Warehouse.更改事件 += delegate (List<KeyValuePair<byte, ItemData>> O)
+            this.角色仓库.更改事件 += delegate (List<KeyValuePair<byte, ItemData>> O)
             {
                 MainForm.更新角色仓库(this, O);
             };
         }
 
-        public override void OnLoadCompleted()
+        public override void 加载完成()
         {
-            AttachToEvents();
-            MainForm.AddCharacterData(this);
-            MainForm.UpdateCharactersSkills(this, this.SkillData.ToList<KeyValuePair<ushort, SkillData>>());
-            MainForm.UpdateCharactersEquipment(this, this.Equipment.ToList<KeyValuePair<byte, EquipmentData>>());
-            MainForm.UpdateCharactersBackpack(this, this.Backpack.ToList<KeyValuePair<byte, ItemData>>());
-            MainForm.更新角色仓库(this, this.Warehouse.ToList<KeyValuePair<byte, ItemData>>());
+            订阅事件();
+            MainForm.添加角色数据(this);
+            MainForm.更新角色技能(this, this.技能数据.ToList<KeyValuePair<ushort, SkillData>>());
+            MainForm.更新角色装备(this, this.角色装备.ToList<KeyValuePair<byte, EquipmentData>>());
+            MainForm.更新角色背包(this, this.角色背包.ToList<KeyValuePair<byte, ItemData>>());
+            MainForm.更新角色仓库(this, this.角色仓库.ToList<KeyValuePair<byte, ItemData>>());
         }
 
-        public override void Delete()
+        public override void 删除数据()
         {
-            this.Account.V.Characters.Remove(this);
-            this.Account.V.冻结列表.Remove(this);
-            this.Account.V.删除列表.Remove(this);
+            this.所属账号.V.角色列表.Remove(this);
+            this.所属账号.V.冻结列表.Remove(this);
+            this.所属账号.V.删除列表.Remove(this);
 
-            this.升级装备.V?.Delete();
+            this.升级装备.V?.删除数据();
 
-            foreach (var pet in PetData)
-                pet.Delete();
+            foreach (var pet in 宠物数据)
+                pet.删除数据();
 
-            foreach (var mail in Mails)
-                mail.Delete();
+            foreach (var mail in 角色邮件)
+                mail.删除数据();
 
-            foreach (var item in Backpack)
-                item.Value.Delete();
+            foreach (var item in 角色背包)
+                item.Value.删除数据();
 
-            foreach (var item in Equipment)
-                item.Value.Delete();
+            foreach (var item in 角色装备)
+                item.Value.删除数据();
 
-            foreach (var item in Warehouse)
-                item.Value.Delete();
+            foreach (var item in 角色仓库)
+                item.Value.删除数据();
 
-            foreach (var skill in SkillData)
-                skill.Value.Delete();
+            foreach (var skill in 技能数据)
+                skill.Value.删除数据();
 
-            foreach (var buff in BuffData)
-                buff.Value.Delete();
+            foreach (var buff in Buff数据)
+                buff.Value.删除数据();
 
-            foreach (var quest in Quests)
-                quest.Delete();
+            foreach (var quest in 玩家任务)
+                quest.删除数据();
 
-            if (Team.V != null)
+            if (所属队伍.V != null)
             {
-                if (this == Team.V.队长数据)
-                    Team.V.Delete();
+                if (this == 所属队伍.V.队长数据)
+                    所属队伍.V.删除数据();
                 else
-                    Team.V.Members.Remove(this);
+                    所属队伍.V.Members.Remove(this);
             }
 
-            if (Teacher.V != null)
+            if (所属师门.V != null)
             {
-                if (this == Teacher.V.师父数据)
-                    Teacher.V.Delete();
+                if (this == 所属师门.V.师父数据)
+                    所属师门.V.删除数据();
                 else
-                    Teacher.V.移除徒弟(this);
+                    所属师门.V.移除徒弟(this);
             }
 
-            if (Guild.V != null)
+            if (所属行会.V != null)
             {
-                Guild.V.行会成员.Remove(this);
-                Guild.V.行会禁言.Remove(this);
+                所属行会.V.行会成员.Remove(this);
+                所属行会.V.行会禁言.Remove(this);
             }
 
             foreach (CharacterData CharacterData in 好友列表)
@@ -633,7 +636,7 @@ namespace GameServer.Data
             foreach (CharacterData CharacterData3 in 仇恨列表)
                 CharacterData3.仇人列表.Remove(this);
 
-            base.Delete();
+            base.删除数据();
         }
 
         public byte[] 角色描述()
@@ -649,24 +652,24 @@ namespace GameServer.Data
             var name = 名字描述();
             var pos = (int)binaryWriter.BaseStream.Position;
 
-            binaryWriter.Write(Index.V);
+            binaryWriter.Write(数据索引.V);
             binaryWriter.Write(name);
             binaryWriter.Write((byte)0);
             binaryWriter.Seek(pos + 61, SeekOrigin.Begin);
-            binaryWriter.Write((byte)CharRace.V);
-            binaryWriter.Write((byte)CharGender.V);
-            binaryWriter.Write((byte)HairType.V);
-            binaryWriter.Write((byte)HairColor.V);
-            binaryWriter.Write((byte)FaceType.V);
+            binaryWriter.Write((byte)角色职业.V);
+            binaryWriter.Write((byte)角色性别.V);
+            binaryWriter.Write((byte)角色发型.V);
+            binaryWriter.Write((byte)角色发色.V);
+            binaryWriter.Write((byte)角色脸型.V);
             binaryWriter.Write((byte)0);
-            binaryWriter.Write(CharLevel);
-            binaryWriter.Write(CurrentMap.V);
-            binaryWriter.Write(Equipment[0]?.升级次数.V ?? 0);
-            binaryWriter.Write((Equipment[0]?.对应模板.V?.物品编号).GetValueOrDefault());
-            binaryWriter.Write((Equipment[1]?.对应模板.V?.物品编号).GetValueOrDefault());
-            binaryWriter.Write((Equipment[2]?.对应模板.V?.物品编号).GetValueOrDefault());
-            binaryWriter.Write(ComputingClass.TimeShift(OfflineDate.V));
-            binaryWriter.Write((!FreezeDate.V.Equals(default(DateTime))) ? ComputingClass.TimeShift(FreezeDate.V) : 0);
+            binaryWriter.Write(角色等级);
+            binaryWriter.Write(当前地图.V);
+            binaryWriter.Write(角色装备[0]?.升级次数.V ?? 0);
+            binaryWriter.Write((角色装备[0]?.对应模板.V?.物品编号).GetValueOrDefault());
+            binaryWriter.Write((角色装备[1]?.对应模板.V?.物品编号).GetValueOrDefault());
+            binaryWriter.Write((角色装备[2]?.对应模板.V?.物品编号).GetValueOrDefault());
+            binaryWriter.Write(ComputingClass.TimeShift(离线日期.V));
+            binaryWriter.Write((!冻结日期.V.Equals(default(DateTime))) ? ComputingClass.TimeShift(冻结日期.V) : 0);
 
             binaryWriter.BaseStream.Seek(pos + 94, SeekOrigin.Begin);
         }
@@ -674,7 +677,7 @@ namespace GameServer.Data
 
         public byte[] 名字描述()
         {
-            return Encoding.UTF8.GetBytes(this.CharName.V);
+            return Encoding.UTF8.GetBytes(this.角色名字.V);
         }
 
 
@@ -685,7 +688,7 @@ namespace GameServer.Data
             {
                 using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
                 {
-                    foreach (uint value in this.Settings)
+                    foreach (uint value in this.玩家设置)
                     {
                         binaryWriter.Write(value);
                     }
@@ -703,8 +706,8 @@ namespace GameServer.Data
             {
                 using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
                 {
-                    binaryWriter.Write((ushort)this.Mails.Count);
-                    foreach (MailData MailData in this.Mails)
+                    binaryWriter.Write((ushort)this.角色邮件.Count);
+                    foreach (MailData MailData in this.角色邮件)
                     {
                         binaryWriter.Write(MailData.邮件检索描述());
                     }
@@ -715,28 +718,28 @@ namespace GameServer.Data
         }
 
 
-        public readonly DataMonitor<string> CharName;
+        public readonly DataMonitor<string> 角色名字;
 
 
-        public readonly DataMonitor<string> NetAddress;
+        public readonly DataMonitor<string> 网络地址;
 
 
-        public readonly DataMonitor<string> MacAddress;
+        public readonly DataMonitor<string> 物理地址;
 
 
-        public readonly DataMonitor<DateTime> CreatedDate;
+        public readonly DataMonitor<DateTime> 创建日期;
 
 
-        public readonly DataMonitor<DateTime> LoginDate;
+        public readonly DataMonitor<DateTime> 登陆日期;
 
 
-        public readonly DataMonitor<DateTime> FreezeDate;
+        public readonly DataMonitor<DateTime> 冻结日期;
 
 
-        public readonly DataMonitor<DateTime> DateDelete;
+        public readonly DataMonitor<DateTime> 删除日期;
 
 
-        public readonly DataMonitor<DateTime> OfflineDate;
+        public readonly DataMonitor<DateTime> 离线日期;
 
 
         public readonly DataMonitor<DateTime> 监禁日期;
@@ -775,74 +778,74 @@ namespace GameServer.Data
         public readonly DataMonitor<int> 分解经验;
 
 
-        public readonly DataMonitor<GameObjectRace> CharRace;
+        public readonly DataMonitor<GameObjectRace> 角色职业;
 
 
-        public readonly DataMonitor<GameObjectGender> CharGender;
+        public readonly DataMonitor<GameObjectGender> 角色性别;
 
 
-        public readonly DataMonitor<ObjectHairType> HairType;
+        public readonly DataMonitor<ObjectHairType> 角色发型;
 
 
-        public readonly DataMonitor<ObjectHairColorType> HairColor;
+        public readonly DataMonitor<ObjectHairColorType> 角色发色;
 
 
-        public readonly DataMonitor<ObjectFaceType> FaceType;
+        public readonly DataMonitor<ObjectFaceType> 角色脸型;
 
 
-        public readonly DataMonitor<int> CurrentHP;
+        public readonly DataMonitor<int> 当前血量;
 
 
-        public readonly DataMonitor<int> CurrentMP;
+        public readonly DataMonitor<int> 当前蓝量;
 
 
-        public readonly DataMonitor<byte> Level;
+        public readonly DataMonitor<byte> 当前等级;
 
 
-        public readonly DataMonitor<long> CurrentExp;
+        public readonly DataMonitor<long> 当前经验;
 
 
-        public readonly DataMonitor<int> DoubleExp;
+        public readonly DataMonitor<int> 双倍经验;
 
 
-        public readonly DataMonitor<int> PowerCombat;
+        public readonly DataMonitor<int> 当前战力;
 
 
-        public readonly DataMonitor<int> PkLevel;
+        public readonly DataMonitor<int> 当前PK值;
 
 
-        public readonly DataMonitor<int> CurrentMap;
+        public readonly DataMonitor<int> 当前地图;
 
 
-        public readonly DataMonitor<int> RebirthMap;
+        public readonly DataMonitor<int> 重生地图;
 
 
-        public readonly DataMonitor<Point> CurrentCoords;
+        public readonly DataMonitor<Point> 当前坐标;
 
 
-        public readonly DataMonitor<GameDirection> CurrentDir;
+        public readonly DataMonitor<GameDirection> 当前朝向;
 
 
-        public readonly DataMonitor<攻击模式> AttackMode;
+        public readonly DataMonitor<攻击模式> 攻击模式;
 
 
-        public readonly DataMonitor<PetMode> PetMode;
+        public readonly DataMonitor<PetMode> 宠物模式;
 
 
-        public readonly HashMonitor<PetData> PetData;
+        public readonly HashMonitor<PetData> 宠物数据;
 
 
-        public readonly DataMonitor<byte> BackpackSize;
-        public readonly DataMonitor<byte> WarehouseSize;
-        public readonly DataMonitor<byte> ExtraBackpackSize;
+        public readonly DataMonitor<byte> 背包大小;
+        public readonly DataMonitor<byte> 仓库大小;
+        public readonly DataMonitor<byte> 扩展背包大小;
 
-        public readonly DataMonitor<long> DollarConsumption;
-
-
-        public readonly DataMonitor<long> TransferOutGoldCoins;
+        public readonly DataMonitor<long> 消耗元宝;
 
 
-        public readonly ListMonitor<uint> Settings;
+        public readonly DataMonitor<long> 转出金币;
+
+
+        public readonly ListMonitor<uint> 玩家设置;
 
 
         public readonly DataMonitor<EquipmentData> 升级装备;
@@ -854,7 +857,7 @@ namespace GameServer.Data
         public readonly DataMonitor<bool> 升级成功;
 
 
-        public readonly DataMonitor<byte> CurrentTitle;
+        public readonly DataMonitor<byte> 当前称号;
 
 
         public readonly MonitorDictionary<byte, int> 历史排名;
@@ -866,43 +869,43 @@ namespace GameServer.Data
         public readonly MonitorDictionary<byte, DateTime> 称号列表;
 
 
-        public readonly MonitorDictionary<GameCurrency, int> Currencies;
+        public readonly MonitorDictionary<GameCurrency, int> 角色货币;
 
 
-        public readonly MonitorDictionary<byte, ItemData> Backpack;
-        public readonly MonitorDictionary<byte, ItemData> Warehouse;
-        public readonly DataMonitor<bool> WarehouseLocked;
-        public readonly MonitorDictionary<byte, ItemData> ExtraBackPack;
-        public readonly MonitorDictionary<byte, EquipmentData> Equipment;
-        public readonly MonitorDictionary<ushort, AchievementData> Achievements;
-        public readonly MonitorDictionary<byte, int> AchievementVariables;
+        public readonly MonitorDictionary<byte, ItemData> 角色背包;
+        public readonly MonitorDictionary<byte, ItemData> 角色仓库;
+        public readonly DataMonitor<bool> 仓库锁;
+        public readonly MonitorDictionary<byte, ItemData> 扩展背包;
+        public readonly MonitorDictionary<byte, EquipmentData> 角色装备;
+        public readonly MonitorDictionary<ushort, AchievementData> 角色成就;
+        public readonly MonitorDictionary<byte, int> 成就变量;
 
 
-        public readonly MonitorDictionary<byte, SkillData> ShorcutField;
+        public readonly MonitorDictionary<byte, SkillData> 快捷栏位;
 
 
-        public readonly MonitorDictionary<ushort, BuffData> BuffData;
+        public readonly MonitorDictionary<ushort, BuffData> Buff数据;
 
 
-        public readonly MonitorDictionary<ushort, SkillData> SkillData;
+        public readonly MonitorDictionary<ushort, SkillData> 技能数据;
 
 
         public readonly MonitorDictionary<int, DateTime> 冷却数据;
 
 
-        public readonly HashMonitor<MailData> Mails;
+        public readonly HashMonitor<MailData> 角色邮件;
 
 
-        public readonly HashMonitor<MailData> UnreadMails;
+        public readonly HashMonitor<MailData> 未读邮件;
 
 
         public readonly DataMonitor<byte> 预定特权;
 
 
-        public readonly DataMonitor<byte> CurrentPrivileges;
+        public readonly DataMonitor<byte> 本期特权;
 
 
-        public readonly DataMonitor<byte> PreviousPrivilege;
+        public readonly DataMonitor<byte> 上期特权;
 
 
         public readonly DataMonitor<uint> 本期记录;
@@ -911,10 +914,10 @@ namespace GameServer.Data
         public readonly DataMonitor<uint> 上期记录;
 
 
-        public readonly DataMonitor<DateTime> CurrentIssueDate;
+        public readonly DataMonitor<DateTime> 本期日期;
 
 
-        public readonly DataMonitor<DateTime> DateLastIssue;
+        public readonly DataMonitor<DateTime> 上期日期;
 
 
         public readonly DataMonitor<DateTime> 补给日期;
@@ -923,19 +926,19 @@ namespace GameServer.Data
         public readonly DataMonitor<DateTime> 战备日期;
 
 
-        public readonly MonitorDictionary<byte, int> RemainingPrivileges;
+        public readonly MonitorDictionary<byte, int> 剩余特权;
 
 
-        public readonly DataMonitor<AccountData> Account;
+        public readonly DataMonitor<AccountData> 所属账号;
 
 
-        public readonly DataMonitor<TeamData> Team;
+        public readonly DataMonitor<TeamData> 所属队伍;
 
 
-        public readonly DataMonitor<GuildData> Guild;
+        public readonly DataMonitor<GuildData> 所属行会;
 
 
-        public readonly DataMonitor<TeacherData> Teacher;
+        public readonly DataMonitor<TeacherData> 所属师门;
 
 
         public readonly HashMonitor<CharacterData> 好友列表;
@@ -954,14 +957,14 @@ namespace GameServer.Data
 
         public readonly HashMonitor<CharacterData> 黑名单表;
 
-        public readonly ListMonitor<ushort> Mounts;
+        public readonly ListMonitor<ushort> 拥有坐骑;
 
-        public readonly DataMonitor<ushort> CurrentMount;
+        public readonly DataMonitor<ushort> 当前坐骑;
 
-        public readonly HashMonitor<CharacterQuest> Quests;
+        public readonly HashMonitor<CharacterQuest> 玩家任务;
 
-        public readonly DataMonitor<bool> AwakeningExpEnabled;
+        public readonly DataMonitor<bool> 觉醒经验启用;
 
-        public readonly DataMonitor<int> AwakeningExp;
+        public readonly DataMonitor<int> 觉醒经验;
     }
 }

@@ -19,23 +19,23 @@ namespace GameServer.GMCommands
         {
             if (!GameDataGateway.角色数据表.Keyword.TryGetValue(Character, out GameData gd))
             {
-                MainForm.AddCommandLog($"<= @Move Command execution failed, character {Character} does not exist");
+                MainForm.添加命令日志($"<= @Move Command execution failed, character {Character} does not exist");
                 return;
             }
 
             if (!游戏地图.DataSheet.TryGetValue(MapId, out 游戏地图 map))
             {
-                MainForm.AddCommandLog($"<= @Move Command execution failed, map {MapId} does not exist");
+                MainForm.添加命令日志($"<= @Move Command execution failed, map {MapId} does not exist");
                 return;
             }
 
             var characterData = gd as CharacterData;
 
-            var player = characterData?.ActiveConnection?.玩家实例;
+            var player = characterData?.网络连接?.玩家实例;
 
             if (player == null)
             {
-                MainForm.AddCommandLog($"<= @Move Command execution failed, player {Character} not connected");
+                MainForm.添加命令日志($"<= @Move Command execution failed, player {Character} not connected");
                 return;
             }
 

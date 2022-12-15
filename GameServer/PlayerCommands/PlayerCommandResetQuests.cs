@@ -4,7 +4,7 @@
     {
         public override void Execute()
         {
-            Player.CharacterData.Quests.Clear();
+            Player.CharacterData.玩家任务.Clear();
 
             Player.SendMessage($"You need logout to restart quests");
         }

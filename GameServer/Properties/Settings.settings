@@ -53,10 +53,10 @@
     <Setting Name="NoobLevel" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="SoftwareRegistrationCode" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="软件注册码" Type="System.String" Scope="User">
+      <Value Profile="(Default)">123456789</Value>
     </Setting>
-    <Setting Name="SystemAnnounceText" Type="System.String" Scope="User">
+    <Setting Name="系统公告文本" Type="System.String" Scope="User">
       <Value Profile="(Default)">1	1	欢迎来到《永恒传奇》的世界，有了你，《永恒传奇》更精彩!</Value>
     </Setting>
     <Setting Name="SendPacketsAsync" Type="System.Boolean" Scope="User">

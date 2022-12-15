@@ -64,7 +64,7 @@ namespace GameServer.Data
 			writer.Write(this.FieldList.Count);
 			foreach (DataField DataField in this.FieldList)
 			{
-				DataField.SaveFieldAttribute(writer);
+				DataField.保存字段属性(writer);
 			}
 		}
 

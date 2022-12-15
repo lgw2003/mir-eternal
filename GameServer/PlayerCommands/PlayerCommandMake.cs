@@ -37,14 +37,14 @@ namespace GameServer.PlayerCommands
                 return;
             }
 
-            if (!Player.CharacterData.TryGetFreeSpaceAtInventory(out byte b))
+            if (!Player.CharacterData.查找背包空位(out byte b))
             {
                 Player.SendMessage("Your bag is full");
                 return;
             }
 
             Player.GainItem(itemTemplate, b, Qty);
-            MainForm.AddSystemLog(string.Format("Player [{0}] @make [{1}] [{2}]", Player.ObjectName, ItemName, Qty));
+            MainForm.添加系统日志(string.Format("Player [{0}] @make [{1}] [{2}]", Player.ObjectName, ItemName, Qty));
         }
     }
 }

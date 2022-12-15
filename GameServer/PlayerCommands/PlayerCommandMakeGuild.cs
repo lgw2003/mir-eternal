@@ -25,13 +25,13 @@ namespace GameServer.PlayerCommands
                     GuildName = MakeGuildName
                 });
                 Player.SendMessage("Guild has been created.");
-                MainForm.AddSystemLog(string.Format("Player [{0}] has created guild [{1}]", Player.ObjectName, MakeGuildName));
+                MainForm.添加系统日志(string.Format("Player [{0}] has created guild [{1}]", Player.ObjectName, MakeGuildName));
                 return;
             }
             else
             {
                 Player.SendMessage($"Guild already exist or you're in a guild!!");
-                MainForm.AddSystemLog(string.Format("Player [{0}] tried to create a guild or join guild: [{1}]", Player.ObjectName, MakeGuildName));
+                MainForm.添加系统日志(string.Format("Player [{0}] tried to create a guild or join guild: [{1}]", Player.ObjectName, MakeGuildName));
             }
         }
     }

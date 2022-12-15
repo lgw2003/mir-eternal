@@ -252,7 +252,7 @@ namespace GameServer.Maps
             {
                 if (keyValuePair2.Key.Date == MainProcess.CurrentTime.Date)
                 {
-                    NetworkServiceGateway.SendAnnouncement("沙巴克攻城将于10分钟后开始，请各位做好准备!", true);
+                    网络服务网关.发送公告("沙巴克攻城将于10分钟后开始，请各位做好准备!", true);
                     SabakStage += 1;
                     break;
                 }
@@ -365,7 +365,7 @@ namespace GameServer.Maps
                         }
                     }
                 }
-                NetworkServiceGateway.SendAnnouncement("沙巴克攻城开始了", true);
+                网络服务网关.发送公告("沙巴克攻城开始了", true);
                 MapGatewayProcess.SabakStage += 1;
                 return;
             }
@@ -375,7 +375,7 @@ namespace GameServer.Maps
         {
             if (MapGatewayProcess.沙城城门.Died && MapGatewayProcess.沙城城门.出生地图 != null)
             {
-                NetworkServiceGateway.SendAnnouncement("沙巴克城门被攻破了", true);
+                网络服务网关.发送公告("沙巴克城门被攻破了", true);
                 MapGatewayProcess.沙城城门.出生地图 = null;
             }
             if (MapGatewayProcess.八卦坛激活行会 == null)
@@ -515,7 +515,7 @@ namespace GameServer.Maps
                     {
                         MapGatewayProcess.八卦坛激活行会 = GuildData2;
                         MapGatewayProcess.八卦坛激活法阵 = new GuardObject(地图守卫.DataSheet[6123], MapGatewayProcess.沙城地图, GameDirection.左方, MapGatewayProcess.八卦坛坐标中);
-                        NetworkServiceGateway.SendAnnouncement(string.Format("沙巴克八卦祭坛传送点被[{0}]公会成功激活", GuildData2), true);
+                        网络服务网关.发送公告(string.Format("沙巴克八卦祭坛传送点被[{0}]公会成功激活", GuildData2), true);
                     }
                 }
                 else
@@ -558,7 +558,7 @@ namespace GameServer.Maps
             }
             if (flag2 && GuildData3 != null)
             {
-                NetworkServiceGateway.发送封包(new 同步占领行会
+                网络服务网关.发送封包(new 同步占领行会
                 {
                     行会编号 = GuildData3.行会编号
                 });
@@ -568,7 +568,7 @@ namespace GameServer.Maps
                 {
                     keyValuePair4.Key.攻沙日期.V = MainProcess.CurrentTime;
                 }
-                NetworkServiceGateway.SendAnnouncement(string.Format("沙巴克之战已经结束，[{0}]已经成为新的沙巴克公会", GuildData3), true);
+                网络服务网关.发送公告(string.Format("沙巴克之战已经结束，[{0}]已经成为新的沙巴克公会", GuildData3), true);
                 MapGatewayProcess.八卦坛激活计时 = MainProcess.CurrentTime.AddMinutes(5.0);
                 MapGatewayProcess.SabakStage += 1;
                 return;
@@ -577,11 +577,11 @@ namespace GameServer.Maps
             {
                 if (SystemData.Data.OccupyGuild.V == null)
                 {
-                    NetworkServiceGateway.SendAnnouncement("沙巴克之战已经结束，沙巴克仍然没有主人", true);
+                    网络服务网关.发送公告("沙巴克之战已经结束，沙巴克仍然没有主人", true);
                 }
                 else
                 {
-                    NetworkServiceGateway.SendAnnouncement(string.Format("沙巴克攻城已经结束，沙巴克仍然被公会占领", SystemData.Data.OccupyGuild.V.GuildName), true);
+                    网络服务网关.发送公告(string.Format("沙巴克攻城已经结束，沙巴克仍然被公会占领", SystemData.Data.OccupyGuild.V.GuildName), true);
                 }
                 if (SystemData.Data.OccupyGuild.V == null)
                 {
@@ -701,7 +701,7 @@ namespace GameServer.Maps
             {
                 if (MainProcess.CurrentTime.Hour + 1 == (int)Config.武斗场时间一 || MainProcess.CurrentTime.Hour + 1 == Config.武斗场时间二)
                 {
-                    NetworkServiceGateway.SendAnnouncement("武斗场将在五分钟后开放，如果您想参与，请做好准备!", true);
+                    网络服务网关.发送公告("武斗场将在五分钟后开放，如果您想参与，请做好准备!", true);
                 }
                 通知时间 = MainProcess.CurrentTime;
             }
@@ -738,7 +738,7 @@ namespace GameServer.Maps
             }
 
             watcher.Stop();
-            MainForm.AddSystemLog($"传送法阵生成完成 用时 {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"传送法阵生成完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
         /// <summary>
         /// 生成地图守卫
@@ -760,7 +760,7 @@ namespace GameServer.Maps
                     new GuardObject(对应模板, mapInstance, 守卫刷新.所处方向, 守卫刷新.所处坐标);
             }
             watcher.Stop();
-            MainForm.AddSystemLog($"地图守卫生成完成 用时 {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"地图守卫生成完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
         /// <summary>
         /// 生成地图宝箱
@@ -783,7 +783,7 @@ namespace GameServer.Maps
             }
 
             watcher.Stop();
-            MainForm.AddSystemLog($"地图宝箱生成完成 用时 {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"地图宝箱生成完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
 
         private static void ClearContentTeleports()
@@ -795,7 +795,7 @@ namespace GameServer.Maps
                 mapInstance.法阵列表.Clear();
 
             watcher.Stop();
-            MainForm.AddSystemLog($"Clear teleports in {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"Clear teleports in {watcher.ElapsedMilliseconds}ms");
         }
 
         private static void ClearContentGuards()
@@ -812,7 +812,7 @@ namespace GameServer.Maps
                 mapInstance.守卫区域.Clear();
 
             watcher.Stop();
-            MainForm.AddSystemLog($"Clear guards in {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"Clear guards in {watcher.ElapsedMilliseconds}ms");
         }
 
         private static void ClearContentChests()
@@ -829,7 +829,7 @@ namespace GameServer.Maps
                 mapInstance.Chests.Clear();
 
             watcher.Stop();
-            MainForm.AddSystemLog($"Clear chests in {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"Clear chests in {watcher.ElapsedMilliseconds}ms");
         }
 
         private static void ClearContentSpawns()
@@ -849,7 +849,7 @@ namespace GameServer.Maps
             }
 
             watcher.Stop();
-            MainForm.AddSystemLog($"Clear monster spawns in {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"Clear monster spawns in {watcher.ElapsedMilliseconds}ms");
         }
         /// <summary>
         /// 加载怪物刷新数据
@@ -876,7 +876,7 @@ namespace GameServer.Maps
                 instance.Initialize();
 
             watcher.Stop();
-            MainForm.AddSystemLog($"加载怪物刷新点完成 用时 {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"加载怪物刷新点完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
 
         public static void LoadContent()
@@ -890,12 +890,12 @@ namespace GameServer.Maps
             LoadContentSpawns();
 
             watcher.Stop();
-            MainForm.AddSystemLog($"初始化全部完成 用时 {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"初始化全部完成 用时 {watcher.ElapsedMilliseconds}ms");
         }
 
         public static void ReloadContent()
         {
-            NetworkServiceGateway.SendAnnouncement("用新内容更新服务器时，您可能会遇到延迟。", true);
+            网络服务网关.发送公告("用新内容更新服务器时，您可能会遇到延迟。", true);
 
             MainProcess.ReloadTasks.Enqueue(() => ClearContentTeleports());
             MainProcess.ReloadTasks.Enqueue(() => LoadContentTeleports());
@@ -937,7 +937,7 @@ namespace GameServer.Maps
                 MapInstances.Add((int)(游戏地图.地图编号 * 16 + 1), new MapInstance(游戏地图, 16777217));
             }
             watcher.Stop();
-            MainForm.AddSystemLog($"地图生成完成 用时 {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"地图生成完成 用时 {watcher.ElapsedMilliseconds}ms");
 
             watcher.Restart();
             foreach (地形数据 地形数据 in 地形数据.DataSheet.Values)
@@ -958,7 +958,7 @@ namespace GameServer.Maps
                 }
             }
             watcher.Stop();
-            MainForm.AddSystemLog($"地形加载完成 用时 {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"地形加载完成 用时 {watcher.ElapsedMilliseconds}ms");
 
             watcher.Restart();
             foreach (地图区域 地图区域 in 地图区域.DataSheet)
@@ -985,7 +985,7 @@ namespace GameServer.Maps
                 }
             }
             watcher.Stop();
-            MainForm.AddSystemLog($"地图区域加载完成 用时 {watcher.ElapsedMilliseconds}ms");
+            MainForm.添加系统日志($"地图区域加载完成 用时 {watcher.ElapsedMilliseconds}ms");
 
             LoadContent();
         }
@@ -998,14 +998,14 @@ namespace GameServer.Maps
                 ItemData ItemData = ItemObject.ItemData;
                 if (ItemData != null)
                 {
-                    ItemData.Delete();
+                    ItemData.删除数据();
                 }
             }
             foreach (KeyValuePair<int, 游戏商店> keyValuePair in 游戏商店.DataSheet)
             {
                 foreach (ItemData ItemData2 in keyValuePair.Value.回购列表)
                 {
-                    ItemData2.Delete();
+                    ItemData2.删除数据();
                 }
             }
         }

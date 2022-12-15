@@ -304,7 +304,7 @@ namespace GameServer.Maps
                 }
                 foreach (SkillInstance 技能实例 in this.SkillTasks.ToList<SkillInstance>())
                 {
-                    技能实例.Process();
+                    技能实例.任务处理();
                 }
                 if (MainProcess.CurrentTime > base.RecoveryTime)
                 {

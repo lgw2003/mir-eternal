@@ -19,18 +19,18 @@ namespace GameServer
 		
 		public override void Execute()
 		{
-			if (this.最高等级 <= Config.MaxLevel)
+			if (this.最高等级 <= Config.游戏开放等级)
 			{
-				MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, the level is lower than the current OpenLevelCommand");
+				MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, the level is lower than the current OpenLevelCommand");
 				return;
 			}
-			Settings.Default.MaxLevel = (Config.MaxLevel = this.最高等级);
+			Settings.Default.MaxLevel = (Config.游戏开放等级 = this.最高等级);
 			Settings.Default.Save();
 			MainForm.Singleton.BeginInvoke(new MethodInvoker(delegate()
 			{
 				MainForm.Singleton.S_MaxLevel.Value = this.最高等级;
 			}));
-			MainForm.AddCommandLog(string.Format("<= @{0} The command has been executed, the current OpenLevelCommand: {1}", base.GetType().Name, Config.MaxLevel));
+			MainForm.添加命令日志(string.Format("<= @{0} The command has been executed, the current OpenLevelCommand: {1}", base.GetType().Name, Config.游戏开放等级));
 		}
 
 		

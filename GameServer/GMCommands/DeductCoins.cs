@@ -25,21 +25,21 @@ namespace GameServer
 				CharacterData CharacterData = GameData as CharacterData;
 				if (CharacterData != null)
 				{
-					CharacterData.NumberGoldCoins = Math.Max(0, CharacterData.NumberGoldCoins - this.NumberGoldCoins);
-					客户网络 网络连接 = CharacterData.ActiveConnection;
+					CharacterData.金币数量 = Math.Max(0, CharacterData.金币数量 - this.NumberGoldCoins);
+					客户网络 网络连接 = CharacterData.网络连接;
 					if (网络连接 != null)
 					{
 						网络连接.发送封包(new 货币数量变动
 						{
 							货币类型 = 1,
-							货币数量 = CharacterData.NumberGoldCoins
+							货币数量 = CharacterData.金币数量
 						});
 					}
-					MainForm.AddCommandLog(string.Format("<= @{0} command has been executed, current coin count: {1}", base.GetType().Name, CharacterData.NumberGoldCoins));
+					MainForm.添加命令日志(string.Format("<= @{0} command has been executed, current coin count: {1}", base.GetType().Name, CharacterData.金币数量));
 					return;
 				}
 			}
-			MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, role does not exist");
+			MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, role does not exist");
 		}
 
 		

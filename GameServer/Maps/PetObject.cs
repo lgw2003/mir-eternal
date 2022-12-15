@@ -686,7 +686,7 @@ namespace GameServer.Maps
 				}
 				foreach (SkillInstance 技能实例 in this.SkillTasks.ToList<SkillInstance>())
 				{
-					技能实例.Process();
+					技能实例.任务处理();
 				}
 				if (MainProcess.CurrentTime > base.RecoveryTime)
 				{
@@ -738,7 +738,7 @@ namespace GameServer.Maps
 		{
 			if (this.死亡释放技能 != null && 对象 != null)
 			{
-				new SkillInstance(this, 死亡释放技能, null, ActionId++, this.CurrentMap, this.CurrentPosition, null, this.CurrentPosition, null, null, false).Process();
+				new SkillInstance(this, 死亡释放技能, null, ActionId++, this.CurrentMap, this.CurrentPosition, null, this.CurrentPosition, null, null, false).任务处理();
 			}
 			base.Dies(对象, 技能击杀);
 			this.消失时间 = MainProcess.CurrentTime.AddMilliseconds((double)this.CorpsePreservation);
@@ -776,7 +776,7 @@ namespace GameServer.Maps
 			PetData PetData = this.PetData;
 			if (PetData != null)
 			{
-				PetData.Delete();
+				PetData.删除数据();
 			}
 			this.SecondaryObject = true;
 			MapGatewayProcess.AddSecondaryObject(this);

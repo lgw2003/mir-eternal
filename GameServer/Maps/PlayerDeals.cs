@@ -66,22 +66,22 @@ namespace GameServer.Maps
 			if (this.接收方金币 > 0)
 			{
 				this.交易接收方.NumberGoldCoins -= (int)Math.Ceiling((double)((float)this.接收方金币 * 1.04f));
-				this.交易接收方.CharacterData.TransferOutGoldCoins.V += (long)this.接收方金币;
+				this.交易接收方.CharacterData.转出金币.V += (long)this.接收方金币;
 			}
 			if (this.申请方金币 > 0)
 			{
 				this.交易申请方.NumberGoldCoins -= (int)Math.Ceiling((double)((float)this.申请方金币 * 1.04f));
-				this.交易申请方.CharacterData.TransferOutGoldCoins.V += (long)this.申请方金币;
+				this.交易申请方.CharacterData.转出金币.V += (long)this.申请方金币;
 			}
 			foreach (ItemData ItemData in this.接收方物品.Values)
 			{
 				if (ItemData.Id == 80207)
 				{
-					this.交易接收方.CharacterData.TransferOutGoldCoins.V += 1000000L;
+					this.交易接收方.CharacterData.转出金币.V += 1000000L;
 				}
 				else if (ItemData.Id == 80209)
 				{
-					this.交易接收方.CharacterData.TransferOutGoldCoins.V += 5000000L;
+					this.交易接收方.CharacterData.转出金币.V += 5000000L;
 				}
 				this.交易接收方.Backpack.Remove(ItemData.物品位置.V);
 				客户网络 网络连接 = this.交易接收方.ActiveConnection;
@@ -98,11 +98,11 @@ namespace GameServer.Maps
 			{
 				if (ItemData2.Id == 80207)
 				{
-					this.交易申请方.CharacterData.TransferOutGoldCoins.V += 1000000L;
+					this.交易申请方.CharacterData.转出金币.V += 1000000L;
 				}
 				else if (ItemData2.Id == 80209)
 				{
-					this.交易申请方.CharacterData.TransferOutGoldCoins.V += 5000000L;
+					this.交易申请方.CharacterData.转出金币.V += 5000000L;
 				}
 				this.交易申请方.Backpack.Remove(ItemData2.物品位置.V);
 				客户网络 网络连接2 = this.交易申请方.ActiveConnection;

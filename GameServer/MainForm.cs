@@ -23,116 +23,117 @@ namespace GameServer
     public partial class MainForm : Form
     {
 
-        public static void LoadSystemData()
+        public static void 加载系统数据()
         {
             MainForm MainForm = MainForm.Singleton;
-            MainForm.AddSystemLog("开始加载系统数据...");
-            MainForm.MapsDataTable = new DataTable("地图数据表");
-            MainForm.MapsDataRow = new Dictionary<游戏地图, DataRow>();
-            MainForm.MapsDataTable.Columns.Add("MapId", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("MapName", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("MinLevel", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("NrPlayers", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("TotalMobs", typeof(uint));
-            MainForm.MapsDataTable.Columns.Add("MobsAlive", typeof(uint));
-            MainForm.MapsDataTable.Columns.Add("MobsRespawned", typeof(uint));
-            MainForm.MapsDataTable.Columns.Add("MobsDrops", typeof(long));
-            MainForm.MapsDataTable.Columns.Add("MobGoldDrop", typeof(long));
+            MainForm.添加系统日志("开始加载系统数据...");
+            MainForm.地图数据表 = new DataTable("地图数据表");
+            MainForm.地图数据行 = new Dictionary<游戏地图, DataRow>();
+            MainForm.地图数据表.Columns.Add("地图编号", typeof(string));
+            MainForm.地图数据表.Columns.Add("地图名称", typeof(string));
+            MainForm.地图数据表.Columns.Add("等级限制", typeof(string));
+            MainForm.地图数据表.Columns.Add("玩家数量", typeof(string));
+            MainForm.地图数据表.Columns.Add("怪物总数", typeof(uint));
+            MainForm.地图数据表.Columns.Add("存活怪物总数", typeof(uint));
+            MainForm.地图数据表.Columns.Add("怪物复活次数", typeof(uint));
+            MainForm.地图数据表.Columns.Add("怪物掉落次数", typeof(long));
+            MainForm.地图数据表.Columns.Add("金币掉落总数", typeof(long));
 
             if (MainForm != null)
             {
                 MainForm.dgvMaps.BeginInvoke(new MethodInvoker(delegate ()
                 {
-                    MainForm.Singleton.dgvMaps.DataSource = MainForm.MapsDataTable;
+                    MainForm.Singleton.dgvMaps.DataSource = MainForm.地图数据表;
                 }));
             }
-            MainForm.怪物DataSheet = new DataTable("怪物数据表");
+            MainForm.怪物数据表 = new DataTable("怪物数据表");
             MainForm.怪物数据行 = new Dictionary<游戏怪物, DataRow>();
             MainForm.数据行怪物 = new Dictionary<DataRow, 游戏怪物>();
-            MainForm.怪物DataSheet.Columns.Add("MobId", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("怪物名字", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("Level", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("怪物经验", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("Category", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("MobInterval", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("RoamingInterval", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("RangeHate", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("HateTime", typeof(string));
+            MainForm.怪物数据表.Columns.Add("模板编号", typeof(string));
+            MainForm.怪物数据表.Columns.Add("怪物名字", typeof(string));
+            MainForm.怪物数据表.Columns.Add("怪物等级", typeof(string));
+            MainForm.怪物数据表.Columns.Add("怪物经验", typeof(string));
+            MainForm.怪物数据表.Columns.Add("怪物级别", typeof(string));
+            MainForm.怪物数据表.Columns.Add("移动间隔", typeof(string));
+            MainForm.怪物数据表.Columns.Add("漫游间隔", typeof(string));
+            MainForm.怪物数据表.Columns.Add("仇恨范围", typeof(string));
+            MainForm.怪物数据表.Columns.Add("仇恨时长", typeof(string));
             MainForm MainForm2 = MainForm.Singleton;
             if (MainForm2 != null)
             {
                 MainForm2.怪物浏览表.BeginInvoke(new MethodInvoker(delegate ()
                 {
-                    MainForm.Singleton.怪物浏览表.DataSource = MainForm.怪物DataSheet;
+                    MainForm.Singleton.怪物浏览表.DataSource = MainForm.怪物数据表;
                 }));
             }
-            MainForm.掉落DataSheet = new DataTable("DropDataSheet");
+            MainForm.掉落数据表 = new DataTable("掉落数据表");
             MainForm.怪物掉落表 = new Dictionary<游戏怪物, List<KeyValuePair<游戏物品, long>>>();
-            MainForm.掉落DataSheet.Columns.Add("Name", typeof(string));
-            MainForm.掉落DataSheet.Columns.Add("DropNumber", typeof(string));
+            MainForm.掉落数据表.Columns.Add("物品名字", typeof(string));
+            MainForm.掉落数据表.Columns.Add("掉落数量", typeof(string));
             MainForm MainForm3 = MainForm.Singleton;
             if (MainForm3 != null)
             {
                 MainForm3.掉落浏览表.BeginInvoke(new MethodInvoker(delegate ()
                 {
-                    MainForm.Singleton.掉落浏览表.DataSource = MainForm.掉落DataSheet;
+                    MainForm.Singleton.掉落浏览表.DataSource = MainForm.掉落数据表;
                 }));
             }
             SystemDataService.LoadData();
-            MainForm.AddSystemLog("系统数据全部加载完成");
+            MainForm.添加系统日志("系统数据全部加载完成");
         }
 
 
         public static void 加载客户端数据()
         {
             MainForm MainForm = MainForm.Singleton;
-            MainForm.AddSystemLog("客户端数据加载中...");
-            MainForm.CharacterDataTable = new DataTable("CharacterDataTable");
-            MainForm.SkillData表 = new DataTable("SkillData表");
-            MainForm.EquipmentData表 = new DataTable("EquipmentData表");
-            MainForm.背包DataSheet = new DataTable("EquipmentData表");
-            MainForm.仓库DataSheet = new DataTable("EquipmentData表");
-            MainForm.CharacterData行 = new Dictionary<CharacterData, DataRow>();
+            MainForm.添加系统日志("客户端数据加载中...");
+            MainForm.角色数据表 = new DataTable("角色数据表");
+            MainForm.技能数据表 = new DataTable("技能数据表");
+            MainForm.装备数据表 = new DataTable("装备数据表");
+            MainForm.背包数据表 = new DataTable("装备数据表");
+            MainForm.仓库数据表 = new DataTable("装备数据表");
+            MainForm.角色数据行 = new Dictionary<CharacterData, DataRow>();
             MainForm.数据行角色 = new Dictionary<DataRow, CharacterData>();
 
-            MainForm.CharacterDataTable.Columns.Add("CharName", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CharacterBlock", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("AccNumber", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("AccBlocking", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("FreezeDate", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("DateDelete", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("LoginDate", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("OfflineDate", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("NetAddress", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("MacAddress", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CharRole", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CharGender", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("Affiliation", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("Ingots", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("DollarConsumption", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("NumberGoldCoins", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("TransferOutGoldCoins", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("BackpackSize", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("WarehouseSize", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("MasterRep", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CurrentPrivileges", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CurrentIssueDate", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("PreviousPrivilege", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("DateLastIssue", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("RemainingPrivileges", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CurrentRank", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CurrentExp", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("DoubleExp", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CurrentBattlePower", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CurrentMap", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("CurrentCoords", typeof(string));
-            MainForm.CharacterDataTable.Columns.Add("PkLevel", typeof(string));
+            MainForm.角色数据表.Columns.Add("角色名字", typeof(string));
+            MainForm.角色数据表.Columns.Add("所属账号", typeof(string));
+            MainForm.角色数据表.Columns.Add("角色职业", typeof(string));
+            MainForm.角色数据表.Columns.Add("角色性别", typeof(string));
+            MainForm.角色数据表.Columns.Add("角色封禁", typeof(string));
+            MainForm.角色数据表.Columns.Add("所属行会", typeof(string));
+            MainForm.角色数据表.Columns.Add("当前等级", typeof(string));
+            MainForm.角色数据表.Columns.Add("当前经验", typeof(string));
+            MainForm.角色数据表.Columns.Add("双倍经验", typeof(string));
+            MainForm.角色数据表.Columns.Add("当前战力", typeof(string));
+            MainForm.角色数据表.Columns.Add("当前地图", typeof(string));
+            MainForm.角色数据表.Columns.Add("当前坐标", typeof(string));
+            MainForm.角色数据表.Columns.Add("当前PK值", typeof(string));
+            MainForm.角色数据表.Columns.Add("元宝数量", typeof(string));
+            MainForm.角色数据表.Columns.Add("消耗元宝", typeof(string));
+            MainForm.角色数据表.Columns.Add("金币数量", typeof(string));
+            MainForm.角色数据表.Columns.Add("转出金币", typeof(string));
+            MainForm.角色数据表.Columns.Add("背包大小", typeof(string));
+            MainForm.角色数据表.Columns.Add("仓库大小", typeof(string));
+            MainForm.角色数据表.Columns.Add("师门声望", typeof(string));
+            MainForm.角色数据表.Columns.Add("账号封禁", typeof(string));
+            MainForm.角色数据表.Columns.Add("冻结日期", typeof(string));
+            MainForm.角色数据表.Columns.Add("删除日期", typeof(string));
+            MainForm.角色数据表.Columns.Add("登陆日期", typeof(string));
+            MainForm.角色数据表.Columns.Add("离线日期", typeof(string));
+            MainForm.角色数据表.Columns.Add("网络地址", typeof(string));
+            MainForm.角色数据表.Columns.Add("物理地址", typeof(string));
+            MainForm.角色数据表.Columns.Add("本期特权", typeof(string));
+            MainForm.角色数据表.Columns.Add("本期日期", typeof(string));
+            MainForm.角色数据表.Columns.Add("上期特权", typeof(string));
+            MainForm.角色数据表.Columns.Add("上期日期", typeof(string));
+            MainForm.角色数据表.Columns.Add("剩余特权", typeof(string));
+           
 
             if (MainForm != null)
             {
                 MainForm.BeginInvoke(new MethodInvoker(delegate ()
                 {
-                    MainForm.Singleton.dgvCharacters.DataSource = MainForm.CharacterDataTable;
+                    MainForm.Singleton.dgvCharacters.DataSource = MainForm.角色数据表;
                     for (int i = 0; i < MainForm.Singleton.dgvCharacters.Columns.Count; i++)
                     {
                         MainForm.Singleton.dgvCharacters.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -140,71 +141,71 @@ namespace GameServer
                 }));
             }
             MainForm.角色技能表 = new Dictionary<CharacterData, List<KeyValuePair<ushort, SkillData>>>();
-            MainForm.SkillData表.Columns.Add("SkillName", typeof(string));
-            MainForm.SkillData表.Columns.Add("SkillId", typeof(string));
-            MainForm.SkillData表.Columns.Add("CurrentRank", typeof(string));
-            MainForm.SkillData表.Columns.Add("CurrentExp", typeof(string));
+            MainForm.技能数据表.Columns.Add("技能名字", typeof(string));
+            MainForm.技能数据表.Columns.Add("技能编号", typeof(string));
+            MainForm.技能数据表.Columns.Add("当前等级", typeof(string));
+            MainForm.技能数据表.Columns.Add("当前经验", typeof(string));
             MainForm MainForm2 = MainForm.Singleton;
             if (MainForm2 != null)
             {
                 MainForm2.BeginInvoke(new MethodInvoker(delegate ()
                 {
-                    MainForm.Singleton.技能浏览表.DataSource = MainForm.SkillData表;
+                    MainForm.Singleton.技能浏览表.DataSource = MainForm.技能数据表;
                 }));
             }
             MainForm.角色装备表 = new Dictionary<CharacterData, List<KeyValuePair<byte, EquipmentData>>>();
-            MainForm.EquipmentData表.Columns.Add("穿戴部位", typeof(string));
-            MainForm.EquipmentData表.Columns.Add("穿戴装备", typeof(string));
+            MainForm.装备数据表.Columns.Add("穿戴部位", typeof(string));
+            MainForm.装备数据表.Columns.Add("穿戴装备", typeof(string));
             MainForm MainForm3 = MainForm.Singleton;
             if (MainForm3 != null)
             {
                 MainForm3.BeginInvoke(new MethodInvoker(delegate ()
                 {
-                    MainForm.Singleton.装备浏览表.DataSource = MainForm.EquipmentData表;
+                    MainForm.Singleton.装备浏览表.DataSource = MainForm.装备数据表;
                 }));
             }
             MainForm.角色背包表 = new Dictionary<CharacterData, List<KeyValuePair<byte, ItemData>>>();
-            MainForm.背包DataSheet.Columns.Add("背包位置", typeof(string));
-            MainForm.背包DataSheet.Columns.Add("背包物品", typeof(string));
+            MainForm.背包数据表.Columns.Add("背包位置", typeof(string));
+            MainForm.背包数据表.Columns.Add("背包物品", typeof(string));
             MainForm MainForm4 = MainForm.Singleton;
             if (MainForm4 != null)
             {
                 MainForm4.BeginInvoke(new MethodInvoker(delegate ()
                 {
-                    MainForm.Singleton.背包浏览表.DataSource = MainForm.背包DataSheet;
+                    MainForm.Singleton.背包浏览表.DataSource = MainForm.背包数据表;
                 }));
             }
             MainForm.角色仓库表 = new Dictionary<CharacterData, List<KeyValuePair<byte, ItemData>>>();
-            MainForm.仓库DataSheet.Columns.Add("仓库位置", typeof(string));
-            MainForm.仓库DataSheet.Columns.Add("仓库物品", typeof(string));
+            MainForm.仓库数据表.Columns.Add("仓库位置", typeof(string));
+            MainForm.仓库数据表.Columns.Add("仓库物品", typeof(string));
             MainForm MainForm5 = MainForm.Singleton;
             if (MainForm5 != null)
             {
                 MainForm5.BeginInvoke(new MethodInvoker(delegate ()
                 {
-                    MainForm.Singleton.仓库浏览表.DataSource = MainForm.仓库DataSheet;
+                    MainForm.Singleton.仓库浏览表.DataSource = MainForm.仓库数据表;
                 }));
             }
-            MainForm.封禁DataSheet = new DataTable();
+            MainForm.封禁数据表 = new DataTable();
             MainForm.封禁数据行 = new Dictionary<string, DataRow>();
-            MainForm.封禁DataSheet.Columns.Add("NetAddress", typeof(string));
-            MainForm.封禁DataSheet.Columns.Add("MacAddress", typeof(string));
-            MainForm.封禁DataSheet.Columns.Add("ExpiryDate", typeof(string));
+            MainForm.封禁数据表.Columns.Add("网络地址", typeof(string));
+            MainForm.封禁数据表.Columns.Add("物理地址", typeof(string));
+            MainForm.封禁数据表.Columns.Add("到期时间", typeof(string));
             MainForm MainForm6 = MainForm.Singleton;
             if (MainForm6 != null)
             {
                 MainForm6.BeginInvoke(new MethodInvoker(delegate ()
                 {
-                    MainForm.Singleton.封禁浏览表.DataSource = MainForm.封禁DataSheet;
+                    MainForm.Singleton.封禁浏览表.DataSource = MainForm.封禁数据表;
                 }));
             }
             GameDataGateway.加载数据();
-            MainForm.AddSystemLog("客户端数据加载完成...");
+            MainForm.添加系统日志("客户端数据加载完成...");
 
         }
 
 
-        public static void ServerStartedCallback()
+        public static void 服务启动回调()
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -229,7 +230,7 @@ namespace GameServer
         }
 
 
-        public static void Stop()
+        public static void 服务停止回调()
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -245,7 +246,7 @@ namespace GameServer
                 Control control2 = MainForm.Singleton.停止按钮;
                 MainForm.Singleton.界面定时更新.Enabled = false;
                 control2.Enabled = false;
-                foreach (KeyValuePair<DataGridViewRow, DateTime> keyValuePair in MainForm.公告DataSheet)
+                foreach (KeyValuePair<DataGridViewRow, DateTime> keyValuePair in MainForm.公告数据表)
                 {
                     keyValuePair.Key.ReadOnly = false;
                     keyValuePair.Key.Cells["AnnounceStatus"].Value = "";
@@ -257,12 +258,12 @@ namespace GameServer
                     MainForm.Singleton.开始公告按钮.Enabled = true;
                     MainForm.Singleton.停止公告按钮.Enabled = false;
                 }
-                MainForm.公告DataSheet.Clear();
+                MainForm.公告数据表.Clear();
             }));
         }
 
 
-        public static void AddSystemLog(string 内容)
+        public static void 添加系统日志(string 内容)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -279,7 +280,7 @@ namespace GameServer
             }));
         }
 
-        public static void AddPacketLog(GamePacket packet, bool incoming)
+        public static void 添加封包日志(GamePacket packet, bool incoming)
         {
             if (!Config.DebugPackets) return;
             if (packet.封包属性?.NoDebug ?? false) return;
@@ -304,7 +305,7 @@ namespace GameServer
         }
 
 
-        public static void AddChatLog(string preffix, byte[] text)
+        public static void 添加聊天日志(string preffix, byte[] text)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -322,7 +323,7 @@ namespace GameServer
         }
 
 
-        public static void AddCommandLog(string 内容)
+        public static void 添加命令日志(string 内容)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -338,7 +339,7 @@ namespace GameServer
         }
 
 
-        public static void UpdateTotalConnections(uint 内容)
+        public static void 更新连接总数(uint 内容)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -347,12 +348,12 @@ namespace GameServer
             }
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
-                MainForm.Singleton.连接总数统计.Text = string.Format("Total Connections: {0}", 内容);
+                MainForm.Singleton.连接总数统计.Text = string.Format("连接总数统计: {0}", 内容);
             }));
         }
 
 
-        public static void UpdateAlreadyLogged(uint 内容)
+        public static void 更新已登陆数(uint 内容)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -361,12 +362,12 @@ namespace GameServer
             }
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
-                MainForm.Singleton.已经登录统计.Text = string.Format("Users logged in: {0}", 内容);
+                MainForm.Singleton.已经登录统计.Text = string.Format("已经登陆: {0}", 内容);
             }));
         }
 
 
-        public static void UpdateConnectionsOnline(uint 内容)
+        public static void 更新已经上线(uint 内容)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -375,12 +376,12 @@ namespace GameServer
             }
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
-                MainForm.Singleton.已经上线统计.Text = string.Format("Users online: {0}", 内容);
+                MainForm.Singleton.已经上线统计.Text = string.Format("已经上线: {0}", 内容);
             }));
         }
 
 
-        public static void UpdateLoopCount(uint 内容)
+        public static void 更新后台帧数(uint 内容)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -389,12 +390,12 @@ namespace GameServer
             }
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
-                MainForm.Singleton.帧数统计.Text = string.Format("Backstage Frames: {0}", 内容);
+                MainForm.Singleton.帧数统计.Text = string.Format("帧数: {0}", 内容);
             }));
         }
 
 
-        public static void UpdateReceivedBytes(long 内容)
+        public static void 更新接收字节(long 内容)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -403,12 +404,12 @@ namespace GameServer
             }
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
-                MainForm.Singleton.接收统计.Text = string.Format("Received: {0}", 内容);
+                MainForm.Singleton.接收统计.Text = string.Format("接收: {0}", 内容);
             }));
         }
 
 
-        public static void UpdateSendedBytes(long 内容)
+        public static void 更新发送字节(long 内容)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -417,12 +418,12 @@ namespace GameServer
             }
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
-                MainForm.Singleton.发送统计.Text = string.Format("Sent: {0}", 内容);
+                MainForm.Singleton.发送统计.Text = string.Format("发送: {0}", 内容);
             }));
         }
 
 
-        public static void UpdateObjectStatistics(int 激活对象, int 次要对象, int 对象总数)
+        public static void 更新对象统计(int 激活对象, int 次要对象, int 对象总数)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -431,31 +432,31 @@ namespace GameServer
             }
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
-                MainForm.Singleton.对象统计.Text = string.Format("Object Statistics {0} / {1} / {2}", 激活对象, 次要对象, 对象总数);
+                MainForm.Singleton.对象统计.Text = string.Format("对象统计 {0} / {1} / {2}", 激活对象, 次要对象, 对象总数);
             }));
         }
 
 
         public static void 添加数据显示(CharacterData 数据)
         {
-            if (!MainForm.CharacterData行.ContainsKey(数据))
+            if (!MainForm.角色数据行.ContainsKey(数据))
             {
-                MainForm.CharacterData行[数据] = MainForm.CharacterDataTable.NewRow();
-                MainForm.CharacterDataTable.Rows.Add(MainForm.CharacterData行[数据]);
+                MainForm.角色数据行[数据] = MainForm.角色数据表.NewRow();
+                MainForm.角色数据表.Rows.Add(MainForm.角色数据行[数据]);
             }
         }
 
 
         public static void 修改数据显示(CharacterData 数据, string 表头文本, string 表格内容)
         {
-            if (MainForm.CharacterData行.ContainsKey(数据))
+            if (MainForm.角色数据行.ContainsKey(数据))
             {
-                MainForm.CharacterData行[数据][表头文本] = 表格内容;
+                MainForm.角色数据行[数据][表头文本] = 表格内容;
             }
         }
 
 
-        public static void AddCharacterData(CharacterData 角色)
+        public static void 添加角色数据(CharacterData 角色)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -464,51 +465,51 @@ namespace GameServer
             }
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
-                if (!MainForm.CharacterData行.ContainsKey(角色))
+                if (!MainForm.角色数据行.ContainsKey(角色))
                 {
-                    DataRow dataRow = MainForm.CharacterDataTable.NewRow();
-                    dataRow["CharName"] = 角色;
-                    dataRow["AccNumber"] = 角色.Account;
-                    dataRow["AccBlocking"] = ((角色.Account.V.封禁日期.V != default(DateTime)) ? 角色.Account.V.封禁日期 : null);
-                    dataRow["CharacterBlock"] = ((角色.封禁日期.V != default(DateTime)) ? 角色.封禁日期 : null);
-                    dataRow["FreezeDate"] = ((角色.FreezeDate.V != default(DateTime)) ? 角色.FreezeDate : null);
-                    dataRow["DateDelete"] = ((角色.DateDelete.V != default(DateTime)) ? 角色.DateDelete : null);
-                    dataRow["LoginDate"] = ((角色.LoginDate.V != default(DateTime)) ? 角色.LoginDate : null);
-                    dataRow["OfflineDate"] = ((角色.ActiveConnection == null) ? 角色.OfflineDate : null);
-                    dataRow["NetAddress"] = 角色.NetAddress;
-                    dataRow["MacAddress"] = 角色.MacAddress;
-                    dataRow["CharRole"] = 角色.CharRace;
-                    dataRow["CharGender"] = 角色.CharGender;
-                    dataRow["Affiliation"] = 角色.Guild;
-                    dataRow["Ingots"] = 角色.Ingots;
-                    dataRow["DollarConsumption"] = 角色.DollarConsumption;
-                    dataRow["NumberGoldCoins"] = 角色.NumberGoldCoins;
-                    dataRow["TransferOutGoldCoins"] = 角色.TransferOutGoldCoins;
-                    dataRow["BackpackSize"] = 角色.BackpackSize;
-                    dataRow["WarehouseSize"] = 角色.WarehouseSize;
-                    dataRow["MasterRep"] = 角色.MasterRep;
-                    dataRow["CurrentPrivileges"] = 角色.CurrentPrivileges;
-                    dataRow["CurrentIssueDate"] = 角色.CurrentIssueDate;
-                    dataRow["PreviousPrivilege"] = 角色.PreviousPrivilege;
-                    dataRow["DateLastIssue"] = 角色.DateLastIssue;
-                    dataRow["RemainingPrivileges"] = 角色.RemainingPrivileges;
-                    dataRow["CurrentRank"] = 角色.Level;
-                    dataRow["CurrentExp"] = 角色.CurrentExp;
-                    dataRow["DoubleExp"] = 角色.DoubleExp;
-                    dataRow["CurrentBattlePower"] = 角色.PowerCombat;
+                    DataRow dataRow = MainForm.角色数据表.NewRow();
+                    dataRow["角色名字"] = 角色;
+                    dataRow["所属账号"] = 角色.所属账号;
+                    dataRow["账号封禁"] = ((角色.所属账号.V.封禁日期.V != default(DateTime)) ? 角色.所属账号.V.封禁日期 : null);
+                    dataRow["角色封禁"] = ((角色.封禁日期.V != default(DateTime)) ? 角色.封禁日期 : null);
+                    dataRow["冻结日期"] = ((角色.冻结日期.V != default(DateTime)) ? 角色.冻结日期 : null);
+                    dataRow["删除日期"] = ((角色.删除日期.V != default(DateTime)) ? 角色.删除日期 : null);
+                    dataRow["登陆日期"] = ((角色.登陆日期.V != default(DateTime)) ? 角色.登陆日期 : null);
+                    dataRow["离线日期"] = ((角色.网络连接 == null) ? 角色.离线日期 : null);
+                    dataRow["网络地址"] = 角色.网络地址;
+                    dataRow["物理地址"] = 角色.物理地址;
+                    dataRow["角色职业"] = 角色.角色职业;
+                    dataRow["角色性别"] = 角色.角色性别;
+                    dataRow["所属行会"] = 角色.所属行会;
+                    dataRow["元宝数量"] = 角色.元宝数量;
+                    dataRow["消耗元宝"] = 角色.消耗元宝;
+                    dataRow["金币数量"] = 角色.金币数量;
+                    dataRow["转出金币"] = 角色.转出金币;
+                    dataRow["背包大小"] = 角色.背包大小;
+                    dataRow["仓库大小"] = 角色.仓库大小;
+                    dataRow["师门声望"] = 角色.师门声望;
+                    dataRow["本期特权"] = 角色.本期特权;
+                    dataRow["本期日期"] = 角色.本期日期;
+                    dataRow["上期特权"] = 角色.上期特权;
+                    dataRow["上期日期"] = 角色.上期日期;
+                    dataRow["剩余特权"] = 角色.剩余特权;
+                    dataRow["当前等级"] = 角色.当前等级;
+                    dataRow["当前经验"] = 角色.当前经验;
+                    dataRow["双倍经验"] = 角色.双倍经验;
+                    dataRow["当前战力"] = 角色.当前战力;
                     游戏地图 游戏地图;
-                    dataRow["CurrentMap"] = (游戏地图.DataSheet.TryGetValue((byte)角色.CurrentMap.V, out 游戏地图) ? 游戏地图.地图名字 : 角色.CurrentMap);
-                    dataRow["PkLevel"] = 角色.PkLevel;
-                    dataRow["CurrentCoords"] = string.Format("{0}, {1}", 角色.CurrentCoords.V.X, 角色.CurrentCoords.V.Y);
-                    MainForm.CharacterData行[角色] = dataRow;
+                    dataRow["当前地图"] = (游戏地图.DataSheet.TryGetValue((byte)角色.当前地图.V, out 游戏地图) ? 游戏地图.地图名字 : 角色.当前地图);
+                    dataRow["当前PK值"] = 角色.当前PK值;
+                    dataRow["当前坐标"] = string.Format("{0}, {1}", 角色.当前坐标.V.X, 角色.当前坐标.V.Y);
+                    MainForm.角色数据行[角色] = dataRow;
                     MainForm.数据行角色[dataRow] = 角色;
-                    MainForm.CharacterDataTable.Rows.Add(dataRow);
+                    MainForm.角色数据表.Rows.Add(dataRow);
                 }
             }));
         }
 
 
-        public static void RemoveCharacter(CharacterData character)
+        public static void 移除角色数据(CharacterData character)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -518,10 +519,10 @@ namespace GameServer
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
                 DataRow dataRow;
-                if (MainForm.CharacterData行.TryGetValue(character, out dataRow))
+                if (MainForm.角色数据行.TryGetValue(character, out dataRow))
                 {
                     MainForm.数据行角色.Remove(dataRow);
-                    MainForm.CharacterDataTable.Rows.Remove(dataRow);
+                    MainForm.角色数据表.Rows.Remove(dataRow);
                     MainForm.角色技能表.Remove(character);
                     MainForm.角色背包表.Remove(character);
                     MainForm.角色装备表.Remove(character);
@@ -533,11 +534,11 @@ namespace GameServer
 
         public static void 界面更新处理(object sender, EventArgs e)
         {
-            MainForm.SkillData表.Rows.Clear();
-            MainForm.EquipmentData表.Rows.Clear();
-            MainForm.背包DataSheet.Rows.Clear();
-            MainForm.仓库DataSheet.Rows.Clear();
-            MainForm.掉落DataSheet.Rows.Clear();
+            MainForm.技能数据表.Rows.Clear();
+            MainForm.装备数据表.Rows.Clear();
+            MainForm.背包数据表.Rows.Clear();
+            MainForm.仓库数据表.Rows.Clear();
+            MainForm.掉落数据表.Rows.Clear();
             if (MainForm.Singleton == null)
             {
                 return;
@@ -553,12 +554,12 @@ namespace GameServer
                     {
                         foreach (KeyValuePair<ushort, SkillData> keyValuePair in list)
                         {
-                            DataRow dataRow = MainForm.SkillData表.NewRow();
-                            dataRow["SkillName"] = keyValuePair.Value.铭文模板.技能名字;
-                            dataRow["SkillId"] = keyValuePair.Value.SkillId;
-                            dataRow["CurrentRank"] = keyValuePair.Value.SkillLevel;
-                            dataRow["CurrentExp"] = keyValuePair.Value.SkillExp;
-                            MainForm.SkillData表.Rows.Add(dataRow);
+                            DataRow dataRow = MainForm.技能数据表.NewRow();
+                            dataRow["技能名字"] = keyValuePair.Value.铭文模板.技能名字;
+                            dataRow["技能编号"] = keyValuePair.Value.SkillId;
+                            dataRow["当前等级"] = keyValuePair.Value.SkillLevel;
+                            dataRow["当前经验"] = keyValuePair.Value.SkillExp;
+                            MainForm.技能数据表.Rows.Add(dataRow);
                         }
                     }
                     List<KeyValuePair<byte, EquipmentData>> list2;
@@ -566,10 +567,10 @@ namespace GameServer
                     {
                         foreach (KeyValuePair<byte, EquipmentData> keyValuePair2 in list2)
                         {
-                            DataRow dataRow2 = MainForm.EquipmentData表.NewRow();
+                            DataRow dataRow2 = MainForm.装备数据表.NewRow();
                             dataRow2["穿戴部位"] = (EquipmentWearingParts)keyValuePair2.Key;
                             dataRow2["穿戴装备"] = keyValuePair2.Value;
-                            MainForm.EquipmentData表.Rows.Add(dataRow2);
+                            MainForm.装备数据表.Rows.Add(dataRow2);
                         }
                     }
                     List<KeyValuePair<byte, ItemData>> list3;
@@ -577,10 +578,10 @@ namespace GameServer
                     {
                         foreach (KeyValuePair<byte, ItemData> keyValuePair3 in list3)
                         {
-                            DataRow dataRow3 = MainForm.背包DataSheet.NewRow();
+                            DataRow dataRow3 = MainForm.背包数据表.NewRow();
                             dataRow3["背包位置"] = keyValuePair3.Key;
                             dataRow3["背包物品"] = keyValuePair3.Value;
-                            MainForm.背包DataSheet.Rows.Add(dataRow3);
+                            MainForm.背包数据表.Rows.Add(dataRow3);
                         }
                     }
                     List<KeyValuePair<byte, ItemData>> list4;
@@ -588,10 +589,10 @@ namespace GameServer
                     {
                         foreach (KeyValuePair<byte, ItemData> keyValuePair4 in list4)
                         {
-                            DataRow dataRow4 = MainForm.仓库DataSheet.NewRow();
+                            DataRow dataRow4 = MainForm.仓库数据表.NewRow();
                             dataRow4["仓库位置"] = keyValuePair4.Key;
                             dataRow4["仓库物品"] = keyValuePair4.Value;
-                            MainForm.仓库DataSheet.Rows.Add(dataRow4);
+                            MainForm.仓库数据表.Rows.Add(dataRow4);
                         }
                     }
                 }
@@ -605,17 +606,17 @@ namespace GameServer
                 {
                     foreach (KeyValuePair<游戏物品, long> keyValuePair5 in list5)
                     {
-                        DataRow dataRow5 = MainForm.掉落DataSheet.NewRow();
-                        dataRow5["Name"] = keyValuePair5.Key.物品名字;
-                        dataRow5["DropNumber"] = keyValuePair5.Value;
-                        MainForm.掉落DataSheet.Rows.Add(dataRow5);
+                        DataRow dataRow5 = MainForm.掉落数据表.NewRow();
+                        dataRow5["物品名字"] = keyValuePair5.Key.物品名字;
+                        dataRow5["掉落数量"] = keyValuePair5.Value;
+                        MainForm.掉落数据表.Rows.Add(dataRow5);
                     }
                 }
             }
         }
 
 
-        public static void UpdatedCharacterData(CharacterData 角色, string fieldChanged, object 内容)
+        public static void 更新角色属性(CharacterData 角色, string fieldChanged, object 内容)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -625,7 +626,7 @@ namespace GameServer
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
                 DataRow dataRow;
-                if (MainForm.CharacterData行.TryGetValue(角色, out dataRow))
+                if (MainForm.角色数据行.TryGetValue(角色, out dataRow))
                 {
                     dataRow[fieldChanged] = 内容;
                 }
@@ -633,7 +634,7 @@ namespace GameServer
         }
 
 
-        public static void UpdateCharactersSkills(CharacterData 角色, List<KeyValuePair<ushort, SkillData>> 技能)
+        public static void 更新角色技能(CharacterData 角色, List<KeyValuePair<ushort, SkillData>> 技能)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -647,7 +648,7 @@ namespace GameServer
         }
 
 
-        public static void UpdateCharactersEquipment(CharacterData 角色, List<KeyValuePair<byte, EquipmentData>> 装备)
+        public static void 更新角色装备(CharacterData 角色, List<KeyValuePair<byte, EquipmentData>> 装备)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -661,7 +662,7 @@ namespace GameServer
         }
 
 
-        public static void UpdateCharactersBackpack(CharacterData 角色, List<KeyValuePair<byte, ItemData>> 物品)
+        public static void 更新角色背包(CharacterData 角色, List<KeyValuePair<byte, ItemData>> 物品)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -698,37 +699,37 @@ namespace GameServer
             }
             MainForm.BeginInvoke(new MethodInvoker(delegate ()
             {
-                if (!MainForm.MapsDataRow.ContainsKey(地图.地图模板))
+                if (!MainForm.地图数据行.ContainsKey(地图.地图模板))
                 {
-                    DataRow dataRow = MainForm.MapsDataTable.NewRow();
-                    dataRow["MapId"] = 地图.MapId;
-                    dataRow["MapName"] = 地图.地图模板;
-                    dataRow["MinLevel"] = 地图.MinLevel;
-                    dataRow["NrPlayers"] = 地图.NrPlayers.Count;
-                    dataRow["TotalMobs"] = 地图.TotalMobs;
-                    dataRow["MobsAlive"] = 地图.MobsAlive;
-                    dataRow["MobsRespawned"] = 地图.MobsRespawned;
-                    dataRow["MobsDrops"] = 地图.MobsDrops;
-                    dataRow["MobGoldDrop"] = 地图.MobGoldDrop;
-                    MainForm.MapsDataRow[地图.地图模板] = dataRow;
-                    MainForm.MapsDataTable.Rows.Add(dataRow);
+                    DataRow dataRow = MainForm.地图数据表.NewRow();
+                    dataRow["地图编号"] = 地图.MapId;
+                    dataRow["地图名称"] = 地图.地图模板;
+                    dataRow["等级限制"] = 地图.MinLevel;
+                    dataRow["玩家数量"] = 地图.NrPlayers.Count;
+                    dataRow["怪物总数"] = 地图.TotalMobs;
+                    dataRow["存活怪物总数"] = 地图.MobsAlive;
+                    dataRow["怪物复活次数"] = 地图.MobsRespawned;
+                    dataRow["怪物掉落次数"] = 地图.MobsDrops;
+                    dataRow["金币掉落总数"] = 地图.MobGoldDrop;
+                    MainForm.地图数据行[地图.地图模板] = dataRow;
+                    MainForm.地图数据表.Rows.Add(dataRow);
                 }
             }));
         }
 
 
-        public static void UpdateMapData(MapInstance map, string field, object content)
+        public static void 更新地图数据(MapInstance map, string field, object content)
         {
             Singleton?.BeginInvoke(() =>
             {
-                if (MapsDataRow.TryGetValue(map.地图模板, out DataRow dataRow))
+                if (地图数据行.TryGetValue(map.地图模板, out DataRow dataRow))
                 {
-                    if (field == "MobsAlive" || field == "MobsRespawned")
+                    if (field == "存活怪物总数" || field == "怪物复活次数")
                     {
                         dataRow[field] = (uint)(Convert.ToUInt32(dataRow[field]) + (int)content);
                         return;
                     }
-                    if (field == "MobGoldDrop" || field == "MobsDrops")
+                    if (field == "金币掉落总数" || field == "怪物掉落次数")
                     {
                         dataRow[field] = Convert.ToInt64(dataRow[field]) + (long)content;
                         return;
@@ -750,24 +751,24 @@ namespace GameServer
             {
                 if (!MainForm.怪物数据行.ContainsKey(怪物))
                 {
-                    DataRow dataRow = MainForm.怪物DataSheet.NewRow();
-                    dataRow["MobId"] = 怪物.怪物编号;
+                    DataRow dataRow = MainForm.怪物数据表.NewRow();
+                    dataRow["模板编号"] = 怪物.怪物编号;
                     dataRow["怪物名字"] = 怪物.怪物名字;
-                    dataRow["Level"] = 怪物.怪物等级;
-                    dataRow["Category"] = 怪物.怪物级别;
+                    dataRow["怪物等级"] = 怪物.怪物等级;
+                    dataRow["怪物级别"] = 怪物.怪物级别;
                     dataRow["怪物经验"] = 怪物.怪物提供经验;
-                    dataRow["MobInterval"] = 怪物.怪物移动间隔;
-                    dataRow["RangeHate"] = 怪物.怪物仇恨范围;
-                    dataRow["HateTime"] = 怪物.怪物仇恨时间;
+                    dataRow["移动间隔"] = 怪物.怪物移动间隔;
+                    dataRow["仇恨范围"] = 怪物.怪物仇恨范围;
+                    dataRow["仇恨时长"] = 怪物.怪物仇恨时间;
                     MainForm.怪物数据行[怪物] = dataRow;
                     MainForm.数据行怪物[dataRow] = 怪物;
-                    MainForm.怪物DataSheet.Rows.Add(dataRow);
+                    MainForm.怪物数据表.Rows.Add(dataRow);
                 }
             }));
         }
 
 
-        public static void UpdateDropStats(游戏怪物 怪物, List<KeyValuePair<游戏物品, long>> 物品)
+        public static void 更新掉落统计(游戏怪物 怪物, List<KeyValuePair<游戏物品, long>> 物品)
         {
             MainForm MainForm = MainForm.Singleton;
             if (MainForm == null)
@@ -792,12 +793,12 @@ namespace GameServer
             {
                 if (!MainForm.封禁数据行.ContainsKey(地址))
                 {
-                    DataRow dataRow = MainForm.封禁DataSheet.NewRow();
-                    dataRow["NetAddress"] = (NetAddress ? 地址 : null);
-                    dataRow["MacAddress"] = (NetAddress ? null : 地址);
-                    dataRow["ExpiryDate"] = 时间;
+                    DataRow dataRow = MainForm.封禁数据表.NewRow();
+                    dataRow["网络地址"] = (NetAddress ? 地址 : null);
+                    dataRow["物理地址"] = (NetAddress ? null : 地址);
+                    dataRow["到期时间"] = 时间;
                     MainForm.封禁数据行[地址] = dataRow;
-                    MainForm.封禁DataSheet.Rows.Add(dataRow);
+                    MainForm.封禁数据表.Rows.Add(dataRow);
                 }
             }));
         }
@@ -817,10 +818,10 @@ namespace GameServer
                 {
                     if (NetAddress)
                     {
-                        dataRow["NetAddress"] = 时间;
+                        dataRow["网络地址"] = 时间;
                         return;
                     }
-                    dataRow["MacAddress"] = 时间;
+                    dataRow["物理地址"] = 时间;
                 }
             }));
         }
@@ -839,7 +840,7 @@ namespace GameServer
                 if (MainForm.封禁数据行.TryGetValue(地址, out row))
                 {
                     MainForm.封禁数据行.Remove(地址);
-                    MainForm.封禁DataSheet.Rows.Remove(row);
+                    MainForm.封禁数据表.Rows.Remove(row);
                 }
             }));
         }
@@ -852,8 +853,8 @@ namespace GameServer
             if (!Config.DebugPackets) MainTabs.TabPages.Remove(tabPackets);
 
             MainForm.Singleton = this;
-            string 系统公告文本 = Settings.Default.SystemAnnounceText;
-            MainForm.公告DataSheet = new Dictionary<DataGridViewRow, DateTime>();
+            string 系统公告文本 = Settings.Default.系统公告文本;
+            MainForm.公告数据表 = new Dictionary<DataGridViewRow, DateTime>();
             string[] array = 系统公告文本.Split(new char[]
             {
                 '\r',
@@ -867,30 +868,30 @@ namespace GameServer
                 });
                 int index = this.公告浏览表.Rows.Add();
 
-                this.公告浏览表.Rows[index].Cells["Interval"].Value = array2[0];
-                this.公告浏览表.Rows[index].Cells["Count"].Value = array2[1];
-                this.公告浏览表.Rows[index].Cells["Content"].Value = array2[2];
+                this.公告浏览表.Rows[index].Cells["间隔分钟"].Value = array2[0];
+                this.公告浏览表.Rows[index].Cells["公告次数"].Value = array2[1];
+                this.公告浏览表.Rows[index].Cells["公告内容"].Value = array2[2];
 
             }
             this.dgvCharacters.ColumnHeadersDefaultCellStyle.Font = (this.dgvMaps.ColumnHeadersDefaultCellStyle.Font = (this.怪物浏览表.ColumnHeadersDefaultCellStyle.Font = (this.掉落浏览表.ColumnHeadersDefaultCellStyle.Font = (this.封禁浏览表.ColumnHeadersDefaultCellStyle.Font = (this.dgvCharacters.DefaultCellStyle.Font = (this.dgvMaps.DefaultCellStyle.Font = (this.怪物浏览表.DefaultCellStyle.Font = (this.封禁浏览表.DefaultCellStyle.Font = (this.掉落浏览表.DefaultCellStyle.Font = new Font("宋体", 9f))))))))));
-            this.S_软件注册代码.Text = (Config.软件注册代码 = Settings.Default.SoftwareRegistrationCode);
+            this.S_软件注册代码.Text = (Config.软件注册代码 = Settings.Default.软件注册码);
             this.S_GameData目录.Text = (Config.GameDataPath = Settings.Default.GameData目录);
             this.S_数据备份目录.Text = (Config.BackupFolder = Settings.Default.GameDataDirectory);
-            this.S_GSPort.Value = (Config.GSPort = Settings.Default.GSPort);
-            this.S_TSPort.Value = (Config.TSPort = Settings.Default.TSPort);
-            this.S_PacketLimit.Value = (Config.PacketLimit = Settings.Default.PacketLimit);
-            this.S_AbnormalBlockTime.Value = (Config.AbnormalBlockTime = Settings.Default.AbnormalBlockTime);
+            this.S_GSPort.Value = (Config.客户端连接端口 = Settings.Default.GSPort);
+            this.S_TSPort.Value = (Config.门票接收端口 = Settings.Default.TSPort);
+            this.S_PacketLimit.Value = (Config.封包限定数量 = Settings.Default.PacketLimit);
+            this.S_AbnormalBlockTime.Value = (Config.异常屏蔽时间 = Settings.Default.AbnormalBlockTime);
             this.S_DisconnectTime.Value = (Config.掉线判定时间 = Settings.Default.DisconnectTime);
-            this.S_MaxLevel.Value = (Config.MaxLevel = Settings.Default.MaxLevel);
-            this.S_NoobLevel.Value = (Config.NoobLevel = Settings.Default.NoobLevel);
-            this.S_EquipRepairDto.Value = (Config.EquipRepairDto = Settings.Default.EquipRepairDto);
-            this.S_ExtraDropRate.Value = (Config.ExtraDropRate = Settings.Default.ExtraDropRate);
-            this.S_ExpRate.Value = (Config.ExpRate = Settings.Default.ExpRate);
-            this.S_LessExpGrade.Value = (ComputingClass.LessExpGradeLevel = Config.LessExpGrade = (ushort)Settings.Default.LessExpGrade);
-            this.S_LessExpGradeRate.Value = (ComputingClass.LessExpGradeRate = Config.LessExpGradeRate = Settings.Default.LessExpGradeRate);
+            this.S_MaxLevel.Value = (Config.游戏开放等级 = Settings.Default.MaxLevel);
+            this.S_NoobLevel.Value = (Config.新手扶持等级 = Settings.Default.NoobLevel);
+            this.S_EquipRepairDto.Value = (Config.装备特修折扣 = Settings.Default.EquipRepairDto);
+            this.S_ExtraDropRate.Value = (Config.物品额外爆率 = Settings.Default.ExtraDropRate);
+            this.S_ExpRate.Value = (Config.怪物经验倍率 = Settings.Default.ExpRate);
+            this.S_LessExpGrade.Value = (ComputingClass.LessExpGradeLevel = Config.减收益等级差 = (ushort)Settings.Default.LessExpGrade);
+            this.S_LessExpGradeRate.Value = (ComputingClass.LessExpGradeRate = Config.收益减少比率 = Settings.Default.LessExpGradeRate);
             this.S_TemptationTime.Value = (Config.怪物诱惑时长 = Settings.Default.TemptationTime);
-            this.S_ItemOwnershipTime.Value = (Config.ItemOwnershipTime = (ushort)Settings.Default.ItemOwnershipTime);
-            this.S_ItemCleaningTime.Value = (Config.ItemCleaningTime = (ushort)Settings.Default.ItemCleaningTime);
+            this.S_ItemOwnershipTime.Value = (Config.物品归属时间 = (ushort)Settings.Default.ItemOwnershipTime);
+            this.S_ItemCleaningTime.Value = (Config.物品清理时间 = (ushort)Settings.Default.ItemCleaningTime);
 
 
             Task.Run(delegate ()
@@ -902,7 +903,7 @@ namespace GameServer
                         this.tabConfig.Enabled = false;
                         control.Enabled = false;
                     }));
-                LoadSystemData();
+                加载系统数据();
                 加载客户端数据();
                 base.BeginInvoke(new MethodInvoker(delegate ()
                 {
@@ -929,10 +930,10 @@ namespace GameServer
             保存按钮.BackColor = Color.LightSteelBlue;
             Task.Run(delegate ()
             {
-                MainForm.AddSystemLog("正在保存用户数据...");
+                MainForm.添加系统日志("正在保存用户数据...");
                 GameDataGateway.SaveData();
                 GameDataGateway.CleanUp();
-                MainForm.AddSystemLog("用户数据保存完成...");
+                MainForm.添加系统日志("用户数据保存完成...");
                 base.BeginInvoke(new MethodInvoker(delegate ()
                 {
                     if (MainProcess.Running)
@@ -953,38 +954,38 @@ namespace GameServer
         private void 启动服务器_Click(object sender, EventArgs e)
         {
             MainProcess.Start();
-            Config.软件注册代码 = (Settings.Default.SoftwareRegistrationCode = this.S_软件注册代码.Text);
+            Config.软件注册代码 = (Settings.Default.软件注册码 = this.S_软件注册代码.Text);
             Settings.Default.Save();
-            MainForm.MapsDataTable = new DataTable("地图数据表");
-            MainForm.MapsDataRow = new Dictionary<游戏地图, DataRow>();
-            MainForm.MapsDataTable.Columns.Add("MapId", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("MapName", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("MinLevel", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("NrPlayers", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("TotalMobs", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("MobsAlive", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("MobsRespawned", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("MobsDrops", typeof(string));
-            MainForm.MapsDataTable.Columns.Add("MobGoldDrop", typeof(string));
-            MainForm.Singleton.dgvMaps.DataSource = MainForm.MapsDataTable;
-            MainForm.怪物DataSheet = new DataTable("怪物数据表");
+            MainForm.地图数据表 = new DataTable("地图数据表");
+            MainForm.地图数据行 = new Dictionary<游戏地图, DataRow>();
+            MainForm.地图数据表.Columns.Add("地图编号", typeof(string));
+            MainForm.地图数据表.Columns.Add("地图名称", typeof(string));
+            MainForm.地图数据表.Columns.Add("等级限制", typeof(string));
+            MainForm.地图数据表.Columns.Add("玩家数量", typeof(string));
+            MainForm.地图数据表.Columns.Add("怪物总数", typeof(string));
+            MainForm.地图数据表.Columns.Add("存活怪物总数", typeof(string));
+            MainForm.地图数据表.Columns.Add("怪物复活次数", typeof(string));
+            MainForm.地图数据表.Columns.Add("怪物掉落次数", typeof(string));
+            MainForm.地图数据表.Columns.Add("金币掉落总数", typeof(string));
+            MainForm.Singleton.dgvMaps.DataSource = MainForm.地图数据表;
+            MainForm.怪物数据表 = new DataTable("怪物数据表");
             MainForm.怪物数据行 = new Dictionary<游戏怪物, DataRow>();
             MainForm.数据行怪物 = new Dictionary<DataRow, 游戏怪物>();
-            MainForm.怪物DataSheet.Columns.Add("MobId", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("怪物名字", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("Level", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("怪物经验", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("Category", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("MobInterval", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("RoamingInterval", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("RangeHate", typeof(string));
-            MainForm.怪物DataSheet.Columns.Add("HateTime", typeof(string));
-            MainForm.Singleton.怪物浏览表.DataSource = MainForm.怪物DataSheet;
-            MainForm.掉落DataSheet = new DataTable("DropDataSheet");
+            MainForm.怪物数据表.Columns.Add("模板编号", typeof(string));
+            MainForm.怪物数据表.Columns.Add("怪物名字", typeof(string));
+            MainForm.怪物数据表.Columns.Add("怪物等级", typeof(string));
+            MainForm.怪物数据表.Columns.Add("怪物经验", typeof(string));
+            MainForm.怪物数据表.Columns.Add("怪物级别", typeof(string));
+            MainForm.怪物数据表.Columns.Add("移动间隔", typeof(string));
+            MainForm.怪物数据表.Columns.Add("漫游间隔", typeof(string));
+            MainForm.怪物数据表.Columns.Add("仇恨范围", typeof(string));
+            MainForm.怪物数据表.Columns.Add("仇恨时长", typeof(string));
+            MainForm.Singleton.怪物浏览表.DataSource = MainForm.怪物数据表;
+            MainForm.掉落数据表 = new DataTable("掉落数据表");
             MainForm.怪物掉落表 = new Dictionary<游戏怪物, List<KeyValuePair<游戏物品, long>>>();
-            MainForm.掉落DataSheet.Columns.Add("Name", typeof(string));
-            MainForm.掉落DataSheet.Columns.Add("DropNumber", typeof(string));
-            MainForm.Singleton.掉落浏览表.DataSource = MainForm.掉落DataSheet;
+            MainForm.掉落数据表.Columns.Add("物品名字", typeof(string));
+            MainForm.掉落数据表.Columns.Add("掉落数量", typeof(string));
+            MainForm.Singleton.掉落浏览表.DataSource = MainForm.掉落数据表;
             this.主选项卡.SelectedIndex = 0;
             this.保存按钮.BackColor = Color.LightSteelBlue;
             Control control = this.保存按钮;
@@ -1000,7 +1001,7 @@ namespace GameServer
 
         private void 停止服务器_Click(object sender, EventArgs e)
         {
-            foreach (客户网络 connection in NetworkServiceGateway.网络连接表)
+            foreach (客户网络 connection in 网络服务网关.网络连接表)
             {
                 try
                 {
@@ -1070,7 +1071,7 @@ namespace GameServer
 
         private void 重载数据_Click(object sender, EventArgs e)
         {
-            MainForm.AddSystemLog("开始加载系统数据...");
+            MainForm.添加系统日志("开始加载系统数据...");
             this.重载数据.Enabled = false;
             SystemDataService.ReloadData();
             this.重载数据.Enabled = true;
@@ -1110,7 +1111,7 @@ namespace GameServer
                     Directory.CreateDirectory(".\\Log\\Sys");
                 }
                 File.WriteAllText(string.Format(".\\Log\\Sys\\{0:yyyy-MM-dd--HH-mm-ss}.txt", DateTime.Now), this.系统日志.Text.Replace("\n", "\r\n"));
-                MainForm.AddSystemLog("The system log has been successfully saved");
+                MainForm.添加系统日志("系统日志保存成功");
                 this.清空系统日志_Click(sender, e);
                 return;
             }
@@ -1126,7 +1127,7 @@ namespace GameServer
                     Directory.CreateDirectory(".\\Log\\Chat");
                 }
                 File.WriteAllText(string.Format(".\\Log\\Chat\\{0:yyyy-MM-dd--HH-mm-ss}.txt", DateTime.Now), this.聊天日志.Text);
-                MainForm.AddSystemLog("The system log has been successfully saved");
+                MainForm.添加系统日志("聊天日志保存成功\r\n");
                 this.清空聊天日志_Click(sender, e);
                 return;
             }
@@ -1140,7 +1141,7 @@ namespace GameServer
             control.Enabled = false;
             Task.Run(delegate ()
             {
-                MainForm.LoadSystemData();
+                MainForm.加载系统数据();
                 base.BeginInvoke(new MethodInvoker(delegate ()
                 {
                         Control control2 = this.下方控件页;
@@ -1173,7 +1174,7 @@ namespace GameServer
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog
             {
-                Description = "Please select folder"
+                Description = "请选择文件夹"
             };
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
@@ -1206,53 +1207,53 @@ namespace GameServer
 
                 switch (name)
                 {
-                    case "S_LessExpGradeRate":
-                        Config.LessExpGradeRate = (Settings.Default.LessExpGradeRate = numericUpDown.Value);
+                    case "S_收益减少比率":
+                        Config.收益减少比率 = (Settings.Default.LessExpGradeRate = numericUpDown.Value);
                         break;
-                    case "S_DisconnectTime":
+                    case "S_判定掉线时间":
                         Config.掉线判定时间 = (Settings.Default.DisconnectTime = (ushort)numericUpDown.Value);
                         break;
-                    case "S_MaxLevel":
-                        Config.MaxLevel = (Settings.Default.MaxLevel = (byte)numericUpDown.Value);
+                    case "S_游戏开放等级":
+                        Config.游戏开放等级 = (Settings.Default.MaxLevel = (byte)numericUpDown.Value);
                         break;
-                    case "S_TemptationTime":
+                    case "S_怪物诱惑时长":
                         Config.怪物诱惑时长 = (Settings.Default.TemptationTime = (ushort)numericUpDown.Value);
                         break;
-                    case "S_ExpRate":
-                        Config.ExpRate = (Settings.Default.ExpRate = numericUpDown.Value);
+                    case "S_怪物经验倍率":
+                        Config.怪物经验倍率 = (Settings.Default.ExpRate = numericUpDown.Value);
                         break;
-                    case "S_TSPort":
-                        Config.TSPort = (Settings.Default.TSPort = (ushort)numericUpDown.Value);
+                    case "S_门票接收端口":
+                        Config.门票接收端口 = (Settings.Default.TSPort = (ushort)numericUpDown.Value);
                         break;
-                    case "S_AbnormalBlockTime":
-                        Config.AbnormalBlockTime = (Settings.Default.AbnormalBlockTime = (ushort)numericUpDown.Value);
+                    case "S_异常屏蔽时间":
+                        Config.异常屏蔽时间 = (Settings.Default.AbnormalBlockTime = (ushort)numericUpDown.Value);
                         break;
-                    case "S_LessExpGrade":
-                        Config.LessExpGrade = (ushort)(Settings.Default.LessExpGrade = (byte)numericUpDown.Value);
+                    case "S_减收益等级差":
+                        Config.减收益等级差 = (ushort)(Settings.Default.LessExpGrade = (byte)numericUpDown.Value);
                         break;
-                    case "S_ExtraDropRate":
-                        Config.ExtraDropRate = (Settings.Default.ExtraDropRate = numericUpDown.Value);
+                    case "S_物品额外爆率":
+                        Config.物品额外爆率 = (Settings.Default.ExtraDropRate = numericUpDown.Value);
                         break;
-                    case "S_ItemOwnershipTime":
-                        Config.ItemOwnershipTime = (ushort)(Settings.Default.ItemOwnershipTime = (byte)numericUpDown.Value);
+                    case "S_物品归属时间":
+                        Config.物品归属时间 = (ushort)(Settings.Default.ItemOwnershipTime = (byte)numericUpDown.Value);
                         break;
-                    case "S_NoobLevel":
-                        Config.NoobLevel = (Settings.Default.NoobLevel = (byte)numericUpDown.Value);
+                    case "S_新手扶持等级":
+                        Config.新手扶持等级 = (Settings.Default.NoobLevel = (byte)numericUpDown.Value);
                         break;
-                    case "S_EquipRepairDto":
-                        Config.EquipRepairDto = (Settings.Default.EquipRepairDto = numericUpDown.Value);
+                    case "S_装备特修折扣":
+                        Config.装备特修折扣 = (Settings.Default.EquipRepairDto = numericUpDown.Value);
                         break;
-                    case "S_ItemCleaningTime":
-                        Config.ItemCleaningTime = (ushort)(Settings.Default.ItemCleaningTime = (byte)numericUpDown.Value);
+                    case "S_物品清理时间":
+                        Config.物品清理时间 = (ushort)(Settings.Default.ItemCleaningTime = (byte)numericUpDown.Value);
                         break;
-                    case "S_PacketLimit":
-                        Config.PacketLimit = (Settings.Default.PacketLimit = (ushort)numericUpDown.Value);
+                    case "S_封包限定数量":
+                        Config.封包限定数量 = (Settings.Default.PacketLimit = (ushort)numericUpDown.Value);
                         break;
-                    case "S_GSPort":
-                        Config.GSPort = (Settings.Default.GSPort = (ushort)numericUpDown.Value);
+                    case "S_客户端连接端口":
+                        Config.客户端连接端口 = (Settings.Default.GSPort = (ushort)numericUpDown.Value);
                         break;
                     default:
-                        MessageBox.Show("Unknown variable! " + numericUpDown.Name);
+                        MessageBox.Show("未知属性! " + numericUpDown.Name);
                         break;
                 }
 
@@ -1267,11 +1268,11 @@ namespace GameServer
             {
                 this.主选项卡.SelectedIndex = 0;
                 this.MainTabs.SelectedIndex = 2;
-                MainForm.AddCommandLog("=> " + this.GMCommand文本.Text);
+                MainForm.添加命令日志("=> " + this.GMCommand文本.Text);
                 GMCommand GMCommand;
                 if (this.GMCommand文本.Text[0] != '@')
                 {
-                    MainForm.AddCommandLog("<= Command error, GM commands must start with '@' at the start. '@View' to see all available commands");
+                    MainForm.添加命令日志("<= 命令解析错误, GM命令必须以 '@' 开头. 输入 '@查看命令' 获取所有受支持的命令格式");
                 }
                 else if (this.GMCommand文本.Text.Trim(new char[]
                 {
@@ -1279,7 +1280,7 @@ namespace GameServer
                     ' '
                 }).Length == 0)
                 {
-                    MainForm.AddCommandLog("<= Command error, GM commands can not be empty. Type '@View' to see all available commands");
+                    MainForm.添加命令日志("<= 命令解析错误, GM命令不能为空. 输入 '@查看命令' 获取所有受支持的命令格式");
                 }
                 else if (GMCommand.解析命令(this.GMCommand文本.Text, out GMCommand))
                 {
@@ -1306,7 +1307,7 @@ namespace GameServer
                         }
                         else
                         {
-                            MainForm.AddCommandLog("<= Command execution failed, the current command can only be executed when the server is running, please start the server first");
+                            MainForm.添加命令日志("<= 命令执行失败, 当前命令只能在服务器运行时执行, 请先启动服务器");
                         }
                     }
                     else if (GMCommand.ExecutionWay == ExecutionWay.只能空闲执行)
@@ -1317,7 +1318,7 @@ namespace GameServer
                         }
                         else
                         {
-                            MainForm.AddCommandLog("<= Command execution failed, the current command can only be executed when the server is not running, please shut down the server first");
+                            MainForm.添加命令日志("<= 命令执行失败, 当前命令只能在服务器未运行时执行, 请先关闭服务器");
                         }
                     }
                     e.Handled = true;
@@ -1331,26 +1332,26 @@ namespace GameServer
         {
             if (MainProcess.Running)
             {
-                MessageBox.Show("Merging data can only be performed when the server is not running");
+                MessageBox.Show("合并数据只能在服务器未运行时执行");
                 return;
             }
             Dictionary<Type, DataTableBase> Data型表 = GameDataGateway.数据类型表;
             if (Data型表 == null || Data型表.Count == 0)
             {
-                MessageBox.Show("The current customer data needs to be loaded before it can be merged with the specified customer data");
+                MessageBox.Show("需要先加载当前客户数据后才能与指定客户数据合并");
                 return;
             }
             if (!Directory.Exists(this.S_合并数据目录.Text))
             {
-                MessageBox.Show("Please select a valid Data.db file directory");
+                MessageBox.Show("请选择有效的 Data.db 文件目录");
                 return;
             }
             if (!File.Exists(this.S_合并数据目录.Text + "\\Data.db"))
             {
-                MessageBox.Show("The Data.db file was not found in the selected directory");
+                MessageBox.Show("选择的目录中没有找到 Data.db 文件");
                 return;
             }
-            if (MessageBox.Show("This operation is irreversible, please make a backup of your data \r\n\r\n sure you want to do it?", "Dangerous operations", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+            if (MessageBox.Show("即将执行数据合并操作\r\n\r\n此操作不可逆, 请做好数据备份\r\n\r\n确定要执行吗?", "危险操作", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
             {
                 GameDataGateway.合并数据(this.S_合并数据目录.Text + "\\Data.db");
             }
@@ -1365,19 +1366,19 @@ namespace GameServer
                 DataRow row = (MainForm.Singleton.dgvCharacters.Rows[MainForm.Singleton.dgvCharacters.SelectedRows[0].Index].DataBoundItem as DataRowView).Row;
                 if (toolStripMenuItem.Name == "右键菜单_复制Account")
                 {
-                    Clipboard.SetDataObject(row["AccNumber"]);
+                    Clipboard.SetDataObject(row["所属账号"]);
                 }
                 if (toolStripMenuItem.Name == "右键菜单_复制CharName")
                 {
-                    Clipboard.SetDataObject(row["CharName"]);
+                    Clipboard.SetDataObject(row["角色名字"]);
                 }
                 if (toolStripMenuItem.Name == "右键菜单_复制NetAddress")
                 {
-                    Clipboard.SetDataObject(row["NetAddress"]);
+                    Clipboard.SetDataObject(row["网络地址"]);
                 }
                 if (toolStripMenuItem.Name == "右键菜单_复制MacAddress")
                 {
-                    Clipboard.SetDataObject(row["MacAddress"]);
+                    Clipboard.SetDataObject(row["物理地址"]);
                 }
             }
         }
@@ -1386,14 +1387,14 @@ namespace GameServer
         private void 添加公告按钮_Click(object sender, EventArgs e)
         {
             int index = this.公告浏览表.Rows.Add();
-            this.公告浏览表.Rows[index].Cells["Time"].Value = 5;
-            this.公告浏览表.Rows[index].Cells["Count"].Value = 1;
-            this.公告浏览表.Rows[index].Cells["Content"].Value = "Write announcement";
+            this.公告浏览表.Rows[index].Cells["公告计时"].Value = 5;
+            this.公告浏览表.Rows[index].Cells["公告次数"].Value = 1;
+            this.公告浏览表.Rows[index].Cells["公告内容"].Value = "编辑公告内容";
             string text = null;
             int i = 0;
             while (i < this.公告浏览表.Rows.Count)
             {
-                object value = this.公告浏览表.Rows[i].Cells["Time"].Value;
+                object value = this.公告浏览表.Rows[i].Cells["公告计时"].Value;
                 if (value == null)
                 {
                     goto IL_CE;
@@ -1405,7 +1406,7 @@ namespace GameServer
                 }
             IL_D4:
                 string text3 = text2;
-                object value2 = this.公告浏览表.Rows[i].Cells["Count"].Value;
+                object value2 = this.公告浏览表.Rows[i].Cells["公告次数"].Value;
                 if (value2 == null)
                 {
                     goto IL_109;
@@ -1417,7 +1418,7 @@ namespace GameServer
                 }
             IL_10F:
                 string text5 = text4;
-                object value3 = this.公告浏览表.Rows[i].Cells["Content"].Value;
+                object value3 = this.公告浏览表.Rows[i].Cells["公告内容"].Value;
                 if (value3 == null)
                 {
                     goto IL_145;
@@ -1451,7 +1452,7 @@ namespace GameServer
                 text2 = "";
                 goto IL_D4;
             }
-            Settings.Default.SystemAnnounceText = text;
+            Settings.Default.系统公告文本 = text;
             Settings.Default.Save();
         }
 
@@ -1461,13 +1462,13 @@ namespace GameServer
             if (this.公告浏览表.Rows.Count != 0 && this.公告浏览表.SelectedRows.Count != 0)
             {
                 DataGridViewRow key = this.公告浏览表.Rows[this.公告浏览表.SelectedRows[0].Index];
-                MainForm.公告DataSheet.Remove(key);
+                MainForm.公告数据表.Remove(key);
                 this.公告浏览表.Rows.RemoveAt(this.公告浏览表.SelectedRows[0].Index);
                 string text = null;
                 int i = 0;
                 while (i < this.公告浏览表.Rows.Count)
                 {
-                    object value = this.公告浏览表.Rows[i].Cells["Time"].Value;
+                    object value = this.公告浏览表.Rows[i].Cells["公告计时"].Value;
                     if (value == null)
                     {
                         goto IL_C0;
@@ -1479,7 +1480,7 @@ namespace GameServer
                     }
                 IL_C6:
                     string text3 = text2;
-                    object value2 = this.公告浏览表.Rows[i].Cells["Number"].Value;
+                    object value2 = this.公告浏览表.Rows[i].Cells["公告次数"].Value;
                     if (value2 == null)
                     {
                         goto IL_FC;
@@ -1491,7 +1492,7 @@ namespace GameServer
                     }
                 IL_102:
                     string text5 = text4;
-                    object value3 = this.公告浏览表.Rows[i].Cells["Content"].Value;
+                    object value3 = this.公告浏览表.Rows[i].Cells["公告内容"].Value;
                     if (value3 == null)
                     {
                         goto IL_137;
@@ -1525,20 +1526,20 @@ namespace GameServer
                     text2 = "";
                     goto IL_C6;
                 }
-                Settings.Default.SystemAnnounceText = text;
+                Settings.Default.系统公告文本 = text;
                 Settings.Default.Save();
                 return;
             }
         }
 
 
-        private void StartAnnouncement_Click(object sender, EventArgs e)
+        private void 开始公告按钮_Click(object sender, EventArgs e)
         {
             if (!MainProcess.Running || !this.停止按钮.Enabled)
             {
                 Task.Run(delegate ()
                 {
-                    MessageBox.Show("The server is not started, please start the server first");
+                    MessageBox.Show("服务器未启动，请先启动服务器");
                 });
                 return;
             }
@@ -1548,36 +1549,36 @@ namespace GameServer
             }
             DataGridViewRow dataGridViewRow = this.公告浏览表.Rows[this.公告浏览表.SelectedRows[0].Index];
             int num;
-            if (dataGridViewRow.Cells["Interval"].Value == null || !int.TryParse(dataGridViewRow.Cells["Interval"].Value.ToString(), out num) || num <= 0)
+            if (dataGridViewRow.Cells["间隔分钟"].Value == null || !int.TryParse(dataGridViewRow.Cells["间隔分钟"].Value.ToString(), out num) || num <= 0)
             {
                 Task.Run(delegate ()
                 {
-                    MessageBox.Show("System announcement cannot be opened, the announcement interval must be an integer greater than 0");
+                    MessageBox.Show("系统公告开启失败，公告间隔必须为大于0的整数");
                 });
                 return;
             }
             int num2;
-            if (!int.TryParse(dataGridViewRow.Cells["Count"].Value.ToString(), out num2) || num2 <= 0)
+            if (!int.TryParse(dataGridViewRow.Cells["公告次数"].Value.ToString(), out num2) || num2 <= 0)
             {
                 Task.Run(delegate ()
                 {
-                    MessageBox.Show("System announcement is not enabled, the number of announcements must be an integer greater than 0");
+                    MessageBox.Show("系统公告开启失败，公告数量必须为大于0的整数");
                 });
                 return;
             }
-            if (dataGridViewRow.Cells["Content"].Value != null && dataGridViewRow.Cells["Content"].Value.ToString().Length > 0)
+            if (dataGridViewRow.Cells["公告内容"].Value != null && dataGridViewRow.Cells["公告内容"].Value.ToString().Length > 0)
             {
                 dataGridViewRow.ReadOnly = true;
-                dataGridViewRow.Cells["Status"].Value = "√";
-                dataGridViewRow.Cells["RemainingTime"].Value = dataGridViewRow.Cells["Count"].Value;
-                MainForm.公告DataSheet.Add(dataGridViewRow, DateTime.Now);
+                dataGridViewRow.Cells["状态"].Value = "√";
+                dataGridViewRow.Cells["剩余次数"].Value = dataGridViewRow.Cells["公告次数"].Value;
+                MainForm.公告数据表.Add(dataGridViewRow, DateTime.Now);
                 this.开始公告按钮.Enabled = false;
                 this.停止公告按钮.Enabled = true;
                 return;
             }
             Task.Run(delegate ()
             {
-                MessageBox.Show("System announcement cannot be opened, announcement content cannot be empty");
+                MessageBox.Show("系统公告开启失败，公告内容不能为空");
             });
         }
 
@@ -1587,11 +1588,11 @@ namespace GameServer
             if (this.公告浏览表.Rows.Count != 0 && this.公告浏览表.SelectedRows.Count != 0)
             {
                 DataGridViewRow dataGridViewRow = this.公告浏览表.Rows[this.公告浏览表.SelectedRows[0].Index];
-                MainForm.公告DataSheet.Remove(dataGridViewRow);
+                MainForm.公告数据表.Remove(dataGridViewRow);
                 dataGridViewRow.ReadOnly = false;
-                dataGridViewRow.Cells["Status"].Value = "";
-                dataGridViewRow.Cells["Time"].Value = "";
-                dataGridViewRow.Cells["RemainingTime"].Value = 0;
+                dataGridViewRow.Cells["状态"].Value = "";
+                dataGridViewRow.Cells["公告计时"].Value = "";
+                dataGridViewRow.Cells["剩余次数"].Value = 0;
                 this.开始公告按钮.Enabled = true;
                 this.停止公告按钮.Enabled = false;
                 return;
@@ -1601,23 +1602,23 @@ namespace GameServer
 
         private void 定时发送公告_Tick(object sender, EventArgs e)
         {
-            if (MainProcess.Running && MainForm.公告DataSheet.Count != 0)
+            if (MainProcess.Running && MainForm.公告数据表.Count != 0)
             {
                 DateTime now = DateTime.Now;
-                foreach (KeyValuePair<DataGridViewRow, DateTime> keyValuePair in MainForm.公告DataSheet.ToList<KeyValuePair<DataGridViewRow, DateTime>>())
+                foreach (KeyValuePair<DataGridViewRow, DateTime> keyValuePair in MainForm.公告数据表.ToList<KeyValuePair<DataGridViewRow, DateTime>>())
                 {
-                    keyValuePair.Key.Cells["Time"].Value = (keyValuePair.Value - now).ToString("hh\\:mm\\:ss");
+                    keyValuePair.Key.Cells["公告计时"].Value = (keyValuePair.Value - now).ToString("hh\\:mm\\:ss");
                     if (now > keyValuePair.Value)
                     {
-                        NetworkServiceGateway.SendAnnouncement(keyValuePair.Key.Cells["Content"].Value.ToString(), true);
-                        MainForm.公告DataSheet[keyValuePair.Key] = now.AddMinutes((double)Convert.ToInt32(keyValuePair.Key.Cells["Interval"].Value));
-                        int num = Convert.ToInt32(keyValuePair.Key.Cells["RemainingTime"].Value) - 1;
-                        keyValuePair.Key.Cells["RemainingTime"].Value = num;
+                        网络服务网关.发送公告(keyValuePair.Key.Cells["公告内容"].Value.ToString(), true);
+                        MainForm.公告数据表[keyValuePair.Key] = now.AddMinutes((double)Convert.ToInt32(keyValuePair.Key.Cells["间隔分钟"].Value));
+                        int num = Convert.ToInt32(keyValuePair.Key.Cells["剩余次数"].Value) - 1;
+                        keyValuePair.Key.Cells["剩余次数"].Value = num;
                         if (num <= 0)
                         {
-                            MainForm.公告DataSheet.Remove(keyValuePair.Key);
+                            MainForm.公告数据表.Remove(keyValuePair.Key);
                             keyValuePair.Key.ReadOnly = false;
-                            keyValuePair.Key.Cells["Status"].Value = "";
+                            keyValuePair.Key.Cells["状态"].Value = "";
                             if (keyValuePair.Key.Selected)
                             {
                                 this.开始公告按钮.Enabled = true;
@@ -1641,7 +1642,7 @@ namespace GameServer
                 return;
             }
             DataGridViewRow key = this.公告浏览表.Rows[this.公告浏览表.SelectedRows[0].Index];
-            if (MainForm.公告DataSheet.ContainsKey(key))
+            if (MainForm.公告数据表.ContainsKey(key))
             {
                 this.开始公告按钮.Enabled = false;
                 this.停止公告按钮.Enabled = true;
@@ -1658,7 +1659,7 @@ namespace GameServer
             int i = 0;
             while (i < this.公告浏览表.Rows.Count)
             {
-                object value = this.公告浏览表.Rows[i].Cells["Time"].Value;
+                object value = this.公告浏览表.Rows[i].Cells["公告计时"].Value;
                 if (value == null)
                 {
                     goto IL_3D;
@@ -1670,7 +1671,7 @@ namespace GameServer
                 }
             IL_43:
                 string text3 = text2;
-                object value2 = this.公告浏览表.Rows[i].Cells["Count"].Value;
+                object value2 = this.公告浏览表.Rows[i].Cells["公告次数"].Value;
                 if (value2 == null)
                 {
                     goto IL_79;
@@ -1682,7 +1683,7 @@ namespace GameServer
                 }
             IL_7F:
                 string text5 = text4;
-                object value3 = this.公告浏览表.Rows[i].Cells["Content"].Value;
+                object value3 = this.公告浏览表.Rows[i].Cells["公告内容"].Value;
                 if (value3 == null)
                 {
                     goto IL_B4;
@@ -1716,7 +1717,7 @@ namespace GameServer
                 text2 = "";
                 goto IL_43;
             }
-            Settings.Default.SystemAnnounceText = text;
+            Settings.Default.系统公告文本 = text;
             Settings.Default.Save();
         }
 
@@ -1724,40 +1725,40 @@ namespace GameServer
         public static MainForm Singleton;
 
 
-        private static DataTable CharacterDataTable;
+        private static DataTable 角色数据表;
 
 
-        private static DataTable SkillData表;
+        private static DataTable 技能数据表;
 
 
-        private static DataTable EquipmentData表;
+        private static DataTable 装备数据表;
 
 
-        private static DataTable 背包DataSheet;
+        private static DataTable 背包数据表;
 
 
-        private static DataTable 仓库DataSheet;
+        private static DataTable 仓库数据表;
 
 
-        private static DataTable MapsDataTable;
+        private static DataTable 地图数据表;
 
 
-        private static DataTable 怪物DataSheet;
+        private static DataTable 怪物数据表;
 
 
-        private static DataTable 掉落DataSheet;
+        private static DataTable 掉落数据表;
 
 
-        private static DataTable 封禁DataSheet;
+        private static DataTable 封禁数据表;
 
 
-        private static Dictionary<CharacterData, DataRow> CharacterData行;
+        private static Dictionary<CharacterData, DataRow> 角色数据行;
 
 
         private static Dictionary<DataRow, CharacterData> 数据行角色;
 
 
-        private static Dictionary<游戏地图, DataRow> MapsDataRow;
+        private static Dictionary<游戏地图, DataRow> 地图数据行;
 
 
         private static Dictionary<游戏怪物, DataRow> 怪物数据行;
@@ -1769,7 +1770,7 @@ namespace GameServer
         private static Dictionary<string, DataRow> 封禁数据行;
 
 
-        private static Dictionary<DataGridViewRow, DateTime> 公告DataSheet;
+        private static Dictionary<DataGridViewRow, DateTime> 公告数据表;
 
 
         private static Dictionary<CharacterData, List<KeyValuePair<ushort, SkillData>>> 角色技能表;

@@ -2,6 +2,9 @@
 
 namespace GameServer.Templates
 {
+	/// <summary>
+	/// 成长属性
+	/// </summary>
 	public struct GrowthStat
 	{
 		public GameObjectStats 属性;

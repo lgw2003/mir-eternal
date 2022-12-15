@@ -21,21 +21,21 @@ namespace GameServer
 		{
 			if (this.额外爆率 < 0m)
 			{
-				MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, extra burst rate too low");
+				MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, extra burst rate too low");
 				return;
 			}
 			if (this.额外爆率 >= 1m)
 			{
-				MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, extra burst rate too high");
+				MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, extra burst rate too high");
 				return;
 			}
-			Settings.Default.ExtraDropRate = (Config.ExtraDropRate = this.额外爆率);
+			Settings.Default.ExtraDropRate = (Config.物品额外爆率 = this.额外爆率);
 			Settings.Default.Save();
 			MainForm.Singleton.BeginInvoke(new MethodInvoker(delegate()
 			{
 				MainForm.Singleton.S_ExtraDropRate.Value = this.额外爆率;
 			}));
-			MainForm.AddCommandLog(string.Format("<= @{0} The command has been executed, with the current additional burst rate: {1}", base.GetType().Name, Config.ExtraDropRate));
+			MainForm.添加命令日志(string.Format("<= @{0} The command has been executed, with the current additional burst rate: {1}", base.GetType().Name, Config.物品额外爆率));
 		}
 
 		

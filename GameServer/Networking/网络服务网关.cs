@@ -11,7 +11,7 @@ using GameServer.Data;
 namespace GameServer.Networking
 {
 
-    public static class NetworkServiceGateway
+    public static class 网络服务网关
     {
 
         public static void Start()
@@ -21,15 +21,15 @@ namespace GameServer.Networking
             等待添加表 = new ConcurrentQueue<客户网络>();
             等待移除表 = new ConcurrentQueue<客户网络>();
             全服公告表 = new ConcurrentQueue<GamePacket>();
-            网络监听器 = new TcpListener(IPAddress.Any, (int)Config.GSPort);
+            网络监听器 = new TcpListener(IPAddress.Any, (int)Config.客户端连接端口);
             网络监听器.Start();
             网络监听器.BeginAcceptTcpClient(new AsyncCallback(异步连接), null);
             门票DataSheet = new Dictionary<string, 门票信息>();
-            门票接收器 = new UdpClient(new IPEndPoint(IPAddress.Any, (int)Config.TSPort));
+            门票接收器 = new UdpClient(new IPEndPoint(IPAddress.Any, (int)Config.门票接收端口));
         }
 
 
-        public static void Stop()
+        public static void 停止服务()
         {
             网络服务停止 = true;
             TcpListener tcpListener = 网络监听器;
@@ -161,7 +161,7 @@ namespace GameServer.Networking
             string text = "IP: " + 客户网络.网络地址;
             if (客户网络.账号数据 != null)
             {
-                text = text + " Account: " + 客户网络.账号数据.Account.V;
+                text = text + " Account: " + 客户网络.账号数据.账号名字.V;
             }
             if (客户网络.玩家实例 != null)
             {
@@ -174,11 +174,11 @@ namespace GameServer.Networking
 
         public static void 屏蔽网络(string 地址)
         {
-            SystemData.Data.BanIPCommand(地址, MainProcess.CurrentTime.AddMinutes((double)Config.AbnormalBlockTime));
+            SystemData.Data.BanIPCommand(地址, MainProcess.CurrentTime.AddMinutes((double)Config.异常屏蔽时间));
         }
 
 
-        public static void SendAnnouncement(string 内容, bool 滚动播报 = false)
+        public static void 发送公告(string 内容, bool 滚动播报 = false)
         {
             using (MemoryStream memoryStream = new())
             {
@@ -193,7 +193,7 @@ namespace GameServer.Networking
                     字节描述 = memoryStream.ToArray()
                 });
             }
-            MainForm.AddSystemLog(内容);
+            MainForm.添加系统日志(string.Format("系统公告 ==> {0}",内容));
         }
 
 
@@ -220,7 +220,7 @@ namespace GameServer.Networking
         }
 
 
-        public static void Disconnected(客户网络 网络)
+        public static void 移除网络(客户网络 网络)
         {
             if (网络 != null)
             {
@@ -241,19 +241,16 @@ namespace GameServer.Networking
         public static bool 网络服务停止;
 
 
-        public static bool 未登录连接数;
+        public static uint 已登陆连接数;
 
 
-        public static uint ActiveConnections;
+        public static uint 已上线连接数;
 
 
-        public static uint ConnectionsOnline;
+        public static long 已发送字节数;
 
 
-        public static long SendedBytes;
-
-
-        public static long ReceivedBytes;
+        public static long 已接收字节数;
 
 
         public static HashSet<客户网络> 网络连接表;

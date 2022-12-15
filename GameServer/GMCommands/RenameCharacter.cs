@@ -25,29 +25,29 @@ namespace GameServer
 				CharacterData CharacterData = GameData as CharacterData;
 				if (CharacterData != null)
 				{
-					if (CharacterData.ActiveConnection != null || CharacterData.Account.V.网络连接 != null)
+					if (CharacterData.网络连接 != null || CharacterData.所属账号.V.网络连接 != null)
 					{
-						MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, account must be taken offline");
+						MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, account must be taken offline");
 						return;
 					}
 					if (Encoding.UTF8.GetBytes(this.NewCharacterName).Length > 24)
 					{
-						MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, character name too long");
+						MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, character name too long");
 						return;
 					}
 					if (GameDataGateway.角色数据表.Keyword.ContainsKey(this.NewCharacterName))
 					{
-						MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, name already registered");
+						MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, name already registered");
 						return;
 					}
-					GameDataGateway.角色数据表.Keyword.Remove(CharacterData.CharName.V);
-					CharacterData.CharName.V = this.NewCharacterName;
-					GameDataGateway.角色数据表.Keyword.Add(CharacterData.CharName.V, CharacterData);
-					MainForm.AddCommandLog(string.Format("<= @{0} command has been executed, with the current name of the character: {1}", base.GetType().Name, CharacterData));
+					GameDataGateway.角色数据表.Keyword.Remove(CharacterData.角色名字.V);
+					CharacterData.角色名字.V = this.NewCharacterName;
+					GameDataGateway.角色数据表.Keyword.Add(CharacterData.角色名字.V, CharacterData);
+					MainForm.添加命令日志(string.Format("<= @{0} command has been executed, with the current name of the character: {1}", base.GetType().Name, CharacterData));
 					return;
 				}
 			}
-			MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, role does not exist");
+			MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, role does not exist");
 		}
 
 		

@@ -14,9 +14,9 @@ namespace GameServer.PlayerCommands
 
         public override void Execute()
         {
-            if (Level <= 0 || Level > Config.MaxLevel)
+            if (Level <= 0 || Level > Config.游戏开放等级)
             {
-                Player.SendMessage($"Invalid level, please provide one between 1-{Config.MaxLevel}");
+                Player.SendMessage($"Invalid level, please provide one between 1-{Config.游戏开放等级}");
                 return;
             }
 
@@ -31,7 +31,7 @@ namespace GameServer.PlayerCommands
                 DoubleExp = 0,
                 CurrentExp = Player.CurrentExp,
                 升级所需 = Player.MaxExperience,
-                GainAwakeningExp = Player.CharacterData.AwakeningExp.V,
+                GainAwakeningExp = Player.CharacterData.觉醒经验.V,
                 MaxAwakeningExp = Config.MaxAwakeningExp
             });
 

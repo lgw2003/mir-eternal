@@ -38,14 +38,19 @@ namespace GameServer.Templates
                 }
             }
         }
-
-        public static TItem[] Deserialize<TItem>(string folder) where TItem : class, new()
+        /// <summary>
+        /// 文本数据文件反序列化
+        /// </summary>
+        /// <typeparam name="TItem"></typeparam>
+        /// <param name="文件夹"></param>
+        /// <returns></returns>
+        public static TItem[] Deserialize<TItem>(string 文件夹) where TItem : class, new()
         {
             var output = new ConcurrentBag<TItem>();
 
-            if (Directory.Exists(folder))
+            if (Directory.Exists(文件夹))
             {
-                FileInfo[] files = new DirectoryInfo(folder).GetFiles();
+                FileInfo[] files = new DirectoryInfo(文件夹).GetFiles();
 
                 Parallel.ForEach(files, file =>
                 {
@@ -65,7 +70,7 @@ namespace GameServer.Templates
                     }
                     catch (Exception ex)
                     {
-                        MainForm.AddSystemLog($"Error loading file '{file.FullName}', Ex: {ex.Message}");
+                        MainForm.添加系统日志($"Error loading file '{file.FullName}', Ex: {ex.Message}");
                     }
 
                 });
@@ -73,7 +78,11 @@ namespace GameServer.Templates
             }
             return output.ToArray();
         }
-
+        /// <summary>
+        /// 压缩字节
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static byte[] Compress(byte[] data)
         {
             using var memoryStream = new MemoryStream();
@@ -84,7 +93,11 @@ namespace GameServer.Templates
 
             return memoryStream.ToArray();
         }
-
+        /// <summary>
+        /// 解压字节
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static byte[] Decompress(byte[] data)
         {
             Stream baseInputStream = new MemoryStream(data);
@@ -92,12 +105,16 @@ namespace GameServer.Templates
             new InflaterInputStream(baseInputStream).CopyTo(memoryStream);
             return memoryStream.ToArray();
         }
-
-        public static void SaveBackup(string sourceDir, string zipPath)
+        /// <summary>
+        /// 备份文件夹
+        /// </summary>
+        /// <param name="源目录"></param>
+        /// <param name="文件名"></param>
+        public static void SaveBackup(string 源目录, string 文件名)
         {
-            if (!Directory.Exists(sourceDir))
+            if (!Directory.Exists(源目录))
                 return;
-            new FastZip().CreateZip(zipPath, sourceDir, false, "");
+            new FastZip().CreateZip(文件名, 源目录, false, "");
         }
 
         private static readonly JsonSerializerSettings JsonOptions;

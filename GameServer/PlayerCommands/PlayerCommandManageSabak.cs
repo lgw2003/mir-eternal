@@ -32,7 +32,7 @@ namespace GameServer.PlayerCommands
         keyValuePair4.Key.攻沙日期.V = MainProcess.CurrentTime;
       }
 
-      NetworkServiceGateway.SendAnnouncement(string.Format("[{0}]已经成为新的沙巴克公会", guild), true);
+      网络服务网关.发送公告(string.Format("[{0}]已经成为新的沙巴克公会", guild), true);
     }
   }
 }

@@ -2,6 +2,9 @@
 
 namespace GameServer.Templates
 {
+	/// <summary>
+	/// 属性继承
+	/// </summary>
 	public struct InheritStat
 	{
 		public GameObjectStats 继承属性;

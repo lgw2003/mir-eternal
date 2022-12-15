@@ -31,11 +31,11 @@ namespace GameServer
 					{
 						网络连接.尝试断开连接(new Exception("Account Banned, Forced to Offline"));
 					}
-					MainForm.AddCommandLog(string.Format("<= @{0} command executed, blocking expiry time: {1}", base.GetType().Name, AccountData.封禁日期));
+					MainForm.添加命令日志(string.Format("<= @{0} command executed, blocking expiry time: {1}", base.GetType().Name, AccountData.封禁日期));
 					return;
 				}
 			}
-			MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, account does not exist");
+			MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, account does not exist");
 		}
 
 		

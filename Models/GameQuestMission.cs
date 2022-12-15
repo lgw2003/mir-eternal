@@ -4,6 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace Models
 {
+    /// <summary>
+    /// 执行任务完成条件类
+    /// </summary>
     public class GameQuestMission
     {
         [JsonIgnore]

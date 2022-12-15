@@ -2,6 +2,9 @@
 
 namespace GameServer.Templates
 {
+	/// <summary>
+	/// 技能触发方式
+	/// </summary>
 	public enum SkillTriggerMethod
 	{
 		原点位置绝对触发,

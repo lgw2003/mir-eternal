@@ -15,10 +15,10 @@ namespace GameServer.PlayerCommands
 
         public override void Execute()
         {
-            if (Amount + Player.CharacterData.AwakeningExp.V > Config.MaxAwakeningExp)
+            if (Amount + Player.CharacterData.觉醒经验.V > Config.MaxAwakeningExp)
             {
-                Amount = Config.MaxAwakeningExp - Player.CharacterData.AwakeningExp.V;
-                Player.CharacterData.AwakeningExpEnabled.V = false;
+                Amount = Config.MaxAwakeningExp - Player.CharacterData.觉醒经验.V;
+                Player.CharacterData.觉醒经验启用.V = false;
                 Player.ActiveConnection?.发送封包(new 同步补充变量
                 {
                     变量类型 = 1,
@@ -28,7 +28,7 @@ namespace GameServer.PlayerCommands
                 });
             }
 
-            Player.CharacterData.AwakeningExp.V += Amount;
+            Player.CharacterData.觉醒经验.V += Amount;
 
             Player.ActiveConnection?.发送封包(new 角色经验变动
             {

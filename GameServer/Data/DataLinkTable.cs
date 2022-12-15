@@ -73,7 +73,7 @@ namespace GameServer.Data
         {
             int num = 0;
             Dictionary<Type, Dictionary<string, int>> dictionary = new Dictionary<Type, Dictionary<string, int>>();
-            MainForm.AddSystemLog("开始加载关联数据......");
+            MainForm.添加系统日志("开始加载关联数据......");
             while (!DataLinkTable.数据任务表.IsEmpty)
             {
                 DataLinkTable.数据关联参数 数据关联参数;
@@ -82,15 +82,15 @@ namespace GameServer.Data
                     GameData GameData = GameDataGateway.数据类型表[数据关联参数.Data型][数据关联参数.数据索引];
                     if (GameData == null)
                     {
-                        if (!dictionary.ContainsKey(数据关联参数.数据.Data型))
+                        if (!dictionary.ContainsKey(数据关联参数.数据.数据类型))
                         {
-                            dictionary[数据关联参数.数据.Data型] = new Dictionary<string, int>();
+                            dictionary[数据关联参数.数据.数据类型] = new Dictionary<string, int>();
                         }
-                        if (!dictionary[数据关联参数.数据.Data型].ContainsKey(数据关联参数.字段.字段名字))
+                        if (!dictionary[数据关联参数.数据.数据类型].ContainsKey(数据关联参数.字段.字段名字))
                         {
-                            dictionary[数据关联参数.数据.Data型][数据关联参数.字段.字段名字] = 0;
+                            dictionary[数据关联参数.数据.数据类型][数据关联参数.字段.字段名字] = 0;
                         }
-                        Dictionary<string, int> dictionary2 = dictionary[数据关联参数.数据.Data型];
+                        Dictionary<string, int> dictionary2 = dictionary[数据关联参数.数据.数据类型];
                         string 字段名字 = 数据关联参数.字段.字段名字;
                         int num2 = dictionary2[字段名字];
                         dictionary2[字段名字] = num2 + 1;
@@ -110,15 +110,15 @@ namespace GameServer.Data
                     GameData GameData2 = GameDataGateway.数据类型表[列表关联参数.Data型][列表关联参数.数据索引];
                     if (GameData2 == null)
                     {
-                        if (!dictionary.ContainsKey(列表关联参数.数据.Data型))
+                        if (!dictionary.ContainsKey(列表关联参数.数据.数据类型))
                         {
-                            dictionary[列表关联参数.数据.Data型] = new Dictionary<string, int>();
+                            dictionary[列表关联参数.数据.数据类型] = new Dictionary<string, int>();
                         }
-                        if (!dictionary[列表关联参数.数据.Data型].ContainsKey(列表关联参数.字段.字段名字))
+                        if (!dictionary[列表关联参数.数据.数据类型].ContainsKey(列表关联参数.字段.字段名字))
                         {
-                            dictionary[列表关联参数.数据.Data型][列表关联参数.字段.字段名字] = 0;
+                            dictionary[列表关联参数.数据.数据类型][列表关联参数.字段.字段名字] = 0;
                         }
-                        Dictionary<string, int> dictionary3 = dictionary[列表关联参数.数据.Data型];
+                        Dictionary<string, int> dictionary3 = dictionary[列表关联参数.数据.数据类型];
                         string 字段名字 = 列表关联参数.字段.字段名字;
                         int num2 = dictionary3[字段名字];
                         dictionary3[字段名字] = num2 + 1;
@@ -144,15 +144,15 @@ namespace GameServer.Data
                     }
                     else
                     {
-                        if (!dictionary.ContainsKey(字典关联参数.数据.Data型))
+                        if (!dictionary.ContainsKey(字典关联参数.数据.数据类型))
                         {
-                            dictionary[字典关联参数.数据.Data型] = new Dictionary<string, int>();
+                            dictionary[字典关联参数.数据.数据类型] = new Dictionary<string, int>();
                         }
-                        if (!dictionary[字典关联参数.数据.Data型].ContainsKey(字典关联参数.字段.字段名字))
+                        if (!dictionary[字典关联参数.数据.数据类型].ContainsKey(字典关联参数.字段.字段名字))
                         {
-                            dictionary[字典关联参数.数据.Data型][字典关联参数.字段.字段名字] = 0;
+                            dictionary[字典关联参数.数据.数据类型][字典关联参数.字段.字段名字] = 0;
                         }
-                        Dictionary<string, int> dictionary4 = dictionary[字典关联参数.数据.Data型];
+                        Dictionary<string, int> dictionary4 = dictionary[字典关联参数.数据.数据类型];
                         string 字段名字 = 字典关联参数.字段.字段名字;
                         int num2 = dictionary4[字段名字];
                         dictionary4[字段名字] = num2 + 1;
@@ -166,12 +166,12 @@ namespace GameServer.Data
                     var characterQuest = GameDataGateway.数据类型表[typeof(CharacterQuest)][characterQuestRelation.数据索引] as CharacterQuest;
                     if (characterQuest == null)
                     {
-                        if (!dictionary.ContainsKey(characterQuestRelation.数据.Data型))
-                            dictionary[characterQuestRelation.数据.Data型] = new Dictionary<string, int>();
-                        if (!dictionary[characterQuestRelation.数据.Data型].ContainsKey(characterQuestRelation.字段.字段名字))
-                            dictionary[characterQuestRelation.数据.Data型][characterQuestRelation.字段.字段名字] = 0;
+                        if (!dictionary.ContainsKey(characterQuestRelation.数据.数据类型))
+                            dictionary[characterQuestRelation.数据.数据类型] = new Dictionary<string, int>();
+                        if (!dictionary[characterQuestRelation.数据.数据类型].ContainsKey(characterQuestRelation.字段.字段名字))
+                            dictionary[characterQuestRelation.数据.数据类型][characterQuestRelation.字段.字段名字] = 0;
 
-                        dictionary[characterQuestRelation.数据.Data型][characterQuestRelation.字段.字段名字] += 1;
+                        dictionary[characterQuestRelation.数据.数据类型][characterQuestRelation.字段.字段名字] += 1;
                     }
                     else
                     {
@@ -187,12 +187,12 @@ namespace GameServer.Data
                     var characterQuestConstraint = GameDataGateway.数据类型表[typeof(CharacterQuestMission)][characterQuestConstraintRelation.数据索引] as CharacterQuestMission;
                     if (characterQuestConstraint == null)
                     {
-                        if (!dictionary.ContainsKey(characterQuestConstraintRelation.数据.Data型))
-                            dictionary[characterQuestConstraintRelation.数据.Data型] = new Dictionary<string, int>();
-                        if (!dictionary[characterQuestConstraintRelation.数据.Data型].ContainsKey(characterQuestConstraintRelation.字段.字段名字))
-                            dictionary[characterQuestConstraintRelation.数据.Data型][characterQuestConstraintRelation.字段.字段名字] = 0;
+                        if (!dictionary.ContainsKey(characterQuestConstraintRelation.数据.数据类型))
+                            dictionary[characterQuestConstraintRelation.数据.数据类型] = new Dictionary<string, int>();
+                        if (!dictionary[characterQuestConstraintRelation.数据.数据类型].ContainsKey(characterQuestConstraintRelation.字段.字段名字))
+                            dictionary[characterQuestConstraintRelation.数据.数据类型][characterQuestConstraintRelation.字段.字段名字] = 0;
 
-                        dictionary[characterQuestConstraintRelation.数据.Data型][characterQuestConstraintRelation.字段.字段名字] += 1;
+                        dictionary[characterQuestConstraintRelation.数据.数据类型][characterQuestConstraintRelation.字段.字段名字] += 1;
                     }
                     else
                     {
@@ -209,15 +209,15 @@ namespace GameServer.Data
                     PetData PetData = GameDataGateway.数据类型表[typeof(PetData)][哈希关联参数.数据索引] as PetData;
                     if (PetData == null)
                     {
-                        if (!dictionary.ContainsKey(哈希关联参数.数据.Data型))
+                        if (!dictionary.ContainsKey(哈希关联参数.数据.数据类型))
                         {
-                            dictionary[哈希关联参数.数据.Data型] = new Dictionary<string, int>();
+                            dictionary[哈希关联参数.数据.数据类型] = new Dictionary<string, int>();
                         }
-                        if (!dictionary[哈希关联参数.数据.Data型].ContainsKey(哈希关联参数.字段.字段名字))
+                        if (!dictionary[哈希关联参数.数据.数据类型].ContainsKey(哈希关联参数.字段.字段名字))
                         {
-                            dictionary[哈希关联参数.数据.Data型][哈希关联参数.字段.字段名字] = 0;
+                            dictionary[哈希关联参数.数据.数据类型][哈希关联参数.字段.字段名字] = 0;
                         }
-                        Dictionary<string, int> dictionary5 = dictionary[哈希关联参数.数据.Data型];
+                        Dictionary<string, int> dictionary5 = dictionary[哈希关联参数.数据.数据类型];
                         string 字段名字 = 哈希关联参数.字段.字段名字;
                         int num2 = dictionary5[字段名字];
                         dictionary5[字段名字] = num2 + 1;
@@ -237,15 +237,15 @@ namespace GameServer.Data
                     CharacterData CharacterData = GameDataGateway.数据类型表[typeof(CharacterData)][哈希关联参数2.数据索引] as CharacterData;
                     if (CharacterData == null)
                     {
-                        if (!dictionary.ContainsKey(哈希关联参数2.数据.Data型))
+                        if (!dictionary.ContainsKey(哈希关联参数2.数据.数据类型))
                         {
-                            dictionary[哈希关联参数2.数据.Data型] = new Dictionary<string, int>();
+                            dictionary[哈希关联参数2.数据.数据类型] = new Dictionary<string, int>();
                         }
-                        if (!dictionary[哈希关联参数2.数据.Data型].ContainsKey(哈希关联参数2.字段.字段名字))
+                        if (!dictionary[哈希关联参数2.数据.数据类型].ContainsKey(哈希关联参数2.字段.字段名字))
                         {
-                            dictionary[哈希关联参数2.数据.Data型][哈希关联参数2.字段.字段名字] = 0;
+                            dictionary[哈希关联参数2.数据.数据类型][哈希关联参数2.字段.字段名字] = 0;
                         }
-                        Dictionary<string, int> dictionary6 = dictionary[哈希关联参数2.数据.Data型];
+                        Dictionary<string, int> dictionary6 = dictionary[哈希关联参数2.数据.数据类型];
                         string 字段名字 = 哈希关联参数2.字段.字段名字;
                         int num2 = dictionary6[字段名字];
                         dictionary6[字段名字] = num2 + 1;
@@ -265,15 +265,15 @@ namespace GameServer.Data
                     MailData MailData = GameDataGateway.数据类型表[typeof(MailData)][哈希关联参数3.数据索引] as MailData;
                     if (MailData == null)
                     {
-                        if (!dictionary.ContainsKey(哈希关联参数3.数据.Data型))
+                        if (!dictionary.ContainsKey(哈希关联参数3.数据.数据类型))
                         {
-                            dictionary[哈希关联参数3.数据.Data型] = new Dictionary<string, int>();
+                            dictionary[哈希关联参数3.数据.数据类型] = new Dictionary<string, int>();
                         }
-                        if (!dictionary[哈希关联参数3.数据.Data型].ContainsKey(哈希关联参数3.字段.字段名字))
+                        if (!dictionary[哈希关联参数3.数据.数据类型].ContainsKey(哈希关联参数3.字段.字段名字))
                         {
-                            dictionary[哈希关联参数3.数据.Data型][哈希关联参数3.字段.字段名字] = 0;
+                            dictionary[哈希关联参数3.数据.数据类型][哈希关联参数3.字段.字段名字] = 0;
                         }
-                        Dictionary<string, int> dictionary7 = dictionary[哈希关联参数3.数据.Data型];
+                        Dictionary<string, int> dictionary7 = dictionary[哈希关联参数3.数据.数据类型];
                         string 字段名字 = 哈希关联参数3.字段.字段名字;
                         int num2 = dictionary7[字段名字];
                         dictionary7[字段名字] = num2 + 1;
@@ -293,15 +293,15 @@ namespace GameServer.Data
                     AchievementData achievement = GameDataGateway.数据类型表[typeof(AchievementData)][achievements.数据索引] as AchievementData;
                     if (achievement == null)
                     {
-                        if (!dictionary.ContainsKey(achievements.数据.Data型))
+                        if (!dictionary.ContainsKey(achievements.数据.数据类型))
                         {
-                            dictionary[achievements.数据.Data型] = new Dictionary<string, int>();
+                            dictionary[achievements.数据.数据类型] = new Dictionary<string, int>();
                         }
-                        if (!dictionary[achievements.数据.Data型].ContainsKey(achievements.字段.字段名字))
+                        if (!dictionary[achievements.数据.数据类型].ContainsKey(achievements.字段.字段名字))
                         {
-                            dictionary[achievements.数据.Data型][achievements.字段.字段名字] = 0;
+                            dictionary[achievements.数据.数据类型][achievements.字段.字段名字] = 0;
                         }
-                        Dictionary<string, int> dictionary7 = dictionary[achievements.数据.Data型];
+                        Dictionary<string, int> dictionary7 = dictionary[achievements.数据.数据类型];
                         string 字段名字 = achievements.字段.字段名字;
                         int num2 = dictionary7[字段名字];
                         dictionary7[字段名字] = num2 + 1;
@@ -313,7 +313,7 @@ namespace GameServer.Data
                     }
                 }
             }
-            MainForm.AddSystemLog(string.Format("关联数据已加载完成，数据总数: {0}", num));
+            MainForm.添加系统日志(string.Format("关联数据已加载完成，数据总数: {0}", num));
 
             var totalErrors = dictionary.Sum((x) => x.Value.Sum((o) => o.Value));
 
@@ -321,7 +321,7 @@ namespace GameServer.Data
             {
                 foreach (var keyValuePair2 in keyValuePair.Value)
                 {
-                    MainForm.AddSystemLog(string.Format("Data type:[{0}], Internal field: [{1}], Total [{2}] data association failed", keyValuePair.Key.Name, keyValuePair2.Key, keyValuePair2.Value));
+                    MainForm.添加系统日志(string.Format("Data type:[{0}], Internal field: [{1}], Total [{2}] data association failed", keyValuePair.Key.Name, keyValuePair2.Key, keyValuePair2.Value));
                 }
             }
         }

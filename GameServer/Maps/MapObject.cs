@@ -571,7 +571,7 @@ namespace GameServer.Maps
         {
             foreach (BuffData BuffData in this.Buffs.Values)
             {
-                if ((BuffData.Effect & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData.Template.角色所处状态 & state) != GameObjectState.正常状态)
+                if ((BuffData.Buff效果 & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData.Buff模板.角色所处状态 & state) != GameObjectState.正常状态)
                 {
                     return true;
                 }
@@ -601,9 +601,9 @@ namespace GameServer.Maps
                 {
                     foreach (BuffData BuffData in this.Buffs.Values.ToList<BuffData>())
                     {
-                        if ((BuffData.Template.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态 || (BuffData.Template.角色所处状态 & GameObjectState.潜行状态) != GameObjectState.正常状态)
+                        if ((BuffData.Buff模板.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态 || (BuffData.Buff模板.角色所处状态 & GameObjectState.潜行状态) != GameObjectState.正常状态)
                         {
-                            移除Buff时处理(BuffData.Id.V);
+                            移除Buff时处理(BuffData.Buff编号.V);
                         }
                     }
                 }
@@ -626,7 +626,7 @@ namespace GameServer.Maps
                     {
                         foreach (var BuffData3 in Buffs.Values.Where(O => O.Buff分组 == GroupId).ToList())
                         {
-                            移除Buff时处理(BuffData3.Id.V);
+                            移除Buff时处理(BuffData3.Buff编号.V);
                         }
                         BuffData2 = (this.Buffs[游戏Buff.Buff编号] = new BuffData(obj, this, 游戏Buff.Buff编号));
                         break;
@@ -642,7 +642,7 @@ namespace GameServer.Maps
                         BuffData4.当前层数.V = (byte)Math.Min(BuffData4.当前层数.V + 1, BuffData4.最大层数);
                         if (游戏Buff.Buff允许合成 && BuffData4.当前层数.V >= 游戏Buff.Buff合成层数 && 游戏Buff.DataSheet.TryGetValue(游戏Buff.Buff合成编号, out var 游戏Buff2))
                         {
-                            移除Buff时处理(BuffData4.Id.V);
+                            移除Buff时处理(BuffData4.Buff编号.V);
                             OnAddBuff(游戏Buff.Buff合成编号, obj);
                             break;
                         }
@@ -653,8 +653,8 @@ namespace GameServer.Maps
                             SendPacket(new 对象状态变动
                             {
                                 对象编号 = this.ObjectId,
-                                Id = BuffData4.Id.V,
-                                Buff索引 = (int)BuffData4.Id.V,
+                                Id = BuffData4.Buff编号.V,
+                                Buff索引 = (int)BuffData4.Buff编号.V,
                                 当前层数 = BuffData4.当前层数.V,
                                 剩余时间 = (int)BuffData4.剩余时间.V.TotalMilliseconds,
                                 持续时间 = (int)BuffData4.持续时间.V.TotalMilliseconds
@@ -672,8 +672,8 @@ namespace GameServer.Maps
                                 SendPacket(new 对象状态变动
                                 {
                                     对象编号 = this.ObjectId,
-                                    Id = BuffData5.Id.V,
-                                    Buff索引 = (int)BuffData5.Id.V,
+                                    Id = BuffData5.Buff编号.V,
+                                    Buff索引 = (int)BuffData5.Buff编号.V,
                                     当前层数 = BuffData5.当前层数.V,
                                     剩余时间 = (int)BuffData5.剩余时间.V.TotalMilliseconds,
                                     持续时间 = (int)BuffData5.持续时间.V.TotalMilliseconds
@@ -698,8 +698,8 @@ namespace GameServer.Maps
                 {
                     SourceObjectId = this.ObjectId,
                     TargetObjectId = obj.ObjectId,
-                    BuffId = BuffData2.Id.V,
-                    BuffIndex = (int)BuffData2.Id.V,
+                    BuffId = BuffData2.Buff编号.V,
+                    BuffIndex = (int)BuffData2.Buff编号.V,
                     Duration = (int)BuffData2.持续时间.V.TotalMilliseconds,
                     BuffLayers = BuffData2.当前层数.V,
                 });
@@ -713,7 +713,7 @@ namespace GameServer.Maps
 
             if ((游戏Buff.Buff效果 & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && this is PlayerObject playerObject)
             {
-                if (游戏坐骑.DataSheet.TryGetValue(playerObject.CharacterData.CurrentMount.V, out 游戏坐骑 mount))
+                if (游戏坐骑.DataSheet.TryGetValue(playerObject.CharacterData.当前坐骑.V, out 游戏坐骑 mount))
                 {
                     playerObject.Riding = true;
                     StatsBonus.Add(BuffData2, mount.Stats);
@@ -725,7 +725,7 @@ namespace GameServer.Maps
                 SendPacket(new 同步对象坐骑
                 {
                     对象编号 = ObjectId,
-                    坐骑编号 = (byte)playerObject.CharacterData.CurrentMount.V
+                    坐骑编号 = (byte)playerObject.CharacterData.当前坐骑.V
                 });
             }
 
@@ -759,9 +759,9 @@ namespace GameServer.Maps
             if (this.Buffs.TryGetValue(编号, out BuffData))
             {
                 MapObject MapObject;
-                if (BuffData.Template.后接Buff编号 != 0 && BuffData.Buff来源 != null && MapGatewayProcess.Objects.TryGetValue(BuffData.Buff来源.ObjectId, out MapObject) && MapObject == BuffData.Buff来源)
+                if (BuffData.Buff模板.后接Buff编号 != 0 && BuffData.Buff来源 != null && MapGatewayProcess.Objects.TryGetValue(BuffData.Buff来源.ObjectId, out MapObject) && MapObject == BuffData.Buff来源)
                 {
-                    this.OnAddBuff(BuffData.Template.后接Buff编号, BuffData.Buff来源);
+                    this.OnAddBuff(BuffData.Buff模板.后接Buff编号, BuffData.Buff来源);
                 }
                 if (BuffData.依存列表 != null)
                 {
@@ -770,12 +770,12 @@ namespace GameServer.Maps
                         this.删除Buff时处理(编号2);
                     }
                 }
-                if (BuffData.添加冷却 && BuffData.绑定技能 != 0 && BuffData.Cooldown != 0)
+                if (BuffData.添加冷却 && BuffData.绑定技能 != 0 && BuffData.冷却时间 != 0)
                 {
                     PlayerObject PlayerObject = this as PlayerObject;
                     if (PlayerObject != null && PlayerObject.MainSkills表.ContainsKey(BuffData.绑定技能))
                     {
-                        DateTime dateTime = MainProcess.CurrentTime.AddMilliseconds((double)BuffData.Cooldown);
+                        DateTime dateTime = MainProcess.CurrentTime.AddMilliseconds((double)BuffData.冷却时间);
                         DateTime t = this.Coolings.ContainsKey((int)BuffData.绑定技能 | 16777216) ? this.Coolings[(int)BuffData.绑定技能 | 16777216] : default(DateTime);
                         if (dateTime > t)
                         {
@@ -783,13 +783,13 @@ namespace GameServer.Maps
                             this.SendPacket(new 添加技能冷却
                             {
                                 CoolingId = ((int)BuffData.绑定技能 | 16777216),
-                                Cooldown = (int)BuffData.Cooldown
+                                Cooldown = (int)BuffData.冷却时间
                             });
                         }
                     }
                 }
                 this.Buffs.Remove(编号);
-                BuffData.Delete();
+                BuffData.删除数据();
                 if (BuffData.Buff同步)
                 {
                     this.SendPacket(new 对象移除状态
@@ -798,31 +798,31 @@ namespace GameServer.Maps
                         Buff索引 = (int)编号
                     });
                 }
-                if ((BuffData.Effect & BuffEffectType.属性增减) != BuffEffectType.技能标志)
+                if ((BuffData.Buff效果 & BuffEffectType.属性增减) != BuffEffectType.技能标志)
                 {
                     this.StatsBonus.Remove(BuffData);
                     this.RefreshStats();
                 }
 
-                if ((BuffData.Effect & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && this is PlayerObject playerObject)
+                if ((BuffData.Buff效果 & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && this is PlayerObject playerObject)
                 {
                     playerObject.Riding = false;
                     this.StatsBonus.Remove(BuffData);
                     this.RefreshStats();
-                    if (游戏坐骑.DataSheet.TryGetValue(playerObject.CharacterData.CurrentMount.V, out 游戏坐骑 mount))
+                    if (游戏坐骑.DataSheet.TryGetValue(playerObject.CharacterData.当前坐骑.V, out 游戏坐骑 mount))
                         if (mount.Buff编号 > 0) playerObject.移除Buff时处理(mount.Buff编号);
                 }
 
-                if ((BuffData.Effect & BuffEffectType.状态标志) != BuffEffectType.技能标志)
+                if ((BuffData.Buff效果 & BuffEffectType.状态标志) != BuffEffectType.技能标志)
                 {
-                    if ((BuffData.Template.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态)
+                    if ((BuffData.Buff模板.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态)
                     {
                         foreach (MapObject MapObject2 in this.Neighbors.ToList<MapObject>())
                         {
                             MapObject2.对象显隐时处理(this);
                         }
                     }
-                    if ((BuffData.Template.角色所处状态 & GameObjectState.潜行状态) != GameObjectState.正常状态)
+                    if ((BuffData.Buff模板.角色所处状态 & GameObjectState.潜行状态) != GameObjectState.正常状态)
                     {
                         foreach (MapObject MapObject3 in this.Neighbors.ToList<MapObject>())
                         {
@@ -847,7 +847,7 @@ namespace GameServer.Maps
                     }
                 }
                 this.Buffs.Remove(编号);
-                BuffData.Delete();
+                BuffData.删除数据();
                 if (BuffData.Buff同步)
                 {
                     this.SendPacket(new 对象移除状态
@@ -856,29 +856,29 @@ namespace GameServer.Maps
                         Buff索引 = (int)编号
                     });
                 }
-                if ((BuffData.Effect & BuffEffectType.属性增减) != BuffEffectType.技能标志)
+                if ((BuffData.Buff效果 & BuffEffectType.属性增减) != BuffEffectType.技能标志)
                 {
                     this.StatsBonus.Remove(BuffData);
                     this.RefreshStats();
                 }
-                if ((BuffData.Effect & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && this is PlayerObject playerObject)
+                if ((BuffData.Buff效果 & BuffEffectType.坐骑状态) != BuffEffectType.技能标志 && this is PlayerObject playerObject)
                 {
                     playerObject.Riding = false;
                     this.StatsBonus.Remove(BuffData);
                     this.RefreshStats();
-                    if (游戏坐骑.DataSheet.TryGetValue(playerObject.CharacterData.CurrentMount.V, out 游戏坐骑 mount))
+                    if (游戏坐骑.DataSheet.TryGetValue(playerObject.CharacterData.当前坐骑.V, out 游戏坐骑 mount))
                         if (mount.Buff编号 > 0) playerObject.移除Buff时处理(mount.Buff编号);
                 }
-                if ((BuffData.Effect & BuffEffectType.状态标志) != BuffEffectType.技能标志)
+                if ((BuffData.Buff效果 & BuffEffectType.状态标志) != BuffEffectType.技能标志)
                 {
-                    if ((BuffData.Template.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态)
+                    if ((BuffData.Buff模板.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态)
                     {
                         foreach (MapObject MapObject in this.Neighbors.ToList<MapObject>())
                         {
                             MapObject.对象显隐时处理(this);
                         }
                     }
-                    if ((BuffData.Template.角色所处状态 & GameObjectState.潜行状态) != GameObjectState.正常状态)
+                    if ((BuffData.Buff模板.角色所处状态 & GameObjectState.潜行状态) != GameObjectState.正常状态)
                     {
                         foreach (MapObject MapObject2 in this.Neighbors.ToList<MapObject>())
                         {
@@ -894,17 +894,17 @@ namespace GameServer.Maps
         {
             if (数据.到期消失 && (数据.剩余时间.V -= MainProcess.CurrentTime - this.CurrentTime) < TimeSpan.Zero)
             {
-                this.移除Buff时处理(数据.Id.V);
+                this.移除Buff时处理(数据.Buff编号.V);
                 return;
             }
             if ((数据.处理计时.V -= MainProcess.CurrentTime - this.CurrentTime) < TimeSpan.Zero)
             {
                 数据.处理计时.V += TimeSpan.FromMilliseconds((double)数据.处理间隔);
-                if ((数据.Effect & BuffEffectType.造成伤害) != BuffEffectType.技能标志)
+                if ((数据.Buff效果 & BuffEffectType.造成伤害) != BuffEffectType.技能标志)
                 {
                     this.被动受伤时处理(数据);
                 }
-                if ((数据.Effect & BuffEffectType.生命回复) != BuffEffectType.技能标志)
+                if ((数据.Buff效果 & BuffEffectType.生命回复) != BuffEffectType.技能标志)
                 {
                     this.被动回复时处理(数据);
                 }
@@ -914,17 +914,17 @@ namespace GameServer.Maps
 
         public void ProcessSkillHit(SkillInstance skill, C_01_计算命中目标 info)
         {
-            MapObject obj = skill.CasterObject is TrapObject trap
+            MapObject obj = skill.技能来源 is TrapObject trap
                 ? trap.TrapSource
-                : skill.CasterObject;
+                : skill.技能来源;
 
-            if (skill.Hits.ContainsKey(ObjectId) || !CanBeHit)
+            if (skill.命中列表.ContainsKey(ObjectId) || !CanBeHit)
                 return;
 
             if (this != obj && !Neighbors.Contains(obj))
                 return;
 
-            if (skill.Hits.Count >= info.限定命中数量)
+            if (skill.命中列表.Count >= info.限定命中数量)
                 return;
 
             if ((info.限定目标关系 & obj.GetRelationship(this)) == 0)
@@ -933,7 +933,7 @@ namespace GameServer.Maps
             if ((info.限定目标类型 & ObjectType) == 0)
                 return;
 
-            if (!IsSpecificType(skill.CasterObject, info.限定特定类型))
+            if (!IsSpecificType(skill.技能来源, info.限定特定类型))
                 return;
 
             if ((info.限定目标关系 & GameObjectRelationship.敌对) != 0)
@@ -941,10 +941,10 @@ namespace GameServer.Maps
                 if (CheckStatus(GameObjectState.无敌状态))
                     return;
 
-                if ((this is PlayerObject || this is PetObject) && (obj is PlayerObject || obj is PetObject) && (CurrentMap.IsSafeZone(CurrentPosition) || obj.CurrentMap.IsSafeZone(obj.CurrentPosition)))
+                if ((this is PlayerObject || this is PetObject) && (obj is PlayerObject || obj is PetObject) && (CurrentMap.安全区内(CurrentPosition) || obj.CurrentMap.安全区内(obj.CurrentPosition)))
                     return;
 
-                if (obj is MonsterObject && CurrentMap.IsSafeZone(CurrentPosition))
+                if (obj is MonsterObject && CurrentMap.安全区内(CurrentPosition))
                     return;
             }
 
@@ -999,19 +999,19 @@ namespace GameServer.Maps
                     break;
             }
 
-            var value = new HitDetail(this)
+            var value = new 命中详情(this)
             {
                 Feedback = ComputingClass.IsHit(num, num3, num2, num4) ? info.技能命中反馈 : SkillHitFeedback.Miss
             };
 
-            skill.Hits.Add(this.ObjectId, value);
+            skill.命中列表.Add(this.ObjectId, value);
         }
 
 
-        public void 被动受伤时处理(SkillInstance 技能, C_02_计算目标伤害 参数, HitDetail 详情, float 伤害系数)
+        public void 被动受伤时处理(SkillInstance 技能, C_02_计算目标伤害 参数, 命中详情 详情, float 伤害系数)
         {
-            TrapObject TrapObject = 技能.CasterObject as TrapObject;
-            MapObject MapObject = (TrapObject != null) ? TrapObject.TrapSource : 技能.CasterObject;
+            TrapObject TrapObject = 技能.技能来源 as TrapObject;
+            MapObject MapObject = (TrapObject != null) ? TrapObject.TrapSource : 技能.技能来源;
             if (this.Died)
             {
                 详情.Feedback = SkillHitFeedback.丢失;
@@ -1044,12 +1044,12 @@ namespace GameServer.Maps
                     {
                         int[] 技能伤害基数 = 参数.技能伤害基数;
                         int? num = (技能伤害基数 != null) ? new int?(技能伤害基数.Length) : null;
-                        int num2 = (int)技能.SkillLevel;
-                        int num3 = (num.GetValueOrDefault() > num2 & num != null) ? 参数.技能伤害基数[(int)技能.SkillLevel] : 0;
+                        int num2 = (int)技能.技能等级;
+                        int num3 = (num.GetValueOrDefault() > num2 & num != null) ? 参数.技能伤害基数[(int)技能.技能等级] : 0;
                         float[] 技能伤害系数 = 参数.技能伤害系数;
                         num = ((技能伤害系数 != null) ? new int?(技能伤害系数.Length) : null);
-                        num2 = (int)技能.SkillLevel;
-                        float num4 = (num.GetValueOrDefault() > num2 & num != null) ? 参数.技能伤害系数[(int)技能.SkillLevel] : 0f;
+                        num2 = (int)技能.技能等级;
+                        float num4 = (num.GetValueOrDefault() > num2 & num != null) ? 参数.技能伤害系数[(int)技能.技能等级] : 0f;
                         if (this is MonsterObject)
                         {
                             num3 += MapObject[GameObjectStats.怪物伤害];
@@ -1108,7 +1108,7 @@ namespace GameServer.Maps
                         int num13 = int.MaxValue;
                         foreach (BuffData BuffData in MapObject.Buffs.Values.ToList<BuffData>())
                         {
-                            if ((BuffData.Effect & BuffEffectType.伤害增减) != BuffEffectType.技能标志 && (BuffData.Template.效果判定方式 == BuffDetherminationMethod.主动攻击增伤 || BuffData.Template.效果判定方式 == BuffDetherminationMethod.主动攻击减伤))
+                            if ((BuffData.Buff效果 & BuffEffectType.伤害增减) != BuffEffectType.技能标志 && (BuffData.Buff模板.效果判定方式 == BuffDetherminationMethod.主动攻击增伤 || BuffData.Buff模板.效果判定方式 == BuffDetherminationMethod.主动攻击减伤))
                             {
                                 bool flag = false;
                                 switch (参数.技能伤害类型)
@@ -1117,13 +1117,13 @@ namespace GameServer.Maps
                                     case SkillDamageType.刺术:
                                     case SkillDamageType.弓术:
                                         {
-                                            BuffJudgmentType EffectJudgeType = BuffData.Template.效果判定类型;
+                                            BuffJudgmentType EffectJudgeType = BuffData.Buff模板.效果判定类型;
                                             if (EffectJudgeType > BuffJudgmentType.所有物理伤害)
                                             {
                                                 if (EffectJudgeType == BuffJudgmentType.所有特定伤害)
                                                 {
-                                                    HashSet<ushort> SpecificSkillId = BuffData.Template.特定技能编号;
-                                                    flag = (SpecificSkillId != null && SpecificSkillId.Contains(技能.SkillId));
+                                                    HashSet<ushort> SpecificSkillId = BuffData.Buff模板.特定技能编号;
+                                                    flag = (SpecificSkillId != null && SpecificSkillId.Contains(技能.技能编号));
                                                 }
                                             }
                                             else
@@ -1134,7 +1134,7 @@ namespace GameServer.Maps
                                         }
                                     case SkillDamageType.魔法:
                                     case SkillDamageType.道术:
-                                        switch (BuffData.Template.效果判定类型)
+                                        switch (BuffData.Buff模板.效果判定类型)
                                         {
                                             case BuffJudgmentType.所有技能伤害:
                                             case BuffJudgmentType.所有魔法伤害:
@@ -1142,8 +1142,8 @@ namespace GameServer.Maps
                                                 break;
                                             case BuffJudgmentType.所有特定伤害:
                                                 {
-                                                    HashSet<ushort> SpecificSkillId2 = BuffData.Template.特定技能编号;
-                                                    flag = (SpecificSkillId2 != null && SpecificSkillId2.Contains(技能.SkillId));
+                                                    HashSet<ushort> SpecificSkillId2 = BuffData.Buff模板.特定技能编号;
+                                                    flag = (SpecificSkillId2 != null && SpecificSkillId2.Contains(技能.技能编号));
                                                     break;
                                                 }
                                         }
@@ -1152,49 +1152,49 @@ namespace GameServer.Maps
                                     case SkillDamageType.神圣:
                                     case SkillDamageType.灼烧:
                                     case SkillDamageType.撕裂:
-                                        if (BuffData.Template.效果判定类型 == BuffJudgmentType.所有特定伤害)
+                                        if (BuffData.Buff模板.效果判定类型 == BuffJudgmentType.所有特定伤害)
                                         {
-                                            HashSet<ushort> SpecificSkillId3 = BuffData.Template.特定技能编号;
-                                            flag = (SpecificSkillId3 != null && SpecificSkillId3.Contains(技能.SkillId));
+                                            HashSet<ushort> SpecificSkillId3 = BuffData.Buff模板.特定技能编号;
+                                            flag = (SpecificSkillId3 != null && SpecificSkillId3.Contains(技能.技能编号));
                                         }
                                         break;
                                 }
                                 if (flag)
                                 {
                                     int v = (int)BuffData.当前层数.V;
-                                    int[] DamageIncOrDecBase = BuffData.Template.伤害增减基数;
+                                    int[] DamageIncOrDecBase = BuffData.Buff模板.伤害增减基数;
                                     num = ((DamageIncOrDecBase != null) ? new int?(DamageIncOrDecBase.Length) : null);
                                     num2 = (int)BuffData.Buff等级.V;
-                                    int num14 = v * ((num.GetValueOrDefault() > num2 & num != null) ? BuffData.Template.伤害增减基数[(int)BuffData.Buff等级.V] : 0);
+                                    int num14 = v * ((num.GetValueOrDefault() > num2 & num != null) ? BuffData.Buff模板.伤害增减基数[(int)BuffData.Buff等级.V] : 0);
                                     float num15 = (float)BuffData.当前层数.V;
-                                    float[] DamageIncOrDecFactor = BuffData.Template.伤害增减系数;
+                                    float[] DamageIncOrDecFactor = BuffData.Buff模板.伤害增减系数;
                                     num = ((DamageIncOrDecFactor != null) ? new int?(DamageIncOrDecFactor.Length) : null);
                                     num2 = (int)BuffData.Buff等级.V;
-                                    float num16 = num15 * ((num.GetValueOrDefault() > num2 & num != null) ? BuffData.Template.伤害增减系数[(int)BuffData.Buff等级.V] : 0f);
-                                    num11 += ((BuffData.Template.效果判定方式 == BuffDetherminationMethod.主动攻击增伤) ? num14 : (-num14));
-                                    num12 += ((BuffData.Template.效果判定方式 == BuffDetherminationMethod.主动攻击增伤) ? num16 : (-num16));
+                                    float num16 = num15 * ((num.GetValueOrDefault() > num2 & num != null) ? BuffData.Buff模板.伤害增减系数[(int)BuffData.Buff等级.V] : 0f);
+                                    num11 += ((BuffData.Buff模板.效果判定方式 == BuffDetherminationMethod.主动攻击增伤) ? num14 : (-num14));
+                                    num12 += ((BuffData.Buff模板.效果判定方式 == BuffDetherminationMethod.主动攻击增伤) ? num16 : (-num16));
                                     MapObject MapObject2;
-                                    if (BuffData.Template.生效后接编号 != 0 && BuffData.Buff来源 != null && MapGatewayProcess.Objects.TryGetValue(BuffData.Buff来源.ObjectId, out MapObject2) && MapObject2 == BuffData.Buff来源)
+                                    if (BuffData.Buff模板.生效后接编号 != 0 && BuffData.Buff来源 != null && MapGatewayProcess.Objects.TryGetValue(BuffData.Buff来源.ObjectId, out MapObject2) && MapObject2 == BuffData.Buff来源)
                                     {
-                                        if (BuffData.Template.后接技能来源)
+                                        if (BuffData.Buff模板.后接技能来源)
                                         {
-                                            MapObject.OnAddBuff(BuffData.Template.生效后接编号, BuffData.Buff来源);
+                                            MapObject.OnAddBuff(BuffData.Buff模板.生效后接编号, BuffData.Buff来源);
                                         }
                                         else
                                         {
-                                            this.OnAddBuff(BuffData.Template.生效后接编号, BuffData.Buff来源);
+                                            this.OnAddBuff(BuffData.Buff模板.生效后接编号, BuffData.Buff来源);
                                         }
                                     }
-                                    if (BuffData.Template.效果生效移除)
+                                    if (BuffData.Buff模板.效果生效移除)
                                     {
-                                        MapObject.移除Buff时处理(BuffData.Id.V);
+                                        MapObject.移除Buff时处理(BuffData.Buff编号.V);
                                     }
                                 }
                             }
                         }
                         foreach (BuffData BuffData2 in this.Buffs.Values.ToList<BuffData>())
                         {
-                            if ((BuffData2.Effect & BuffEffectType.伤害增减) != BuffEffectType.技能标志 && (BuffData2.Template.效果判定方式 == BuffDetherminationMethod.被动受伤增伤 || BuffData2.Template.效果判定方式 == BuffDetherminationMethod.被动受伤减伤))
+                            if ((BuffData2.Buff效果 & BuffEffectType.伤害增减) != BuffEffectType.技能标志 && (BuffData2.Buff模板.效果判定方式 == BuffDetherminationMethod.被动受伤增伤 || BuffData2.Buff模板.效果判定方式 == BuffDetherminationMethod.被动受伤减伤))
                             {
                                 bool flag2 = false;
                                 switch (参数.技能伤害类型)
@@ -1203,15 +1203,15 @@ namespace GameServer.Maps
                                     case SkillDamageType.刺术:
                                     case SkillDamageType.弓术:
                                         {
-                                            BuffJudgmentType EffectJudgeType = BuffData2.Template.效果判定类型;
+                                            BuffJudgmentType EffectJudgeType = BuffData2.Buff模板.效果判定类型;
                                             if (EffectJudgeType <= BuffJudgmentType.所有特定伤害)
                                             {
                                                 if (EffectJudgeType > BuffJudgmentType.所有物理伤害)
                                                 {
                                                     if (EffectJudgeType == BuffJudgmentType.所有特定伤害)
                                                     {
-                                                        HashSet<ushort> SpecificSkillId4 = BuffData2.Template.特定技能编号;
-                                                        flag2 = (SpecificSkillId4 != null && SpecificSkillId4.Contains(技能.SkillId));
+                                                        HashSet<ushort> SpecificSkillId4 = BuffData2.Buff模板.特定技能编号;
+                                                        flag2 = (SpecificSkillId4 != null && SpecificSkillId4.Contains(技能.技能编号));
                                                     }
                                                 }
                                                 else
@@ -1226,8 +1226,8 @@ namespace GameServer.Maps
                                                     bool flag3;
                                                     if (MapObject == BuffData2.Buff来源)
                                                     {
-                                                        HashSet<ushort> SpecificSkillId5 = BuffData2.Template.特定技能编号;
-                                                        flag3 = (SpecificSkillId5 != null && SpecificSkillId5.Contains(技能.SkillId));
+                                                        HashSet<ushort> SpecificSkillId5 = BuffData2.Buff模板.特定技能编号;
+                                                        flag3 = (SpecificSkillId5 != null && SpecificSkillId5.Contains(技能.技能编号));
                                                     }
                                                     else
                                                     {
@@ -1245,7 +1245,7 @@ namespace GameServer.Maps
                                     case SkillDamageType.魔法:
                                     case SkillDamageType.道术:
                                         {
-                                            BuffJudgmentType EffectJudgeType = BuffData2.Template.效果判定类型;
+                                            BuffJudgmentType EffectJudgeType = BuffData2.Buff模板.效果判定类型;
                                             if (EffectJudgeType <= BuffJudgmentType.来源技能伤害)
                                             {
                                                 switch (EffectJudgeType)
@@ -1258,7 +1258,7 @@ namespace GameServer.Maps
                                                     case (BuffJudgmentType)3:
                                                         goto IL_953;
                                                     case BuffJudgmentType.所有特定伤害:
-                                                        flag2 = BuffData2.Template.特定技能编号.Contains(技能.SkillId);
+                                                        flag2 = BuffData2.Buff模板.特定技能编号.Contains(技能.技能编号);
                                                         goto IL_953;
                                                     default:
                                                         if (EffectJudgeType != BuffJudgmentType.来源技能伤害)
@@ -1277,8 +1277,8 @@ namespace GameServer.Maps
                                                 bool flag4;
                                                 if (MapObject == BuffData2.Buff来源)
                                                 {
-                                                    HashSet<ushort> SpecificSkillId6 = BuffData2.Template.特定技能编号;
-                                                    flag4 = (SpecificSkillId6 != null && SpecificSkillId6.Contains(技能.SkillId));
+                                                    HashSet<ushort> SpecificSkillId6 = BuffData2.Buff模板.特定技能编号;
+                                                    flag4 = (SpecificSkillId6 != null && SpecificSkillId6.Contains(技能.技能编号));
                                                 }
                                                 else
                                                 {
@@ -1295,7 +1295,7 @@ namespace GameServer.Maps
                                     case SkillDamageType.灼烧:
                                     case SkillDamageType.撕裂:
                                         {
-                                            BuffJudgmentType EffectJudgeType = BuffData2.Template.效果判定类型;
+                                            BuffJudgmentType EffectJudgeType = BuffData2.Buff模板.效果判定类型;
                                             if (EffectJudgeType != BuffJudgmentType.所有特定伤害)
                                             {
                                                 if (EffectJudgeType == BuffJudgmentType.来源特定伤害)
@@ -1303,8 +1303,8 @@ namespace GameServer.Maps
                                                     bool flag5;
                                                     if (MapObject == BuffData2.Buff来源)
                                                     {
-                                                        HashSet<ushort> SpecificSkillId7 = BuffData2.Template.特定技能编号;
-                                                        flag5 = (SpecificSkillId7 != null && SpecificSkillId7.Contains(技能.SkillId));
+                                                        HashSet<ushort> SpecificSkillId7 = BuffData2.Buff模板.特定技能编号;
+                                                        flag5 = (SpecificSkillId7 != null && SpecificSkillId7.Contains(技能.技能编号));
                                                     }
                                                     else
                                                     {
@@ -1315,8 +1315,8 @@ namespace GameServer.Maps
                                             }
                                             else
                                             {
-                                                HashSet<ushort> SpecificSkillId8 = BuffData2.Template.特定技能编号;
-                                                flag2 = (SpecificSkillId8 != null && SpecificSkillId8.Contains(技能.SkillId));
+                                                HashSet<ushort> SpecificSkillId8 = BuffData2.Buff模板.特定技能编号;
+                                                flag2 = (SpecificSkillId8 != null && SpecificSkillId8.Contains(技能.技能编号));
                                             }
                                             break;
                                         }
@@ -1325,36 +1325,36 @@ namespace GameServer.Maps
                                 if (flag2)
                                 {
                                     int v2 = (int)BuffData2.当前层数.V;
-                                    int[] DamageIncOrDecBase2 = BuffData2.Template.伤害增减基数;
+                                    int[] DamageIncOrDecBase2 = BuffData2.Buff模板.伤害增减基数;
                                     num = ((DamageIncOrDecBase2 != null) ? new int?(DamageIncOrDecBase2.Length) : null);
                                     num2 = (int)BuffData2.Buff等级.V;
-                                    int num17 = v2 * ((num.GetValueOrDefault() > num2 & num != null) ? BuffData2.Template.伤害增减基数[(int)BuffData2.Buff等级.V] : 0);
+                                    int num17 = v2 * ((num.GetValueOrDefault() > num2 & num != null) ? BuffData2.Buff模板.伤害增减基数[(int)BuffData2.Buff等级.V] : 0);
                                     float num18 = (float)BuffData2.当前层数.V;
-                                    float[] DamageIncOrDecFactor2 = BuffData2.Template.伤害增减系数;
+                                    float[] DamageIncOrDecFactor2 = BuffData2.Buff模板.伤害增减系数;
                                     num = ((DamageIncOrDecFactor2 != null) ? new int?(DamageIncOrDecFactor2.Length) : null);
                                     num2 = (int)BuffData2.Buff等级.V;
-                                    float num19 = num18 * ((num.GetValueOrDefault() > num2 & num != null) ? BuffData2.Template.伤害增减系数[(int)BuffData2.Buff等级.V] : 0f);
-                                    num11 += ((BuffData2.Template.效果判定方式 == BuffDetherminationMethod.被动受伤增伤) ? num17 : (-num17));
-                                    num12 += ((BuffData2.Template.效果判定方式 == BuffDetherminationMethod.被动受伤增伤) ? num19 : (-num19));
+                                    float num19 = num18 * ((num.GetValueOrDefault() > num2 & num != null) ? BuffData2.Buff模板.伤害增减系数[(int)BuffData2.Buff等级.V] : 0f);
+                                    num11 += ((BuffData2.Buff模板.效果判定方式 == BuffDetherminationMethod.被动受伤增伤) ? num17 : (-num17));
+                                    num12 += ((BuffData2.Buff模板.效果判定方式 == BuffDetherminationMethod.被动受伤增伤) ? num19 : (-num19));
                                     MapObject MapObject3;
-                                    if (BuffData2.Template.生效后接编号 != 0 && BuffData2.Buff来源 != null && MapGatewayProcess.Objects.TryGetValue(BuffData2.Buff来源.ObjectId, out MapObject3) && MapObject3 == BuffData2.Buff来源)
+                                    if (BuffData2.Buff模板.生效后接编号 != 0 && BuffData2.Buff来源 != null && MapGatewayProcess.Objects.TryGetValue(BuffData2.Buff来源.ObjectId, out MapObject3) && MapObject3 == BuffData2.Buff来源)
                                     {
-                                        if (BuffData2.Template.后接技能来源)
+                                        if (BuffData2.Buff模板.后接技能来源)
                                         {
-                                            MapObject.OnAddBuff(BuffData2.Template.生效后接编号, BuffData2.Buff来源);
+                                            MapObject.OnAddBuff(BuffData2.Buff模板.生效后接编号, BuffData2.Buff来源);
                                         }
                                         else
                                         {
-                                            this.OnAddBuff(BuffData2.Template.生效后接编号, BuffData2.Buff来源);
+                                            this.OnAddBuff(BuffData2.Buff模板.生效后接编号, BuffData2.Buff来源);
                                         }
                                     }
-                                    if (BuffData2.Template.效果判定方式 == BuffDetherminationMethod.被动受伤减伤 && BuffData2.Template.限定伤害上限)
+                                    if (BuffData2.Buff模板.效果判定方式 == BuffDetherminationMethod.被动受伤减伤 && BuffData2.Buff模板.限定伤害上限)
                                     {
-                                        num13 = Math.Min(num13, BuffData2.Template.限定伤害数值);
+                                        num13 = Math.Min(num13, BuffData2.Buff模板.限定伤害数值);
                                     }
-                                    if (BuffData2.Template.效果生效移除)
+                                    if (BuffData2.Buff模板.效果生效移除)
                                     {
-                                        this.移除Buff时处理(BuffData2.Id.V);
+                                        this.移除Buff时处理(BuffData2.Buff编号.V);
                                     }
                                 }
                             }
@@ -1372,9 +1372,9 @@ namespace GameServer.Maps
                 {
                     foreach (BuffData BuffData3 in this.Buffs.Values.ToList<BuffData>())
                     {
-                        if ((BuffData3.Effect & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData3.Template.角色所处状态 & GameObjectState.失神状态) != GameObjectState.正常状态)
+                        if ((BuffData3.Buff效果 & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData3.Buff模板.角色所处状态 & GameObjectState.失神状态) != GameObjectState.正常状态)
                         {
-                            this.移除Buff时处理(BuffData3.Id.V);
+                            this.移除Buff时处理(BuffData3.Buff编号.V);
                         }
                     }
                 }
@@ -1522,7 +1522,7 @@ namespace GameServer.Maps
             int num2 = Math.Max(0, 数据.伤害基数.V * (int)数据.当前层数.V - num);
             this.CurrentHP = Math.Max(0, this.CurrentHP - num2);
             触发状态效果 触发状态效果 = new 触发状态效果();
-            触发状态效果.Id = 数据.Id.V;
+            触发状态效果.Id = 数据.Buff编号.V;
             MapObject buff来源 = 数据.Buff来源;
             触发状态效果.Buff来源 = ((buff来源 != null) ? buff来源.ObjectId : 0);
             触发状态效果.Buff目标 = this.ObjectId;
@@ -1539,39 +1539,39 @@ namespace GameServer.Maps
         {
             if (!this.Died)
             {
-                if (this.CurrentMap == 技能.CasterObject.CurrentMap)
+                if (this.CurrentMap == 技能.技能来源.CurrentMap)
                 {
-                    if (this != 技能.CasterObject && !this.Neighbors.Contains(技能.CasterObject))
+                    if (this != 技能.技能来源 && !this.Neighbors.Contains(技能.技能来源))
                     {
                         return;
                     }
-                    TrapObject TrapObject = 技能.CasterObject as TrapObject;
-                    MapObject MapObject = (TrapObject != null) ? TrapObject.TrapSource : 技能.CasterObject;
+                    TrapObject TrapObject = 技能.技能来源 as TrapObject;
+                    MapObject MapObject = (TrapObject != null) ? TrapObject.TrapSource : 技能.技能来源;
                     int[] 体力回复次数 = 参数.体力回复次数;
                     int? num = (体力回复次数 != null) ? new int?(体力回复次数.Length) : null;
-                    int SkillLevel = (int)技能.SkillLevel;
-                    int num2 = (num.GetValueOrDefault() > SkillLevel & num != null) ? 参数.体力回复次数[(int)技能.SkillLevel] : 0;
+                    int SkillLevel = (int)技能.技能等级;
+                    int num2 = (num.GetValueOrDefault() > SkillLevel & num != null) ? 参数.体力回复次数[(int)技能.技能等级] : 0;
                     byte[] PhysicalRecoveryBase = 参数.体力回复基数;
                     num = ((PhysicalRecoveryBase != null) ? new int?(PhysicalRecoveryBase.Length) : null);
-                    SkillLevel = (int)技能.SkillLevel;
-                    int num3 = (int)((num.GetValueOrDefault() > SkillLevel & num != null) ? 参数.体力回复基数[(int)技能.SkillLevel] : 0);
+                    SkillLevel = (int)技能.技能等级;
+                    int num3 = (int)((num.GetValueOrDefault() > SkillLevel & num != null) ? 参数.体力回复基数[(int)技能.技能等级] : 0);
                     float[] Taoism叠加次数 = 参数.道术叠加次数;
                     num = ((Taoism叠加次数 != null) ? new int?(Taoism叠加次数.Length) : null);
-                    SkillLevel = (int)技能.SkillLevel;
-                    float num4 = (num.GetValueOrDefault() > SkillLevel & num != null) ? 参数.道术叠加次数[(int)技能.SkillLevel] : 0f;
+                    SkillLevel = (int)技能.技能等级;
+                    float num4 = (num.GetValueOrDefault() > SkillLevel & num != null) ? 参数.道术叠加次数[(int)技能.技能等级] : 0f;
                     float[] Taoism叠加基数 = 参数.道术叠加基数;
                     num = ((Taoism叠加基数 != null) ? new int?(Taoism叠加基数.Length) : null);
-                    SkillLevel = (int)技能.SkillLevel;
-                    float num5 = (num.GetValueOrDefault() > SkillLevel & num != null) ? 参数.道术叠加基数[(int)技能.SkillLevel] : 0f;
+                    SkillLevel = (int)技能.技能等级;
+                    float num5 = (num.GetValueOrDefault() > SkillLevel & num != null) ? 参数.道术叠加基数[(int)技能.技能等级] : 0f;
                     int[] 立即回复基数 = 参数.立即回复基数;
                     num = ((立即回复基数 != null) ? new int?(立即回复基数.Length) : null);
-                    SkillLevel = (int)技能.SkillLevel;
+                    SkillLevel = (int)技能.技能等级;
                     int num6;
                     if (num.GetValueOrDefault() > SkillLevel & num != null)
                     {
                         if (MapObject == this)
                         {
-                            num6 = 参数.立即回复基数[(int)技能.SkillLevel];
+                            num6 = 参数.立即回复基数[(int)技能.技能等级];
                             goto IL_1F1;
                         }
                     }
@@ -1580,13 +1580,13 @@ namespace GameServer.Maps
                     int num7 = num6;
                     float[] 立即回复系数 = 参数.立即回复系数;
                     num = ((立即回复系数 != null) ? new int?(立即回复系数.Length) : null);
-                    SkillLevel = (int)技能.SkillLevel;
+                    SkillLevel = (int)技能.技能等级;
                     float num8;
                     if (num.GetValueOrDefault() > SkillLevel & num != null)
                     {
                         if (MapObject == this)
                         {
-                            num8 = 参数.立即回复系数[(int)技能.SkillLevel];
+                            num8 = 参数.立即回复系数[(int)技能.技能等级];
                             goto IL_249;
                         }
                     }
@@ -1623,18 +1623,18 @@ namespace GameServer.Maps
 
         public void 被动回复时处理(BuffData 数据)
         {
-            if (数据.Template.体力回复基数 == null)
+            if (数据.Buff模板.体力回复基数 == null)
             {
                 return;
             }
-            if (数据.Template.体力回复基数.Length <= (int)数据.Buff等级.V)
+            if (数据.Buff模板.体力回复基数.Length <= (int)数据.Buff等级.V)
             {
                 return;
             }
-            byte b = 数据.Template.体力回复基数[(int)数据.Buff等级.V];
+            byte b = 数据.Buff模板.体力回复基数[(int)数据.Buff等级.V];
             this.CurrentHP += (int)b;
             触发状态效果 触发状态效果 = new 触发状态效果();
-            触发状态效果.Id = 数据.Id.V;
+            触发状态效果.Id = 数据.Buff编号.V;
             MapObject buff来源 = 数据.Buff来源;
             触发状态效果.Buff来源 = ((buff来源 != null) ? buff来源.ObjectId : 0);
             触发状态效果.Buff目标 = this.ObjectId;
@@ -1659,7 +1659,7 @@ namespace GameServer.Maps
                     {
                         BuffData BuffData = enumerator.Current;
                         技能陷阱 陷阱模板;
-                        if ((BuffData.Effect & BuffEffectType.创建陷阱) != BuffEffectType.技能标志 && 技能陷阱.DataSheet.TryGetValue(BuffData.Template.触发陷阱技能, out 陷阱模板))
+                        if ((BuffData.Buff效果 & BuffEffectType.创建陷阱) != BuffEffectType.技能标志 && 技能陷阱.DataSheet.TryGetValue(BuffData.Buff模板.触发陷阱技能, out 陷阱模板))
                         {
                             int num = 0;
 
@@ -1670,7 +1670,7 @@ namespace GameServer.Maps
                                 {
                                     break;
                                 }
-                                foreach (Point 坐标2 in ComputingClass.GetLocationRange(point, this.CurrentDirection, BuffData.Template.触发陷阱数量))
+                                foreach (Point 坐标2 in ComputingClass.GetLocationRange(point, this.CurrentDirection, BuffData.Buff模板.触发陷阱数量))
                                 {
                                     if (!this.CurrentMap.IsBlocked(坐标2))
                                     {
@@ -1693,9 +1693,9 @@ namespace GameServer.Maps
                                 num++;
                             }
                         }
-                        if ((BuffData.Effect & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData.Template.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态)
+                        if ((BuffData.Buff效果 & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData.Buff模板.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态)
                         {
-                            this.移除Buff时处理(BuffData.Id.V);
+                            this.移除Buff时处理(BuffData.Buff编号.V);
                         }
                     }
                     goto IL_30E;
@@ -1706,7 +1706,7 @@ namespace GameServer.Maps
                 foreach (BuffData BuffData2 in this.Buffs.Values.ToList<BuffData>())
                 {
                     技能陷阱 陷阱模板;
-                    if ((BuffData2.Effect & BuffEffectType.创建陷阱) != BuffEffectType.技能标志 && 技能陷阱.DataSheet.TryGetValue(BuffData2.Template.触发陷阱技能, out 陷阱模板))
+                    if ((BuffData2.Buff效果 & BuffEffectType.创建陷阱) != BuffEffectType.技能标志 && 技能陷阱.DataSheet.TryGetValue(BuffData2.Buff模板.触发陷阱技能, out 陷阱模板))
                     {
                         int num2 = 0;
 
@@ -1717,7 +1717,7 @@ namespace GameServer.Maps
                             {
                                 break;
                             }
-                            foreach (Point 坐标3 in ComputingClass.GetLocationRange(point2, this.CurrentDirection, BuffData2.Template.触发陷阱数量))
+                            foreach (Point 坐标3 in ComputingClass.GetLocationRange(point2, this.CurrentDirection, BuffData2.Buff模板.触发陷阱数量))
                             {
                                 if (!this.CurrentMap.IsBlocked(坐标3))
                                 {
@@ -1740,9 +1740,9 @@ namespace GameServer.Maps
                             num2++;
                         }
                     }
-                    if ((BuffData2.Effect & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData2.Template.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态)
+                    if ((BuffData2.Buff效果 & BuffEffectType.状态标志) != BuffEffectType.技能标志 && (BuffData2.Buff模板.角色所处状态 & GameObjectState.隐身状态) != GameObjectState.正常状态)
                     {
-                        this.移除Buff时处理(BuffData2.Id.V);
+                        this.移除Buff时处理(BuffData2.Buff编号.V);
                     }
                 }
             }
@@ -2012,7 +2012,7 @@ namespace GameServer.Maps
                         if (PlayerObject2 != null)
                         {
                             ObjectComesIntoViewPacket.AdditionalParam = (byte)(!PlayerObject2.灰名玩家 ? 0 : 2);
-                            ObjectComesIntoViewPacket.ActiveMount = PlayerObject2.Riding ? (byte)PlayerObject2.CharacterData.CurrentMount.V : (byte)0;
+                            ObjectComesIntoViewPacket.ActiveMount = PlayerObject2.Riding ? (byte)PlayerObject2.CharacterData.当前坐骑.V : (byte)0;
                         }
                         网络连接.发送封包(ObjectComesIntoViewPacket);
                         PlayerObject.ActiveConnection.发送封包(new 同步对象体力
@@ -2171,7 +2171,7 @@ namespace GameServer.Maps
                         if (PlayerObject4 != null)
                         {
                             ObjectComesIntoViewPacket2.AdditionalParam = (byte)(!PlayerObject4.灰名玩家 ? 0 : 2);
-                            ObjectComesIntoViewPacket2.ActiveMount = (byte)(PlayerObject4.Riding ? PlayerObject4.CharacterData.CurrentMount.V : 0);
+                            ObjectComesIntoViewPacket2.ActiveMount = (byte)(PlayerObject4.Riding ? PlayerObject4.CharacterData.当前坐骑.V : 0);
                         }
                         网络连接2.发送封包(ObjectComesIntoViewPacket2);
 
@@ -2473,8 +2473,8 @@ namespace GameServer.Maps
                     binaryWriter.Write((byte)this.Buffs.Count);
                     foreach (KeyValuePair<ushort, BuffData> keyValuePair in this.Buffs)
                     {
-                        binaryWriter.Write(keyValuePair.Value.Id.V);
-                        binaryWriter.Write((int)keyValuePair.Value.Id.V);
+                        binaryWriter.Write(keyValuePair.Value.Buff编号.V);
+                        binaryWriter.Write((int)keyValuePair.Value.Buff编号.V);
                         binaryWriter.Write(keyValuePair.Value.当前层数.V);
                         binaryWriter.Write((int)keyValuePair.Value.剩余时间.V.TotalMilliseconds);
                         binaryWriter.Write((int)keyValuePair.Value.持续时间.V.TotalMilliseconds);
@@ -2497,8 +2497,8 @@ namespace GameServer.Maps
                     int num = 0;
                     foreach (KeyValuePair<ushort, BuffData> keyValuePair in this.Buffs)
                     {
-                        binaryWriter.Write(keyValuePair.Value.Id.V);
-                        binaryWriter.Write((int)keyValuePair.Value.Id.V);
+                        binaryWriter.Write(keyValuePair.Value.Buff编号.V);
+                        binaryWriter.Write((int)keyValuePair.Value.Buff编号.V);
                         if (++num >= 5)
                         {
                             break;

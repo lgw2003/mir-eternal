@@ -25,20 +25,20 @@ namespace GameServer
 				CharacterData CharacterData = GameData as CharacterData;
 				if (CharacterData != null)
 				{
-					CharacterData.Ingots = Math.Max(0, CharacterData.Ingots - this.Ingots);
-					客户网络 网络连接 = CharacterData.ActiveConnection;
+					CharacterData.元宝数量 = Math.Max(0, CharacterData.元宝数量 - this.Ingots);
+					客户网络 网络连接 = CharacterData.网络连接;
 					if (网络连接 != null)
 					{
 						网络连接.发送封包(new 同步元宝数量
 						{
-							Ingots = CharacterData.Ingots
+							Ingots = CharacterData.元宝数量
 						});
 					}
-					MainForm.AddCommandLog(string.Format("<= @{0} command has been executed, with the current amount of treasure: {1}", base.GetType().Name, CharacterData.Ingots));
+					MainForm.添加命令日志(string.Format("<= @{0} command has been executed, with the current amount of treasure: {1}", base.GetType().Name, CharacterData.元宝数量));
 					return;
 				}
 			}
-			MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, role does not exist");
+			MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, role does not exist");
 		}
 
 		

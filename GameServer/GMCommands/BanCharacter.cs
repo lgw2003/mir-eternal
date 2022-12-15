@@ -26,16 +26,16 @@ namespace GameServer
 				if (CharacterData != null)
 				{
 					CharacterData.封禁日期.V = DateTime.Now.AddDays((double)this.封禁天数);
-					客户网络 网络连接 = CharacterData.ActiveConnection;
+					客户网络 网络连接 = CharacterData.网络连接;
 					if (网络连接 != null)
 					{
 						网络连接.尝试断开连接(new Exception("Character banned, forced offline"));
 					}
-					MainForm.AddCommandLog(string.Format("<= @{0} command executed, blocking expiry time: {1}", base.GetType().Name, CharacterData.封禁日期));
+					MainForm.添加命令日志(string.Format("<= @{0} command executed, blocking expiry time: {1}", base.GetType().Name, CharacterData.封禁日期));
 					return;
 				}
 			}
-			MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, role does not exist");
+			MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, role does not exist");
 		}
 
 		

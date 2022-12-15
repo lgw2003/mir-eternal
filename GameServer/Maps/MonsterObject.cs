@@ -470,7 +470,7 @@ namespace GameServer.Maps
       if (!禁止复活)
       {
         this.CurrentMap.TotalMobs += 1U;
-        MainForm.UpdateMapData(this.CurrentMap, "TotalMobs", this.CurrentMap.TotalMobs);
+        MainForm.更新地图数据(this.CurrentMap, "怪物总数", this.CurrentMap.TotalMobs);
       }
       if (立即刷新)
       {
@@ -526,7 +526,7 @@ namespace GameServer.Maps
         }
         foreach (SkillInstance 技能实例 in this.SkillTasks.ToList<SkillInstance>())
         {
-          技能实例.Process();
+          技能实例.任务处理();
         }
         if (MainProcess.CurrentTime > base.RecoveryTime)
         {
@@ -584,17 +584,17 @@ namespace GameServer.Maps
     public override void Dies(MapObject obj, bool skillKill)
     {
       foreach (SkillInstance skill in SkillTasks)
-        skill.SkillAbort();
+        skill.技能中断();
 
       base.Dies(obj, skillKill);
 
       if (DeathReleaseSkill != null && obj != null)
-        new SkillInstance(this, DeathReleaseSkill, null, ActionId++, this.CurrentMap, this.CurrentPosition, null, this.CurrentPosition, null, null, false).Process();
+        new SkillInstance(this, DeathReleaseSkill, null, ActionId++, this.CurrentMap, this.CurrentPosition, null, this.CurrentPosition, null, null, false).任务处理();
 
       if (CurrentMap.CopyMap || !ResurrectionDisabled)
       {
         CurrentMap.MobsAlive -= 1U;
-        MainForm.UpdateMapData(this.CurrentMap, "MobsAlive", -1);
+        MainForm.更新地图数据(this.CurrentMap, "存活怪物总数", -1);
       }
 
       this.尸体消失 = false;
@@ -613,7 +613,7 @@ namespace GameServer.Maps
           if (游戏物品.DataSheetByName.TryGetValue("强效金创药", out 物品模板))
           {
             int num2 = (this.Category == MonsterLevelType.普通怪物) ? 15 : 1;
-            int num3 = Math.Max(1, num2 - (int)Math.Round(num2 * Config.ExtraDropRate));
+            int num3 = Math.Max(1, num2 - (int)Math.Round(num2 * Config.物品额外爆率));
             if (MainProcess.RandomNumber.Next(num3) == num3 / 2)
             {
               num++;
@@ -624,7 +624,7 @@ namespace GameServer.Maps
           if (游戏物品.DataSheetByName.TryGetValue("强效Magic药", out 物品模板2))
           {
             int num4 = (this.Category == MonsterLevelType.普通怪物) ? 20 : 1;
-            int num5 = Math.Max(1, num4 - (int)Math.Round(num4 * Config.ExtraDropRate));
+            int num5 = Math.Max(1, num4 - (int)Math.Round(num4 * Config.物品额外爆率));
             if (MainProcess.RandomNumber.Next(num5) == num5 / 2)
             {
               num++;
@@ -635,7 +635,7 @@ namespace GameServer.Maps
           if (游戏物品.DataSheetByName.TryGetValue("疗伤药", out 物品模板3))
           {
             int num6 = (this.Category == MonsterLevelType.普通怪物) ? 100 : 1;
-            int num7 = Math.Max(1, num6 - (int)Math.Round(num6 * Config.ExtraDropRate));
+            int num7 = Math.Max(1, num6 - (int)Math.Round(num6 * Config.物品额外爆率));
             if (MainProcess.RandomNumber.Next(num7) == num7 / 2)
             {
               num++;
@@ -646,12 +646,12 @@ namespace GameServer.Maps
           if (游戏物品.DataSheetByName.TryGetValue("祝福油", out 物品模板4))
           {
             int num8 = (this.Category == MonsterLevelType.普通怪物) ? 1000 : ((this.Category == MonsterLevelType.精英干将) ? 50 : 10);
-            int num9 = Math.Max(1, num8 - (int)Math.Round(num8 * Config.ExtraDropRate));
+            int num9 = Math.Max(1, num8 - (int)Math.Round(num8 * Config.物品额外爆率));
             if (MainProcess.RandomNumber.Next(num9) == num9 / 2)
             {
               num++;
               new ItemObject(物品模板4, null, this.CurrentMap, this.CurrentPosition, new HashSet<CharacterData>(), 1, false, this);
-              NetworkServiceGateway.SendAnnouncement(string.Concat(new string[]
+              网络服务网关.发送公告(string.Concat(new string[]
               {
                                 "[",
                                 this.ObjectName,
@@ -663,7 +663,7 @@ namespace GameServer.Maps
           }
 
           if (num > 0)
-            MainForm.UpdateMapData(this.CurrentMap, "MobsDrops", (long)num);
+            MainForm.更新地图数据(this.CurrentMap, "怪物掉落次数", (long)num);
 
           foreach (var playerObj in CurrentMap.NrPlayers)
             playerObj.GainExperience(this, (int)(Experience * 1.5f));
@@ -684,27 +684,27 @@ namespace GameServer.Maps
 
           foreach (var characterData in hashSet)
           {
-            if (characterData.ActiveConnection?.玩家实例 == null) continue;
-            var quests = characterData.GetInProgressQuests();
+            if (characterData.网络连接?.玩家实例 == null) continue;
+            var quests = characterData.获取正在进行的任务();
             var updated = false;
 
             foreach (var quest in quests)
             {
-              var missions = quest.GetMissionsOfType(QuestMissionType.杀死怪物);
+              var missions = quest.根据类型获取任务要求(QuestMissionType.杀死怪物);
               foreach (var mission in missions)
               {
-                if (mission.CompletedDate.V != DateTime.MinValue) continue;
-                if (mission.Info.V.编号 != Template.怪物编号) continue;
+                if (mission.完成日期.V != DateTime.MinValue) continue;
+                if (mission.完成条件.V.编号 != Template.怪物编号) continue;
 
-                var idx = Array.IndexOf(quest.Missions.ToArray(), mission);
-                mission.Count.V = (byte)(mission.Count.V + 1);
+                var idx = Array.IndexOf(quest.玩家任务要求.ToArray(), mission);
+                mission.数量.V = (byte)(mission.数量.V + 1);
 
-                characterData.ActiveConnection.玩家实例.SendPacket(new 同步补充变量
+                characterData.网络连接.玩家实例.SendPacket(new 同步补充变量
                 {
                   变量类型 = 6, // Quest Progress Update
                   变量索引 = (ushort)idx,
-                  对象编号 = quest.Info.V.编号,
-                  变量内容 = mission.Count.V
+                  对象编号 = quest.任务信息.V.编号,
+                  变量内容 = mission.数量.V
                 });
 
                 updated = true;
@@ -716,7 +716,7 @@ namespace GameServer.Maps
               // 5, 0 // progress count
               // });
 
-              if (updated) characterData.ActiveConnection.玩家实例.UpdateQuestProgress(quest);
+              if (updated) characterData.网络连接.玩家实例.UpdateQuestProgress(quest);
             }
           }
 
@@ -746,7 +746,7 @@ namespace GameServer.Maps
                   )
               )
               {
-                int num13 = Math.Max(1, drop.掉落概率 - (int)Math.Round(drop.掉落概率 * Config.ExtraDropRate));
+                int num13 = Math.Max(1, drop.掉落概率 - (int)Math.Round(drop.掉落概率 * Config.物品额外爆率));
                 if (MainProcess.RandomNumber.Next(num13) == num13 / 2)
                 {
                   int num14 = MainProcess.RandomNumber.Next(drop.最小数量, drop.最大数量 + 1);
@@ -776,7 +776,7 @@ namespace GameServer.Maps
                     }
                     if (item.贵重物品)
                     {
-                      NetworkServiceGateway.SendAnnouncement($"[{playerObject}] 杀死 [{ObjectName}] 并掉落 {item.物品名字}.");
+                      网络服务网关.发送公告($"[{playerObject}] 杀死 [{ObjectName}] 并掉落 {item.物品名字}.");
                     }
                   }
                 }
@@ -785,15 +785,15 @@ namespace GameServer.Maps
           }
           if (num11 > 0)
           {
-            MainForm.UpdateMapData(CurrentMap, "MobGoldDrop", (long)num11);
+            MainForm.更新地图数据(CurrentMap, "金币掉落总数", (long)num11);
           }
           if (num12 > 0)
           {
-            MainForm.UpdateMapData(CurrentMap, "MobsDrops", (long)num12);
+            MainForm.更新地图数据(CurrentMap, "怪物掉落次数", (long)num12);
           }
           if (num11 > 0 || num12 > 0)
           {
-            MainForm.UpdateDropStats(Template, Template.掉落统计.ToList());
+            MainForm.更新掉落统计(Template, Template.掉落统计.ToList());
           }
           if (playerObject.Team == null)
           {
@@ -960,11 +960,11 @@ namespace GameServer.Maps
       if (this.CurrentMap.CopyMap || !this.ResurrectionDisabled)
       {
         this.CurrentMap.MobsAlive += 1U;
-        MainForm.UpdateMapData(this.CurrentMap, "MobsAlive", 1);
+        MainForm.更新地图数据(this.CurrentMap, "存活怪物总数", 1);
         if (计算复活)
         {
           this.CurrentMap.MobsRespawned += 1U;
-          MainForm.UpdateMapData(this.CurrentMap, "MobsRespawned", 1);
+          MainForm.更新地图数据(this.CurrentMap, "怪物复活次数", 1);
         }
       }
       this.RefreshStats();
@@ -996,7 +996,7 @@ namespace GameServer.Maps
             }
             if (this.ExitCombatSkills != null)
             {
-              new SkillInstance(this, ExitCombatSkills, null, ActionId++, this.CurrentMap, this.CurrentPosition, null, this.CurrentPosition, null, null, false).Process();
+              new SkillInstance(this, ExitCombatSkills, null, ActionId++, this.CurrentMap, this.CurrentPosition, null, this.CurrentPosition, null, null, false).任务处理();
             }
           }
           return;

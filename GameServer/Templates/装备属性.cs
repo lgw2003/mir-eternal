@@ -17,7 +17,7 @@ namespace GameServer.Templates
         public float 极品概率;
         public int 单条概率;
         public int 两条概率;
-        public StatsDetail[] 属性列表;
+        public 属性详情[] 属性列表;
 
         public static List<随机属性> GenerateStats(ItemType Type, bool reforgedEquipment = false)
         {
@@ -55,7 +55,7 @@ namespace GameServer.Templates
             {
                 var list = new List<随机属性>();
                 
-                foreach (StatsDetail Stat详情 in kvp.Value.属性列表)
+                foreach (属性详情 Stat详情 in kvp.Value.属性列表)
                     if (随机属性.DataSheet.TryGetValue(Stat详情.属性编号, out 随机属性 item))
                         for (int j = 0; j < Stat详情.属性概率; j++)
                             list.Add(item);

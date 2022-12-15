@@ -17,7 +17,7 @@ namespace GameServer.PlayerCommands
             foreach (var skill in mainSkills)
                 Player.RemoveSkill(skill.SkillId.V);
 
-            Player.CharacterData.AddStarterSkills();
+            Player.CharacterData.添加初始技能();
 
             Player?.SendPacket(new 同步技能信息
             {

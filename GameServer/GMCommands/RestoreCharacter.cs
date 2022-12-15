@@ -24,30 +24,30 @@ namespace GameServer
 				CharacterData CharacterData = GameData as CharacterData;
 				if (CharacterData != null)
 				{
-					if (CharacterData.DateDelete.V == default(DateTime) || !CharacterData.Account.V.删除列表.Contains(CharacterData))
+					if (CharacterData.删除日期.V == default(DateTime) || !CharacterData.所属账号.V.删除列表.Contains(CharacterData))
 					{
-						MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, character not deleted");
+						MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, character not deleted");
 						return;
 					}
-					if (CharacterData.Account.V.Characters.Count >= 4)
+					if (CharacterData.所属账号.V.角色列表.Count >= 4)
 					{
-						MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, character list is full");
+						MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, character list is full");
 						return;
 					}
-					if (CharacterData.Account.V.网络连接 != null)
+					if (CharacterData.所属账号.V.网络连接 != null)
 					{
-						MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, account must be offline");
+						MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, account must be offline");
 						return;
 					}
-					CharacterData.FreezeDate.V = default(DateTime);
-					CharacterData.DateDelete.V = default(DateTime);
-					CharacterData.Account.V.删除列表.Remove(CharacterData);
-					CharacterData.Account.V.Characters.Add(CharacterData);
-					MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command executed, character restored successfully");
+					CharacterData.冻结日期.V = default(DateTime);
+					CharacterData.删除日期.V = default(DateTime);
+					CharacterData.所属账号.V.删除列表.Remove(CharacterData);
+					CharacterData.所属账号.V.角色列表.Add(CharacterData);
+					MainForm.添加命令日志("<= @" + base.GetType().Name + " Command executed, character restored successfully");
 					return;
 				}
 			}
-			MainForm.AddCommandLog("<= @" + base.GetType().Name + " Command execution failed, character does not exist");
+			MainForm.添加命令日志("<= @" + base.GetType().Name + " Command execution failed, character does not exist");
 		}
 
 		

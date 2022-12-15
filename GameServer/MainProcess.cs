@@ -49,36 +49,36 @@ namespace GameServer
     public static void Stop()
     {
       Running = false;
-      NetworkServiceGateway.Stop();
+      网络服务网关.停止服务();
     }
 
     public static void AddSystemLog(string text)
     {
-      MainForm.AddSystemLog(text);
+      MainForm.添加系统日志(text);
     }
 
     public static void AddChatLog(string preffix, byte[] text)
     {
-      MainForm.AddChatLog(preffix, text);
+      MainForm.添加聊天日志(preffix, text);
     }
 
     private static void MainLoop()
     {
       CommandsQueue = new ConcurrentQueue<GMCommand>();
-      MainForm.AddSystemLog("正在生成游戏地图...");
+      MainForm.添加系统日志("正在生成游戏地图...");
       MapGatewayProcess.Start();
-      MainForm.AddSystemLog("正在启动网络服务...");
-      NetworkServiceGateway.Start();
-      MainForm.AddSystemLog("服务器已成功启动...");
+      MainForm.添加系统日志("正在启动网络服务...");
+      网络服务网关.Start();
+      MainForm.添加系统日志("服务器已成功启动...");
       Running = true;
-      MainForm.ServerStartedCallback();
+      MainForm.服务启动回调();
       var sw = new Stopwatch();
 
       while (true)
       {
         if (!Running)
         {
-          if (NetworkServiceGateway.网络连接表.Count == 0)
+          if (网络服务网关.网络连接表.Count == 0)
             break;
         }
         try
@@ -89,7 +89,7 @@ namespace GameServer
           自动保存数据();
           ProcessServerStats();
           ProcessGMCommands();
-          NetworkServiceGateway.处理数据();
+          网络服务网关.处理数据();
           MapGatewayProcess.Process();
           ProcessReloadTasks();
           sw.Stop();
@@ -101,23 +101,23 @@ namespace GameServer
         {
           GameDataGateway.SaveData();
           GameDataGateway.CleanUp();
-          MainForm.AddSystemLog("A fatal error has occurred and the server is about to stop");
+          MainForm.添加系统日志("发生了致命错误，服务器即将停止");
           if (!Directory.Exists(".\\Log\\Error"))
             Directory.CreateDirectory(".\\Log\\Error");
-          File.WriteAllText(string.Format(".\\Log\\Error\\{0:yyyy-MM-dd--HH-mm-ss}.txt", DateTime.Now), "Error message:\r\n" + ex.Message + "\r\nStack information:\r\n" + ex.StackTrace);
-          MainForm.AddSystemLog("Error has been saved to the log, please note");
+          File.WriteAllText(string.Format(".\\Log\\Error\\{0:yyyy-MM-dd--HH-mm-ss}.txt", DateTime.Now), "错误信息:\r\n" + ex.Message + "\r\nStack information:\r\n" + ex.StackTrace);
+          MainForm.添加系统日志("错误已保存到日志中，请注意");
           ClearConnections();
           break;
         }
       }
 
-      MainForm.AddSystemLog("清理游戏临时物品数据...");
+      MainForm.添加系统日志("清理游戏临时物品数据...");
       MapGatewayProcess.CleanUp();
-      MainForm.AddSystemLog("保存用户数据并备份...");
+      MainForm.添加系统日志("保存用户数据并备份...");
       GameDataGateway.CleanUp();
-      MainForm.Stop();
+      MainForm.服务停止回调();
       MainThread = null;
-      MainForm.AddSystemLog("服务器已经关闭成功");
+      MainForm.添加系统日志("服务器已经关闭成功");
     }
 
     private static void ProcessReloadTasks()
@@ -128,7 +128,7 @@ namespace GameServer
 
         if (ReloadTasks.Count == 0)
         {
-          NetworkServiceGateway.SendAnnouncement("服务器数据重载成功！！！", true);
+          网络服务网关.发送公告("服务器数据重载成功！！！", true);
         }
         else
         {
@@ -139,7 +139,7 @@ namespace GameServer
 
     private static void ClearConnections()
     {
-      foreach (客户网络 connection in NetworkServiceGateway.网络连接表)
+      foreach (客户网络 connection in 网络服务网关.网络连接表)
       {
         try
         {
@@ -170,13 +170,13 @@ namespace GameServer
     {
       if (CurrentTime > NextUpdateLoopCountsTime)
       {
-        MainForm.UpdateTotalConnections((uint)NetworkServiceGateway.网络连接表.Count);
-        MainForm.UpdateAlreadyLogged(NetworkServiceGateway.ActiveConnections);
-        MainForm.UpdateConnectionsOnline(NetworkServiceGateway.ConnectionsOnline);
-        MainForm.UpdateSendedBytes(NetworkServiceGateway.SendedBytes);
-        MainForm.UpdateReceivedBytes(NetworkServiceGateway.ReceivedBytes);
-        MainForm.UpdateObjectStatistics(MapGatewayProcess.ActiveObjects.Count, MapGatewayProcess.SecondaryObjects.Count, MapGatewayProcess.Objects.Count);
-        MainForm.UpdateLoopCount(LoopCount);
+        MainForm.更新连接总数((uint)网络服务网关.网络连接表.Count);
+        MainForm.更新已登陆数(网络服务网关.已登陆连接数);
+        MainForm.更新已经上线(网络服务网关.已上线连接数);
+        MainForm.更新发送字节(网络服务网关.已发送字节数);
+        MainForm.更新接收字节(网络服务网关.已接收字节数);
+        MainForm.更新对象统计(MapGatewayProcess.ActiveObjects.Count, MapGatewayProcess.SecondaryObjects.Count, MapGatewayProcess.Objects.Count);
+        MainForm.更新后台帧数(LoopCount);
         LoopCount = 0U;
         NextUpdateLoopCountsTime = CurrentTime.AddSeconds(1.0);
       }
@@ -192,7 +192,7 @@ namespace GameServer
       GameDataGateway.SaveData();
       GameDataGateway.CleanUp();
       NextSaveDataTime = CurrentTime.AddSeconds(Settings.Default.数据保存间隔);
-      MainForm.AddSystemLog("玩家数据保存成功!");
+      MainForm.添加系统日志("玩家数据保存成功!");
     }
   }
 }

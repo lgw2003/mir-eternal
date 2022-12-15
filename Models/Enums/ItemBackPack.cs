@@ -2,6 +2,9 @@
 
 namespace GameServer
 {
+	/// <summary>
+	/// 物品背包
+	/// </summary>
 	
 	public enum ItemBackPack
 	{

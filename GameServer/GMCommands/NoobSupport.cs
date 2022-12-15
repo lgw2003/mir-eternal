@@ -19,13 +19,13 @@ namespace GameServer
 		
 		public override void Execute()
 		{
-			Settings.Default.NoobLevel = (Config.NoobLevel = this.扶持等级);
+			Settings.Default.NoobLevel = (Config.新手扶持等级 = this.扶持等级);
 			Settings.Default.Save();
 			MainForm.Singleton.BeginInvoke(new MethodInvoker(delegate()
 			{
 				MainForm.Singleton.S_NoobLevel.Value = this.扶持等级;
 			}));
-			MainForm.AddCommandLog(string.Format("<= @{0} command has been executed, current support level: {1}", base.GetType().Name, Config.NoobLevel));
+			MainForm.添加命令日志(string.Format("<= @{0} command has been executed, current support level: {1}", base.GetType().Name, Config.新手扶持等级));
 		}
 
 		

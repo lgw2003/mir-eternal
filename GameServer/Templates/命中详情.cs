@@ -7,20 +7,20 @@ using GameServer.Maps;
 namespace GameServer.Templates
 {
 	
-	public class HitDetail
+	public class 命中详情
 	{
 		public int Damage;
 		public ushort MissDamage;
 		public MapObject Object;
 		public SkillHitFeedback Feedback;
 
-		public HitDetail(MapObject obj, SkillHitFeedback feedback = default)
+		public 命中详情(MapObject obj, SkillHitFeedback feedback = default)
 		{
 			Object = obj;
 			Feedback = feedback;
 		}
 		
-		public static byte[] GetHitDescription(Dictionary<int, HitDetail> hitList, int hitDelay)
+		public static byte[] GetHitDescription(Dictionary<int, 命中详情> hitList, int hitDelay)
 		{
             using var memoryStream = new MemoryStream();
             using var binaryWriter = new BinaryWriter(memoryStream);

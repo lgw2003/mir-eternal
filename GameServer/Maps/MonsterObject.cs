@@ -666,7 +666,7 @@ namespace GameServer.Maps
             MainForm.更新地图数据(this.CurrentMap, "怪物掉落次数", (long)num);
 
           foreach (var playerObj in CurrentMap.NrPlayers)
-            playerObj.GainExperience(this, (int)(Experience * 1.5f));
+            playerObj.玩家增加经验(this, (int)(Experience * 1.5f));
         }
         else
         {
@@ -797,7 +797,7 @@ namespace GameServer.Maps
           }
           if (playerObject.Team == null)
           {
-            playerObject.GainExperience(this, this.Experience);
+            playerObject.玩家增加经验(this, this.Experience);
           }
           else
           {
@@ -816,7 +816,7 @@ namespace GameServer.Maps
             float num16 = players.Sum((x) => x.CurrentLevel);
 
             foreach (PlayerObject player in players)
-              player.GainExperience(this, (int)(num15 * player.CurrentLevel / num16));
+              player.玩家增加经验(this, (int)(num15 * player.CurrentLevel / num16));
           }
         }
       }

@@ -13,7 +13,7 @@ namespace GameServer.PlayerCommands
 
         public override void Execute()
         {
-            Player.AdquireMount(MountId);
+            Player.获得坐骑(MountId);
         }
     }
 }
